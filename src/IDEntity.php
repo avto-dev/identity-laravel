@@ -2,9 +2,10 @@
 
 namespace AvtoDev\IDEntity;
 
-use AvtoDev\IDEntity\Types\IDEntityVin;
-use AvtoDev\IDEntity\Types\TypedIDEntityInterface;
 use LogicException;
+use AvtoDev\IDEntity\Types\IDEntityVin;
+use AvtoDev\IDEntity\Types\IDEntityUnknown;
+use AvtoDev\IDEntity\Types\TypedIDEntityInterface;
 
 /**
  * Class IDEntity.
@@ -21,6 +22,9 @@ class IDEntity implements IDEntityInterface
     const
         // Тип обозначает необходимость в автоматическом определении типа
         ID_TYPE_AUTO = 'AUTODETECT',
+
+        // Неизвестный тип идентификатора
+        ID_TYPE_UNKNOWN = 'UNKNOWN',
 
         // Тип - VIN-код
         ID_TYPE_VIN = 'VIN',
@@ -59,7 +63,7 @@ class IDEntity implements IDEntityInterface
      *
      * @return string[]
      */
-    protected static function getSupportedTypes()
+    protected static function getTypesMap()
     {
         return [
             self::ID_TYPE_VIN => IDEntityVin::class,
@@ -67,42 +71,71 @@ class IDEntity implements IDEntityInterface
     }
 
     /**
+     * Возвращает массив поддерживаемых типов идентификаторов.
+     *
+     * @return string[]
+     */
+    public static function getSupportedTypes()
+    {
+        return array_keys(static::getTypesMap());
+    }
+
+    /**
      * Проверяет наличие поддержки переданного типа идентификатора.
      *
-     * @param string $id_type
+     * @param string $type
      *
      * @return bool
      */
-    public static function typeIsSupported($id_type)
+    public static function typeIsSupported($type)
     {
-        return in_array($id_type, array_keys(static::getSupportedTypes()));
+        return is_string($type) && in_array($type, static::getSupportedTypes());
     }
 
     /**
      * Возвращает имя класса, который обслуживает идентификатор по его типу. В случае ошибки или не обнаружения - вернет
      * null.
      *
-     * @param string $id_type
+     * @param string $type
      *
      * @return string|null
      */
-    protected static function getEntityClassByType($id_type)
+    protected static function getEntityClassByType($type)
     {
-        return static::typeIsSupported($id_type)
-            ? static::getSupportedTypes()[$id_type]
+        return static::typeIsSupported($type)
+            ? static::getTypesMap()[$type]
             : null;
     }
 
     /**
-     * Фабричный метод, замена конструктору.
-     *
-     * @param string|mixed $id_value
-     * @param string       $id_type
-     *
-     * @return TypedIDEntityInterface
+     * {@inheritdoc}
      */
-    public static function make($id_value, $id_type = self::ID_TYPE_AUTO)
+    public static function make($value, $type = self::ID_TYPE_AUTO)
     {
-        //
+        // Если указанный тип идентификатора нам известен - то его и создаём
+        if (class_exists($class_name = static::getEntityClassByType($type))) {
+            return new $class_name($value);
+        }
+
+        // Если указан тип "авто-определение" - то поочерёдно создаем каждый тип, и проверяем соответствие методом
+        // валидации
+        if ($type === self::ID_TYPE_AUTO) {
+            foreach (static::getTypesMap() as $class_name) {
+                /** @var TypedIDEntityInterface $instance */
+                if (($instance = new $class_name($value)) && $instance->isValid()) {
+                    return $instance;
+                }
+            }
+        }
+
+        return new IDEntityUnknown($value);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function is($value, $type)
+    {
+        return self::make($value, $type)->isValid();
     }
 }

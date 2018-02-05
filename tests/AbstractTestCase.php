@@ -2,48 +2,32 @@
 
 namespace AvtoDev\IDEntity\Tests;
 
-use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\AssertionFailedError;
+use AvtoDev\IDEntity\IDEntitiesServiceProvider;
+use Illuminate\Foundation\Application;
+use Illuminate\Contracts\Console\Kernel;
+use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use AvtoDev\ExtendedLaravelValidator\ExtendedValidatorServiceProvider;
 
 /**
  * Class AbstractTestCase.
  */
-abstract class AbstractTestCase extends TestCase
+abstract class AbstractTestCase extends BaseTestCase
 {
     /**
-     * Проверяет, что элемент является массивом.
+     * Creates the application.
      *
-     * @param $value
-     *
-     * @throws AssertionFailedError
+     * @return Application
      */
-    public function assertIsArray($value)
+    public function createApplication()
     {
-        $this->assertTrue(is_array($value), 'Must be an array');
-    }
+        $app = require __DIR__ . '/../vendor/laravel/laravel/bootstrap/app.php';
 
-    /**
-     * Проверяет, что элемент является не пустой строкой.
-     *
-     * @param $value
-     *
-     * @throws AssertionFailedError
-     */
-    public function assertIsNotEmptyString($value)
-    {
-        $this->assertIsString($value);
-        $this->assertNotEmpty($value);
-    }
+        $app->make(Kernel::class)->bootstrap();
 
-    /**
-     * Проверяет, что элемент является строкой.
-     *
-     * @param $value
-     *
-     * @throws AssertionFailedError
-     */
-    public function assertIsString($value)
-    {
-        $this->assertTrue(is_string($value), 'Must be string');
+        // Register needed service-providers manually
+        $app->register(ExtendedValidatorServiceProvider::class);
+        $app->register(IDEntitiesServiceProvider::class);
+
+        return $app;
     }
 }

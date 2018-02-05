@@ -32,4 +32,20 @@ interface TypedIDEntityInterface extends Arrayable, Jsonable
      * @return string
      */
     public function __toString();
+
+    /**
+     * Производит проверку установленного значения с помощью callback-функций из стека callback-функций.
+     *
+     * @return bool
+     */
+    public function isValid();
+
+    /**
+     * Производит нормализацию входного значения согласно типу.
+     *
+     * @param string $value
+     *
+     * @return string|null
+     */
+    public static function normalize($value);
 }

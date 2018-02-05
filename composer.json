@@ -17,7 +17,8 @@
         "php": "^5.6 || >=7.0 <7.3",
         "ext-json": "*",
         "ext-mbstring": "*",
-        "illuminate/contracts": "^5.4"
+        "laravel/laravel": "~5.4",
+        "avto-dev/extended-laravel-validator": "1.* >=1.0.2"
     },
     "require-dev": {
         "phpunit/phpunit": "~5.7 || ^6.4",
@@ -38,6 +39,13 @@
     },
     "scripts": {
         "test": "./vendor/bin/phpunit --no-coverage"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "AvtoDev\\IDEntity\\IDEntitiesServiceProvider"
+            ]
+        }
     },
     "support": {
         "issues": "https://github.com/avto-dev/identity-laravel/issues",

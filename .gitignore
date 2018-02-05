@@ -15,7 +15,3 @@ composer.lock
 /coverage
 .DS_Store
 .php_cs.cache
-
-# etc.
-npm-debug.log
-/node_modules
