@@ -2,15 +2,15 @@
 
 namespace AvtoDev\IDEntity;
 
-use AvtoDev\IDEntity\Types\IDEntityBody;
-use AvtoDev\IDEntity\Types\IDEntityChassis;
+use LogicException;
 use AvtoDev\IDEntity\Types\IDEntityGrz;
 use AvtoDev\IDEntity\Types\IDEntityPts;
 use AvtoDev\IDEntity\Types\IDEntitySts;
-use AvtoDev\IDEntity\Types\IDEntityUnknown;
 use AvtoDev\IDEntity\Types\IDEntityVin;
+use AvtoDev\IDEntity\Types\IDEntityBody;
+use AvtoDev\IDEntity\Types\IDEntityChassis;
+use AvtoDev\IDEntity\Types\IDEntityUnknown;
 use AvtoDev\IDEntity\Types\TypedIDEntityInterface;
-use LogicException;
 
 /**
  * Class IDEntity.

@@ -2,11 +2,11 @@
 
 namespace AvtoDev\IDEntity\Tests;
 
+use Exception;
 use AvtoDev\IDEntity\IDEntity;
 use AvtoDev\IDEntity\IDEntityInterface;
-use AvtoDev\IDEntity\Tests\Mocks\IDEntityMock;
 use AvtoDev\IDEntity\Types\IDEntityUnknown;
-use Exception;
+use AvtoDev\IDEntity\Tests\Mocks\IDEntityMock;
 
 /**
  * Class IDEntityTest.

@@ -40,20 +40,6 @@ abstract class AbstractIDEntityTestCase extends AbstractTestCase
     }
 
     /**
-     * Возвращает имя тестируемого класса типизированной сущности.
-     *
-     * @return string
-     */
-    abstract protected function getClassName();
-
-    /**
-     * Возвращает валидное значение сущности.
-     *
-     * @return string
-     */
-    abstract protected function getValidValue();
-
-    /**
      * Тест конструктора.
      *
      * @return void
@@ -149,4 +135,18 @@ abstract class AbstractIDEntityTestCase extends AbstractTestCase
      * @return void
      */
     abstract public function testIsValid();
+
+    /**
+     * Возвращает имя тестируемого класса типизированной сущности.
+     *
+     * @return string
+     */
+    abstract protected function getClassName();
+
+    /**
+     * Возвращает валидное значение сущности.
+     *
+     * @return string
+     */
+    abstract protected function getValidValue();
 }

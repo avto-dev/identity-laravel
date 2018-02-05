@@ -13,22 +13,6 @@ class IDEntityUnknownTest extends AbstractIDEntityTestCase
     /**
      * {@inheritdoc}
      */
-    protected function getClassName()
-    {
-        return IDEntityUnknown::class;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getValidValue()
-    {
-        return 'foo bar';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function testConstructor()
     {
         $class_name = $this->getClassName();
@@ -51,5 +35,21 @@ class IDEntityUnknownTest extends AbstractIDEntityTestCase
     public function testIsValid()
     {
         $this->assertFalse($this->instance->isValid());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getClassName()
+    {
+        return IDEntityUnknown::class;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getValidValue()
+    {
+        return 'foo bar';
     }
 }
