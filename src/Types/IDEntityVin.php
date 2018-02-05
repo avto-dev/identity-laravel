@@ -27,7 +27,7 @@ class IDEntityVin extends AbstractTypedIDEntity
     {
         return [
             function ($value) {
-                return $this->validateWithValidatorRule($value, 'required|vin_code');
+                return $this->validateWithValidatorRule($value, 'required|string|vin_code');
             },
         ];
     }

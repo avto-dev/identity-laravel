@@ -44,6 +44,18 @@ abstract class AbstractTypedIDEntity extends IDEntity implements TypedIDEntityIn
     }
 
     /**
+     * {@inheritdoc}
+     *
+     * Метод-заглушка для родительского метода.
+     */
+    public static function is($value, $type = null)
+    {
+        $instance = new static($value);
+
+        return $instance->isValid();
+    }
+
+    /**
      * Массив callback-функций, с помощью которых производится валидация значения.
      *
      * Первым аргументом в Closure передаётся валидируемое значение (не типизированное).

@@ -2,10 +2,15 @@
 
 namespace AvtoDev\IDEntity;
 
-use LogicException;
-use AvtoDev\IDEntity\Types\IDEntityVin;
+use AvtoDev\IDEntity\Types\IDEntityBody;
+use AvtoDev\IDEntity\Types\IDEntityChassis;
+use AvtoDev\IDEntity\Types\IDEntityGrz;
+use AvtoDev\IDEntity\Types\IDEntityPts;
+use AvtoDev\IDEntity\Types\IDEntitySts;
 use AvtoDev\IDEntity\Types\IDEntityUnknown;
+use AvtoDev\IDEntity\Types\IDEntityVin;
 use AvtoDev\IDEntity\Types\TypedIDEntityInterface;
+use LogicException;
 
 /**
  * Class IDEntity.
@@ -66,7 +71,12 @@ class IDEntity implements IDEntityInterface
     protected static function getTypesMap()
     {
         return [
-            self::ID_TYPE_VIN => IDEntityVin::class,
+            self::ID_TYPE_VIN     => IDEntityVin::class,
+            self::ID_TYPE_BODY    => IDEntityBody::class,
+            self::ID_TYPE_CHASSIS => IDEntityChassis::class,
+            self::ID_TYPE_PTS     => IDEntityPts::class,
+            self::ID_TYPE_GRZ     => IDEntityGrz::class,
+            self::ID_TYPE_STS     => IDEntitySts::class,
         ];
     }
 

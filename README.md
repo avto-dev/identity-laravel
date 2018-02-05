@@ -50,7 +50,7 @@ $ composer test
 [badge_version]:https://img.shields.io/packagist/v/avto-dev/identity-laravel.svg?style=flat&maxAge=30
 [badge_license]:https://img.shields.io/packagist/l/avto-dev/identity-laravel.svg
 [badge_build_status]:https://scrutinizer-ci.com/g/avto-dev/identity-laravel/badges/build.png?b=master
-[badge_styleci]:https://styleci.io/repos/{%styleci_id%}/shield?style=flat&maxAge=30
+[badge_styleci]:https://styleci.io/repos/120107651/shield?style=flat&maxAge=30
 [badge_coverage]:https://scrutinizer-ci.com/g/avto-dev/identity-laravel/badges/coverage.png?b=master
 [badge_quality]:https://scrutinizer-ci.com/g/avto-dev/identity-laravel/badges/quality-score.png?b=master
 [link_packagist]:https://packagist.org/packages/avto-dev/identity-laravel
