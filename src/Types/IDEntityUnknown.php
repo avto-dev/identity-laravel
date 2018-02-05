@@ -28,15 +28,10 @@ class IDEntityUnknown extends AbstractTypedIDEntity
     /**
      * {@inheritdoc}
      */
-    public function isValid()
-    {
-        return false;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     protected function getValidateCallbacks()
     {
+        return function () {
+            return false;
+        };
     }
 }

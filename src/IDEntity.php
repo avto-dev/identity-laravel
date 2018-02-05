@@ -2,15 +2,15 @@
 
 namespace AvtoDev\IDEntity;
 
-use LogicException;
+use AvtoDev\IDEntity\Types\IDEntityBody;
+use AvtoDev\IDEntity\Types\IDEntityChassis;
 use AvtoDev\IDEntity\Types\IDEntityGrz;
 use AvtoDev\IDEntity\Types\IDEntityPts;
 use AvtoDev\IDEntity\Types\IDEntitySts;
-use AvtoDev\IDEntity\Types\IDEntityVin;
-use AvtoDev\IDEntity\Types\IDEntityBody;
-use AvtoDev\IDEntity\Types\IDEntityChassis;
 use AvtoDev\IDEntity\Types\IDEntityUnknown;
+use AvtoDev\IDEntity\Types\IDEntityVin;
 use AvtoDev\IDEntity\Types\TypedIDEntityInterface;
+use LogicException;
 
 /**
  * Class IDEntity.
@@ -20,27 +20,60 @@ use AvtoDev\IDEntity\Types\TypedIDEntityInterface;
 class IDEntity implements IDEntityInterface
 {
     /**
-     * Константы значений типов идентификаторов.
+     * Обозначает необходимость в автоматическом определении типа.
      *
-     * ВНИМАНИЕ! При добавлении нового типа не забудь его добавить в метод getSupportedTypes().
+     * @var string
      */
-    const
-        // Тип обозначает необходимость в автоматическом определении типа
-        ID_TYPE_AUTO = 'AUTODETECT';
-    const // Неизвестный тип идентификатора
-        ID_TYPE_UNKNOWN = 'UNKNOWN';
-    const // Тип - VIN-код
-        ID_TYPE_VIN = 'VIN';
-    const // Тип - регистрационный (ГРЗ) знак
-        ID_TYPE_GRZ = 'GRZ';
-    const // Тип - код СТС (Номер свидетельства о регистрации ТС)
-        ID_TYPE_STS = 'STS';
-    const // Тип - код ПТС (паспорт транспортного средства)
-        ID_TYPE_PTS = 'PTS';
-    const // Тип - номер шасси (встречается редко, но всё же встречается)
-        ID_TYPE_CHASSIS = 'CHASSIS';
-    const // Тип - номер кузова
-        ID_TYPE_BODY = 'BODY';
+    const ID_TYPE_AUTO = 'AUTODETECT';
+
+    /**
+     * Неизвестный тип идентификатора.
+     *
+     * @var string
+     */
+    const ID_TYPE_UNKNOWN = 'UNKNOWN';
+
+    /**
+     * Тип - VIN-код.
+     *
+     * @var string
+     */
+    const ID_TYPE_VIN = 'VIN';
+
+    /**
+     * Тип - регистрационный (ГРЗ) знак.
+     *
+     * @var string
+     */
+    const ID_TYPE_GRZ = 'GRZ';
+
+    /**
+     * Тип - код СТС (Номер свидетельства о регистрации ТС).
+     *
+     * @var string
+     */
+    const ID_TYPE_STS = 'STS';
+
+    /**
+     * Тип - код ПТС (паспорт транспортного средства).
+     *
+     * @var string
+     */
+    const ID_TYPE_PTS = 'PTS';
+
+    /**
+     * Тип - номер шасси (встречается редко, но всё же встречается).
+     *
+     * @var string
+     */
+    const ID_TYPE_CHASSIS = 'CHASSIS';
+
+    /**
+     * Тип - номер кузова.
+     *
+     * @var string
+     */
+    const ID_TYPE_BODY = 'BODY';
 
     /**
      * IDEntity constructor.
@@ -113,17 +146,19 @@ class IDEntity implements IDEntityInterface
     /**
      * Метод, возвращающий массив связок "%тип_идентификатора% => %класс_его_обслуживающий%".
      *
+     * Порядок элементов важен для механизма автоматического определения типа.
+     *
      * @return string[]
      */
     protected static function getTypesMap()
     {
         return [
             self::ID_TYPE_VIN     => IDEntityVin::class,
-            self::ID_TYPE_BODY    => IDEntityBody::class,
-            self::ID_TYPE_CHASSIS => IDEntityChassis::class,
-            self::ID_TYPE_PTS     => IDEntityPts::class,
             self::ID_TYPE_GRZ     => IDEntityGrz::class,
             self::ID_TYPE_STS     => IDEntitySts::class,
+            self::ID_TYPE_PTS     => IDEntityPts::class,
+            self::ID_TYPE_BODY    => IDEntityBody::class,
+            self::ID_TYPE_CHASSIS => IDEntityChassis::class,
         ];
     }
 

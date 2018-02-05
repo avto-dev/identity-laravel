@@ -27,14 +27,15 @@ class IDEntitiesServiceProvider extends IlluminateServiceProvider
      */
     public function boot()
     {
-        // Убеждаемся что сервис-провайдер пакета "avto-dev/extended-laravel-validator"
-        if (! $this->extendedLaravelValidatorIsRegistered()) {
-            throw new Exception(
-                sprintf(
-                    'Service-provider for required package "%s" was not loaded. Please, fix it',
-                    'avto-dev/extended-laravel-validator'
-                )
-            );
+        // Проверяем - установлен ли пакет расширенного валидатора для Laravel (данный пакет от него зависит)
+        if ($this->extendedLaravelValidatorIsInstalled()) {
+            // Если он установлен, но не был зарегистрирован
+            if (! $this->extendedLaravelValidatorIsRegistered()) {
+                // То производим его регистрацию
+                $this->registerExtendedLaravelValidator();
+            }
+        } else {
+            throw new Exception(sprintf('Required package "%s" is not installed', 'avto-dev/extended-laravel-validator'));
         }
     }
 
@@ -47,11 +48,31 @@ class IDEntitiesServiceProvider extends IlluminateServiceProvider
     protected function extendedLaravelValidatorIsRegistered()
     {
         try {
-            return $this->app->make(ExtendedValidatorServiceProvider::SERVICE_PROVIDER_REGISTERED_ABSTRACT) === true;
+            return $this->app->make('extended-laravel-validator.registered') === true;
         } catch (Exception $e) {
             // Do nothing
         }
 
         return false;
+    }
+
+    /**
+     * Производит регистрацию сервис-провайдера пакета 'avto-dev/extended-laravel-validator'.
+     *
+     * @return void
+     */
+    protected function registerExtendedLaravelValidator()
+    {
+        $this->app->register(ExtendedValidatorServiceProvider::class);
+    }
+
+    /**
+     * Возвращает true в том случае, если пакет 'avto-dev/extended-laravel-validator' установлен.
+     *
+     * @return bool
+     */
+    protected function extendedLaravelValidatorIsInstalled()
+    {
+        return class_exists(ExtendedValidatorServiceProvider::class);
     }
 }

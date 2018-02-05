@@ -125,7 +125,7 @@ abstract class AbstractTypedIDEntity extends IDEntity implements TypedIDEntityIn
      *
      * Первым аргументом в Closure передаётся валидируемое значение (не типизированное).
      *
-     * @return Closure[]|null
+     * @return Closure|Closure[]|null
      */
     abstract protected function getValidateCallbacks();
 
