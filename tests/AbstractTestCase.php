@@ -2,9 +2,9 @@
 
 namespace AvtoDev\IDEntity\Tests;
 
-use AvtoDev\IDEntity\IDEntitiesServiceProvider;
 use Illuminate\Foundation\Application;
 use Illuminate\Contracts\Console\Kernel;
+use AvtoDev\IDEntity\IDEntitiesServiceProvider;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use AvtoDev\ExtendedLaravelValidator\ExtendedValidatorServiceProvider;
 

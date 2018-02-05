@@ -24,18 +24,6 @@ class IDEntityGrz extends AbstractTypedIDEntity
     /**
      * {@inheritdoc}
      */
-    protected function getValidateCallbacks()
-    {
-        return [
-            function ($value) {
-                return $this->validateWithValidatorRule($value, 'required|string|grz_code');
-            },
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public static function normalize($value)
     {
         try {
@@ -53,7 +41,17 @@ class IDEntityGrz extends AbstractTypedIDEntity
         } catch (Exception $e) {
             // Do nothing
         }
+    }
 
-        return null;
+    /**
+     * {@inheritdoc}
+     */
+    protected function getValidateCallbacks()
+    {
+        return [
+            function ($value) {
+                return $this->validateWithValidatorRule($value, 'required|string|grz_code');
+            },
+        ];
     }
 }

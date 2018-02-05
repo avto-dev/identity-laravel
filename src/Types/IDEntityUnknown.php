@@ -20,14 +20,6 @@ class IDEntityUnknown extends AbstractTypedIDEntity
     /**
      * {@inheritdoc}
      */
-    protected function getValidateCallbacks()
-    {
-        return null;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public static function normalize($value)
     {
         return $value;
@@ -39,5 +31,12 @@ class IDEntityUnknown extends AbstractTypedIDEntity
     public function isValid()
     {
         return false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getValidateCallbacks()
+    {
     }
 }

@@ -28,7 +28,5 @@ class Normalizer
                 '―' /* Юникод U+2015 */,
             ], '-', $input);
         }
-
-        return null;
     }
 }

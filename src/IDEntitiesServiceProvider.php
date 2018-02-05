@@ -21,9 +21,9 @@ class IDEntitiesServiceProvider extends IlluminateServiceProvider
     /**
      * Bootstrap any application services.
      *
-     * @return void
-     *
      * @throws Exception
+     *
+     * @return void
      */
     public function boot()
     {

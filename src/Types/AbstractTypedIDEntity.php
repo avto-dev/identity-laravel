@@ -34,6 +34,16 @@ abstract class AbstractTypedIDEntity extends IDEntity implements TypedIDEntityIn
     }
 
     /**
+     * Возвращает строковое представление объекта при попытке преобразовать в строку последнего.
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return (string) $this->getValue();
+    }
+
+    /**
      * {@inheritdoc}
      *
      * Метод-заглушка для родительского метода-факторки.
@@ -54,15 +64,6 @@ abstract class AbstractTypedIDEntity extends IDEntity implements TypedIDEntityIn
 
         return $instance->isValid();
     }
-
-    /**
-     * Массив callback-функций, с помощью которых производится валидация значения.
-     *
-     * Первым аргументом в Closure передаётся валидируемое значение (не типизированное).
-     *
-     * @return Closure[]|null
-     */
-    abstract protected function getValidateCallbacks();
 
     /**
      * Возвращает значение идентификатора.
@@ -101,16 +102,6 @@ abstract class AbstractTypedIDEntity extends IDEntity implements TypedIDEntityIn
     }
 
     /**
-     * Возвращает строковое представление объекта при попытке преобразовать в строку последнего.
-     *
-     * @return string
-     */
-    public function __toString()
-    {
-        return (string) $this->getValue();
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function isValid()
@@ -120,7 +111,7 @@ abstract class AbstractTypedIDEntity extends IDEntity implements TypedIDEntityIn
 
         foreach (($callbacks = (array) $this->getValidateCallbacks()) as $callback) {
             if ($callback($value) === true) {
-                ++$passed_count;
+                $passed_count++;
             } else {
                 return false;
             }
@@ -128,6 +119,15 @@ abstract class AbstractTypedIDEntity extends IDEntity implements TypedIDEntityIn
 
         return count($callbacks) === $passed_count;
     }
+
+    /**
+     * Массив callback-функций, с помощью которых производится валидация значения.
+     *
+     * Первым аргументом в Closure передаётся валидируемое значение (не типизированное).
+     *
+     * @return Closure[]|null
+     */
+    abstract protected function getValidateCallbacks();
 
     /**
      * Возвращает инстанс валидатора.

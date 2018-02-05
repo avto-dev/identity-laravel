@@ -24,18 +24,6 @@ class IDEntityBody extends AbstractTypedIDEntity
     /**
      * {@inheritdoc}
      */
-    protected function getValidateCallbacks()
-    {
-        return [
-            function ($value) {
-                return $this->validateWithValidatorRule($value, 'required|string|body_code');
-            },
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public static function normalize($value)
     {
         try {
@@ -61,7 +49,17 @@ class IDEntityBody extends AbstractTypedIDEntity
         } catch (Exception $e) {
             // Do nothing
         }
+    }
 
-        return null;
+    /**
+     * {@inheritdoc}
+     */
+    protected function getValidateCallbacks()
+    {
+        return [
+            function ($value) {
+                return $this->validateWithValidatorRule($value, 'required|string|body_code');
+            },
+        ];
     }
 }

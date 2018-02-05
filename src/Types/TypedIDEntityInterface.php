@@ -2,8 +2,8 @@
 
 namespace AvtoDev\IDEntity\Types;
 
-use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
+use Illuminate\Contracts\Support\Arrayable;
 
 /**
  * Interface TypedIDEntityInterface.
@@ -12,6 +12,13 @@ use Illuminate\Contracts\Support\Jsonable;
  */
 interface TypedIDEntityInterface extends Arrayable, Jsonable
 {
+    /**
+     * Возвращает строковое представление объекта при попытке преобразовать в строку последнего.
+     *
+     * @return string
+     */
+    public function __toString();
+
     /**
      * Возвращает значение идентификатора.
      *
@@ -25,13 +32,6 @@ interface TypedIDEntityInterface extends Arrayable, Jsonable
      * @return null|string
      */
     public function getType();
-
-    /**
-     * Возвращает строковое представление объекта при попытке преобразовать в строку последнего.
-     *
-     * @return string
-     */
-    public function __toString();
 
     /**
      * Производит проверку установленного значения с помощью callback-функций из стека callback-функций.

@@ -24,18 +24,6 @@ class IDEntitySts extends AbstractTypedIDEntity
     /**
      * {@inheritdoc}
      */
-    protected function getValidateCallbacks()
-    {
-        return [
-            function ($value) {
-                return $this->validateWithValidatorRule($value, 'required|string|sts_code');
-            },
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public static function normalize($value)
     {
         try {
@@ -52,7 +40,17 @@ class IDEntitySts extends AbstractTypedIDEntity
         } catch (Exception $e) {
             // Do nothing
         }
+    }
 
-        return null;
+    /**
+     * {@inheritdoc}
+     */
+    protected function getValidateCallbacks()
+    {
+        return [
+            function ($value) {
+                return $this->validateWithValidatorRule($value, 'required|string|sts_code');
+            },
+        ];
     }
 }
