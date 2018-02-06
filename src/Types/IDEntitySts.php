@@ -48,8 +48,8 @@ class IDEntitySts extends AbstractTypedIDEntity
     protected function getValidateCallbacks()
     {
         return [
-            function ($value) {
-                return $this->validateWithValidatorRule($value, 'required|string|sts_code');
+            function () {
+                return $this->validateWithValidatorRule($this->getValue(), 'required|string|sts_code');
             },
         ];
     }

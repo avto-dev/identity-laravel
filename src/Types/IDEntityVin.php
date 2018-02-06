@@ -48,8 +48,8 @@ class IDEntityVin extends AbstractTypedIDEntity
     protected function getValidateCallbacks()
     {
         return [
-            function ($value) {
-                return $this->validateWithValidatorRule($value, 'required|string|vin_code');
+            function () {
+                return $this->validateWithValidatorRule($this->getValue(), 'required|string|vin_code');
             },
         ];
     }

@@ -17,8 +17,9 @@
         "php": "^5.6 || >=7.0 <7.3",
         "ext-json": "*",
         "ext-mbstring": "*",
-        "laravel/laravel": "~5.4",
-        "avto-dev/extended-laravel-validator": "1.* >=1.0.2"
+        "avto-dev/extended-laravel-validator": "1.* >=1.0.2",
+        "avto-dev/static-references-laravel": "1.*",
+        "laravel/laravel": "5.4.* || 5.5.*"
     },
     "require-dev": {
         "phpunit/phpunit": "~5.7 || ^6.4",

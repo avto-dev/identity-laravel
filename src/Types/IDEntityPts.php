@@ -38,7 +38,7 @@ class IDEntityPts extends AbstractTypedIDEntity
 
             return $value;
         } catch (Exception $e) {
-            return;
+            // Do nothing
         }
     }
 
@@ -48,8 +48,8 @@ class IDEntityPts extends AbstractTypedIDEntity
     protected function getValidateCallbacks()
     {
         return [
-            function ($value) {
-                return $this->validateWithValidatorRule($value, 'required|string|pts_code');
+            function () {
+                return $this->validateWithValidatorRule($this->getValue(), 'required|string|pts_code');
             },
         ];
     }

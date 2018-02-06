@@ -2,9 +2,9 @@
 
 namespace AvtoDev\IDEntity\Tests\Types;
 
-use Illuminate\Support\Str;
 use AvtoDev\IDEntity\IDEntity;
 use AvtoDev\IDEntity\Types\IDEntityGrz;
+use Illuminate\Support\Str;
 
 /**
  * Class IDEntityGrzTest.
@@ -139,11 +139,92 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
         ];
 
         foreach ($valid as $value) {
-            $this->assertTrue($this->instance->setValue($value)->isValid());
+            $this->assertTrue($this->instance->setValue($value)->isValid(), sprintf('GRZ: "%s"', $value));
         }
 
         $this->assertFalse($this->instance->setValue('TSMEYB21S00610448')->isValid());
         $this->assertFalse($this->instance->setValue('LN130-0128818')->isValid());
+    }
+
+    /**
+     * Тест метода получения кода региона ГРЗ номера.
+     *
+     * @return void
+     */
+    public function testGetRegionCode()
+    {
+        $expects = [
+            'С552ВХ102' => '102',
+            'Н327СМ777' => '777',
+            'АА0001177' => '177',
+            'АА000177'  => '77',
+            'У606КЕ33'  => '33',
+            'У828ХК47'  => '47',
+            'О590ТТ98'  => '98',
+            'О168РЕ197' => '197',
+            'Т900ММ77'  => '77',
+            'Р012МА34'  => '34',
+            'У188РУ174' => '174',
+            'В164ОЕ190' => '190',
+            'О832ВТ31'  => '31',
+            'А098АА99'  => '99',
+
+            'А098АА'    => null,
+            '123А098АА' => null,
+            'foo bar'   => null,
+        ];
+
+        /** @var IDEntityGrz $instance */
+        $instance = $this->instance;
+
+        foreach ($expects as $what => $with) {
+            $this->assertEquals(
+                $with,
+                $instance->setValue($what)->getRegionCode(), sprintf('"%s" !== "%s"', $what, $with)
+            );
+        }
+    }
+
+    /**
+     * Тест метода, возвращающего данные о регионе ГРЗ номера.
+     *
+     * @return void
+     */
+    public function testGetRegionData()
+    {
+        $expects = [
+            'С552ВХ102' => 'RU-BA',
+            'Н327СМ777' => 'RU-MOW',
+            'АА0001177' => 'RU-MOW',
+            'У606КЕ33'  => 'RU-VLA',
+            'У828ХК47'  => 'RU-LEN',
+            'О590ТТ98'  => 'RU-SPE',
+            'О168РЕ197' => 'RU-MOW',
+            'Т900ММ77'  => 'RU-MOW',
+            'Т462КО750' => 'RU-MOS',
+            'Р012МА34'  => 'RU-VGG',
+            'У188РУ174' => 'RU-CHE',
+            'В164ОЕ190' => 'RU-MOS',
+            'О832ВТ31'  => 'RU-BEL',
+            'А098АА99'  => 'RU-MOW',
+        ];
+
+        /** @var IDEntityGrz $instance */
+        $instance = $this->instance;
+
+        foreach ($expects as $what => $with) {
+            $this->assertEquals($with, $instance->setValue($what)->getRegionData()->getIso31662());
+        }
+
+        $fails = [
+            'А098АА',
+            '123А098АА',
+            'foo bar',
+        ];
+
+        foreach ($fails as $fail) {
+            $this->assertNull($instance->setValue($fail)->getRegionData());
+        }
     }
 
     /**

@@ -58,8 +58,8 @@ class IDEntityBody extends AbstractTypedIDEntity
     protected function getValidateCallbacks()
     {
         return [
-            function ($value) {
-                return $this->validateWithValidatorRule($value, 'required|string|body_code');
+            function () {
+                return $this->validateWithValidatorRule($this->getValue(), 'required|string|body_code');
             },
         ];
     }

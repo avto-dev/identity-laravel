@@ -2,6 +2,8 @@
 
 namespace AvtoDev\IDEntity;
 
+use AvtoDev\StaticReferencesLaravel\StaticReferences;
+use AvtoDev\StaticReferencesLaravel\StaticReferencesServiceProvider;
 use Exception;
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
 use AvtoDev\ExtendedLaravelValidator\ExtendedValidatorServiceProvider;
@@ -29,13 +31,24 @@ class IDEntitiesServiceProvider extends IlluminateServiceProvider
     {
         // Проверяем - установлен ли пакет расширенного валидатора для Laravel (данный пакет от него зависит)
         if ($this->extendedLaravelValidatorIsInstalled()) {
-            // Если он установлен, но не был зарегистрирован
             if (! $this->extendedLaravelValidatorIsRegistered()) {
-                // То производим его регистрацию
                 $this->registerExtendedLaravelValidator();
             }
         } else {
-            throw new Exception(sprintf('Required package "%s" is not installed', 'avto-dev/extended-laravel-validator'));
+            throw new Exception(
+                sprintf('Required package "%s" is not installed', 'avto-dev/extended-laravel-validator')
+            );
+        }
+
+        // А так же проверяем пакет статических справочников
+        if ($this->staticReferencesIsInstalled()) {
+            if (! $this->staticReferencesIsRegistered()) {
+                $this->registerStaticReferences();
+            }
+        } else {
+            throw new Exception(
+                sprintf('Required package "%s" is not installed', 'avto-dev/static-references-laravel')
+            );
         }
     }
 
@@ -47,13 +60,7 @@ class IDEntitiesServiceProvider extends IlluminateServiceProvider
      */
     protected function extendedLaravelValidatorIsRegistered()
     {
-        try {
-            return $this->app->make('extended-laravel-validator.registered') === true;
-        } catch (Exception $e) {
-            // Do nothing
-        }
-
-        return false;
+        return $this->app->bound('extended-laravel-validator.registered');
     }
 
     /**
@@ -74,5 +81,36 @@ class IDEntitiesServiceProvider extends IlluminateServiceProvider
     protected function extendedLaravelValidatorIsInstalled()
     {
         return class_exists(ExtendedValidatorServiceProvider::class);
+    }
+
+    /**
+     * Возвращает true в том случае, если сервис-провайдер пакета 'avto-dev/static-references-laravel' был успешно
+     * загружен (а с ним и данные статических справочников).
+     *
+     * @return bool
+     */
+    protected function staticReferencesIsRegistered()
+    {
+        return $this->app->bound(StaticReferences::class) === true;
+    }
+
+    /**
+     * Производит регистрацию сервис-провайдера пакета 'avto-dev/static-references-laravel'.
+     *
+     * @return void
+     */
+    protected function registerStaticReferences()
+    {
+        $this->app->register(StaticReferencesServiceProvider::class);
+    }
+
+    /**
+     * Возвращает true в том случае, если пакет 'avto-dev/static-references-laravel' установлен.
+     *
+     * @return bool
+     */
+    protected function staticReferencesIsInstalled()
+    {
+        return class_exists(StaticReferencesServiceProvider::class);
     }
 }

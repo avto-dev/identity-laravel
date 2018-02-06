@@ -2,10 +2,11 @@
 
 namespace AvtoDev\IDEntity\Tests;
 
+use AvtoDev\ExtendedLaravelValidator\ExtendedValidatorServiceProvider;
+use AvtoDev\IDEntity\IDEntitiesServiceProvider;
+use AvtoDev\StaticReferencesLaravel\StaticReferencesServiceProvider;
 use Exception;
 use Mockery as m;
-use AvtoDev\IDEntity\IDEntitiesServiceProvider;
-use AvtoDev\ExtendedLaravelValidator\ExtendedValidatorServiceProvider;
 
 /**
  * Class IDEntitiesServiceProviderTest.
@@ -26,7 +27,11 @@ class IDEntitiesServiceProviderTest extends AbstractTestCase
     {
         $loaded_providers = $this->app->getLoadedProviders();
 
-        foreach ([IDEntitiesServiceProvider::class, ExtendedValidatorServiceProvider::class] as $class_name) {
+        foreach ([
+                     IDEntitiesServiceProvider::class,
+                     ExtendedValidatorServiceProvider::class,
+                     StaticReferencesServiceProvider::class,
+                 ] as $class_name) {
             $this->assertContains($class_name, $loaded_providers);
         }
     }
@@ -41,10 +46,31 @@ class IDEntitiesServiceProviderTest extends AbstractTestCase
         $this->expectException(Exception::class);
         $this->expectExceptionMessageRegExp('~avto\-dev\/extended\-laravel\-validator~');
 
-        $service_provider_mock = m::mock(IDEntitiesServiceProvider::class)
+        $service_provider_mock = m::mock(IDEntitiesServiceProvider::class, [$this->app])
             ->makePartial()
             ->shouldAllowMockingProtectedMethods()
             ->shouldReceive('extendedLaravelValidatorIsInstalled')
+            ->once()
+            ->andReturn(false)
+            ->getMock();
+
+        $this->app = $this->createApplication([$service_provider_mock]);
+    }
+
+    /**
+     * Тест исключения при попытке регистрации без установленного пакета 'avto-dev/static-references-laravel'.
+     *
+     * @return void
+     */
+    public function testWithNotInstalledStaticReferences()
+    {
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessageRegExp('~avto\-dev\/static\-references\-laravel~');
+
+        $service_provider_mock = m::mock(IDEntitiesServiceProvider::class, [$this->app])
+            ->makePartial()
+            ->shouldAllowMockingProtectedMethods()
+            ->shouldReceive('staticReferencesIsInstalled')
             ->once()
             ->andReturn(false)
             ->getMock();
