@@ -20,6 +20,16 @@ interface TypedIDEntityInterface extends Arrayable, Jsonable
     public function __toString();
 
     /**
+     * Устанавливает значение идентификатора.
+     *
+     * @param string $value
+     * @param bool   $make_normalization
+     *
+     * @return self|static
+     */
+    public function setValue($value, $make_normalization = true);
+
+    /**
      * Возвращает значение идентификатора.
      *
      * @return null|string

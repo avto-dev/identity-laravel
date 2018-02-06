@@ -28,15 +28,11 @@ abstract class AbstractTypedIDEntity extends IDEntity implements TypedIDEntityIn
      */
     public function __construct($value, $make_normalization = true)
     {
-        $this->value = $make_normalization === true
-            ? static::normalize($value)
-            : $value;
+        $this->setValue($value, $make_normalization);
     }
 
     /**
-     * Возвращает строковое представление объекта при попытке преобразовать в строку последнего.
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function __toString()
     {
@@ -66,9 +62,19 @@ abstract class AbstractTypedIDEntity extends IDEntity implements TypedIDEntityIn
     }
 
     /**
-     * Возвращает значение идентификатора.
-     *
-     * @return null|string
+     * {@inheritdoc}
+     */
+    public function setValue($value, $make_normalization = true)
+    {
+        $this->value = $make_normalization === true
+            ? static::normalize($value)
+            : $value;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function getValue()
     {
@@ -76,9 +82,7 @@ abstract class AbstractTypedIDEntity extends IDEntity implements TypedIDEntityIn
     }
 
     /**
-     * Возвращает тип идентификатора.
-     *
-     * @return null|string
+     * {@inheritdoc}
      */
     abstract public function getType();
 

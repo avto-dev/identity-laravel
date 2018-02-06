@@ -44,7 +44,14 @@ abstract class AbstractIDEntityTestCase extends AbstractTestCase
      *
      * @return void
      */
-    abstract public function testConstructor();
+    public function testConstructor()
+    {
+        $class_name = $this->getClassName();
+
+        /** @var AbstractTypedIDEntity $instance */
+        $instance = new $class_name($value = $this->getValidValue());
+        $this->assertEquals($instance->getValue(), $value);
+    }
 
     /**
      * Тест наследования и реализуемых интерфейсов.
@@ -97,14 +104,14 @@ abstract class AbstractIDEntityTestCase extends AbstractTestCase
      *
      * @return void
      */
-    public function testGetValue()
+    public function testGetAndSetValue()
     {
-        $class_name = $this->getClassName();
+        $this->assertInstanceOf(
+            $this->getClassName(),
+            $this->instance->setValue($value = 'foo bar', false)
+        );
 
-        /** @var AbstractTypedIDEntity $instance */
-        $instance = new $class_name($value = 'foo bar', false);
-
-        $this->assertEquals($instance->getValue(), $value);
+        $this->assertEquals($this->instance->getValue(), $value);
     }
 
     /**
@@ -149,4 +156,11 @@ abstract class AbstractIDEntityTestCase extends AbstractTestCase
      * @return string
      */
     abstract protected function getValidValue();
+
+    /**
+     * Тест метода нормализации значения.
+     *
+     * @return void
+     */
+    abstract public function testNormalize();
 }
