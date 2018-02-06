@@ -34,7 +34,7 @@ class IDEntitySts extends AbstractTypedIDEntity
             $value = preg_replace('~[^' . 'АБВГДЕЖЗИКЛМНОПРСТУФХЦЧШЩЫЭЮЯ' . 'A-Z' . '0-9]~u', '', $value);
 
             // Производим замену латинских аналогов на кириллические (обратная транслитерация)
-            $value = Transliterator::detransliterateString(Str::upper($value), true);
+            $value = Transliterator::detransliterateString($value, true);
 
             return $value;
         } catch (Exception $e) {
