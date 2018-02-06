@@ -67,6 +67,16 @@ $ composer require avto-dev/identity-laravel "1.*"
 
 ### Примеры использования
 
+Для того, что бы получить все поддерживаемые типы идентификаторов, или проверить какой-либо на предмет поддержки данным пакетом вы можете воспользоваться следующими методами:
+
+```php
+use AvtoDev\IDEntity\IDEntity;
+
+IDEntity::getSupportedTypes(); // ['VIN', 'GRZ', 'STS', ...]
+IDEntity::typeIsSupported('VIN'); // true
+IDEntity::typeIsSupported('FOO BAR'); // false
+```
+
 Для того, что бы создать объект идентификационной сущности вы можете воспользоваться фабричным методом `::make` у объекта `IDEntity`, или создать объект необходимого класса напрямую. Рассмотрим подробнее на примере VIN-кода:
 
 ```php
@@ -141,6 +151,18 @@ $valid_grz->isValid(); // true
 
 $invalid_grz = IDEntity::make('JF1SJ5LC5DG048667', IDEntity::ID_TYPE_GRZ);
 $invalid_grz->isValid(); // false
+```
+
+Так же для валидации значений вы можете использовать следующий метод:
+
+```php
+use AvtoDev\IDEntity\IDEntity;
+
+IDEntity::is('JF1SJ5LC5DG048667', IDEntity::ID_TYPE_VIN); // true
+IDEntity::is('A123AA177', IDEntity::ID_TYPE_VIN); // false
+
+IDEntity::is('JF1SJ5LC5DG048667', IDEntity::ID_TYPE_GRZ); // false
+IDEntity::is('A123AA177', IDEntity::ID_TYPE_GRZ); // true
 ```
 
 ### Расширенные методы
