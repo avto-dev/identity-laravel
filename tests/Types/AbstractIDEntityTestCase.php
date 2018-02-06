@@ -161,7 +161,8 @@ abstract class AbstractIDEntityTestCase extends AbstractTestCase
         $invalid_values = [
             new stdClass,
             [],
-            function () {},
+            function () {
+            },
         ];
 
         $instance = $this->instance;
@@ -170,7 +171,7 @@ abstract class AbstractIDEntityTestCase extends AbstractTestCase
             $this->assertNull($instance::normalize($value));
         }
     }
-    
+
     /**
      * Возвращает имя тестируемого класса типизированной сущности.
      *

@@ -38,7 +38,7 @@ class IDEntityPts extends AbstractTypedIDEntity
 
             return $value;
         } catch (Exception $e) {
-            return null;
+            return;
         }
     }
 

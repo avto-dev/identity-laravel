@@ -2,9 +2,9 @@
 
 namespace AvtoDev\IDEntity\Tests\Types;
 
-use AvtoDev\IDEntity\Types\IDEntityChassis;
 use Illuminate\Support\Str;
 use AvtoDev\IDEntity\IDEntity;
+use AvtoDev\IDEntity\Types\IDEntityChassis;
 
 /**
  * Class IDEntityChassisTest.

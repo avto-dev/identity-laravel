@@ -3,8 +3,8 @@
 namespace AvtoDev\IDEntity\Types;
 
 use Exception;
-use AvtoDev\IDEntity\Helpers\Transliterator;
 use Illuminate\Support\Str;
+use AvtoDev\IDEntity\Helpers\Transliterator;
 
 /**
  * Class IDEntityVin.

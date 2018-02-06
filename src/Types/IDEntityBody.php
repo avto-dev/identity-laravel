@@ -3,9 +3,9 @@
 namespace AvtoDev\IDEntity\Types;
 
 use Exception;
+use Illuminate\Support\Str;
 use AvtoDev\IDEntity\Helpers\Normalizer;
 use AvtoDev\IDEntity\Helpers\Transliterator;
-use Illuminate\Support\Str;
 
 /**
  * Class IDEntityBody.
