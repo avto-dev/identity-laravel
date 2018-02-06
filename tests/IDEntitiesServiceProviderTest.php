@@ -2,11 +2,11 @@
 
 namespace AvtoDev\IDEntity\Tests;
 
-use AvtoDev\ExtendedLaravelValidator\ExtendedValidatorServiceProvider;
-use AvtoDev\IDEntity\IDEntitiesServiceProvider;
-use AvtoDev\StaticReferencesLaravel\StaticReferencesServiceProvider;
 use Exception;
 use Mockery as m;
+use AvtoDev\IDEntity\IDEntitiesServiceProvider;
+use AvtoDev\StaticReferencesLaravel\StaticReferencesServiceProvider;
+use AvtoDev\ExtendedLaravelValidator\ExtendedValidatorServiceProvider;
 
 /**
  * Class IDEntitiesServiceProviderTest.

@@ -2,10 +2,10 @@
 
 namespace AvtoDev\IDEntity\Types;
 
-use AvtoDev\StaticReferencesLaravel\StaticReferences;
 use Exception;
 use Illuminate\Support\Str;
 use AvtoDev\IDEntity\Helpers\Transliterator;
+use AvtoDev\StaticReferencesLaravel\StaticReferences;
 use AvtoDev\StaticReferencesLaravel\References\AutoRegions\AutoRegionEntry;
 
 /**
@@ -56,24 +56,22 @@ class IDEntityGrz extends AbstractTypedIDEntity
         preg_match('~[^\d](?<region_digits>\d+)$~', $this->getValue(), $bitchez);
 
         if (isset($bitchez['region_digits']) && is_numeric($region_digits = (string) $bitchez['region_digits'])) {
-            $region_digits_length = strlen($region_digits);
+            $region_digits_length = mb_strlen($region_digits);
 
             // Если код региона - 2 или 3 цифры - то сразу его возвращаем
             if ($region_digits_length >= 2 && $region_digits_length <= 3) {
                 return (int) $region_digits;
             } else {
                 // В противном случае - отбрасываем первые 4 символа
-                $region_digits = substr($region_digits, 4);
+                $region_digits = mb_substr($region_digits, 4);
 
-                $region_digits_length = strlen($region_digits);
+                $region_digits_length = mb_strlen($region_digits);
                 // И производим простейшую валидацию
                 if ($region_digits_length >= 2 && $region_digits_length <= 3) {
                     return (int) $region_digits;
                 }
             }
         }
-
-        return null;
     }
 
     /**
@@ -101,7 +99,7 @@ class IDEntityGrz extends AbstractTypedIDEntity
             function () {
                 // Регион существует
                 return $this->getRegionData() instanceof AutoRegionEntry;
-            }
+            },
         ];
     }
 }

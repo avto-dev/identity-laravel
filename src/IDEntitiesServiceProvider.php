@@ -2,9 +2,9 @@
 
 namespace AvtoDev\IDEntity;
 
+use Exception;
 use AvtoDev\StaticReferencesLaravel\StaticReferences;
 use AvtoDev\StaticReferencesLaravel\StaticReferencesServiceProvider;
-use Exception;
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
 use AvtoDev\ExtendedLaravelValidator\ExtendedValidatorServiceProvider;
 

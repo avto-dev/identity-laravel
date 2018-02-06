@@ -2,9 +2,9 @@
 
 namespace AvtoDev\IDEntity\Tests\Types;
 
+use Illuminate\Support\Str;
 use AvtoDev\IDEntity\IDEntity;
 use AvtoDev\IDEntity\Types\IDEntityGrz;
-use Illuminate\Support\Str;
 
 /**
  * Class IDEntityGrzTest.
