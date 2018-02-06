@@ -2,9 +2,9 @@
 
 namespace AvtoDev\IDEntity\Tests\Types;
 
+use Illuminate\Support\Str;
 use AvtoDev\IDEntity\IDEntity;
 use AvtoDev\IDEntity\Types\IDEntityVin;
-use Illuminate\Support\Str;
 
 /**
  * Class IDEntityVinTest.
@@ -140,22 +140,6 @@ class IDEntityVinTest extends AbstractIDEntityTestCase
     /**
      * {@inheritdoc}
      */
-    protected function getClassName()
-    {
-        return IDEntityVin::class;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getValidValue()
-    {
-        return 'JF1SJ5LC5DG048667';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function testNormalize()
     {
         $instance = $this->instance;
@@ -175,5 +159,21 @@ class IDEntityVinTest extends AbstractIDEntityTestCase
 
         // Некорректные символы - удаляет
         $this->assertEquals($valid, $instance::normalize('JF1SJ5L {}#$%^& C5DG048667 Ъ'));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getClassName()
+    {
+        return IDEntityVin::class;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getValidValue()
+    {
+        return 'JF1SJ5LC5DG048667';
     }
 }

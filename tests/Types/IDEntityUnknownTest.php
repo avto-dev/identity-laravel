@@ -29,6 +29,16 @@ class IDEntityUnknownTest extends AbstractIDEntityTestCase
     /**
      * {@inheritdoc}
      */
+    public function testNormalize()
+    {
+        $instance = $this->instance;
+
+        $this->assertEquals($value = ' foo bar ', $instance::normalize($value));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function getClassName()
     {
         return IDEntityUnknown::class;
@@ -40,15 +50,5 @@ class IDEntityUnknownTest extends AbstractIDEntityTestCase
     protected function getValidValue()
     {
         return 'foo bar';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function testNormalize()
-    {
-        $instance = $this->instance;
-
-        $this->assertEquals($value = ' foo bar ', $instance::normalize($value));
     }
 }

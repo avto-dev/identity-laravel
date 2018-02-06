@@ -144,6 +144,13 @@ abstract class AbstractIDEntityTestCase extends AbstractTestCase
     abstract public function testIsValid();
 
     /**
+     * Тест метода нормализации значения.
+     *
+     * @return void
+     */
+    abstract public function testNormalize();
+
+    /**
      * Возвращает имя тестируемого класса типизированной сущности.
      *
      * @return string
@@ -156,11 +163,4 @@ abstract class AbstractIDEntityTestCase extends AbstractTestCase
      * @return string
      */
     abstract protected function getValidValue();
-
-    /**
-     * Тест метода нормализации значения.
-     *
-     * @return void
-     */
-    abstract public function testNormalize();
 }
