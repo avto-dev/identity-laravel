@@ -21,7 +21,7 @@ class Normalizer
     public static function normalizeDashChar($input)
     {
         if (is_string($input) && ! empty($input)) {
-            return str_ireplace([
+            return str_replace([
                 '–' /* Юникод U+2013 */,
                 '—' /* Юникод U+2014 */,
                 '‒' /* Юникод U+2012 */,
