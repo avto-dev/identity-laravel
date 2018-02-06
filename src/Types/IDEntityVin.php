@@ -4,6 +4,7 @@ namespace AvtoDev\IDEntity\Types;
 
 use Exception;
 use AvtoDev\IDEntity\Helpers\Transliterator;
+use Illuminate\Support\Str;
 
 /**
  * Class IDEntityVin.
@@ -27,7 +28,7 @@ class IDEntityVin extends AbstractTypedIDEntity
     {
         try {
             // Производим замену кириллических символов на латинские аналоги.
-            $value = Transliterator::uppercaseAndSafeTransliterate($value);
+            $value = Transliterator::transliterateString(Str::upper($value), true);
 
             // Латинская "O" заменяется на ноль
             $value = str_replace('O', '0', $value);

@@ -35,7 +35,7 @@ class IDEntityGrz extends AbstractTypedIDEntity
 
             // Производим замену латинских аналогов на кириллические (обратная транслитерация). Не прогоняю по всем
             // возможными символам, так как регулярка что выше всё кроме них как раз и удаляет
-            $value = Transliterator::uppercaseAndSafeDeTransliterate($value);
+            $value = Transliterator::detransliterateString(Str::upper($value), true);
 
             return $value;
         } catch (Exception $e) {

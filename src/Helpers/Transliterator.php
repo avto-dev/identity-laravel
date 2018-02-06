@@ -12,67 +12,85 @@ use Illuminate\Support\Str;
 class Transliterator
 {
     /**
-     * Кириллические символы, для которых описан массив "мягких" замен $this->latin_chars.
+     * Набор кириллических символов.
      *
      * @var string[]
      */
     protected static $cyr_chars = [
-        'А', 'В', 'Б', 'Г', 'Д', 'Е', 'Ж', 'З', 'И', 'К', 'Л', 'М', 'Н', 'О', 'Р', 'С', 'Т', 'У', 'Ф',
-        'Х', 'Ц', 'Ч', 'Ш', 'Щ', 'И', 'Е', 'Ю', 'Я',
+        'А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ё', 'Ж', 'З', 'И', 'Й', 'К', 'Л', 'М', 'Н', 'О', 'П', 'Р',
+        'С', 'Т', 'У', 'Ф', 'Х', 'Ц', 'Ч', 'Ш', 'Щ', 'Ъ', 'Ы', 'Ь', 'Э', 'Ю', 'Я', 'Х',
 
-        'а', 'в', 'б', 'г', 'д', 'е', 'ж', 'з', 'и', 'к', 'л', 'м', 'н', 'о', 'р', 'с', 'т', 'у', 'ф',
-        'х', 'ц', 'ч', 'ш', 'щ', 'и', 'е', 'ю', 'я',
+        'а', 'б', 'в', 'г', 'д', 'е', 'ё', 'ж', 'з', 'и', 'й', 'к', 'л', 'м', 'н', 'о', 'п', 'р',
+        'с', 'т', 'у', 'ф', 'х', 'ц', 'ч', 'ш', 'щ', 'ъ', 'ы', 'ь', 'э', 'ю', 'я', 'х',
     ];
 
     /**
-     * Латинские аналоги кириллических символов, что описаны в массиве $this->cyr_chars.
+     * Набор латинских символов для обратной транслитерации.
      *
      * @var string[]
      */
-    protected static $latin_chars = [
-        'A', 'B', 'B', 'G', 'D', 'E', 'J', 'Z', 'I', 'K', 'L', 'M', 'H', 'O', 'P', 'C', 'T', 'Y', 'F',
-        'X', 'C', 'H', 'W', 'W', 'I', 'E', 'U', 'Y',
+    protected static $latin_analogs = [
+        'A', 'B', 'V', 'G', 'D', 'E', 'E', 'Zh', 'Z', 'I', 'I', 'K', 'L', 'M', 'N', 'O', 'P', 'R',
+        'S', 'T', 'U', 'F', 'X', 'Ts', 'Ch', 'Sh', 'Shch', '', 'Y', '', 'E', 'Yu', 'Ya', 'H',
 
-        'a', 'b', 'b', 'g', 'd', 'e', 'j', 'z', 'i', 'k', 'l', 'm', 'h', 'o', 'p', 'c', 't', 'y', 'f',
-        'x', 'c', 'h', 'w', 'w', 'i', 'e', 'u', 'y',
+        'a', 'b', 'v', 'g', 'd', 'e', 'e', 'zh', 'z', 'i', 'i', 'k', 'l', 'm', 'n', 'o', 'p', 'r',
+        's', 't', 'u', 'f', 'x', 'ts', 'ch', 'sh', 'shch', '', 'y', '', 'e', 'yu', 'ya', 'h',
     ];
 
     /**
-     * Переводит строку в верхний регистр и производит "безопасную" транслитерацию (без опаски что одна буква будет
-     * транслитерирована как две).
+     * Набор латинских символов для "безопасной" обратной транслитерации (без опаски что один символ будет
+     * транслитерирован как два).
+     *
+     * @var string[]
+     */
+    protected static $latin_safe_analogs = [
+        'A', 'B', 'B', 'G', 'D', 'E', 'E', 'J', 'Z', 'I', 'I', 'K', 'L', 'M', 'H', 'O', 'P', 'P',
+        'C', 'T', 'Y', 'F', 'X', 'C', 'C', 'W', 'W', '', '', '', 'E', 'U', 'Y', 'X',
+
+        'a', 'b', 'b', 'g', 'd', 'e', 'e', 'j', 'z', 'i', 'i', 'k', 'l', 'm', 'h', 'o', 'p', 'p',
+        'c', 't', 'y', 'f', 'x', 'c', 'c', 'w', 'w', '', '', '', 'e', 'u', 'y', 'x',
+    ];
+
+    /**
+     * Транслитирирует строку.
      *
      * @param string $string
+     * @param bool   $safe_mode "Безопасный" режим траслитерации, при котором **один** кириллический символ будет
+     *                     гарантировано транслитирирован в **один** латинский
      *
      * @return string
      */
-    public static function uppercaseAndSafeTransliterate($string)
+    public static function transliterateString($string, $safe_mode = false)
     {
-        // Производим замену латинских символов, которые при дальнейшей транслитерации дают 2 символа на выходе,
-        // вместо одного (например 'я' -> 'ya'), и переводим в верхний регистр
-        $string = str_replace(
-            static::$cyr_chars,
-            static::$latin_chars,
-            Str::upper((string) $string)
-        );
+        $string = (string) $string;
 
-        // Производим конечную транслитерацию
+        if ($safe_mode === true) {
+            $string = str_replace(
+                static::$cyr_chars,
+                static::$latin_safe_analogs,
+                $string
+            );
+        }
+
         return Str::ascii($string);
     }
 
     /**
-     * Переводит строку в верхний регистр и производит ОБРАТНУЮ "безопасную" транслитерацию.
+     * Производит де-транслитерацию строки.
      *
      * @param string $string
+     * @param bool   $after_safe_mode Указывает, что входящая строка была "безопасно" транслитирирована
      *
      * @return string
      */
-    public static function uppercaseAndSafeDeTransliterate($string)
+    public static function detransliterateString($string, $after_safe_mode = false)
     {
-        // Производим замену кириллических символов на латинские аналоги, и переводим в верхний регистр
         return str_replace(
-            static::$latin_chars,
+            $after_safe_mode === true
+                ? static::$latin_safe_analogs
+                : static::$latin_analogs,
             static::$cyr_chars,
-            Str::upper((string) $string)
+            (string) $string
         );
     }
 }

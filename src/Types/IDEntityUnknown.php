@@ -2,6 +2,8 @@
 
 namespace AvtoDev\IDEntity\Types;
 
+use Exception;
+
 /**
  * Class IDEntityUnknown.
  *
@@ -22,7 +24,11 @@ class IDEntityUnknown extends AbstractTypedIDEntity
      */
     public static function normalize($value)
     {
-        return $value;
+        try {
+            return (string) $value;
+        } catch (Exception $e) {
+            // Do nothing
+        }
     }
 
     /**

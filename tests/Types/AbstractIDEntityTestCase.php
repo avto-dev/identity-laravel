@@ -2,6 +2,7 @@
 
 namespace AvtoDev\IDEntity\Tests\Types;
 
+use stdClass;
 use AvtoDev\IDEntity\IDEntity;
 use AvtoDev\IDEntity\Tests\AbstractTestCase;
 use AvtoDev\IDEntity\Types\AbstractTypedIDEntity;
@@ -150,6 +151,26 @@ abstract class AbstractIDEntityTestCase extends AbstractTestCase
      */
     abstract public function testNormalize();
 
+    /**
+     * Тест работы метода нормализации с некорректными данными на входе.
+     *
+     * @return null
+     */
+    public function testNormalizeWithInvalidInputData()
+    {
+        $invalid_values = [
+            new stdClass,
+            [],
+            function () {},
+        ];
+
+        $instance = $this->instance;
+
+        foreach ($invalid_values as $value) {
+            $this->assertNull($instance::normalize($value));
+        }
+    }
+    
     /**
      * Возвращает имя тестируемого класса типизированной сущности.
      *

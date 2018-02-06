@@ -45,14 +45,20 @@ class IDEntityTest extends AbstractTestCase
      */
     public function testConstants()
     {
-        $this->assertEquals('AUTODETECT', IDEntity::ID_TYPE_AUTO);
-        $this->assertEquals('UNKNOWN', IDEntity::ID_TYPE_UNKNOWN);
-        $this->assertEquals('VIN', IDEntity::ID_TYPE_VIN);
-        $this->assertEquals('GRZ', IDEntity::ID_TYPE_GRZ);
-        $this->assertEquals('STS', IDEntity::ID_TYPE_STS);
-        $this->assertEquals('PTS', IDEntity::ID_TYPE_PTS);
-        $this->assertEquals('CHASSIS', IDEntity::ID_TYPE_CHASSIS);
-        $this->assertEquals('BODY', IDEntity::ID_TYPE_BODY);
+        $checks = [
+            'AUTODETECT' => IDEntity::ID_TYPE_AUTO,
+            'UNKNOWN'    => IDEntity::ID_TYPE_UNKNOWN,
+            'VIN'        => IDEntity::ID_TYPE_VIN,
+            'GRZ'        => IDEntity::ID_TYPE_GRZ,
+            'STS'        => IDEntity::ID_TYPE_STS,
+            'PTS'        => IDEntity::ID_TYPE_PTS,
+            'BODY'       => IDEntity::ID_TYPE_BODY,
+            'CHASSIS'    => IDEntity::ID_TYPE_CHASSIS,
+        ];
+
+        foreach ($checks as $what => $with) {
+            $this->assertEquals($what, $with);
+        }
     }
 
     /**

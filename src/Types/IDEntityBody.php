@@ -5,6 +5,7 @@ namespace AvtoDev\IDEntity\Types;
 use Exception;
 use AvtoDev\IDEntity\Helpers\Normalizer;
 use AvtoDev\IDEntity\Helpers\Transliterator;
+use Illuminate\Support\Str;
 
 /**
  * Class IDEntityBody.
@@ -40,7 +41,7 @@ class IDEntityBody extends AbstractTypedIDEntity
             $value = preg_replace('~\-+~', '-', $value);
 
             // Производим замену кириллических символов на латинские аналоги
-            $value = Transliterator::uppercaseAndSafeTransliterate($value);
+            $value = Transliterator::transliterateString(Str::upper($value), true);
 
             // Удаляем все символы, кроме разрешенных
             $value = preg_replace('~[^A-Z0-9\-]~u', '', $value);

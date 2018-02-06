@@ -5,6 +5,7 @@ namespace AvtoDev\IDEntity\Types;
 use Exception;
 use AvtoDev\IDEntity\Helpers\Normalizer;
 use AvtoDev\IDEntity\Helpers\Transliterator;
+use Illuminate\Support\Str;
 
 /**
  * Class IDEntityChassis.
@@ -36,14 +37,14 @@ class IDEntityChassis extends AbstractTypedIDEntity
             // Номализуем символы дефиса
             $value = Normalizer::normalizeDashChar($value);
 
-            // Заменяем множественные дефисы - одиночными
-            $value = preg_replace('~\-+~', '-', $value);
-
             // Производим замену кириллических символов на латинские аналоги
-            $value = Transliterator::uppercaseAndSafeTransliterate($value);
+            $value = Transliterator::transliterateString(Str::upper($value), true);
 
             // Удаляем все символы, кроме разрешенных
             $value = preg_replace('~[^A-Z0-9\-]~u', '', $value);
+
+            // Заменяем множественные дефисы - одиночными
+            $value = preg_replace('~\-+~', '-', $value);
 
             return $value;
         } catch (Exception $e) {
