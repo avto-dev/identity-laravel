@@ -19,9 +19,10 @@
         "ext-mbstring": "*",
         "avto-dev/extended-laravel-validator": "1.* >=1.0.2",
         "avto-dev/static-references-laravel": "1.*",
-        "laravel/laravel": "5.4.* || 5.5.* || 5.6.*"
+        "laravel/framework": "5.4.* || 5.5.* || 5.6.*"
     },
     "require-dev": {
+        "laravel/laravel": "5.4.* || 5.5.* || 5.6.*",
         "phpunit/phpunit": "~5.7 || ^6.4",
         "mockery/mockery": "^0.9",
         "symfony/var-dumper": "~3.3 || ^3.4"
