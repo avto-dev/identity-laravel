@@ -86,6 +86,12 @@ abstract class AbstractIDEntityTestCase extends AbstractTestCase
         $this->instance->setValue('foo_blablabla_bar', false);
         $this->assertEquals('foo***********bar', $this->instance->getMaskedValue());
 
+        $this->instance->setValue('foo_bla_bar', false);
+        $this->assertEquals('foo^^^^^bar', $this->instance->getMaskedValue(3, 3, '^foo'));
+
+        $this->instance->setValue('foo_bla_bar', false);
+        $this->assertEquals('foo*****bar', $this->instance->getMaskedValue(3, 3, []));
+
         $this->instance->setValue('foo_blablabla_bar', false);
         $this->assertEquals('fo+++++++++++_bar', $this->instance->getMaskedValue(2, 4, '+'));
 
@@ -94,6 +100,11 @@ abstract class AbstractIDEntityTestCase extends AbstractTestCase
 
         $this->instance->setValue('foo_blablabla_bar', false);
         $this->assertEquals('*****************', $this->instance->getMaskedValue(0, 0));
+
+        $this->instance->setValue(null, false);
+        $this->assertNull($this->instance->getMaskedValue());
+
+
     }
 
     /**

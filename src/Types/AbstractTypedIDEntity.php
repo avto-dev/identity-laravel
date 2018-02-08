@@ -2,8 +2,8 @@
 
 namespace AvtoDev\IDEntity\Types;
 
-use Closure;
 use AvtoDev\IDEntity\IDEntity;
+use Closure;
 use Illuminate\Contracts\Validation\Factory as ValidationFactory;
 
 /**
@@ -180,6 +180,12 @@ abstract class AbstractTypedIDEntity extends IDEntity implements TypedIDEntityIn
     {
         $number_length = mb_strlen($string);
 
+        $mask_char = is_string($mask_char) && ! empty($mask_char)
+            ? (strlen($mask_char) > 1
+                ? substr($mask_char, 0, 1)
+                : $mask_char)
+            : '*';
+
         if ($number_length <= $start_offset + $end_offset) {
             return $string;
         }
@@ -192,6 +198,7 @@ abstract class AbstractTypedIDEntity extends IDEntity implements TypedIDEntityIn
             $stars .= $mask_char;
         }
 
-        return mb_substr($string, 0, $start_offset) . $stars . mb_substr($string, $number_length - $end_offset, $end_offset);
+        return mb_substr($string, 0, $start_offset) . $stars . mb_substr($string, $number_length - $end_offset,
+                $end_offset);
     }
 }
