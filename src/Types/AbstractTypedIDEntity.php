@@ -84,6 +84,16 @@ abstract class AbstractTypedIDEntity extends IDEntity implements TypedIDEntityIn
     /**
      * {@inheritdoc}
      */
+    public function getMaskedValue($start_offset = 3, $end_offset = 3, $mask_char = '*')
+    {
+        return empty($current = $this->getValue())
+            ? $current
+            : $this->hideString($current, $start_offset, $end_offset, $mask_char);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     abstract public function getType();
 
     /**
@@ -154,5 +164,34 @@ abstract class AbstractTypedIDEntity extends IDEntity implements TypedIDEntityIn
     protected function validateWithValidatorRule($value, $rule = 'required')
     {
         return $this->laravelValidatorFactory()->make(['value' => $value], ['value' => $rule])->fails() === false;
+    }
+
+    /**
+     * Скрытие строки под звездами.
+     *
+     * @param string $string       Входящая строка
+     * @param int    $start_offset Сдвиг с начала
+     * @param int    $end_offset   Сдвиг с конца
+     * @param string $mask_char    Замещающий символ
+     *
+     * @return string
+     */
+    protected function hideString($string, $start_offset = 3, $end_offset = 3, $mask_char = '*')
+    {
+        $number_length = mb_strlen($string);
+
+        if ($number_length <= $start_offset + $end_offset) {
+            return $string;
+        }
+
+        $hidden_str = mb_substr($string, $start_offset, $number_length - ($start_offset + $end_offset));
+
+        $stars = '';
+
+        for ($i = 0; $i < mb_strlen($hidden_str); $i++) {
+            $stars .= $mask_char;
+        }
+
+        return mb_substr($string, 0, $start_offset) . $stars . mb_substr($string, $number_length - $end_offset, $end_offset);
     }
 }

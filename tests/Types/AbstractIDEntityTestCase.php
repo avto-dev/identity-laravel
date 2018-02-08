@@ -77,6 +77,26 @@ abstract class AbstractIDEntityTestCase extends AbstractTestCase
     }
 
     /**
+     * Тест метода 'getMaskedValue'.
+     *
+     * @return void
+     */
+    public function testGetMaskedValue()
+    {
+        $this->instance->setValue('foo_blablabla_bar', false);
+        $this->assertEquals('foo***********bar', $this->instance->getMaskedValue());
+
+        $this->instance->setValue('foo_blablabla_bar', false);
+        $this->assertEquals('fo+++++++++++_bar', $this->instance->getMaskedValue(2, 4, '+'));
+
+        $this->instance->setValue('foo_blablabla_bar', false);
+        $this->assertEquals('foo_blablabla_bar', $this->instance->getMaskedValue(20, 20));
+
+        $this->instance->setValue('foo_blablabla_bar', false);
+        $this->assertEquals('*****************', $this->instance->getMaskedValue(0, 0));
+    }
+
+    /**
      * Тест метода 'make'.
      *
      * @return void
