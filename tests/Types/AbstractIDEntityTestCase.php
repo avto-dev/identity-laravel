@@ -103,8 +103,6 @@ abstract class AbstractIDEntityTestCase extends AbstractTestCase
 
         $this->instance->setValue(null, false);
         $this->assertNull($this->instance->getMaskedValue());
-
-
     }
 
     /**

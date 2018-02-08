@@ -2,8 +2,8 @@
 
 namespace AvtoDev\IDEntity\Types;
 
-use AvtoDev\IDEntity\IDEntity;
 use Closure;
+use AvtoDev\IDEntity\IDEntity;
 use Illuminate\Contracts\Validation\Factory as ValidationFactory;
 
 /**
@@ -181,8 +181,8 @@ abstract class AbstractTypedIDEntity extends IDEntity implements TypedIDEntityIn
         $number_length = mb_strlen($string);
 
         $mask_char = is_string($mask_char) && ! empty($mask_char)
-            ? (strlen($mask_char) > 1
-                ? substr($mask_char, 0, 1)
+            ? (mb_strlen($mask_char) > 1
+                ? mb_substr($mask_char, 0, 1)
                 : $mask_char)
             : '*';
 
