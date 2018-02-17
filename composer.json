@@ -17,12 +17,12 @@
         "php": "^5.6 || >=7.0 <7.3",
         "ext-json": "*",
         "ext-mbstring": "*",
-        "avto-dev/extended-laravel-validator": "1.* >=1.0.2",
-        "avto-dev/static-references-laravel": "1.*",
-        "laravel/framework": "5.4.* || 5.5.* || 5.6.*"
+        "avto-dev/extended-laravel-validator": "^1.0.4",
+        "avto-dev/static-references-laravel": "^1.1.2",
+        "laravel/framework": ">=5.4.0 <5.7.0"
     },
     "require-dev": {
-        "laravel/laravel": "5.4.* || 5.5.* || 5.6.*",
+        "laravel/laravel": ">=5.4.0 <5.7.0",
         "phpunit/phpunit": "~5.7 || ^6.4",
         "mockery/mockery": "^0.9",
         "symfony/var-dumper": "~3.3 || ^3.4"

@@ -1,31 +1,33 @@
 <p align="center">
-  <img alt="logo" src="https://hsto.org/webt/v1/jq/ii/v1jqiivfgdwfxuaomvl9tzwi-ba.png" width="70" height="70" />
+  <img src="https://laravel.com/assets/img/components/logo-laravel.svg" alt="Laravel" width="240" />
 </p>
 
-# IDEntity для Laravel приложений
+# IDEntity for Laravel
 
 [![Version][badge_version]][link_packagist]
-[![License][badge_license]][link_license]
 [![Build Status][badge_build_status]][link_build_status]
 ![StyleCI][badge_styleci]
-[![Code Coverage][badge_coverage]][link_coverage]
-[![Scrutinizer Code Quality][badge_quality]][link_coverage]
+[![Coverage][badge_coverage]][link_coverage]
+[![Quality][badge_quality]][link_coverage]
+[![Issues][badge_issues]][link_issues]
+[![License][badge_license]][link_license]
+[![Downloads][badge_downloads]][link_packagist]
 
-**IDEntity** - это идентификационные сущности (объекты), реализующие расширенные методы валидации, нормализации и автоматического определения типа (опционально).
+**IDEntity** (identification entities) is objects with implemented methods of validation, normalization, and optional automatic type determination.
 
-## Установка
+## Installation
 
-Для установки данного пакета выполните в терминале следующую команду:
+Require this package with composer using the next command:
 
 ```shell
-$ composer require avto-dev/identity-laravel "1.*"
+$ composer require avto-dev/identity-laravel "^1.1.2"
 ```
 
-> Для этого необходим установленный `composer`. Для его установки перейдите по [данной ссылке][getcomposer].
+> Installed `composer` is required. To install composer, please [click here][getcomposer].
 
-> Обратите внимание на то, что необходимо фиксировать мажорную версию устанавливаемого пакета.
+> Please note that you need to fix the **major** version of the package.
 
-> Для версии __Laravel 5.4.*__ необходимо вручную зарегистрировать сервис-провайдер и алиасы фасадов (опционально):
+> For __Laravel 5.4.*__ you must manually register package service-provider:
 > 
 > ```php
 > 'providers' => [
@@ -34,12 +36,12 @@ $ composer require avto-dev/identity-laravel "1.*"
 > ];
 > ```
 
-### Зависимые пакеты
+### Dependent packages
 
-Стоит обратить внимание на то, что данный пакет имеет в зависимостях следующие пакеты:
+This package has next packages in dependencies:
 
- * `avto-dev/extended-laravel-validator` - используется для валидации значений с помощью встроенного в Laravel валидатора;
- * `avto-dev/static-references-laravel` - используется справочник регионов (ГИБДД), для извлечения подробной информации о регионе ГРЗ-знака, и его валидации.
+ * `avto-dev/extended-laravel-validator` - used for values validation with [Laravel validator][laravel_validator_doc];
+ * `avto-dev/static-references-laravel` - used for accessing to the GIBDD reference data  and GRZ regions validations.
  
 Регистрация сервис-провайдеров указанных выше пакетов производится автоматически в том случае, если их сервис-провайдеры не были зарегистрированы до того, как была произведена регистрация сервис-провайдера данного пакета.
 
@@ -193,8 +195,7 @@ IDEntity::is('A123AA177', IDEntity::ID_TYPE_GRZ); // true
 Для тестирования данного пакета используется фреймворк `phpunit`. Для запуска тестов выполните в терминале:
 
 ```shell
-$ git clone git@github.com:avto-dev/identity-laravel.git
-$ cd ./identity-laravel
+$ git clone git@github.com:avto-dev/identity-laravel.git ./identity-laravel && cd $_
 $ composer update --dev
 $ composer test
 ```
@@ -214,9 +215,15 @@ $ composer test
 [badge_build_status]:https://scrutinizer-ci.com/g/avto-dev/identity-laravel/badges/build.png?b=master
 [badge_styleci]:https://styleci.io/repos/120107651/shield?style=flat&maxAge=30
 [badge_coverage]:https://scrutinizer-ci.com/g/avto-dev/identity-laravel/badges/coverage.png?b=master
+[badge_license]:https://img.shields.io/packagist/l/avto-dev/identity-laravel.svg?style=flat&maxAge=30
 [badge_quality]:https://scrutinizer-ci.com/g/avto-dev/identity-laravel/badges/quality-score.png?b=master
+[badge_issues]:https://img.shields.io/github/issues/avto-dev/identity-laravel.svg?style=flat&maxAge=30
+[badge_downloads]:https://img.shields.io/packagist/dt/avto-dev/identity-laravel.svg?style=flat&maxAge=30
 [link_packagist]:https://packagist.org/packages/avto-dev/identity-laravel
 [link_license]:https://github.com/avto-dev/identity-laravel/blob/master/LICENSE
 [link_build_status]:https://scrutinizer-ci.com/g/avto-dev/identity-laravel/build-status/master
 [link_coverage]:https://scrutinizer-ci.com/g/avto-dev/identity-laravel/?branch=master
+[link_license]:https://github.com/avto-dev/identity-laravel/blob/master/LICENSE
+[link_issues]:https://github.com/avto-dev/identity-laravel/issues
+[laravel_validator_doc]:https://laravel.com/docs/5.5/validation
 [getcomposer]:https://getcomposer.org/download/
