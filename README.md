@@ -6,7 +6,7 @@
 
 [![Version][badge_version]][link_packagist]
 [![Build Status][badge_build_status]][link_build_status]
-![StyleCI][badge_styleci]
+[![StyleCI][badge_styleci]][link_styleci]
 [![Coverage][badge_coverage]][link_coverage]
 [![Quality][badge_quality]][link_coverage]
 [![Issues][badge_issues]][link_issues]
@@ -215,15 +215,14 @@ $ composer test
 [badge_build_status]:https://scrutinizer-ci.com/g/avto-dev/identity-laravel/badges/build.png?b=master
 [badge_styleci]:https://styleci.io/repos/120107651/shield?style=flat&maxAge=30
 [badge_coverage]:https://scrutinizer-ci.com/g/avto-dev/identity-laravel/badges/coverage.png?b=master
-[badge_license]:https://img.shields.io/packagist/l/avto-dev/identity-laravel.svg?style=flat&maxAge=30
 [badge_quality]:https://scrutinizer-ci.com/g/avto-dev/identity-laravel/badges/quality-score.png?b=master
 [badge_issues]:https://img.shields.io/github/issues/avto-dev/identity-laravel.svg?style=flat&maxAge=30
 [badge_downloads]:https://img.shields.io/packagist/dt/avto-dev/identity-laravel.svg?style=flat&maxAge=30
 [link_packagist]:https://packagist.org/packages/avto-dev/identity-laravel
+[link_styleci]:https://styleci.io/repos/120107651/
 [link_license]:https://github.com/avto-dev/identity-laravel/blob/master/LICENSE
 [link_build_status]:https://scrutinizer-ci.com/g/avto-dev/identity-laravel/build-status/master
 [link_coverage]:https://scrutinizer-ci.com/g/avto-dev/identity-laravel/?branch=master
-[link_license]:https://github.com/avto-dev/identity-laravel/blob/master/LICENSE
 [link_issues]:https://github.com/avto-dev/identity-laravel/issues
 [laravel_validator_doc]:https://laravel.com/docs/5.5/validation
 [getcomposer]:https://getcomposer.org/download/
