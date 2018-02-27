@@ -54,7 +54,7 @@ abstract class AbstractTypedIDEntity extends IDEntity implements TypedIDEntityIn
      *
      * @param mixed $type Тип ИГНОРИРУЕТСЯ
      *
-     * Метод-заглушка для родительского метода.
+     * Метод-заглушка для родительского метода
      */
     public static function is($value, $type = null)
     {
