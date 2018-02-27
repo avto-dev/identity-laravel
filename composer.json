@@ -18,7 +18,7 @@
         "ext-json": "*",
         "ext-mbstring": "*",
         "avto-dev/extended-laravel-validator": "^1.0.5",
-        "avto-dev/static-references-laravel": "^1.1.3",
+        "avto-dev/static-references-laravel": "^1.1.4",
         "laravel/framework": ">=5.4.0 <5.7.0"
     },
     "require-dev": {
