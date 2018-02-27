@@ -25,6 +25,15 @@ class IDEntityBodyTest extends AbstractIDEntityTestCase
     public function testIsValid()
     {
         $valid = [
+            // С пробелами - считаются валидными
+            'NZE141 9134919',
+            'GX115 0001807',
+            'FN15 002153',
+            'S15 017137',
+            'ZCT10 0020100',
+            'GRX130 6026674',
+            'JZX90 6562365',
+
             '0685251',
             'AT2113041080',
             'NZE141-9134919',
@@ -112,17 +121,24 @@ class IDEntityBodyTest extends AbstractIDEntityTestCase
         // Не корректный, длинный тире
         $this->assertEquals($valid, $instance::normalize('JS3SE–102734'));
 
-        // С двумя пробелами (должны преобразоваться в одиночное тире)
-        $this->assertEquals($valid, $instance::normalize(' JS3SE  102734'));
-
         // С кириллицей
         $this->assertEquals($valid, $instance::normalize('JS3Sе–102734'));
 
         // С двумя тире (должны преобразоваться в одиночное тире)
         $this->assertEquals($valid, $instance::normalize('JS3SE--102734'));
 
+        // Встречающиеся идущие подряд тире и пробел - заменяются на одиночный тире
+        $this->assertEquals($valid, $instance::normalize('JS3SE -102734'));
+        $this->assertEquals($valid, $instance::normalize('JS3SE- 102734'));
+        $this->assertEquals($valid, $instance::normalize('JS3SE - 102734'));
+        $this->assertEquals($valid, $instance::normalize('JS3SE -  102734'));
+        $this->assertEquals($valid, $instance::normalize('JS3SE  -  102734'));
+
         // Некорректные символы - удаляет
         $this->assertEquals($valid, $instance::normalize('JS3#^&@^^SE–102":";%?734'));
+
+        // Дублирующиеся пробелы заменяются на одиночные, но замена их на тире НЕ происходит
+        $this->assertEquals('JS3SE 102734', $instance::normalize(' JS3SE  102734'));
     }
 
     /**

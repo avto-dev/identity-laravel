@@ -35,6 +35,7 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
             '3922АА190',
             '8688АА26',
 
+            'А825МС716',
             'Р392КК190',
             'С731НХ197',
             'Е750МО750',
@@ -168,6 +169,7 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
             'В164ОЕ190' => '190',
             'О832ВТ31'  => '31',
             'А098АА99'  => '99',
+            'А825МС716' => '716',
 
             'А098АА'    => null,
             '123А098АА' => null,
@@ -207,6 +209,7 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
             'В164ОЕ190' => 'RU-MOS',
             'О832ВТ31'  => 'RU-BEL',
             'А098АА99'  => 'RU-MOW',
+            'А825МС716' => 'RU-TA',
         ];
 
         /** @var IDEntityGrz $instance */
