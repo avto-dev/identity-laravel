@@ -177,6 +177,9 @@ IDEntity::is('A123AA177', IDEntity::ID_TYPE_VIN); // false
 
 IDEntity::is('JF1SJ5LC5DG048667', IDEntity::ID_TYPE_GRZ); // false
 IDEntity::is('A123AA177', IDEntity::ID_TYPE_GRZ); // true
+
+IDEntity::is('JF1SJ5LC5DG048667', [IDEntity::ID_TYPE_VIN, IDEntity::ID_TYPE_GRZ]); // true
+IDEntity::is('А123АА177', [IDEntity::ID_TYPE_VIN, IDEntity::ID_TYPE_PTS]); // false
 ```
 
 ### Расширенные методы

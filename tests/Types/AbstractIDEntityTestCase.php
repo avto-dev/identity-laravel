@@ -127,6 +127,11 @@ abstract class AbstractIDEntityTestCase extends AbstractTestCase
         $instance = $this->instance;
 
         $this->assertEquals($instance->isValid(), $instance::is($instance->getValue()));
+
+        // Второй аргумент для 'is' игнорируется
+        $this->assertEquals($instance->isValid(), $instance::is($instance->getValue(), [123, null]));
+        $this->assertEquals($instance->isValid(), $instance::is($instance->getValue(), ['foo']));
+        $this->assertEquals($instance->isValid(), $instance::is($instance->getValue(), [IDEntity::ID_TYPE_VIN]));
     }
 
     /**

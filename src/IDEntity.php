@@ -140,7 +140,13 @@ class IDEntity implements IDEntityInterface
      */
     public static function is($value, $type)
     {
-        return self::make($value, $type)->isValid();
+        foreach ((array) $type as $type_value) {
+            if (self::make($value, $type_value)->isValid()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

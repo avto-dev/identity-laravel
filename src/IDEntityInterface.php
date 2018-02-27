@@ -22,10 +22,10 @@ interface IDEntityInterface
     public static function make($value, $type);
 
     /**
-     * Проверяет, является ли переданное значение в $value типом $type.
+     * Проверяет, является ли переданное значение в $value типом $type (значения типов можно передать массивом).
      *
-     * @param string $value
-     * @param string $type
+     * @param string       $value
+     * @param string|array $type
      *
      * @return bool
      */
