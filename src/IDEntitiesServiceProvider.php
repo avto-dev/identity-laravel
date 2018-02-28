@@ -3,8 +3,8 @@
 namespace AvtoDev\IDEntity;
 
 use Exception;
-use AvtoDev\StaticReferencesLaravel\StaticReferences;
-use AvtoDev\StaticReferencesLaravel\StaticReferencesServiceProvider;
+use AvtoDev\StaticReferences\StaticReferencesServiceProvider;
+use AvtoDev\StaticReferences\References\AutoRegions\AutoRegions;
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
 use AvtoDev\ExtendedLaravelValidator\ExtendedValidatorServiceProvider;
 
@@ -85,13 +85,13 @@ class IDEntitiesServiceProvider extends IlluminateServiceProvider
 
     /**
      * Возвращает true в том случае, если сервис-провайдер пакета 'avto-dev/static-references-laravel' был успешно
-     * загружен (а с ним и данные статических справочников).
+     * загружен (а с ним и объект справочника регионов).
      *
      * @return bool
      */
     protected function staticReferencesIsRegistered()
     {
-        return $this->app->bound(StaticReferences::class) === true;
+        return $this->app->bound(AutoRegions::class) === true;
     }
 
     /**

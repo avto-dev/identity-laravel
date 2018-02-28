@@ -2,11 +2,11 @@
 
 namespace AvtoDev\IDEntity\Types;
 
+use AvtoDev\StaticReferences\References\AutoRegions\AutoRegions;
 use Exception;
 use Illuminate\Support\Str;
 use AvtoDev\IDEntity\Helpers\Transliterator;
-use AvtoDev\StaticReferencesLaravel\StaticReferences;
-use AvtoDev\StaticReferencesLaravel\References\AutoRegions\AutoRegionEntry;
+use AvtoDev\StaticReferences\References\AutoRegions\AutoRegionEntry;
 
 /**
  * Class IDEntityGrz.
@@ -81,10 +81,10 @@ class IDEntityGrz extends AbstractTypedIDEntity
      */
     public function getRegionData()
     {
-        /** @var StaticReferences $static_references */
-        $static_references = app()->make(StaticReferences::class);
+        /** @var AutoRegions $auto_regions */
+        $auto_regions = app()->make(AutoRegions::class);
 
-        return $static_references->autoRegions->getByAutoCode($this->getRegionCode());
+        return $auto_regions->getByAutoCode($this->getRegionCode());
     }
 
     /**

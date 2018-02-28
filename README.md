@@ -20,7 +20,7 @@
 Require this package with composer using the next command:
 
 ```shell
-$ composer require avto-dev/identity-laravel "^1.1.2"
+$ composer require avto-dev/identity-laravel "^2.0"
 ```
 
 > Installed `composer` is required. To install composer, please [click here][getcomposer].
