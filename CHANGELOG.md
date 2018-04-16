@@ -1,5 +1,10 @@
 # Changelog
 
+## v2.1
+
+### Added
+- Added supports for "Driver License Number" (`DLN`)
+
 ## v2.0
 
 ### Changed

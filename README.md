@@ -20,7 +20,7 @@
 Require this package with composer using the next command:
 
 ```shell
-$ composer require avto-dev/identity-laravel "^2.0"
+$ composer require avto-dev/identity-laravel "^2.1"
 ```
 
 > Installed `composer` is required. To install composer, please [click here][getcomposer].
@@ -57,6 +57,7 @@ This package has next packages in dependencies:
 `PTS`     | Номер паспорта транспортного средства (ПТС)                    | `\AvtoDev\IDEntity\Types\IDEntityPts`
 `BODY`    | Номер кузова транспортного средства                            | `\AvtoDev\IDEntity\Types\IDEntityBody`
 `CHASSIS` | Номер шасси транспортного средства                             | `\AvtoDev\IDEntity\Types\IDEntityChassis`
+`DLN`     | Номер водительского удостоверения                              | `\AvtoDev\IDEntity\Types\IDEntityDriverLicenseNumber`
 `UNKNOWN` | Неизвестный идентификатор                                      | `\AvtoDev\IDEntity\Types\IDEntityUnknown`
 
 > Все объекты, обслуживающие типы идентификаторов (типизированные идентификаторы) являются наследниками класса `AvtoDev\IDEntity\IDEntity`.
@@ -184,12 +185,12 @@ IDEntity::is('А123АА177', [IDEntity::ID_TYPE_VIN, IDEntity::ID_TYPE_PTS]); //
 
 ### Расширенные методы
 
-Некоторые объекты типизированных идентификаторов имеют расширенные методы, например `IDEntityGrz` умеет:
+Некоторые объекты типизированных идентификаторов имеют расширенные методы, например `IDEntityGrz` и `IDEntityDriverLicenseNumber` умеют:
 
 Имя метода | Его описание
 ---------: | :-----------
-`getRegionCode()` | Возвращает код региона ГРЗ знака
-`getRegionData()` | Возвращает объект с детализированными данными о регионе, указанном в коде региона ГРЗ знака
+`getRegionCode()` | Возвращает код региона, связанный с идентификатором
+`getRegionData()` | Возвращает объект с детализированными данными о регионе, связанным с идентификатором
 
 Более подробно о расширенных методах смотрите в классах-реализациях типизированных идентификаторов.
 

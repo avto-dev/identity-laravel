@@ -54,6 +54,7 @@ class IDEntityTest extends AbstractTestCase
             'PTS'        => IDEntity::ID_TYPE_PTS,
             'BODY'       => IDEntity::ID_TYPE_BODY,
             'CHASSIS'    => IDEntity::ID_TYPE_CHASSIS,
+            'DLN'        => IDEntity::ID_TYPE_DRIVER_LICENSE_NUMBER,
         ];
 
         foreach ($checks as $what => $with) {
@@ -100,6 +101,7 @@ class IDEntityTest extends AbstractTestCase
             IDEntity::ID_TYPE_PTS,
             IDEntity::ID_TYPE_CHASSIS,
             IDEntity::ID_TYPE_BODY,
+            IDEntity::ID_TYPE_DRIVER_LICENSE_NUMBER,
         ];
 
         foreach ($expects as $type) {
@@ -125,6 +127,7 @@ class IDEntityTest extends AbstractTestCase
             IDEntity::ID_TYPE_PTS,
             IDEntity::ID_TYPE_CHASSIS,
             IDEntity::ID_TYPE_BODY,
+            IDEntity::ID_TYPE_DRIVER_LICENSE_NUMBER,
         ];
 
         foreach ($expects as $type) {
@@ -160,6 +163,9 @@ class IDEntityTest extends AbstractTestCase
 
         $instance = IDEntity::make('FN15-002153', $type = IDEntity::ID_TYPE_CHASSIS);
         $this->assertEquals($type, $instance->getType());
+
+        $instance = IDEntity::make('77 16 235662', $type = IDEntity::ID_TYPE_DRIVER_LICENSE_NUMBER);
+        $this->assertEquals($type, $instance->getType());
     }
 
     /**
@@ -188,6 +194,7 @@ class IDEntityTest extends AbstractTestCase
         $this->assertEquals($value, $instance->getValue());
 
         // Тип "номер ШАССИ" автоматически отдетектить невозможно, так как правила проверки шасси и кузова идентичны
+        // Тип "номер водительского удостоверения" тоже :(
     }
 
     /**

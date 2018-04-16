@@ -13,7 +13,7 @@ use AvtoDev\StaticReferences\References\AutoRegions\AutoRegionEntry;
  *
  * Идентификатор - номер ГРЗ.
  */
-class IDEntityGrz extends AbstractTypedIDEntity
+class IDEntityGrz extends AbstractTypedIDEntity implements HasRegionDataInterface
 {
     /**
      * {@inheritdoc}

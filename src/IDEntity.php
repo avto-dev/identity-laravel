@@ -3,12 +3,6 @@
 namespace AvtoDev\IDEntity;
 
 use LogicException;
-use AvtoDev\IDEntity\Types\IDEntityGrz;
-use AvtoDev\IDEntity\Types\IDEntityPts;
-use AvtoDev\IDEntity\Types\IDEntitySts;
-use AvtoDev\IDEntity\Types\IDEntityVin;
-use AvtoDev\IDEntity\Types\IDEntityBody;
-use AvtoDev\IDEntity\Types\IDEntityChassis;
 use AvtoDev\IDEntity\Types\IDEntityUnknown;
 use AvtoDev\IDEntity\Types\TypedIDEntityInterface;
 
@@ -74,6 +68,13 @@ class IDEntity implements IDEntityInterface
      * @var string
      */
     const ID_TYPE_BODY = 'BODY';
+
+    /**
+     * Тип - номер водительского удостоверения (driver license number).
+     *
+     * @var string
+     */
+    const ID_TYPE_DRIVER_LICENSE_NUMBER = 'DLN';
 
     /**
      * IDEntity constructor.
@@ -159,12 +160,13 @@ class IDEntity implements IDEntityInterface
     protected static function getTypesMap()
     {
         return [
-            self::ID_TYPE_VIN     => IDEntityVin::class,
-            self::ID_TYPE_GRZ     => IDEntityGrz::class,
-            self::ID_TYPE_STS     => IDEntitySts::class,
-            self::ID_TYPE_PTS     => IDEntityPts::class,
-            self::ID_TYPE_BODY    => IDEntityBody::class,
-            self::ID_TYPE_CHASSIS => IDEntityChassis::class,
+            self::ID_TYPE_VIN                   => Types\IDEntityVin::class,
+            self::ID_TYPE_GRZ                   => Types\IDEntityGrz::class,
+            self::ID_TYPE_STS                   => Types\IDEntitySts::class,
+            self::ID_TYPE_PTS                   => Types\IDEntityPts::class,
+            self::ID_TYPE_BODY                  => Types\IDEntityBody::class,
+            self::ID_TYPE_CHASSIS               => Types\IDEntityChassis::class,
+            self::ID_TYPE_DRIVER_LICENSE_NUMBER => Types\IDEntityDriverLicenseNumber::class,
         ];
     }
 
