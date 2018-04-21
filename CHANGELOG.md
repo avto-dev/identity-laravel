@@ -3,7 +3,7 @@
 ## v2.1.1
 
 ### Changed
-- Extract region code from `grz` identifier refactored
+- Method for extracting region code from `GRZ` identifier refactored
 
 ### Added
 - Supports for `GRZ` "taxi" format
