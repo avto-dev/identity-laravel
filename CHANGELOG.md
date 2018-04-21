@@ -1,9 +1,17 @@
 # Changelog
 
+## v2.1.1
+
+### Changed
+- Extract region code from `grz` identifier refactored
+
+### Added
+- Supports for `GRZ` "taxi" format
+
 ## v2.1
 
 ### Added
-- Added supports for "Driver License Number" (`DLN`)
+- Supports for "Driver License Number" (`DLN`)
 
 ## v2.0
 

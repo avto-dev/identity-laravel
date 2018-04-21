@@ -14,7 +14,7 @@ interface IDEntityInterface
     /**
      * Фабричный метод, замена конструктору.
      *
-     * @param string|mixed $value
+     * @param mixed|string $value
      * @param string       $type
      *
      * @return TypedIDEntityInterface
@@ -25,7 +25,7 @@ interface IDEntityInterface
      * Проверяет, является ли переданное значение в $value типом $type (значения типов можно передать массивом).
      *
      * @param string       $value
-     * @param string|array $type
+     * @param array|string $type
      *
      * @return bool
      */

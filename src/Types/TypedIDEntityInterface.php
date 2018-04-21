@@ -32,7 +32,7 @@ interface TypedIDEntityInterface extends Arrayable, Jsonable
     /**
      * Возвращает значение идентификатора.
      *
-     * @return null|string
+     * @return string|null
      */
     public function getValue();
 
@@ -43,14 +43,14 @@ interface TypedIDEntityInterface extends Arrayable, Jsonable
      * @param int    $end_offset   Сдвиг с конца
      * @param string $mask_char    Замещающий символ
      *
-     * @return null|string
+     * @return string|null
      */
     public function getMaskedValue($start_offset = 3, $end_offset = 3, $mask_char = '*');
 
     /**
      * Возвращает тип идентификатора.
      *
-     * @return null|string
+     * @return string|null
      */
     public function getType();
 

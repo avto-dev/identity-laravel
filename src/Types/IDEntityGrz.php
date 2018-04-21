@@ -52,25 +52,16 @@ class IDEntityGrz extends AbstractTypedIDEntity implements HasRegionDataInterfac
      */
     public function getRegionCode()
     {
-        // Могут быть: АА0001177, АА000177, Т900ММ77, В164ОЕ190
-        preg_match('~[^\d](?<region_digits>\d+)$~', $this->getValue(), $bitchez);
+        preg_match('~(?<region_code>(7[1579]\d{1}|1\d{2}|\d{1,2}))$~D', $value = $this->getValue(), $matches);
 
-        if (isset($bitchez['region_digits']) && is_numeric($region_digits = (string) $bitchez['region_digits'])) {
-            $region_digits_length = mb_strlen($region_digits);
-
-            // Если код региона - 2 или 3 цифры - то сразу его возвращаем
-            if ($region_digits_length >= 2 && $region_digits_length <= 3) {
-                return (int) $region_digits;
-            } else {
-                // В противном случае - отбрасываем первые 4 символа
-                $region_digits = mb_substr($region_digits, 4);
-
-                $region_digits_length = mb_strlen($region_digits);
-                // И производим простейшую валидацию
-                if ($region_digits_length >= 2 && $region_digits_length <= 3) {
-                    return (int) $region_digits;
-                }
+        if (isset($matches['region_code']) && ! empty($region_code = $matches['region_code'])) {
+            // В случае, если ГРЗ имеет вид 'АА77777' то проверяем - перед кодом региона всего 2 цифры? И если да -
+            // то уменьшаем код региона на один символ
+            if (Str::length($region_code) === 3 && preg_match("~\D\d{5}$~D", $value) === 1) {
+                $region_code = Str::substr($region_code, 1);
             }
+
+            return (int) ltrim($region_code, '0');
         }
     }
 
@@ -81,10 +72,10 @@ class IDEntityGrz extends AbstractTypedIDEntity implements HasRegionDataInterfac
      */
     public function getRegionData()
     {
-        /** @var AutoRegions $auto_regions */
-        $auto_regions = app()->make(AutoRegions::class);
+        /** @var AutoRegions $reference */
+        $reference = resolve(AutoRegions::class);
 
-        return $auto_regions->getByAutoCode($this->getRegionCode());
+        return $reference->getByAutoCode($this->getRegionCode());
     }
 
     /**
