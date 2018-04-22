@@ -102,7 +102,7 @@ class Transliterator
             (string) $string
         );
     }
-    
+
     /**
      * Транслитирирует строку.
      *
