@@ -50,6 +50,9 @@
             ]
         }
     },
+    "suggest": {
+        "avto-dev/faker-identifiers-providers": "Identifiers providers for fzaninotto/Faker package (^1.1)"
+    },
     "support": {
         "issues": "https://github.com/avto-dev/identity-laravel/issues",
         "source": "https://github.com/avto-dev/identity-laravel"
