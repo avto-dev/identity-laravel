@@ -63,10 +63,11 @@ class IDEntityDriverLicenseNumber extends AbstractTypedIDEntity implements HasRe
             $value = Str::upper(trim((string) $value));
 
             // Удаляем все символы, кроме разрешенных (ВКЛЮЧАЯ разделители)
-            $value = preg_replace('~[^' . 'АБВГДЕЖЗИКЛМНОПРСТУФХЦЧШЭЮЯ' . 'A-Z' . '0-9]~u', '', $value);
+            $value = preg_replace('~[^' . 'АВЕКМНОРСТУХ' . 'ABEKMHOPCTYX' . '0-9]~u', '', $value);
 
-            // Производим замену кириллицы на латинские аналоги + trim по ещё и разделителям
-            $value = Transliterator::transliterateString($value, true);
+            // Производим замену латинских аналогов на кириллические (обратная транслитерация). Не прогоняю по всем
+            // возможными символам, так как регулярка что выше всё кроме них как раз и удаляет
+            $value = Transliterator::detransliterateLite($value);
 
             return $value;
         } catch (Exception $e) {
@@ -84,13 +85,8 @@ class IDEntityDriverLicenseNumber extends AbstractTypedIDEntity implements HasRe
                 return $this->validateWithValidatorRule($this->getValue(), 'required|string|driver_license_number');
             },
             function () {
-                // Если код региона был извлечён, то проверяем его существование
-                if (is_int($this->getRegionCode())) {
-                    return $this->getRegionData() instanceof AutoRegionEntry;
-                }
-
-                // В противном случае - просто скипаем данную проверку
-                return true;
+                // Регион существует
+                return $this->getRegionData() instanceof AutoRegionEntry;
             },
         ];
     }

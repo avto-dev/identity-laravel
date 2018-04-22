@@ -453,6 +453,21 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
 
         // Некорректные символы - удаляет
         $this->assertEquals($valid, $instance::normalize('X123 #$^&&&% YO96 '));
+
+        $asserts = [
+            'Х123АВ96' => ['Х123АВ96', 'Х123AB96'],
+            'Х123ЕК96' => ['Х123ЕК96', 'Х123EK96'],
+            'Х123МН96' => ['Х123МН96', 'Х123MH96'],
+            'Х123ОР96' => ['Х123ОР96', 'Х123OP96'],
+            'Х123СТ96' => ['Х123СТ96', 'Х123CT96'],
+            'Х123УХ96' => ['Х123УХ96', 'Х123YX96'],
+        ];
+
+        foreach ($asserts as $with => $what) {
+            foreach ($what as $item) {
+                $this->assertEquals($with, $instance::normalize($item));
+            }
+        }
     }
 
     /**

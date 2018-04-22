@@ -80,4 +80,16 @@ class TransliteratorTest extends AbstractTestCase
             )
         );
     }
+
+    public function testLiteLtansliterator()
+    {
+        $this->assertEquals(
+            'АВЕКМНОРСТУХ авекмнорстух',
+            Transliterator::detransliterateLite('ABEKMHOPCTYX abekmhopctyx')
+        );
+        $this->assertEquals(
+            'ABEKMHOPCTYX abekmhopctyx',
+            Transliterator::transliterateLite('АВЕКМНОРСТУХ авекмнорстух')
+        );
+    }
 }

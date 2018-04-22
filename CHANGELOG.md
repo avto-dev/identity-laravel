@@ -1,5 +1,14 @@
 # Changelog
 
+## v2.1.2
+
+### Changed
+- `DLN` identifier now works only with Russian identifier number formats
+
+### Fixed
+- Transliterate method for `GRZ` identifier
+- Transliterate method for `DLN` identifier
+
 ## v2.1.1
 
 ### Changed

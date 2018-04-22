@@ -52,6 +52,58 @@ class Transliterator
     ];
 
     /**
+     * Карта для замен символов, имеющих латинские аналоги.
+     *
+     * @var string[]
+     */
+    protected static $lite_cyr_map = [
+        'А', 'В', 'Е', 'К', 'М', 'Н', 'О', 'Р', 'С', 'Т', 'У', 'Х',
+        'а', 'в', 'е', 'к', 'м', 'н', 'о', 'р', 'с', 'т', 'у', 'х',
+    ];
+
+    /**
+     * Обратная карта для замен символов, имеющих латинские аналоги.
+     *
+     * @var string[]
+     */
+    protected static $lite_latin_map = [
+        'A', 'B', 'E', 'K', 'M', 'H', 'O', 'P', 'C', 'T', 'Y', 'X',
+        'a', 'b', 'e', 'k', 'm', 'h', 'o', 'p', 'c', 't', 'y', 'x',
+    ];
+
+    /**
+     * Производит транслитерацию только тех кириллических символов, что имеют латинские аналоги.
+     *
+     * @param string $string
+     *
+     * @return string
+     */
+    public static function transliterateLite($string)
+    {
+        return str_replace(
+            static::$lite_cyr_map,
+            static::$lite_latin_map,
+            (string) $string
+        );
+    }
+
+    /**
+     * Производит обратную транслитерацию (из латинских символов - в кириллические аналоги).
+     *
+     * @param string $string
+     *
+     * @return string
+     */
+    public static function detransliterateLite($string)
+    {
+        return str_replace(
+            static::$lite_latin_map,
+            static::$lite_cyr_map,
+            (string) $string
+        );
+    }
+    
+    /**
      * Транслитирирует строку.
      *
      * @param string $string

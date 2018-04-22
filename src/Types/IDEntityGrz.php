@@ -37,7 +37,7 @@ class IDEntityGrz extends AbstractTypedIDEntity implements HasRegionDataInterfac
 
             // Производим замену латинских аналогов на кириллические (обратная транслитерация). Не прогоняю по всем
             // возможными символам, так как регулярка что выше всё кроме них как раз и удаляет
-            $value = Transliterator::detransliterateString($value, true);
+            $value = Transliterator::detransliterateLite($value);
 
             return $value;
         } catch (Exception $e) {
