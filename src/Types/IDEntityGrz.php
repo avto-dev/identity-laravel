@@ -55,10 +55,15 @@ class IDEntityGrz extends AbstractTypedIDEntity implements HasRegionDataInterfac
         preg_match('~(?<region_code>(7[1579]\d{1}|1\d{2}|\d{1,2}))$~D', $value = $this->getValue(), $matches);
 
         if (isset($matches['region_code']) && ! empty($region_code = $matches['region_code'])) {
-            // В случае, если ГРЗ имеет вид 'АА77777' то проверяем - перед кодом региона всего 2 цифры? И если да -
-            // то уменьшаем код региона на один символ
-            if (Str::length($region_code) === 3 && preg_match("~\D\d{5}$~D", $value) === 1) {
-                $region_code = Str::substr($region_code, 1);
+            if (Str::length($region_code) === 3) {
+                // В случае, если ГРЗ имеет вид 'АА77777' то проверяем - перед кодом региона всего 2 цифры? И если да -
+                // то уменьшаем код региона на один символ
+                if (preg_match("~\D\d{5}$~D", $value) === 1) {
+                    $region_code = Str::substr($region_code, 1);
+                } elseif (Str::startsWith($region_code, '10') && ! Str::endsWith($region_code, '2')) {
+                    // Только '102' регион начинается с 10. В противном случае это говорит о том что '1' в начале лишняя
+                    $region_code = Str::substr($region_code, 2);
+                }
             }
 
             return (int) ltrim($region_code, '0');

@@ -1,5 +1,10 @@
 # Changelog
 
+## v2.1.3
+
+### Fixed
+- Region detection method for `GRZ` identifier
+
 ## v2.1.2
 
 ### Changed

@@ -29,6 +29,7 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
             'АА0001177',
             'КК3921090',
             'УК868026',
+            'КС135101',
 
             // И эти тоже валидные
             '0001АА77',
@@ -180,6 +181,7 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
             'АА0001177' => 177,
             'КК3921090' => 90,
             'УК868026'  => 26,
+            'КС135101'  => 1,
             '0001АА77'  => 77,
             '3922АА190' => 190,
             '8688АА26'  => 26,
@@ -360,6 +362,7 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
         $expects = [
             'КК3921090' => 'RU-MOS',
             'УК868026'  => 'RU-STA',
+            'КС135101'  => 'RU-AD',
             '0001АА77'  => 'RU-MOW',
             '3922АА190' => 'RU-MOS',
             '8688АА26'  => 'RU-STA',
