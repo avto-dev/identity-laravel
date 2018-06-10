@@ -9,8 +9,6 @@ use AvtoDev\StaticReferences\References\AutoRegions\AutoRegions;
 use AvtoDev\StaticReferences\References\AutoRegions\AutoRegionEntry;
 
 /**
- * Class IDEntityDriverLicenseNumber.
- *
  * Идентификатор - номер водительского удостоверения.
  */
 class IDEntityDriverLicenseNumber extends AbstractTypedIDEntity implements HasRegionDataInterface
@@ -33,9 +31,9 @@ class IDEntityDriverLicenseNumber extends AbstractTypedIDEntity implements HasRe
      */
     public function getRegionCode()
     {
-        preg_match('~^(?<region_digits>[\d]{2}).+$~', $this->getValue(), $matches);
+        \preg_match('~^(?<region_digits>[\d]{2}).+$~', $this->getValue(), $matches);
 
-        if (isset($matches['region_digits']) && is_numeric($region_digits = (string) $matches['region_digits'])) {
+        if (isset($matches['region_digits']) && \is_numeric($region_digits = (string) $matches['region_digits'])) {
             return (int) $region_digits;
         }
     }
@@ -63,7 +61,7 @@ class IDEntityDriverLicenseNumber extends AbstractTypedIDEntity implements HasRe
             $value = Str::upper(trim((string) $value));
 
             // Удаляем все символы, кроме разрешенных (ВКЛЮЧАЯ разделители)
-            $value = preg_replace('~[^' . 'АВЕКМНОРСТУХ' . 'ABEKMHOPCTYX' . '0-9]~u', '', $value);
+            $value = \preg_replace('~[^' . 'АВЕКМНОРСТУХ' . 'ABEKMHOPCTYX' . '0-9]~u', '', $value);
 
             // Производим замену латинских аналогов на кириллические (обратная транслитерация). Не прогоняю по всем
             // возможными символам, так как регулярка что выше всё кроме них как раз и удаляет

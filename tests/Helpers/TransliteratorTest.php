@@ -5,9 +5,6 @@ namespace AvtoDev\IDEntity\Tests\Helpers;
 use AvtoDev\IDEntity\Helpers\Transliterator;
 use AvtoDev\IDEntity\Tests\AbstractTestCase;
 
-/**
- * Class TransliteratorTest.
- */
 class TransliteratorTest extends AbstractTestCase
 {
     /**

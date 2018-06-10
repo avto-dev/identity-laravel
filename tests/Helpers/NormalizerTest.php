@@ -5,9 +5,6 @@ namespace AvtoDev\IDEntity\Tests\Helpers;
 use AvtoDev\IDEntity\Helpers\Normalizer;
 use AvtoDev\IDEntity\Tests\AbstractTestCase;
 
-/**
- * Class NormalizerTest.
- */
 class NormalizerTest extends AbstractTestCase
 {
     /**

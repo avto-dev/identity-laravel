@@ -4,11 +4,6 @@ namespace AvtoDev\IDEntity;
 
 use AvtoDev\IDEntity\Types\TypedIDEntityInterface;
 
-/**
- * Interface IDEntityInterface.
- *
- * Интерфейс идентификационной сущности.
- */
 interface IDEntityInterface
 {
     /**

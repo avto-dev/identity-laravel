@@ -6,11 +6,6 @@ use LogicException;
 use AvtoDev\IDEntity\Types\IDEntityUnknown;
 use AvtoDev\IDEntity\Types\TypedIDEntityInterface;
 
-/**
- * Class IDEntity.
- *
- * Объект идентификационной сущности.
- */
 class IDEntity implements IDEntityInterface
 {
     /**
@@ -85,9 +80,7 @@ class IDEntity implements IDEntityInterface
      */
     public function __construct()
     {
-        throw new LogicException(
-            sprintf('Constructor for this object is unsupported. Use method "::%s" instead', 'make')
-        );
+        throw new LogicException('Constructor for this object is unsupported. Use method "::make()" instead');
     }
 
     /**
@@ -97,7 +90,7 @@ class IDEntity implements IDEntityInterface
      */
     public static function getSupportedTypes()
     {
-        return array_keys(static::getTypesMap());
+        return \array_keys(static::getTypesMap());
     }
 
     /**
@@ -109,7 +102,7 @@ class IDEntity implements IDEntityInterface
      */
     public static function typeIsSupported($type)
     {
-        return is_string($type) && in_array($type, static::getSupportedTypes());
+        return \is_string($type) && \in_array($type, static::getSupportedTypes(), true);
     }
 
     /**
@@ -118,7 +111,7 @@ class IDEntity implements IDEntityInterface
     public static function make($value, $type = self::ID_TYPE_AUTO)
     {
         // Если указанный тип идентификатора нам известен - то его и создаём
-        if (class_exists($class_name = static::getEntityClassByType($type))) {
+        if (\class_exists($class_name = static::getEntityClassByType($type))) {
             return new $class_name($value, true);
         }
 

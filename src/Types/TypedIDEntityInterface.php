@@ -6,8 +6,6 @@ use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Contracts\Support\Arrayable;
 
 /**
- * Interface TypedIDEntityInterface.
- *
  * Типизированная идентификационная сущность.
  */
 interface TypedIDEntityInterface extends Arrayable, Jsonable

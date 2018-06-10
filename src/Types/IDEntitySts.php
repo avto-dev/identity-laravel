@@ -7,8 +7,6 @@ use Illuminate\Support\Str;
 use AvtoDev\IDEntity\Helpers\Transliterator;
 
 /**
- * Class IDEntitySts.
- *
  * Идентификатор - номер СТС.
  */
 class IDEntitySts extends AbstractTypedIDEntity
@@ -31,7 +29,7 @@ class IDEntitySts extends AbstractTypedIDEntity
             $value = Str::upper(trim((string) $value));
 
             // Удаляем все символы, кроме разрешенных
-            $value = preg_replace('~[^' . 'АБВГДЕЖЗИКЛМНОПРСТУФХЦЧШЩЫЭЮЯ' . 'A-Z' . '0-9]~u', '', $value);
+            $value = \preg_replace('~[^' . 'АБВГДЕЖЗИКЛМНОПРСТУФХЦЧШЩЫЭЮЯ' . 'A-Z' . '0-9]~u', '', $value);
 
             // Производим замену латинских аналогов на кириллические (обратная транслитерация)
             $value = Transliterator::detransliterateString($value, true);

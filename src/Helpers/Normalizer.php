@@ -3,8 +3,6 @@
 namespace AvtoDev\IDEntity\Helpers;
 
 /**
- * Class Normalizer.
- *
  * Статический строковый нормализатор.
  */
 class Normalizer
@@ -20,8 +18,8 @@ class Normalizer
      */
     public static function normalizeDashChar($input)
     {
-        if (is_string($input) && ! empty($input)) {
-            return str_replace([
+        if (\is_string($input) && ! empty($input)) {
+            return \str_replace([
                 '–' /* Юникод U+2013 */,
                 '—' /* Юникод U+2014 */,
                 '‒' /* Юникод U+2012 */,

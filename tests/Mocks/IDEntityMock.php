@@ -4,9 +4,6 @@ namespace AvtoDev\IDEntity\Tests\Mocks;
 
 use AvtoDev\IDEntity\IDEntity;
 
-/**
- * Class IDEntityMock.
- */
 class IDEntityMock extends IDEntity
 {
     /**

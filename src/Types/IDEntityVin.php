@@ -7,8 +7,6 @@ use Illuminate\Support\Str;
 use AvtoDev\IDEntity\Helpers\Transliterator;
 
 /**
- * Class IDEntityVin.
- *
  * Идентификатор - VIN код.
  */
 class IDEntityVin extends AbstractTypedIDEntity
@@ -31,10 +29,10 @@ class IDEntityVin extends AbstractTypedIDEntity
             $value = Transliterator::transliterateString(Str::upper($value), true);
 
             // Латинская "O" заменяется на ноль
-            $value = str_replace('O', '0', $value);
+            $value = \str_replace('O', '0', $value);
 
             // Удаляем все символы, кроме разрешенных
-            $value = preg_replace('~[^ABCDEFGHJKLMNPRSTUVWXYZ0-9]~u', '', $value);
+            $value = \preg_replace('~[^ABCDEFGHJKLMNPRSTUVWXYZ0-9]~u', '', $value);
 
             return $value;
         } catch (Exception $e) {

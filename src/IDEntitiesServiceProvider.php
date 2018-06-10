@@ -2,115 +2,46 @@
 
 namespace AvtoDev\IDEntity;
 
-use Exception;
 use AvtoDev\StaticReferences\StaticReferencesServiceProvider;
-use AvtoDev\StaticReferences\References\AutoRegions\AutoRegions;
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
 use AvtoDev\ExtendedLaravelValidator\ExtendedValidatorServiceProvider;
 
-/**
- * Class IDEntitiesServiceProvider.
- */
 class IDEntitiesServiceProvider extends IlluminateServiceProvider
 {
     /**
-     * Indicates if loading of the provider is deferred.
-     *
-     * @var bool
-     */
-    protected $defer = false;
-
-    /**
-     * Bootstrap any application services.
-     *
-     * @throws Exception
+     * Bootstrap services.
      *
      * @return void
      */
     public function boot()
     {
-        // Проверяем - установлен ли пакет расширенного валидатора для Laravel (данный пакет от него зависит)
-        if ($this->extendedLaravelValidatorIsInstalled()) {
-            if (! $this->extendedLaravelValidatorIsRegistered()) {
-                $this->registerExtendedLaravelValidator();
-            }
-        } else {
-            throw new Exception(
-                sprintf('Required package "%s" is not installed', 'avto-dev/extended-laravel-validator')
-            );
-        }
+        $required_providers = [
+            ExtendedValidatorServiceProvider::class,
+            StaticReferencesServiceProvider::class,
+        ];
 
-        // А так же проверяем пакет статических справочников
-        if ($this->staticReferencesIsInstalled()) {
-            if (! $this->staticReferencesIsRegistered()) {
-                $this->registerStaticReferences();
+        foreach ($required_providers as $required_provider) {
+            if (! $this->serviceProviderIsRegistered($required_provider)) {
+                $this->app->register($required_provider);
             }
-        } else {
-            throw new Exception(
-                sprintf('Required package "%s" is not installed', 'avto-dev/static-references-laravel')
-            );
         }
     }
 
     /**
-     * Возвращает true в том случае, если сервис-провайдер пакета 'avto-dev/extended-laravel-validator' был успешно
-     * загружен (а с ним расширенные правила Laravel-валидатора).
+     * Make check - service provider is loaded or not?
+     *
+     * @param string $class_name
      *
      * @return bool
      */
-    protected function extendedLaravelValidatorIsRegistered()
+    protected function serviceProviderIsRegistered($class_name)
     {
-        return $this->app->bound('extended-laravel-validator.registered');
-    }
+        if (\method_exists($this->app, 'getLoadedProviders')) {
+            $loaded = \array_keys($this->app->getLoadedProviders());
 
-    /**
-     * Производит регистрацию сервис-провайдера пакета 'avto-dev/extended-laravel-validator'.
-     *
-     * @return void
-     */
-    protected function registerExtendedLaravelValidator()
-    {
-        $this->app->register(ExtendedValidatorServiceProvider::class);
-    }
+            return \in_array($class_name, $loaded, true);
+        }
 
-    /**
-     * Возвращает true в том случае, если пакет 'avto-dev/extended-laravel-validator' установлен.
-     *
-     * @return bool
-     */
-    protected function extendedLaravelValidatorIsInstalled()
-    {
-        return class_exists(ExtendedValidatorServiceProvider::class);
-    }
-
-    /**
-     * Возвращает true в том случае, если сервис-провайдер пакета 'avto-dev/static-references-laravel' был успешно
-     * загружен (а с ним и объект справочника регионов).
-     *
-     * @return bool
-     */
-    protected function staticReferencesIsRegistered()
-    {
-        return $this->app->bound(AutoRegions::class) === true;
-    }
-
-    /**
-     * Производит регистрацию сервис-провайдера пакета 'avto-dev/static-references-laravel'.
-     *
-     * @return void
-     */
-    protected function registerStaticReferences()
-    {
-        $this->app->register(StaticReferencesServiceProvider::class);
-    }
-
-    /**
-     * Возвращает true в том случае, если пакет 'avto-dev/static-references-laravel' установлен.
-     *
-     * @return bool
-     */
-    protected function staticReferencesIsInstalled()
-    {
-        return class_exists(StaticReferencesServiceProvider::class);
+        return false;
     }
 }

@@ -7,9 +7,6 @@ use Illuminate\Contracts\Console\Kernel;
 use AvtoDev\IDEntity\IDEntitiesServiceProvider;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
-/**
- * Class AbstractTestCase.
- */
 abstract class AbstractTestCase extends BaseTestCase
 {
     /**

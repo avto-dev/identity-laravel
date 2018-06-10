@@ -8,8 +8,6 @@ use AvtoDev\IDEntity\Helpers\Normalizer;
 use AvtoDev\IDEntity\Helpers\Transliterator;
 
 /**
- * Class IDEntityChassis.
- *
  * Идентификатор - номер шасси.
  */
 class IDEntityChassis extends AbstractTypedIDEntity
@@ -29,22 +27,22 @@ class IDEntityChassis extends AbstractTypedIDEntity
     {
         try {
             // Заменяем множественные пробелы - одиночными
-            $value = preg_replace('~\s+~u', ' ', trim((string) $value));
+            $value = \preg_replace('~\s+~u', ' ', trim((string) $value));
 
             // Заменяем пробелы - дефисами
-            $value = preg_replace('~[[:space:]]+~', '-', $value);
+            $value = \preg_replace('~[[:space:]]+~', '-', $value);
 
             // Номализуем символы дефиса
-            $value = Normalizer::normalizeDashChar($value);
+            $value = (string) Normalizer::normalizeDashChar($value);
 
             // Производим замену кириллических символов на латинские аналоги
             $value = Transliterator::transliterateString(Str::upper($value), true);
 
             // Удаляем все символы, кроме разрешенных
-            $value = preg_replace('~[^A-Z0-9\-]~u', '', $value);
+            $value = \preg_replace('~[^A-Z0-9\-]~u', '', $value);
 
             // Заменяем множественные дефисы - одиночными
-            $value = preg_replace('~\-+~', '-', $value);
+            $value = \preg_replace('~\-+~', '-', $value);
 
             return $value;
         } catch (Exception $e) {

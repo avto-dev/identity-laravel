@@ -5,8 +5,6 @@ namespace AvtoDev\IDEntity\Types;
 use Exception;
 
 /**
- * Class IDEntityUnknown.
- *
  * Неизвестный идентификатор.
  */
 class IDEntityUnknown extends AbstractTypedIDEntity

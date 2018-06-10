@@ -5,8 +5,6 @@ namespace AvtoDev\IDEntity\Types;
 use AvtoDev\StaticReferences\References\AutoRegions\AutoRegionEntry;
 
 /**
- * Interface HasRegionDataInterface.
- *
  * Сущность, содержащая данные о регионе.
  */
 interface HasRegionDataInterface

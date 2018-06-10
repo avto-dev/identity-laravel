@@ -7,8 +7,6 @@ use AvtoDev\IDEntity\IDEntity;
 use Illuminate\Contracts\Validation\Factory as ValidationFactory;
 
 /**
- * Class AbstractTypedIDEntity.
- *
  * Абстрактный класс типизированного идентификатора.
  */
 abstract class AbstractTypedIDEntity extends IDEntity implements TypedIDEntityInterface
@@ -88,7 +86,7 @@ abstract class AbstractTypedIDEntity extends IDEntity implements TypedIDEntityIn
      */
     public function getMaskedValue($start_offset = 3, $end_offset = 3, $mask_char = '*')
     {
-        return empty($current = $this->getValue())
+        return ($current = $this->getValue()) === null
             ? $current
             : $this->hideString($current, $start_offset, $end_offset, $mask_char);
     }
@@ -114,7 +112,7 @@ abstract class AbstractTypedIDEntity extends IDEntity implements TypedIDEntityIn
      */
     public function toJson($options = 0)
     {
-        return json_encode($this->toArray(), $options);
+        return \json_encode($this->toArray(), $options);
     }
 
     /**
@@ -125,7 +123,7 @@ abstract class AbstractTypedIDEntity extends IDEntity implements TypedIDEntityIn
         $value        = $this->getValue();
         $passed_count = 0;
 
-        foreach (($callbacks = (array) $this->getValidateCallbacks()) as $callback) {
+        foreach ($callbacks = (array) $this->getValidateCallbacks() as $callback) {
             if ($callback($value) === true) {
                 $passed_count++;
             } else {
@@ -133,7 +131,7 @@ abstract class AbstractTypedIDEntity extends IDEntity implements TypedIDEntityIn
             }
         }
 
-        return count($callbacks) === $passed_count;
+        return \count($callbacks) === $passed_count;
     }
 
     /**
@@ -152,7 +150,7 @@ abstract class AbstractTypedIDEntity extends IDEntity implements TypedIDEntityIn
      */
     protected function laravelValidatorFactory()
     {
-        return app()->make('validator');
+        return resolve('validator');
     }
 
     /**
@@ -180,27 +178,30 @@ abstract class AbstractTypedIDEntity extends IDEntity implements TypedIDEntityIn
      */
     protected function hideString($string, $start_offset = 3, $end_offset = 3, $mask_char = '*')
     {
-        $number_length = mb_strlen($string);
+        if (\is_string($mask_char) && ! empty($mask_char)) {
+            $mask_char = \mb_strlen($mask_char) > 1
+                ? \mb_substr($mask_char, 0, 1)
+                : $mask_char;
+        } else {
+            $mask_char = '*';
+        }
 
-        $mask_char = is_string($mask_char) && ! empty($mask_char)
-            ? (mb_strlen($mask_char) > 1
-                ? mb_substr($mask_char, 0, 1)
-                : $mask_char)
-            : '*';
+        $number_length = \mb_strlen($string);
 
         if ($number_length <= $start_offset + $end_offset) {
             return $string;
         }
 
-        $hidden_str = mb_substr($string, $start_offset, $number_length - ($start_offset + $end_offset));
+        $hidden_str    = \mb_substr($string, $start_offset, $number_length - ($start_offset + $end_offset));
+        $stars         = '';
+        $hidden_length = \mb_strlen($hidden_str);
 
-        $stars = '';
-
-        for ($i = 0; $i < mb_strlen($hidden_str); $i++) {
+        for ($i = 0; $i < $hidden_length; $i++) {
             $stars .= $mask_char;
         }
 
-        return mb_substr($string, 0, $start_offset) . $stars . mb_substr($string, $number_length - $end_offset,
-                $end_offset);
+        return \mb_substr($string, 0, $start_offset)
+               . $stars
+               . \mb_substr($string, $number_length - $end_offset, $end_offset);
     }
 }

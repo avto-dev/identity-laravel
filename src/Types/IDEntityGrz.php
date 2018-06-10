@@ -9,8 +9,6 @@ use AvtoDev\StaticReferences\References\AutoRegions\AutoRegions;
 use AvtoDev\StaticReferences\References\AutoRegions\AutoRegionEntry;
 
 /**
- * Class IDEntityGrz.
- *
  * Идентификатор - номер ГРЗ.
  */
 class IDEntityGrz extends AbstractTypedIDEntity implements HasRegionDataInterface
@@ -33,7 +31,7 @@ class IDEntityGrz extends AbstractTypedIDEntity implements HasRegionDataInterfac
             $value = Str::upper(trim((string) $value));
 
             // Удаляем все символы, кроме разрешенных
-            $value = preg_replace('~[^' . 'АВЕКМНОРСТУХ' . 'ABEKMHOPCTYX' . '0-9]~u', '', $value);
+            $value = \preg_replace('~[^' . 'АВЕКМНОРСТУХ' . 'ABEKMHOPCTYX' . '0-9]~u', '', $value);
 
             // Производим замену латинских аналогов на кириллические (обратная транслитерация). Не прогоняю по всем
             // возможными символам, так как регулярка что выше всё кроме них как раз и удаляет
@@ -52,13 +50,13 @@ class IDEntityGrz extends AbstractTypedIDEntity implements HasRegionDataInterfac
      */
     public function getRegionCode()
     {
-        preg_match('~(?<region_code>(7[1579]\d{1}|1\d{2}|\d{1,2}))$~D', $value = $this->getValue(), $matches);
+        \preg_match('~(?<region_code>(7[1579]\d{1}|1\d{2}|\d{1,2}))$~D', $value = $this->getValue(), $matches);
 
         if (isset($matches['region_code']) && ! empty($region_code = $matches['region_code'])) {
             if (Str::length($region_code) === 3) {
                 // В случае, если ГРЗ имеет вид 'АА77777' то проверяем - перед кодом региона всего 2 цифры? И если да -
                 // то уменьшаем код региона на один символ
-                if (preg_match("~\D\d{5}$~D", $value) === 1) {
+                if (\preg_match("~\D\d{5}$~D", $value) === 1) {
                     $region_code = Str::substr($region_code, 1);
                 } elseif (Str::startsWith($region_code, '10') && ! Str::endsWith($region_code, '2')) {
                     // Только '102' регион начинается с 10. В противном случае это говорит о том что '1' в начале лишняя

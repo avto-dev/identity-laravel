@@ -5,8 +5,6 @@ namespace AvtoDev\IDEntity\Helpers;
 use Illuminate\Support\Str;
 
 /**
- * Class Transliterator.
- *
  * Статический транслитератор / де-транслитератор.
  */
 class Transliterator
@@ -80,7 +78,7 @@ class Transliterator
      */
     public static function transliterateLite($string)
     {
-        return str_replace(
+        return \str_replace(
             static::$lite_cyr_map,
             static::$lite_latin_map,
             (string) $string
@@ -96,7 +94,7 @@ class Transliterator
      */
     public static function detransliterateLite($string)
     {
-        return str_replace(
+        return \str_replace(
             static::$lite_latin_map,
             static::$lite_cyr_map,
             (string) $string
@@ -117,7 +115,7 @@ class Transliterator
         $string = (string) $string;
 
         if ($safe_mode === true) {
-            $string = str_replace(
+            $string = \str_replace(
                 static::$cyr_chars,
                 static::$latin_safe_analogs,
                 $string
@@ -137,7 +135,7 @@ class Transliterator
      */
     public static function detransliterateString($string, $after_safe_mode = false)
     {
-        return str_replace(
+        return \str_replace(
             $after_safe_mode === true
                 ? static::$latin_safe_analogs
                 : static::$latin_analogs,
