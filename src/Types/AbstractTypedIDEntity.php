@@ -19,6 +19,13 @@ abstract class AbstractTypedIDEntity extends IDEntity implements TypedIDEntityIn
     protected $value;
 
     /**
+     * Может ли тип быть автоматически определяемым.
+     *
+     * @var bool
+     */
+    protected $can_autodetect = true;
+
+    /**
      * AbstractTypedIDEntity constructor.
      *
      * @param string $value
@@ -132,6 +139,14 @@ abstract class AbstractTypedIDEntity extends IDEntity implements TypedIDEntityIn
         }
 
         return \count($callbacks) === $passed_count;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function canAutodetect()
+    {
+        return $this->can_autodetect === true;
     }
 
     /**

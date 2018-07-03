@@ -115,12 +115,12 @@ class IDEntity implements IDEntityInterface
             return new $class_name($value, true);
         }
 
-        // Если указан тип "авто-определение" - то поочерёдно создаем каждый тип, и проверяем соответствие методом
-        // валидации
+        // Если указан тип "авто-определение" - то поочерёдно создаем каждый тип, проверяем, может ли он быть
+        // автоматически определяемым, и проверяем соответствие методом валидации
         if ($type === self::ID_TYPE_AUTO) {
             foreach (static::getTypesMap() as $class_name) {
                 /** @var TypedIDEntityInterface $instance */
-                if (($instance = new $class_name($value, true)) && $instance->isValid()) {
+                if (($instance = new $class_name($value, true)) && $instance->canAutodetect() && $instance->isValid()) {
                     return $instance;
                 }
             }
