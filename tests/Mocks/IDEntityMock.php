@@ -21,7 +21,7 @@ class IDEntityMock extends IDEntity
     {
         // Добавляем новый тип, который не должен возвращаться автоматическим определением
         return array_merge(parent::getTypesMap(), [
-            IDEntityCantAutodetectMock::TYPE => IDEntityCantAutodetectMock::class
+            IDEntityCantAutodetectMock::TYPE => IDEntityCantAutodetectMock::class,
         ]);
     }
 }
