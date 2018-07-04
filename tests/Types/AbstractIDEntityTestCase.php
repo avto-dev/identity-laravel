@@ -211,7 +211,7 @@ abstract class AbstractIDEntityTestCase extends AbstractTestCase
      */
     public function testCanAutodetect()
     {
-        $this->assertTrue($this->instance->canBeAutodetect());
+        $this->assertTrue($this->instance->canBeAutoDetected());
     }
 
     /**

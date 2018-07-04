@@ -11,7 +11,7 @@ class IDEntityCantAutodetectMock extends AbstractTypedIDEntity
     /**
      * {@inheritdoc}
      */
-    protected $can_be_autodetect = false;
+    protected $can_be_auto_detected = false;
 
     /**
      * {@inheritdoc}

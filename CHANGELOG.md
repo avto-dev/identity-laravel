@@ -1,10 +1,15 @@
 # Changelog
 
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog][keepachangelog] and this project adheres to [Semantic Versioning][semver].
+
 ## v2.3.0
 
 ### Added
 
-- Added `can_be_autodetect` property
+- Property `can_be_auto_detected` to the `AbstractTypedIDEntity`
+- Method `canBeAutoDetected` to the `AbstractTypedIDEntity` and `TypedIDEntityInterface` [#3]
 
 ## v2.2.0
 
@@ -71,3 +76,8 @@
 ### Changed
 
 - Composer dependencies versions updated
+
+[#3]:https://github.com/avto-dev/identity-laravel/issues/3
+
+[keepachangelog]:https://keepachangelog.com/en/1.0.0/
+[semver]:https://semver.org/spec/v2.0.0.html

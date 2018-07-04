@@ -149,7 +149,7 @@ class IDEntityTest extends AbstractTestCase
     public function testCanAutodetectMethod()
     {
         $instance = new IDEntityCantAutodetectMock('');
-        $this->assertFalse($instance->canBeAutodetect());
+        $this->assertFalse($instance->canBeAutoDetected());
     }
 
     /**
@@ -232,6 +232,8 @@ class IDEntityTest extends AbstractTestCase
 
     /**
      * Проверяем, что тип не может автоматически определяться.
+     *
+     * @return void
      */
     public function testOneTypeCantAutodetect()
     {
@@ -249,6 +251,16 @@ class IDEntityTest extends AbstractTestCase
             IDEntity::ID_TYPE_BODY               => IDEntityBody::class,
             IDEntity::ID_TYPE_VIN                => IDEntityVin::class,
             IDEntityCantAutodetectMock::TYPE     => IDEntityCantAutodetectMock::class,
+            IDEntity::ID_TYPE_GRZ                => $except = IDEntityGrz::class,
+        ]);
+
+        $this->assertInstanceOf($except, $mock::make('А111АА77'));
+
+        /* @var IDEntity $mock */
+        $mock = $this->createIDEntityMock([
+            IDEntityCantAutodetectMock::TYPE     => IDEntityCantAutodetectMock::class,
+            IDEntity::ID_TYPE_BODY               => IDEntityBody::class,
+            IDEntity::ID_TYPE_VIN                => IDEntityVin::class,
             IDEntity::ID_TYPE_GRZ                => $except = IDEntityGrz::class,
         ]);
 

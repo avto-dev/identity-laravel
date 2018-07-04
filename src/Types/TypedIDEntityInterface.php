@@ -64,7 +64,7 @@ interface TypedIDEntityInterface extends Arrayable, Jsonable
      *
      * @return bool
      */
-    public function canBeAutodetect();
+    public function canBeAutoDetected();
 
     /**
      * Производит нормализацию входного значения согласно типу.
