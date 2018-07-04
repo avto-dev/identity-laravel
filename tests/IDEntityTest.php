@@ -2,14 +2,14 @@
 
 namespace AvtoDev\IDEntity\Tests;
 
-use AvtoDev\IDEntity\Tests\Mocks\Types\IDEntityInvalidCanAutodetectMock;
-use AvtoDev\IDEntity\Tests\Mocks\Types\IDEntityValidCanAutodetectMock;
-use AvtoDev\IDEntity\Tests\Mocks\Types\IDEntityValidCantAutodetectMock;
 use Exception;
 use AvtoDev\IDEntity\IDEntity;
 use AvtoDev\IDEntity\IDEntityInterface;
 use AvtoDev\IDEntity\Types\IDEntityUnknown;
 use AvtoDev\IDEntity\Tests\Mocks\IDEntityMock;
+use AvtoDev\IDEntity\Tests\Mocks\Types\IDEntityValidCanAutodetectMock;
+use AvtoDev\IDEntity\Tests\Mocks\Types\IDEntityValidCantAutodetectMock;
+use AvtoDev\IDEntity\Tests\Mocks\Types\IDEntityInvalidCanAutodetectMock;
 
 /**
  * Class IDEntityTest.
@@ -270,7 +270,7 @@ class IDEntityTest extends AbstractTestCase
         $identities[] = $this->createIDEntityMock($types);
 
         foreach ($identities as $identity) {
-            /** @var IDEntity $identity */
+            /* @var IDEntity $identity */
             $this->assertInstanceOf(IDEntityValidCanAutodetectMock::class, $identity::make('foo'));
         }
     }
