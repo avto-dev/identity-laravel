@@ -1,5 +1,11 @@
 # Changelog
 
+## v2.3.0
+
+### Changed
+
+- Added `can_autodetect` property
+
 ## v2.2.0
 
 ### Changed

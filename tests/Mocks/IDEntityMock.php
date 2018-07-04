@@ -13,15 +13,4 @@ class IDEntityMock extends IDEntity
     {
         // Разрешаем конструктор
     }
-
-    /**
-     * @return array|string[]
-     */
-    protected static function getTypesMap()
-    {
-        // Добавляем новый тип, который не должен возвращаться автоматическим определением
-        return array_merge(parent::getTypesMap(), [
-            IDEntityCantAutodetectMock::TYPE => IDEntityCantAutodetectMock::class,
-        ]);
-    }
 }

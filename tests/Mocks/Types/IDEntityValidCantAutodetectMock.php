@@ -1,12 +1,10 @@
 <?php
 
-namespace AvtoDev\IDEntity\Tests\Mocks;
+namespace AvtoDev\IDEntity\Tests\Mocks\Types;
 
-use AvtoDev\IDEntity\Types\AbstractTypedIDEntity;
-
-class IDEntityCantAutodetectMock extends AbstractTypedIDEntity
+class IDEntityValidCantAutodetectMock extends AbstractTypeIDEntityMock
 {
-    const TYPE = 'CANT_AUTODETECT';
+    const TYPE = 'VALID_CANT_AUTODETECT';
 
     /**
      * {@inheritdoc}
@@ -29,13 +27,5 @@ class IDEntityCantAutodetectMock extends AbstractTypedIDEntity
         return function () {
             return true;
         };
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function normalize($value)
-    {
-        return $value;
     }
 }
