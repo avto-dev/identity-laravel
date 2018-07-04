@@ -5,8 +5,12 @@ namespace AvtoDev\IDEntity\Tests;
 use Exception;
 use AvtoDev\IDEntity\IDEntity;
 use AvtoDev\IDEntity\IDEntityInterface;
+use AvtoDev\IDEntity\Types\IDEntityGrz;
+use AvtoDev\IDEntity\Types\IDEntityVin;
+use AvtoDev\IDEntity\Types\IDEntityBody;
 use AvtoDev\IDEntity\Types\IDEntityUnknown;
 use AvtoDev\IDEntity\Tests\Mocks\IDEntityMock;
+use AvtoDev\IDEntity\Tests\Mocks\Types\IDEntityCantAutodetectMock;
 
 /**
  * Class IDEntityTest.
@@ -140,6 +144,15 @@ class IDEntityTest extends AbstractTestCase
     }
 
     /**
+     * Проверяем, что возможность автоматического определения сущности задается свойством
+     */
+    public function testCanAutodetectMethod()
+    {
+        $instance = new IDEntityCantAutodetectMock('');
+        $this->assertFalse($instance->canBeAutodetect());
+    }
+
+    /**
      * Тест метода 'make' с передачей конкретного типа.
      *
      * @return void
@@ -218,6 +231,31 @@ class IDEntityTest extends AbstractTestCase
     }
 
     /**
+     * Проверяем, что тип не может автоматически определяться.
+     */
+    public function testOneTypeCantAutodetect()
+    {
+        /* @var IDEntity $mock */
+        $mock = $this->createIDEntityMock([
+            IDEntity::ID_TYPE_VIN                => IDEntityVin::class,
+            IDEntity::ID_TYPE_GRZ                => $except = IDEntityGrz::class,
+            IDEntityCantAutodetectMock::TYPE     => IDEntityCantAutodetectMock::class,
+        ]);
+
+        $this->assertInstanceOf($except, $mock::make('А111АА77'));
+
+        /* @var IDEntity $mock */
+        $mock = $this->createIDEntityMock([
+            IDEntity::ID_TYPE_BODY               => IDEntityBody::class,
+            IDEntity::ID_TYPE_VIN                => IDEntityVin::class,
+            IDEntityCantAutodetectMock::TYPE     => IDEntityCantAutodetectMock::class,
+            IDEntity::ID_TYPE_GRZ                => $except = IDEntityGrz::class,
+        ]);
+
+        $this->assertInstanceOf($except, $mock::make('А111АА77'));
+    }
+
+    /**
      * Тест метода 'is'.
      *
      * @return void
@@ -253,5 +291,22 @@ class IDEntityTest extends AbstractTestCase
         $this->assertTrue(IDEntity::is('JF1SJ5LC5DG048667', [IDEntity::ID_TYPE_VIN, IDEntity::ID_TYPE_CHASSIS]));
         $this->assertFalse(IDEntity::is('А123АА177', [IDEntity::ID_TYPE_VIN, IDEntity::ID_TYPE_PTS]));
         $this->assertFalse(IDEntity::is('JF1SJ5LC5DG048667', [IDEntity::ID_TYPE_STS, IDEntity::ID_TYPE_GRZ]));
+    }
+
+    /**
+     * @param array $types_map
+     *
+     * @return \Mockery\Mock
+     */
+    protected function createIDEntityMock($types_map)
+    {
+        $mock = \Mockery::mock(IDEntity::class)->makePartial();
+        $mock->shouldAllowMockingProtectedMethods();
+
+        $mock
+            ->shouldReceive('getTypesMap')
+            ->andReturn($types_map);
+
+        return $mock;
     }
 }

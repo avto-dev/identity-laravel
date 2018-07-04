@@ -207,6 +207,14 @@ abstract class AbstractIDEntityTestCase extends AbstractTestCase
     }
 
     /**
+     * Проверяем, что по умолчанию идентификатор доступен для автоматического определения.
+     */
+    public function testCanAutodetect()
+    {
+        $this->assertTrue($this->instance->canBeAutodetect());
+    }
+
+    /**
      * Возвращает имя тестируемого класса типизированной сущности.
      *
      * @return string

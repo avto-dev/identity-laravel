@@ -60,6 +60,13 @@ interface TypedIDEntityInterface extends Arrayable, Jsonable
     public function isValid();
 
     /**
+     * Производит проверку на возможность идентификатора быть автоматически определяемым.
+     *
+     * @return bool
+     */
+    public function canBeAutodetect();
+
+    /**
      * Производит нормализацию входного значения согласно типу.
      *
      * @param string $value
