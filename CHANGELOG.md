@@ -2,9 +2,9 @@
 
 ## v2.3.0
 
-### Changed
+### Added
 
-- Added `can_autodetect` property
+- Added `can_be_autodetect` property
 
 ## v2.2.0
 

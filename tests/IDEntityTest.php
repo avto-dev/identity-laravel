@@ -5,11 +5,12 @@ namespace AvtoDev\IDEntity\Tests;
 use Exception;
 use AvtoDev\IDEntity\IDEntity;
 use AvtoDev\IDEntity\IDEntityInterface;
+use AvtoDev\IDEntity\Types\IDEntityGrz;
+use AvtoDev\IDEntity\Types\IDEntityVin;
+use AvtoDev\IDEntity\Types\IDEntityBody;
 use AvtoDev\IDEntity\Types\IDEntityUnknown;
 use AvtoDev\IDEntity\Tests\Mocks\IDEntityMock;
-use AvtoDev\IDEntity\Tests\Mocks\Types\IDEntityValidCanAutodetectMock;
-use AvtoDev\IDEntity\Tests\Mocks\Types\IDEntityValidCantAutodetectMock;
-use AvtoDev\IDEntity\Tests\Mocks\Types\IDEntityInvalidCanAutodetectMock;
+use AvtoDev\IDEntity\Tests\Mocks\Types\IDEntityCantAutodetectMock;
 
 /**
  * Class IDEntityTest.
@@ -147,11 +148,8 @@ class IDEntityTest extends AbstractTestCase
      */
     public function testCanAutodetectMethod()
     {
-        $instance = new IDEntityValidCanAutodetectMock('');
-        $this->assertTrue($instance->canAutodetect());
-
-        $instance = new IDEntityValidCantAutodetectMock('');
-        $this->assertFalse($instance->canAutodetect());
+        $instance = new IDEntityCantAutodetectMock('');
+        $this->assertFalse($instance->canBeAutodetect());
     }
 
     /**
@@ -237,42 +235,24 @@ class IDEntityTest extends AbstractTestCase
      */
     public function testOneTypeCantAutodetect()
     {
-        $types = [
-            IDEntityInvalidCanAutodetectMock::TYPE => IDEntityInvalidCanAutodetectMock::class,
-            IDEntityValidCanAutodetectMock::TYPE   => IDEntityValidCanAutodetectMock::class,
-            IDEntityValidCantAutodetectMock::TYPE  => IDEntityValidCantAutodetectMock::class,
-        ];
+        /* @var IDEntity $mock */
+        $mock = $this->createIDEntityMock([
+            IDEntity::ID_TYPE_VIN                => IDEntityVin::class,
+            IDEntity::ID_TYPE_GRZ                => $except = IDEntityGrz::class,
+            IDEntityCantAutodetectMock::TYPE     => IDEntityCantAutodetectMock::class,
+        ]);
 
-        $identities[] = $this->createIDEntityMock($types);
+        $this->assertInstanceOf($except, $mock::make('А111АА77'));
 
-        $types = [
-            IDEntityValidCantAutodetectMock::TYPE  => IDEntityValidCantAutodetectMock::class,
-            IDEntityInvalidCanAutodetectMock::TYPE => IDEntityInvalidCanAutodetectMock::class,
-            IDEntityValidCanAutodetectMock::TYPE   => IDEntityValidCanAutodetectMock::class,
-        ];
+        /* @var IDEntity $mock */
+        $mock = $this->createIDEntityMock([
+            IDEntity::ID_TYPE_BODY               => IDEntityBody::class,
+            IDEntity::ID_TYPE_VIN                => IDEntityVin::class,
+            IDEntityCantAutodetectMock::TYPE     => IDEntityCantAutodetectMock::class,
+            IDEntity::ID_TYPE_GRZ                => $except = IDEntityGrz::class,
+        ]);
 
-        $identities[] = $this->createIDEntityMock($types);
-
-        $types = [
-            IDEntityValidCanAutodetectMock::TYPE   => IDEntityValidCanAutodetectMock::class,
-            IDEntityValidCantAutodetectMock::TYPE  => IDEntityValidCantAutodetectMock::class,
-            IDEntityInvalidCanAutodetectMock::TYPE => IDEntityInvalidCanAutodetectMock::class,
-        ];
-
-        $identities[] = $this->createIDEntityMock($types);
-
-        $types = [
-            IDEntityValidCantAutodetectMock::TYPE  => IDEntityValidCantAutodetectMock::class,
-            IDEntityValidCanAutodetectMock::TYPE   => IDEntityValidCanAutodetectMock::class,
-            IDEntityInvalidCanAutodetectMock::TYPE => IDEntityInvalidCanAutodetectMock::class,
-        ];
-
-        $identities[] = $this->createIDEntityMock($types);
-
-        foreach ($identities as $identity) {
-            /* @var IDEntity $identity */
-            $this->assertInstanceOf(IDEntityValidCanAutodetectMock::class, $identity::make('foo'));
-        }
+        $this->assertInstanceOf($except, $mock::make('А111АА77'));
     }
 
     /**

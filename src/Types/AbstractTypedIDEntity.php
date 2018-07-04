@@ -23,7 +23,7 @@ abstract class AbstractTypedIDEntity extends IDEntity implements TypedIDEntityIn
      *
      * @var bool
      */
-    protected $can_autodetect = true;
+    protected $can_be_autodetect = true;
 
     /**
      * AbstractTypedIDEntity constructor.
@@ -144,9 +144,9 @@ abstract class AbstractTypedIDEntity extends IDEntity implements TypedIDEntityIn
     /**
      * {@inheritdoc}
      */
-    public function canAutodetect()
+    public function canBeAutodetect()
     {
-        return $this->can_autodetect === true;
+        return $this->can_be_autodetect === true;
     }
 
     /**

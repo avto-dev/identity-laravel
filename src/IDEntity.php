@@ -122,7 +122,7 @@ class IDEntity implements IDEntityInterface
                 /** @var TypedIDEntityInterface $instance */
                 $instance = new $class_name($value, true);
 
-                if ($instance->canAutodetect() && $instance->isValid()) {
+                if ($instance->canBeAutodetect() && $instance->isValid()) {
                     return $instance;
                 }
             }
