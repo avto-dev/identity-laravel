@@ -19,7 +19,7 @@
 Require this package with composer using the next command:
 
 ```shell
-$ composer require avto-dev/identity-laravel "^2.3"
+$ composer require avto-dev/identity-laravel "^2.4"
 ```
 
 > Installed `composer` is required. To install composer, please [click here][getcomposer].
@@ -34,6 +34,12 @@ $ composer require avto-dev/identity-laravel "^2.3"
 >     AvtoDev\IDEntity\IDEntitiesServiceProvider::class,
 > ];
 > ```
+
+После этого вы можете опубликовать конфигурационный файл пакета с помощью следующей команды:
+
+```shell
+$ ./artisan vendor:publish --provider="AvtoDev\IDEntity\IDEntitiesServiceProvider"
+```
 
 ### Dependent packages
 
@@ -66,6 +72,8 @@ This package has next packages in dependencies:
  * Нормализацию - приведение к нормальному виду;
  * Валидацию - произведение проверки корректности значения;
  * Автоматическое определение типа (работает не всегда корректно, так как форматы некоторых идентификаторов идентичны).
+
+> Опционально вы можете в конфигурационном файле указать те провайдеры типизированных идентификаторов, которые вам необходимы.
 
 ### Примеры использования
 

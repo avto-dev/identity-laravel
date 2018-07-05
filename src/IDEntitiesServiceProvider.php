@@ -9,6 +9,26 @@ use AvtoDev\ExtendedLaravelValidator\ExtendedValidatorServiceProvider;
 class IDEntitiesServiceProvider extends IlluminateServiceProvider
 {
     /**
+     * Get config root key name.
+     *
+     * @return string
+     */
+    public static function getConfigRootKeyName()
+    {
+        return \basename(static::getConfigPath(), '.php');
+    }
+
+    /**
+     * Returns path to the configuration file.
+     *
+     * @return string
+     */
+    public static function getConfigPath()
+    {
+        return __DIR__ . '/config/identity.php';
+    }
+
+    /**
      * Bootstrap services.
      *
      * @return void
@@ -43,5 +63,29 @@ class IDEntitiesServiceProvider extends IlluminateServiceProvider
         }
 
         return false;
+    }
+
+    /**
+     * Register package services.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        $this->initializeConfigs();
+    }
+
+    /**
+     * Initialize configs.
+     *
+     * @return void
+     */
+    protected function initializeConfigs()
+    {
+        $this->mergeConfigFrom(static::getConfigPath(), static::getConfigRootKeyName());
+
+        $this->publishes([
+            \realpath(static::getConfigPath()) => config_path(\basename(static::getConfigPath())),
+        ], 'config');
     }
 }

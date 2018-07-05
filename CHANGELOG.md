@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog][keepachangelog] and this project adheres to [Semantic Versioning][semver].
 
+## v2.4.0
+
+### Added
+
+- Package config file. That can extends package types map. [#2]
+
 ## v2.3.0
 
 ### Added
@@ -77,6 +83,7 @@ The format is based on [Keep a Changelog][keepachangelog] and this project adher
 
 - Composer dependencies versions updated
 
+[#2]:https://github.com/avto-dev/identity-laravel/issues/2
 [#3]:https://github.com/avto-dev/identity-laravel/issues/3
 
 [keepachangelog]:https://keepachangelog.com/en/1.0.0/

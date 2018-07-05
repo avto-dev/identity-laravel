@@ -150,11 +150,11 @@ class IDEntity implements IDEntityInterface
      *
      * Порядок элементов важен для механизма автоматического определения типа.
      *
-     * @return string[]
+     * @return string[]|array
      */
     protected static function getTypesMap()
     {
-        return [
+        return array_replace([
             self::ID_TYPE_VIN                   => Types\IDEntityVin::class,
             self::ID_TYPE_GRZ                   => Types\IDEntityGrz::class,
             self::ID_TYPE_STS                   => Types\IDEntitySts::class,
@@ -162,7 +162,20 @@ class IDEntity implements IDEntityInterface
             self::ID_TYPE_BODY                  => Types\IDEntityBody::class,
             self::ID_TYPE_CHASSIS               => Types\IDEntityChassis::class,
             self::ID_TYPE_DRIVER_LICENSE_NUMBER => Types\IDEntityDriverLicenseNumber::class,
-        ];
+        ], static::getExtendedTypesMap());
+    }
+
+    /**
+     * Get an extended types map, declared in configuration file.
+     *
+     * @return string[]|array
+     */
+    protected static function getExtendedTypesMap()
+    {
+        return (array) resolve('config')->get(implode('.', [
+            IDEntitiesServiceProvider::getConfigRootKeyName(),
+            'extended_types_map'
+        ]));
     }
 
     /**

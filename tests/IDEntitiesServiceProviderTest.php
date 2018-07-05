@@ -33,4 +33,35 @@ class IDEntitiesServiceProviderTest extends AbstractTestCase
             $this->assertContains($class_name, \array_keys($loaded_providers));
         }
     }
+
+    /**
+     * Test service provider public methods.
+     *
+     * @return void
+     */
+    public function testServiceProviderMethods()
+    {
+        $this->assertEquals('identity', IDEntitiesServiceProvider::getConfigRootKeyName());
+
+        $this->assertEquals(
+            \realpath(__DIR__ . '/../src/config/identity.php'),
+            IDEntitiesServiceProvider::getConfigPath()
+        );
+    }
+
+    /**
+     * Test package configs.
+     *
+     * @return void
+     */
+    public function testPackageConfig()
+    {
+        $original_config_content = require __DIR__ . '/../src/config/identity.php';
+
+        $this->assertInternalType('array', $original_config_content);
+        $this->assertArrayHasKey('extended_types_map', $original_config_content);
+        $this->assertEmpty($original_config_content['extended_types_map']);
+
+        $this->assertEquals($this->app->make('config')->get('identity'), $original_config_content);
+    }
 }

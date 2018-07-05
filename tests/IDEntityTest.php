@@ -2,6 +2,7 @@
 
 namespace AvtoDev\IDEntity\Tests;
 
+use AvtoDev\IDEntity\Tests\Traits\InstancesAccessorsTrait;
 use Exception;
 use AvtoDev\IDEntity\IDEntity;
 use AvtoDev\IDEntity\IDEntityInterface;
@@ -17,6 +18,8 @@ use AvtoDev\IDEntity\Tests\Mocks\Types\IDEntityCantAutodetectMock;
  */
 class IDEntityTest extends AbstractTestCase
 {
+    use InstancesAccessorsTrait;
+
     /**
      * @var IDEntityMock
      */
@@ -303,6 +306,44 @@ class IDEntityTest extends AbstractTestCase
         $this->assertTrue(IDEntity::is('JF1SJ5LC5DG048667', [IDEntity::ID_TYPE_VIN, IDEntity::ID_TYPE_CHASSIS]));
         $this->assertFalse(IDEntity::is('А123АА177', [IDEntity::ID_TYPE_VIN, IDEntity::ID_TYPE_PTS]));
         $this->assertFalse(IDEntity::is('JF1SJ5LC5DG048667', [IDEntity::ID_TYPE_STS, IDEntity::ID_TYPE_GRZ]));
+    }
+
+    /**
+     * Test method that returns extended types map.
+     *
+     * @return void
+     */
+    public function testExtendedTypesMapMethod()
+    {
+        $extended_map = $this->callMethod($this->instance, 'getExtendedTypesMap');
+
+        $this->assertInternalType('array', $extended_map);
+
+        $this->app->make('config')->set('identity.extended_types_map', $expects = ['foo' => \stdClass::class]);
+
+        $this->assertEquals($expects, $this->callMethod($this->instance, 'getExtendedTypesMap'));
+    }
+
+    /**
+     * Test map extending with package config.
+     *
+     * @return void
+     */
+    public function testExtendsGetTypesMapWithPackageConfig()
+    {
+        $original_map = $this->callMethod($this->instance, 'getTypesMap');
+
+        $this->assertNotEmpty($original_map);
+
+        $this->app->make('config')->set('identity.extended_types_map', $expects = ['foo' => $type = \stdClass::class]);
+
+        $map = $this->callMethod($this->instance, 'getTypesMap');
+
+        $this->assertEquals($type, $map['foo']);
+
+        foreach ($original_map as $expected_type => $expected_class) {
+            $this->assertEquals($map[$expected_type], $expected_class);
+        }
     }
 
     /**
