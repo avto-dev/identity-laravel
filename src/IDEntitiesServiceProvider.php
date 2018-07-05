@@ -48,6 +48,16 @@ class IDEntitiesServiceProvider extends IlluminateServiceProvider
     }
 
     /**
+     * Register package services.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        $this->initializeConfigs();
+    }
+
+    /**
      * Make check - service provider is loaded or not?
      *
      * @param string $class_name
@@ -63,16 +73,6 @@ class IDEntitiesServiceProvider extends IlluminateServiceProvider
         }
 
         return false;
-    }
-
-    /**
-     * Register package services.
-     *
-     * @return void
-     */
-    public function register()
-    {
-        $this->initializeConfigs();
     }
 
     /**

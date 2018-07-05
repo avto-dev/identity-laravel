@@ -2,7 +2,6 @@
 
 namespace AvtoDev\IDEntity\Tests;
 
-use AvtoDev\IDEntity\Tests\Traits\InstancesAccessorsTrait;
 use Exception;
 use AvtoDev\IDEntity\IDEntity;
 use AvtoDev\IDEntity\IDEntityInterface;
@@ -11,6 +10,7 @@ use AvtoDev\IDEntity\Types\IDEntityVin;
 use AvtoDev\IDEntity\Types\IDEntityBody;
 use AvtoDev\IDEntity\Types\IDEntityUnknown;
 use AvtoDev\IDEntity\Tests\Mocks\IDEntityMock;
+use AvtoDev\IDEntity\Tests\Traits\InstancesAccessorsTrait;
 use AvtoDev\IDEntity\Tests\Mocks\Types\IDEntityCantAutodetectMock;
 
 /**

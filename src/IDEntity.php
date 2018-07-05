@@ -174,7 +174,7 @@ class IDEntity implements IDEntityInterface
     {
         return (array) resolve('config')->get(implode('.', [
             IDEntitiesServiceProvider::getConfigRootKeyName(),
-            'extended_types_map'
+            'extended_types_map',
         ]));
     }
 
