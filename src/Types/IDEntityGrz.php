@@ -45,6 +45,18 @@ class IDEntityGrz extends AbstractTypedIDEntity implements HasRegionDataInterfac
     const GOST_TYPE_22 = 'TYPE_22'; // тип 22 - Для мотоциклов
 
     /**
+     * Разрешенные кириллические символы.
+     */
+    const KYR_CHARS = 'АВЕКМНОРСТУХ';
+
+    /**
+     * Латинские аналоги разрешенных кириллических символов.
+     *
+     * Внимание! Важно соответствие порядка символов со `self::CYR_CHARS`.
+     */
+    const KYR_ANALOGS = 'ABEKMHOPCTYX';
+
+    /**
      * Pattern and types map.
      */
     protected static $patterns_and_types_map = [
@@ -78,18 +90,6 @@ class IDEntityGrz extends AbstractTypedIDEntity implements HasRegionDataInterfac
             self::GOST_TYPE_22,
         ],
     ];
-
-    /**
-     * Разрешенные кириллические символы.
-     */
-    const KYR_CHARS = 'АВЕКМНОРСТУХ';
-
-    /**
-     * Латинские аналоги разрешенных кириллических символов.
-     *
-     * Внимание! Важно соответствие порядка символов со `self::CYR_CHARS`.
-     */
-    const KYR_ANALOGS = 'ABEKMHOPCTYX';
 
     /**
      * Get pattern format by passed GOST type.

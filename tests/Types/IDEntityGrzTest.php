@@ -110,7 +110,7 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
                 $instance::GOST_TYPE_4,
                 $instance::GOST_TYPE_5,
                 $instance::GOST_TYPE_7,
-                $instance::GOST_TYPE_8
+                $instance::GOST_TYPE_8,
             ]
         );
 
