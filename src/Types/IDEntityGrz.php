@@ -2,23 +2,181 @@
 
 namespace AvtoDev\IDEntity\Types;
 
+use AvtoDev\IDEntity\Helpers\Transliterator;
+use AvtoDev\StaticReferences\References\AutoRegions\AutoRegionEntry;
+use AvtoDev\StaticReferences\References\AutoRegions\AutoRegions;
 use Exception;
 use Illuminate\Support\Str;
-use AvtoDev\IDEntity\Helpers\Transliterator;
-use AvtoDev\StaticReferences\References\AutoRegions\AutoRegions;
-use AvtoDev\StaticReferences\References\AutoRegions\AutoRegionEntry;
 
 /**
  * Идентификатор - номер ГРЗ.
+ *
+ * @link <http://internet-law.ru/gosts/gost/7327/#53635> ГОСТ Р 50577-93
  */
 class IDEntityGrz extends AbstractTypedIDEntity implements HasRegionDataInterface
 {
+    /**
+     * Format patterns.
+     */
+    const
+        FORMAT_PATTERN_1 = 'X000XX77_OR_X000XX777',
+        FORMAT_PATTERN_2 = 'X000XX',
+        FORMAT_PATTERN_3 = 'XX00077',
+        FORMAT_PATTERN_4 = '0000XX77',
+        FORMAT_PATTERN_5 = 'XX000077',
+        FORMAT_PATTERN_6 = 'X000077',
+        FORMAT_PATTERN_7 = '000X77',
+        FORMAT_PATTERN_8 = '0000X77';
+
+    /**
+     * Types, declared in "ГОСТ Р 50577-93" (not all).
+     */
+    const
+        GOST_TYPE_1 = 'TYPE_1', // тип 1 - Для легковых, грузовых, грузопассажирских ТС и автобусов
+        GOST_TYPE_1A = 'TYPE_1A', // тип 1А - Для легковых ТС должностных лиц
+        GOST_TYPE_1B = 'TYPE_1B',  // тип 1Б - Для легковых ТС, исп. для перевозки людей на коммерч. основе, автобусов
+        GOST_TYPE_2 = 'TYPE_2', // тип 2 - Для автомобильных прицепов и полуприцепов
+        GOST_TYPE_3 = 'TYPE_3', // тип 3 - Для тракторов, самоход. дорожно-строительных машин и иных машин и прицепов
+        GOST_TYPE_4 = 'TYPE_4', // тип 4 - Для мотоциклов, мотороллеров, мопедов
+        GOST_TYPE_5 = 'TYPE_5', // тип 5 - Для легковых, грузовых, грузопассажирских автомобилей и автобусов
+        GOST_TYPE_6 = 'TYPE_6', // тип 6 - Для автомобильных прицепов и полуприцепов
+        GOST_TYPE_7 = 'TYPE_7', // тип 7 - Для тракторов, самоход. дорожно-строительных машин и иных машин и прицепов
+        GOST_TYPE_8 = 'TYPE_8', // тип 8 - Для мотоциклов, мотороллеров, мопедов
+        GOST_TYPE_20 = 'TYPE_20', // тип 20 - Для легковых, грузовых, грузопассажирских автомобилей и автобусов
+        GOST_TYPE_21 = 'TYPE_21', // тип 21 - Для автомобильных прицепов и полуприцепов
+        GOST_TYPE_22 = 'TYPE_22'; // тип 22 - Для мотоциклов
+
+    /**
+     * Pattern and types map.
+     */
+    const PATTERNS_AND_TYPES_MAP = [
+        self::FORMAT_PATTERN_1 => [ // X000XX77_OR_X000XX777
+            self::GOST_TYPE_1,
+        ],
+        self::FORMAT_PATTERN_2 => [ // X000XX
+            self::GOST_TYPE_1A,
+        ],
+        self::FORMAT_PATTERN_3 => [ // XX00077
+            self::GOST_TYPE_1B,
+            self::GOST_TYPE_2,
+        ],
+        self::FORMAT_PATTERN_4 => [ // 0000XX77
+            self::GOST_TYPE_3,
+            self::GOST_TYPE_4,
+            self::GOST_TYPE_5,
+            self::GOST_TYPE_7,
+            self::GOST_TYPE_8,
+        ],
+        self::FORMAT_PATTERN_5 => [ // XX000077
+            self::GOST_TYPE_6,
+        ],
+        self::FORMAT_PATTERN_6 => [ // X000077
+            self::GOST_TYPE_20,
+        ],
+        self::FORMAT_PATTERN_7 => [ // 000X77
+            self::GOST_TYPE_21,
+        ],
+        self::FORMAT_PATTERN_8 => [ // 0000X77
+            self::GOST_TYPE_22,
+        ],
+    ];
+
+    /**
+     * Разрешенные кириллические символы.
+     */
+    const KYR_CHARS = 'АВЕКМНОРСТУХ';
+
+    /**
+     * Латинские аналоги разрешенных кириллических символов.
+     *
+     * Внимание! Важно соответствие порядка символов со `self::CYR_CHARS`.
+     */
+    const KYR_ANALOGS = 'ABEKMHOPCTYX';
+
+    /**
+     * Get pattern format by passed GOST type.
+     *
+     * @param string $gost_type
+     *
+     * @return string|null
+     */
+    public static function getFormatPatternByGostType($gost_type)
+    {
+        foreach (self::PATTERNS_AND_TYPES_MAP as $format_pattern => $gost_types) {
+            foreach ((array) $gost_types as $iterated_gost_type) {
+                if ($iterated_gost_type === $gost_type) {
+                    return $format_pattern;
+                }
+            }
+        }
+    }
+
+    /**
+     * Get GOST types by passed format pattern.
+     *
+     * @param string $pattern
+     *
+     * @return string[]|null
+     */
+    public static function getGostTypesByPattern($pattern)
+    {
+        return isset(self::PATTERNS_AND_TYPES_MAP[$pattern])
+            ? self::PATTERNS_AND_TYPES_MAP[$pattern]
+            : null;
+    }
+    
     /**
      * {@inheritdoc}
      */
     public function getType()
     {
         return static::ID_TYPE_GRZ;
+    }
+
+    /**
+     * Returns value format pattern.
+     *
+     * @return string|null
+     */
+    public function getFormatPattern()
+    {
+        static $kyr = self::KYR_CHARS;
+
+        switch (true) {
+            // X000XX77_OR_X000XX777
+            case \preg_match("~^[{$kyr}]{1}\d{3}[{$kyr}]{2}\d{2,3}$~iu", $this->value) === 1:
+                return self::FORMAT_PATTERN_1;
+
+            // X000XX
+            case \preg_match("~^[{$kyr}]{1}\d{3}[{$kyr}]{2}$~iu", $this->value) === 1:
+                return self::FORMAT_PATTERN_2;
+
+            // XX00077
+            case \preg_match("~^[{$kyr}]{2}\d{3}\d{2}$~iu", $this->value) === 1:
+                return self::FORMAT_PATTERN_3;
+
+            // 0000XX77
+            case \preg_match("~^\d{4}[{$kyr}]{2}\d{2}$~iu", $this->value) === 1:
+                return self::FORMAT_PATTERN_4;
+
+            // XX000077
+            case \preg_match("~^[{$kyr}]{2}\d{4}\d{2}$~iu", $this->value) === 1:
+                return self::FORMAT_PATTERN_5;
+
+            // X000077
+            case \preg_match("~^[{$kyr}]{1}\d{4}\d{2}$~iu", $this->value) === 1:
+                return self::FORMAT_PATTERN_6;
+
+            // 000X77
+            case \preg_match("~^\d{3}[{$kyr}]{1}\d{2}$~iu", $this->value) === 1:
+                return self::FORMAT_PATTERN_7;
+
+            // 0000X77
+            case \preg_match("~^\d{4}[{$kyr}]{1}\d{2}$~iu", $this->value) === 1:
+                return self::FORMAT_PATTERN_8;
+        }
+
+        return null;
     }
 
     /**
@@ -31,7 +189,7 @@ class IDEntityGrz extends AbstractTypedIDEntity implements HasRegionDataInterfac
             $value = Str::upper(trim((string) $value));
 
             // Удаляем все символы, кроме разрешенных
-            $value = \preg_replace('~[^' . 'АВЕКМНОРСТУХ' . 'ABEKMHOPCTYX' . '0-9]~u', '', $value);
+            $value = \preg_replace('~[^' . self::KYR_CHARS . self::KYR_ANALOGS . '0-9]~u', '', $value);
 
             // Производим замену латинских аналогов на кириллические (обратная транслитерация). Не прогоняю по всем
             // возможными символам, так как регулярка что выше всё кроме них как раз и удаляет
@@ -44,27 +202,38 @@ class IDEntityGrz extends AbstractTypedIDEntity implements HasRegionDataInterfac
     }
 
     /**
-     * Возвращает код региона ГРЗ номера.
+     * Возвращает код региона.
      *
      * @return int|null
      */
     public function getRegionCode()
     {
-        \preg_match('~(?<region_code>(7[1579]\d{1}|1\d{2}|\d{1,2}))$~D', $value = $this->getValue(), $matches);
+        $format_pattern = $this->getFormatPattern();
 
-        if (isset($matches['region_code']) && ! empty($region_code = $matches['region_code'])) {
-            if (Str::length($region_code) === 3) {
-                // В случае, если ГРЗ имеет вид 'АА77777' то проверяем - перед кодом региона всего 2 цифры? И если да -
-                // то уменьшаем код региона на один символ
-                if (\preg_match("~\D\d{5}$~D", $value) === 1) {
-                    $region_code = Str::substr($region_code, 1);
-                } elseif (Str::startsWith($region_code, '10') && ! Str::endsWith($region_code, '2')) {
-                    // Только '102' регион начинается с 10. В противном случае это говорит о том что '1' в начале лишняя
-                    $region_code = Str::substr($region_code, 2);
-                }
+        if ($format_pattern !== null) {
+            $matches = [];
+
+            switch ($format_pattern) {
+                case self::FORMAT_PATTERN_1: // X000XX77_OR_X000XX777
+                    \preg_match('~(?<region_code>\d{2,3})$~D', $this->value, $matches);
+                    break;
+
+                case self::FORMAT_PATTERN_2: // X000XX
+                    break;
+
+                case self::FORMAT_PATTERN_3: // XX00077
+                case self::FORMAT_PATTERN_4: // 0000XX77
+                case self::FORMAT_PATTERN_5: // XX000077
+                case self::FORMAT_PATTERN_6: // X000077
+                case self::FORMAT_PATTERN_7: // 000X77
+                case self::FORMAT_PATTERN_8: // 0000X77
+                    \preg_match('~(?<region_code>\d{2})$~D', $this->value, $matches);
+                    break;
             }
 
-            return (int) ltrim($region_code, '0');
+            if (isset($matches['region_code']) && ! empty($region_code = $matches['region_code'])) {
+                return (int) $region_code;
+            }
         }
     }
 
@@ -91,7 +260,11 @@ class IDEntityGrz extends AbstractTypedIDEntity implements HasRegionDataInterfac
                 return $this->validateWithValidatorRule($this->getValue(), 'required|string|grz_code');
             },
             function () {
-                // Регион существует
+                // Пропускаем проверку формата, в котором в принципе нет кода региона
+                if ($this->getFormatPattern() === self::FORMAT_PATTERN_2) {
+                    return true;
+                }
+
                 return $this->getRegionData() instanceof AutoRegionEntry;
             },
         ];

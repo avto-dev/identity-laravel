@@ -15,7 +15,7 @@
     ],
     "require": {
         "php": "^5.6 || >=7.0 <7.3",
-        "avto-dev/extended-laravel-validator": "^1.2",
+        "avto-dev/extended-laravel-validator": "^2.0",
         "avto-dev/static-references-laravel": "^2.2",
         "laravel/framework": ">=5.4.0 <5.7.0"
     },

@@ -4,6 +4,20 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog][keepachangelog] and this project adheres to [Semantic Versioning][semver].
 
+## v3.0.0
+
+### Changed
+
+- Minimal `avto-dev/extended-laravel-validator` package version now `2.0`
+- `IDEntityGrz` now now follows `ГОСТ Р 50577-93` excepts "transit" and "diplomatic" numbers formats (**be careful - this changes can break your previous code**)
+
+### Added
+
+- `IDEntityGrz` - constants with patters formats, GOST types and "patterns formats to GOST type" map
+- `IDEntityGrz` - method `getFormatPatternByGostType()`
+- `IDEntityGrz` - method `getGostTypesByPattern()`
+- `IDEntityGrz` - method `getFormatPattern()`
+
 ## v2.4.0
 
 ### Added

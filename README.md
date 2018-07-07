@@ -19,7 +19,7 @@
 Require this package with composer using the next command:
 
 ```shell
-$ composer require avto-dev/identity-laravel "^2.4"
+$ composer require avto-dev/identity-laravel "^3.0"
 ```
 
 > Installed `composer` is required. To install composer, please [click here][getcomposer].
@@ -198,6 +198,7 @@ IDEntity::is('А123АА177', [IDEntity::ID_TYPE_VIN, IDEntity::ID_TYPE_PTS]); //
 ---------: | :-----------
 `getRegionCode()` | Возвращает код региона, связанный с идентификатором
 `getRegionData()` | Возвращает объект с детализированными данными о регионе, связанным с идентификатором
+`getFormatPattern()` | Возвращает формат значения идентификатора
 
 Более подробно о расширенных методах смотрите в классах-реализациях типизированных идентификаторов.
 
