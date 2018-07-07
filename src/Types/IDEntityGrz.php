@@ -87,7 +87,7 @@ class IDEntityGrz extends AbstractTypedIDEntity implements HasRegionDataInterfac
     /**
      * Латинские аналоги разрешенных кириллических символов.
      *
-     * Внимание! Важно соответствие порядка символов со `static::CYR_CHARS`.
+     * Внимание! Важно соответствие порядка символов со `self::CYR_CHARS`.
      */
     const KYR_ANALOGS = 'ABEKMHOPCTYX';
 
@@ -100,7 +100,7 @@ class IDEntityGrz extends AbstractTypedIDEntity implements HasRegionDataInterfac
      */
     public static function getFormatPatternByGostType($gost_type)
     {
-        foreach (static::PATTERNS_AND_TYPES_MAP as $format_pattern => $gost_types) {
+        foreach (self::PATTERNS_AND_TYPES_MAP as $format_pattern => $gost_types) {
             foreach ((array) $gost_types as $iterated_gost_type) {
                 if ($iterated_gost_type === $gost_type) {
                     return $format_pattern;
@@ -118,8 +118,8 @@ class IDEntityGrz extends AbstractTypedIDEntity implements HasRegionDataInterfac
      */
     public static function getGostTypesByPattern($pattern)
     {
-        if (isset(static::PATTERNS_AND_TYPES_MAP[$pattern])) {
-            return static::PATTERNS_AND_TYPES_MAP[$pattern];
+        if (isset(self::PATTERNS_AND_TYPES_MAP[$pattern])) {
+            return self::PATTERNS_AND_TYPES_MAP[$pattern];
         }
     }
 
@@ -138,40 +138,40 @@ class IDEntityGrz extends AbstractTypedIDEntity implements HasRegionDataInterfac
      */
     public function getFormatPattern()
     {
-        static $kyr = static::KYR_CHARS;
+        static $kyr = self::KYR_CHARS;
 
         switch (true) {
             // X000XX77_OR_X000XX777
             case \preg_match("~^[{$kyr}]{1}\d{3}[{$kyr}]{2}\d{2,3}$~iu", $this->value) === 1:
-                return static::FORMAT_PATTERN_1;
+                return self::FORMAT_PATTERN_1;
 
             // X000XX
             case \preg_match("~^[{$kyr}]{1}\d{3}[{$kyr}]{2}$~iu", $this->value) === 1:
-                return static::FORMAT_PATTERN_2;
+                return self::FORMAT_PATTERN_2;
 
             // XX00077
             case \preg_match("~^[{$kyr}]{2}\d{3}\d{2}$~iu", $this->value) === 1:
-                return static::FORMAT_PATTERN_3;
+                return self::FORMAT_PATTERN_3;
 
             // 0000XX77
             case \preg_match("~^\d{4}[{$kyr}]{2}\d{2}$~iu", $this->value) === 1:
-                return static::FORMAT_PATTERN_4;
+                return self::FORMAT_PATTERN_4;
 
             // XX000077
             case \preg_match("~^[{$kyr}]{2}\d{4}\d{2}$~iu", $this->value) === 1:
-                return static::FORMAT_PATTERN_5;
+                return self::FORMAT_PATTERN_5;
 
             // X000077
             case \preg_match("~^[{$kyr}]{1}\d{4}\d{2}$~iu", $this->value) === 1:
-                return static::FORMAT_PATTERN_6;
+                return self::FORMAT_PATTERN_6;
 
             // 000X77
             case \preg_match("~^\d{3}[{$kyr}]{1}\d{2}$~iu", $this->value) === 1:
-                return static::FORMAT_PATTERN_7;
+                return self::FORMAT_PATTERN_7;
 
             // 0000X77
             case \preg_match("~^\d{4}[{$kyr}]{1}\d{2}$~iu", $this->value) === 1:
-                return static::FORMAT_PATTERN_8;
+                return self::FORMAT_PATTERN_8;
         }
     }
 
@@ -185,7 +185,7 @@ class IDEntityGrz extends AbstractTypedIDEntity implements HasRegionDataInterfac
             $value = Str::upper(trim((string) $value));
 
             // Удаляем все символы, кроме разрешенных
-            $value = \preg_replace('~[^' . static::KYR_CHARS . static::KYR_ANALOGS . '0-9]~u', '', $value);
+            $value = \preg_replace('~[^' . self::KYR_CHARS . self::KYR_ANALOGS . '0-9]~u', '', $value);
 
             // Производим замену латинских аналогов на кириллические (обратная транслитерация). Не прогоняю по всем
             // возможными символам, так как регулярка что выше всё кроме них как раз и удаляет
@@ -210,19 +210,19 @@ class IDEntityGrz extends AbstractTypedIDEntity implements HasRegionDataInterfac
             $matches = [];
 
             switch ($format_pattern) {
-                case static::FORMAT_PATTERN_1: // X000XX77_OR_X000XX777
+                case self::FORMAT_PATTERN_1: // X000XX77_OR_X000XX777
                     \preg_match('~(?<region_code>\d{2,3})$~D', $this->value, $matches);
                     break;
 
-                case static::FORMAT_PATTERN_2: // X000XX
+                case self::FORMAT_PATTERN_2: // X000XX
                     break;
 
-                case static::FORMAT_PATTERN_3: // XX00077
-                case static::FORMAT_PATTERN_4: // 0000XX77
-                case static::FORMAT_PATTERN_5: // XX000077
-                case static::FORMAT_PATTERN_6: // X000077
-                case static::FORMAT_PATTERN_7: // 000X77
-                case static::FORMAT_PATTERN_8: // 0000X77
+                case self::FORMAT_PATTERN_3: // XX00077
+                case self::FORMAT_PATTERN_4: // 0000XX77
+                case self::FORMAT_PATTERN_5: // XX000077
+                case self::FORMAT_PATTERN_6: // X000077
+                case self::FORMAT_PATTERN_7: // 000X77
+                case self::FORMAT_PATTERN_8: // 0000X77
                     \preg_match('~(?<region_code>\d{2})$~D', $this->value, $matches);
                     break;
             }
@@ -257,7 +257,7 @@ class IDEntityGrz extends AbstractTypedIDEntity implements HasRegionDataInterfac
             },
             function () {
                 // Пропускаем проверку формата, в котором в принципе нет кода региона
-                if ($this->getFormatPattern() === static::FORMAT_PATTERN_2) {
+                if ($this->getFormatPattern() === self::FORMAT_PATTERN_2) {
                     return true;
                 }
 
