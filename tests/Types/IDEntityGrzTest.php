@@ -2,9 +2,9 @@
 
 namespace AvtoDev\IDEntity\Tests\Types;
 
+use Illuminate\Support\Str;
 use AvtoDev\IDEntity\IDEntity;
 use AvtoDev\IDEntity\Types\IDEntityGrz;
-use Illuminate\Support\Str;
 
 /**
  * Class IDEntityGrzTest.
@@ -130,7 +130,6 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
             $instance::getGostTypesByPattern($instance::FORMAT_PATTERN_8),
             $instance::PATTERNS_AND_TYPES_MAP[$instance::FORMAT_PATTERN_8]
         );
-
 
         $this->assertNull($instance::getGostTypesByPattern('foo bar'));
         $this->assertNull($instance::getGostTypesByPattern(123));

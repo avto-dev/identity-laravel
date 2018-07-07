@@ -2,11 +2,11 @@
 
 namespace AvtoDev\IDEntity\Types;
 
-use AvtoDev\IDEntity\Helpers\Transliterator;
-use AvtoDev\StaticReferences\References\AutoRegions\AutoRegionEntry;
-use AvtoDev\StaticReferences\References\AutoRegions\AutoRegions;
 use Exception;
 use Illuminate\Support\Str;
+use AvtoDev\IDEntity\Helpers\Transliterator;
+use AvtoDev\StaticReferences\References\AutoRegions\AutoRegions;
+use AvtoDev\StaticReferences\References\AutoRegions\AutoRegionEntry;
 
 /**
  * Идентификатор - номер ГРЗ.
@@ -19,31 +19,43 @@ class IDEntityGrz extends AbstractTypedIDEntity implements HasRegionDataInterfac
      * Format patterns.
      */
     const
-        FORMAT_PATTERN_1 = 'X000XX77_OR_X000XX777',
-        FORMAT_PATTERN_2 = 'X000XX',
-        FORMAT_PATTERN_3 = 'XX00077',
-        FORMAT_PATTERN_4 = '0000XX77',
-        FORMAT_PATTERN_5 = 'XX000077',
-        FORMAT_PATTERN_6 = 'X000077',
-        FORMAT_PATTERN_7 = '000X77',
-        FORMAT_PATTERN_8 = '0000X77';
+        FORMAT_PATTERN_1   = 'X000XX77_OR_X000XX777';
+    const FORMAT_PATTERN_2 = 'X000XX';
+    const FORMAT_PATTERN_3 = 'XX00077';
+    const FORMAT_PATTERN_4 = '0000XX77';
+    const FORMAT_PATTERN_5 = 'XX000077';
+    const FORMAT_PATTERN_6 = 'X000077';
+    const FORMAT_PATTERN_7 = '000X77';
+    const FORMAT_PATTERN_8 = '0000X77';
 
     /**
      * Types, declared in "ГОСТ Р 50577-93" (not all).
      */
     const
-        GOST_TYPE_1 = 'TYPE_1', // тип 1 - Для легковых, грузовых, грузопассажирских ТС и автобусов
-        GOST_TYPE_1A = 'TYPE_1A', // тип 1А - Для легковых ТС должностных лиц
-        GOST_TYPE_1B = 'TYPE_1B',  // тип 1Б - Для легковых ТС, исп. для перевозки людей на коммерч. основе, автобусов
-        GOST_TYPE_2 = 'TYPE_2', // тип 2 - Для автомобильных прицепов и полуприцепов
-        GOST_TYPE_3 = 'TYPE_3', // тип 3 - Для тракторов, самоход. дорожно-строительных машин и иных машин и прицепов
-        GOST_TYPE_4 = 'TYPE_4', // тип 4 - Для мотоциклов, мотороллеров, мопедов
-        GOST_TYPE_5 = 'TYPE_5', // тип 5 - Для легковых, грузовых, грузопассажирских автомобилей и автобусов
-        GOST_TYPE_6 = 'TYPE_6', // тип 6 - Для автомобильных прицепов и полуприцепов
-        GOST_TYPE_7 = 'TYPE_7', // тип 7 - Для тракторов, самоход. дорожно-строительных машин и иных машин и прицепов
-        GOST_TYPE_8 = 'TYPE_8', // тип 8 - Для мотоциклов, мотороллеров, мопедов
-        GOST_TYPE_20 = 'TYPE_20', // тип 20 - Для легковых, грузовых, грузопассажирских автомобилей и автобусов
-        GOST_TYPE_21 = 'TYPE_21', // тип 21 - Для автомобильных прицепов и полуприцепов
+        GOST_TYPE_1 = 'TYPE_1';
+    const // тип 1 - Для легковых, грузовых, грузопассажирских ТС и автобусов
+        GOST_TYPE_1A = 'TYPE_1A';
+    const // тип 1А - Для легковых ТС должностных лиц
+        GOST_TYPE_1B = 'TYPE_1B';
+    const // тип 1Б - Для легковых ТС, исп. для перевозки людей на коммерч. основе, автобусов
+        GOST_TYPE_2 = 'TYPE_2';
+    const // тип 2 - Для автомобильных прицепов и полуприцепов
+        GOST_TYPE_3 = 'TYPE_3';
+    const // тип 3 - Для тракторов, самоход. дорожно-строительных машин и иных машин и прицепов
+        GOST_TYPE_4 = 'TYPE_4';
+    const // тип 4 - Для мотоциклов, мотороллеров, мопедов
+        GOST_TYPE_5 = 'TYPE_5';
+    const // тип 5 - Для легковых, грузовых, грузопассажирских автомобилей и автобусов
+        GOST_TYPE_6 = 'TYPE_6';
+    const // тип 6 - Для автомобильных прицепов и полуприцепов
+        GOST_TYPE_7 = 'TYPE_7';
+    const // тип 7 - Для тракторов, самоход. дорожно-строительных машин и иных машин и прицепов
+        GOST_TYPE_8 = 'TYPE_8';
+    const // тип 8 - Для мотоциклов, мотороллеров, мопедов
+        GOST_TYPE_20 = 'TYPE_20';
+    const // тип 20 - Для легковых, грузовых, грузопассажирских автомобилей и автобусов
+        GOST_TYPE_21 = 'TYPE_21';
+    const // тип 21 - Для автомобильных прицепов и полуприцепов
         GOST_TYPE_22 = 'TYPE_22'; // тип 22 - Для мотоциклов
 
     /**
@@ -124,7 +136,7 @@ class IDEntityGrz extends AbstractTypedIDEntity implements HasRegionDataInterfac
             ? self::PATTERNS_AND_TYPES_MAP[$pattern]
             : null;
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -175,8 +187,6 @@ class IDEntityGrz extends AbstractTypedIDEntity implements HasRegionDataInterfac
             case \preg_match("~^\d{4}[{$kyr}]{1}\d{2}$~iu", $this->value) === 1:
                 return self::FORMAT_PATTERN_8;
         }
-
-        return null;
     }
 
     /**
