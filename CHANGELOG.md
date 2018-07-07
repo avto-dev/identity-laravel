@@ -13,7 +13,7 @@ The format is based on [Keep a Changelog][keepachangelog] and this project adher
 
 ### Added
 
-- `IDEntityGrz` - constants with patters formats, GOST types and "patterns formats to GOST type" map
+- `IDEntityGrz` - constants with patters formats, GOST types
 - `IDEntityGrz` - method `getFormatPatternByGostType()`
 - `IDEntityGrz` - method `getGostTypesByPattern()`
 - `IDEntityGrz` - method `getFormatPattern()`

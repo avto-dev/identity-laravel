@@ -47,9 +47,6 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
         $this->assertEquals('TYPE_20', $instance::GOST_TYPE_20);
         $this->assertEquals('TYPE_21', $instance::GOST_TYPE_21);
         $this->assertEquals('TYPE_22', $instance::GOST_TYPE_22);
-
-        $this->assertInternalType('array', $instance::PATTERNS_AND_TYPES_MAP);
-        $this->assertNotEmpty($instance::PATTERNS_AND_TYPES_MAP);
     }
 
     /**
@@ -93,42 +90,48 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
 
         $this->assertEquals(
             $instance::getGostTypesByPattern($instance::FORMAT_PATTERN_1),
-            $instance::PATTERNS_AND_TYPES_MAP[$instance::FORMAT_PATTERN_1]
+            [$instance::GOST_TYPE_1]
         );
 
         $this->assertEquals(
             $instance::getGostTypesByPattern($instance::FORMAT_PATTERN_2),
-            $instance::PATTERNS_AND_TYPES_MAP[$instance::FORMAT_PATTERN_2]
+            [$instance::GOST_TYPE_1A]
         );
 
         $this->assertEquals(
             $instance::getGostTypesByPattern($instance::FORMAT_PATTERN_3),
-            $instance::PATTERNS_AND_TYPES_MAP[$instance::FORMAT_PATTERN_3]
+            [$instance::GOST_TYPE_1B, $instance::GOST_TYPE_2]
         );
 
         $this->assertEquals(
             $instance::getGostTypesByPattern($instance::FORMAT_PATTERN_4),
-            $instance::PATTERNS_AND_TYPES_MAP[$instance::FORMAT_PATTERN_4]
+            [
+                $instance::GOST_TYPE_3,
+                $instance::GOST_TYPE_4,
+                $instance::GOST_TYPE_5,
+                $instance::GOST_TYPE_7,
+                $instance::GOST_TYPE_8
+            ]
         );
 
         $this->assertEquals(
             $instance::getGostTypesByPattern($instance::FORMAT_PATTERN_5),
-            $instance::PATTERNS_AND_TYPES_MAP[$instance::FORMAT_PATTERN_5]
+            [$instance::GOST_TYPE_6]
         );
 
         $this->assertEquals(
             $instance::getGostTypesByPattern($instance::FORMAT_PATTERN_6),
-            $instance::PATTERNS_AND_TYPES_MAP[$instance::FORMAT_PATTERN_6]
+            [$instance::GOST_TYPE_20]
         );
 
         $this->assertEquals(
             $instance::getGostTypesByPattern($instance::FORMAT_PATTERN_7),
-            $instance::PATTERNS_AND_TYPES_MAP[$instance::FORMAT_PATTERN_7]
+            [$instance::GOST_TYPE_21]
         );
 
         $this->assertEquals(
             $instance::getGostTypesByPattern($instance::FORMAT_PATTERN_8),
-            $instance::PATTERNS_AND_TYPES_MAP[$instance::FORMAT_PATTERN_8]
+            [$instance::GOST_TYPE_22]
         );
 
         $this->assertNull($instance::getGostTypesByPattern('foo bar'));

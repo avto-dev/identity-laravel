@@ -47,7 +47,7 @@ class IDEntityGrz extends AbstractTypedIDEntity implements HasRegionDataInterfac
     /**
      * Pattern and types map.
      */
-    const PATTERNS_AND_TYPES_MAP = [
+    protected static $patterns_and_types_map = [
         self::FORMAT_PATTERN_1 => [ // X000XX77_OR_X000XX777
             self::GOST_TYPE_1,
         ],
@@ -100,7 +100,7 @@ class IDEntityGrz extends AbstractTypedIDEntity implements HasRegionDataInterfac
      */
     public static function getFormatPatternByGostType($gost_type)
     {
-        foreach (self::PATTERNS_AND_TYPES_MAP as $format_pattern => $gost_types) {
+        foreach (static::$patterns_and_types_map as $format_pattern => $gost_types) {
             foreach ((array) $gost_types as $iterated_gost_type) {
                 if ($iterated_gost_type === $gost_type) {
                     return $format_pattern;
@@ -118,8 +118,8 @@ class IDEntityGrz extends AbstractTypedIDEntity implements HasRegionDataInterfac
      */
     public static function getGostTypesByPattern($pattern)
     {
-        if (isset(self::PATTERNS_AND_TYPES_MAP[$pattern])) {
-            return self::PATTERNS_AND_TYPES_MAP[$pattern];
+        if (isset(static::$patterns_and_types_map[$pattern])) {
+            return static::$patterns_and_types_map[$pattern];
         }
     }
 
