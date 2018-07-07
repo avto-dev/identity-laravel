@@ -18,8 +18,7 @@ class IDEntityGrz extends AbstractTypedIDEntity implements HasRegionDataInterfac
     /**
      * Format patterns.
      */
-    const
-        FORMAT_PATTERN_1   = 'X000XX77_OR_X000XX777';
+    const FORMAT_PATTERN_1 = 'X000XX77_OR_X000XX777';
     const FORMAT_PATTERN_2 = 'X000XX';
     const FORMAT_PATTERN_3 = 'XX00077';
     const FORMAT_PATTERN_4 = '0000XX77';
@@ -31,32 +30,20 @@ class IDEntityGrz extends AbstractTypedIDEntity implements HasRegionDataInterfac
     /**
      * Types, declared in "ГОСТ Р 50577-93" (not all).
      */
-    const
-        GOST_TYPE_1 = 'TYPE_1';
-    const // тип 1 - Для легковых, грузовых, грузопассажирских ТС и автобусов
-        GOST_TYPE_1A = 'TYPE_1A';
-    const // тип 1А - Для легковых ТС должностных лиц
-        GOST_TYPE_1B = 'TYPE_1B';
-    const // тип 1Б - Для легковых ТС, исп. для перевозки людей на коммерч. основе, автобусов
-        GOST_TYPE_2 = 'TYPE_2';
-    const // тип 2 - Для автомобильных прицепов и полуприцепов
-        GOST_TYPE_3 = 'TYPE_3';
-    const // тип 3 - Для тракторов, самоход. дорожно-строительных машин и иных машин и прицепов
-        GOST_TYPE_4 = 'TYPE_4';
-    const // тип 4 - Для мотоциклов, мотороллеров, мопедов
-        GOST_TYPE_5 = 'TYPE_5';
-    const // тип 5 - Для легковых, грузовых, грузопассажирских автомобилей и автобусов
-        GOST_TYPE_6 = 'TYPE_6';
-    const // тип 6 - Для автомобильных прицепов и полуприцепов
-        GOST_TYPE_7 = 'TYPE_7';
-    const // тип 7 - Для тракторов, самоход. дорожно-строительных машин и иных машин и прицепов
-        GOST_TYPE_8 = 'TYPE_8';
-    const // тип 8 - Для мотоциклов, мотороллеров, мопедов
-        GOST_TYPE_20 = 'TYPE_20';
-    const // тип 20 - Для легковых, грузовых, грузопассажирских автомобилей и автобусов
-        GOST_TYPE_21 = 'TYPE_21';
-    const // тип 21 - Для автомобильных прицепов и полуприцепов
-        GOST_TYPE_22 = 'TYPE_22'; // тип 22 - Для мотоциклов
+
+    const GOST_TYPE_1 = 'TYPE_1'; // тип 1 - Для легковых, грузовых, грузопассажирских ТС и автобусов
+    const GOST_TYPE_1A = 'TYPE_1A'; // тип 1А - Для легковых ТС должностных лиц
+    const GOST_TYPE_1B = 'TYPE_1B'; // тип 1Б - Для легковых ТС, исп. для перевозки людей на коммерч. основе, автобусов
+    const GOST_TYPE_2 = 'TYPE_2'; // тип 2 - Для автомобильных прицепов и полуприцепов
+    const GOST_TYPE_3 = 'TYPE_3'; // тип 3 - Для тракторов, самоход. дорожно-строительных машин и иных машин и прицепов
+    const GOST_TYPE_4 = 'TYPE_4'; // тип 4 - Для мотоциклов, мотороллеров, мопедов
+    const GOST_TYPE_5 = 'TYPE_5'; // тип 5 - Для легковых, грузовых, грузопассажирских автомобилей и автобусов
+    const GOST_TYPE_6 = 'TYPE_6'; // тип 6 - Для автомобильных прицепов и полуприцепов
+    const GOST_TYPE_7 = 'TYPE_7'; // тип 7 - Для тракторов, самоход. дорожно-строительных машин и иных машин и прицепов
+    const GOST_TYPE_8 = 'TYPE_8'; // тип 8 - Для мотоциклов, мотороллеров, мопедов
+    const GOST_TYPE_20 = 'TYPE_20'; // тип 20 - Для легковых, грузовых, грузопассажирских автомобилей и автобусов
+    const GOST_TYPE_21 = 'TYPE_21'; // тип 21 - Для автомобильных прицепов и полуприцепов
+    const GOST_TYPE_22 = 'TYPE_22'; // тип 22 - Для мотоциклов
 
     /**
      * Pattern and types map.
@@ -132,9 +119,9 @@ class IDEntityGrz extends AbstractTypedIDEntity implements HasRegionDataInterfac
      */
     public static function getGostTypesByPattern($pattern)
     {
-        return isset(self::PATTERNS_AND_TYPES_MAP[$pattern])
-            ? self::PATTERNS_AND_TYPES_MAP[$pattern]
-            : null;
+        if (isset(self::PATTERNS_AND_TYPES_MAP[$pattern])) {
+            return self::PATTERNS_AND_TYPES_MAP[$pattern];
+        }
     }
 
     /**
