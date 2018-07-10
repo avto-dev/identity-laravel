@@ -57,9 +57,6 @@ class IDEntityChassisTest extends AbstractIDEntityTestCase
         // Не корректный, длинный тире
         $this->assertEquals($valid, $instance::normalize('LA130–0128818'));
 
-        // С двумя пробелами (должны преобразоваться в одиночное тире)
-        $this->assertEquals($valid, $instance::normalize(' LA130  0128818'));
-
         // С кириллицей
         $this->assertEquals($valid, $instance::normalize('Lа130-0128818'));
 
@@ -68,6 +65,9 @@ class IDEntityChassisTest extends AbstractIDEntityTestCase
 
         // Некорректные символы - удаляет
         $this->assertEquals($valid, $instance::normalize('LA130-0128№;:?№?*№%$@$%@#818'));
+
+        // С двумя пробелами (должны преобразоваться в одиночное тире)
+        $this->assertEquals('LA130 0128818', $instance::normalize(' LA130  0128818'));
     }
 
     /**

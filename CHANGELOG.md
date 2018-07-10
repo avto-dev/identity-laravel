@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog][keepachangelog] and this project adheres to [Semantic Versioning][semver].
 
+## v3.0.1
+
+### Fixed
+
+- Replacement `space` to `dash` between words was removed in normalize method for `CHASSIS` identifier. [#4]
+
 ## v3.0.0
 
 ### Changed
@@ -99,6 +105,7 @@ The format is based on [Keep a Changelog][keepachangelog] and this project adher
 
 [#2]:https://github.com/avto-dev/identity-laravel/issues/2
 [#3]:https://github.com/avto-dev/identity-laravel/issues/3
+[#4]:https://github.com/avto-dev/identity-laravel/issues/4
 
 [keepachangelog]:https://keepachangelog.com/en/1.0.0/
 [semver]:https://semver.org/spec/v2.0.0.html

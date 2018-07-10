@@ -29,7 +29,7 @@ class IDEntityBody extends AbstractTypedIDEntity
             // Заменяем множественные пробелы - одиночными
             $value = \preg_replace('~\s+~u', ' ', trim((string) $value));
 
-            // Номализуем символы дефиса
+            // Нормализуем символы дефиса
             $value = (string) Normalizer::normalizeDashChar($value);
 
             // Заменяем множественные дефисы - одиночными
