@@ -29,17 +29,14 @@ class IDEntityChassis extends AbstractTypedIDEntity
             // Заменяем множественные пробелы - одиночными
             $value = \preg_replace('~\s+~u', ' ', trim((string) $value));
 
-            // Заменяем пробелы - дефисами
-            $value = \preg_replace('~[[:space:]]+~', '-', $value);
-
-            // Номализуем символы дефиса
+            // Нормализуем символы дефиса
             $value = (string) Normalizer::normalizeDashChar($value);
 
             // Производим замену кириллических символов на латинские аналоги
             $value = Transliterator::transliterateString(Str::upper($value), true);
 
             // Удаляем все символы, кроме разрешенных
-            $value = \preg_replace('~[^A-Z0-9\-]~u', '', $value);
+            $value = \preg_replace('~[^A-Z0-9\- ]~u', '', $value);
 
             // Заменяем множественные дефисы - одиночными
             $value = \preg_replace('~\-+~', '-', $value);
