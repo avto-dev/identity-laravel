@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog][keepachangelog] and this project adheres to [Semantic Versioning][semver].
 
+## v3.1.0
+
+### Changed
+
+- Maximal PHP version now is undefined
+- Maximal `laravel/framework` version now is `5.7.*`
+- CI changed to [Travis CI][travis]
+- [CodeCov][codecov] integrated
+- Issue templates updated
+
 ## v3.0.1
 
 ### Fixed
