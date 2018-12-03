@@ -14,6 +14,9 @@ The format is based on [Keep a Changelog][keepachangelog] and this project adher
 - [CodeCov][codecov] integrated
 - Issue templates updated
 
+[travis]:https://travis-ci.org/
+[codecov]:https://codecov.io/
+
 ## v3.0.1
 
 ### Fixed
