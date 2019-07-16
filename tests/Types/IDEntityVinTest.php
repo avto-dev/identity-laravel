@@ -12,6 +12,11 @@ use AvtoDev\IDEntity\Types\IDEntityVin;
 class IDEntityVinTest extends AbstractIDEntityTestCase
 {
     /**
+     * @var IDEntityVin
+     */
+    protected $instance;
+
+    /**
      * {@inheritdoc}
      */
     public function testGetType()
@@ -163,6 +168,57 @@ class IDEntityVinTest extends AbstractIDEntityTestCase
     protected function getClassName()
     {
         return IDEntityVin::class;
+    }
+
+    /**
+     * @return void
+     */
+    public function testChecksumValidation(): void
+    {
+        $valid = [
+            'JHMCM56557С404453',
+            '1C4NJDEB5FD340542',
+            'WD2PD744X55764973',
+            'WAUBB28D2XA299286',
+            'JHMCG56612C018010',
+            '1HD1BW517AB032841',
+            '3D7UT2CL4BG628593',
+            '1N4AZ0CP3FC321188',
+            '2HGFB2F65CH319973',
+            'JTJBT20X270137599',
+            '5NPEU46F96H063851',
+            '2T1KR32E43C162992',
+            'JTEBU29J805003909',
+            'X4X5A79400D363203',
+            'WAUZZZ4E35N002551',
+            '4S4WX83C164401449',
+        ];
+
+        $invalid = [
+            'JMZBK12Z261367366',
+            'SALLSAAF4BA268959',
+            'X9FMXXEEBMCG05797',
+            'WDC2923241A022925',
+            'YV1CM714681472368',
+            'Z94CB41ABDR105897',
+            'XUUNF486J90008440',
+            'Z94CT41DBFR411079',
+            'KMHE341CBFA025224',
+            'XWB3L32EDCA218918',
+            'VF1UDC3K640850971',
+            '!@#$%^&*()}{<>?/[',
+
+            'foo bar',
+            Str::random(512),
+        ];
+
+        foreach ($valid as $value) {
+            $this->assertTrue($this->instance->setValue($value)->isChecksumValidated());
+        }
+
+        foreach ($invalid as $value) {
+            $this->assertFalse($this->instance->setValue($value)->isChecksumValidated(), $value);
+        }
     }
 
     /**

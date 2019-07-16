@@ -14,9 +14,9 @@
         }
     ],
     "require": {
-        "php": "^5.6 || >=7.0",
-        "avto-dev/extended-laravel-validator": "^2.1",
-        "avto-dev/static-references-laravel": "^2.4",
+        "php": "^7.1.3",
+        "avto-dev/extended-laravel-validator": "^3.0",
+        "avto-dev/static-references-laravel": "^3.0",
         "laravel/framework": ">=5.4.0 <5.8.0"
     },
     "require-dev": {
