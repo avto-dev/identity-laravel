@@ -19,7 +19,7 @@ class IDEntityVinTest extends AbstractIDEntityTestCase
     /**
      * {@inheritdoc}
      */
-    public function testGetType()
+    public function testGetType(): void
     {
         $this->assertEquals(IDEntity::ID_TYPE_VIN, $this->instance->getType());
     }
@@ -27,7 +27,7 @@ class IDEntityVinTest extends AbstractIDEntityTestCase
     /**
      * {@inheritdoc}
      */
-    public function testIsValid()
+    public function testIsValid(): void
     {
         $valid = [
             '5UXFA13585LY08847',
@@ -141,7 +141,7 @@ class IDEntityVinTest extends AbstractIDEntityTestCase
     /**
      * {@inheritdoc}
      */
-    public function testNormalize()
+    public function testNormalize(): void
     {
         $instance = $this->instance;
 

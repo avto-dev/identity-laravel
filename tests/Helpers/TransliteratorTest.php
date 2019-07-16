@@ -12,7 +12,7 @@ class TransliteratorTest extends AbstractTestCase
      *
      * @return void
      */
-    public function testTransliterateString()
+    public function testTransliterateString(): void
     {
         $asserts = [
             'привет'    => 'privet',
@@ -58,7 +58,7 @@ class TransliteratorTest extends AbstractTestCase
      *
      * @return void
      */
-    public function testDetransliterateString()
+    public function testDetransliterateString(): void
     {
         $asserts = [
             'privet'    => 'привет',
@@ -78,7 +78,7 @@ class TransliteratorTest extends AbstractTestCase
         );
     }
 
-    public function testLiteLtansliterator()
+    public function testLiteLtansliterator(): void
     {
         $this->assertEquals(
             'АВЕКМНОРСТУХ авекмнорстух',

@@ -14,7 +14,7 @@ class IDEntityPtsTest extends AbstractIDEntityTestCase
     /**
      * {@inheritdoc}
      */
-    public function testGetType()
+    public function testGetType(): void
     {
         $this->assertEquals(IDEntity::ID_TYPE_PTS, $this->instance->getType());
     }
@@ -22,7 +22,7 @@ class IDEntityPtsTest extends AbstractIDEntityTestCase
     /**
      * {@inheritdoc}
      */
-    public function testIsValid()
+    public function testIsValid(): void
     {
         $valid = [
             '78УЕ952328',
@@ -58,7 +58,7 @@ class IDEntityPtsTest extends AbstractIDEntityTestCase
     /**
      * {@inheritdoc}
      */
-    public function testNormalize()
+    public function testNormalize(): void
     {
         $instance = $this->instance;
 

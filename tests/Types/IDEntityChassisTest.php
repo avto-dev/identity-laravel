@@ -14,7 +14,7 @@ class IDEntityChassisTest extends AbstractIDEntityTestCase
     /**
      * {@inheritdoc}
      */
-    public function testGetType()
+    public function testGetType(): void
     {
         $this->assertEquals(IDEntity::ID_TYPE_CHASSIS, $this->instance->getType());
     }
@@ -22,7 +22,7 @@ class IDEntityChassisTest extends AbstractIDEntityTestCase
     /**
      * {@inheritdoc}
      */
-    public function testIsValid()
+    public function testIsValid(): void
     {
         $valid = [
             'RN1350007371',
@@ -44,7 +44,7 @@ class IDEntityChassisTest extends AbstractIDEntityTestCase
     /**
      * {@inheritdoc}
      */
-    public function testNormalize()
+    public function testNormalize(): void
     {
         $instance = $this->instance;
 

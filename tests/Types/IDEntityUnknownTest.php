@@ -13,7 +13,7 @@ class IDEntityUnknownTest extends AbstractIDEntityTestCase
     /**
      * {@inheritdoc}
      */
-    public function testGetType()
+    public function testGetType(): void
     {
         $this->assertEquals(IDEntity::ID_TYPE_UNKNOWN, $this->instance->getType());
     }
@@ -21,7 +21,7 @@ class IDEntityUnknownTest extends AbstractIDEntityTestCase
     /**
      * {@inheritdoc}
      */
-    public function testIsValid()
+    public function testIsValid(): void
     {
         $this->assertFalse($this->instance->isValid());
     }
@@ -29,7 +29,7 @@ class IDEntityUnknownTest extends AbstractIDEntityTestCase
     /**
      * {@inheritdoc}
      */
-    public function testNormalize()
+    public function testNormalize(): void
     {
         $instance = $this->instance;
 

@@ -3,8 +3,8 @@
 namespace AvtoDev\IDEntity\Tests;
 
 use AvtoDev\IDEntity\IDEntitiesServiceProvider;
-use AvtoDev\StaticReferences\StaticReferencesServiceProvider;
-use AvtoDev\ExtendedLaravelValidator\ExtendedValidatorServiceProvider;
+use AvtoDev\StaticReferences\ServiceProvider as StaticReferencesServiceProvider;
+use AvtoDev\ExtendedLaravelValidator\ServiceProvider as ExtendedValidatorServiceProvider;
 
 /**
  * Тесты сервис-провайдера пакета.
@@ -19,7 +19,7 @@ class IDEntitiesServiceProviderTest extends AbstractTestCase
      *
      * @return void
      */
-    public function testServiceProviderRegistered()
+    public function testServiceProviderRegistered(): void
     {
         $loaded_providers = $this->app->getLoadedProviders();
 
@@ -39,7 +39,7 @@ class IDEntitiesServiceProviderTest extends AbstractTestCase
      *
      * @return void
      */
-    public function testServiceProviderMethods()
+    public function testServiceProviderMethods(): void
     {
         $this->assertEquals('identity', IDEntitiesServiceProvider::getConfigRootKeyName());
 
@@ -54,7 +54,7 @@ class IDEntitiesServiceProviderTest extends AbstractTestCase
      *
      * @return void
      */
-    public function testPackageConfig()
+    public function testPackageConfig(): void
     {
         $original_config_content = require __DIR__ . '/../src/config/identity.php';
 

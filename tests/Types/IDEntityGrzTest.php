@@ -21,7 +21,7 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
      *
      * @return void
      */
-    public function testConstants()
+    public function testConstants(): void
     {
         $instance = $this->instance; // PHP 5.6
 
@@ -54,7 +54,7 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
      *
      * @return void
      */
-    public function testGostTypeToPattern()
+    public function testGostTypeToPattern(): void
     {
         $instance = $this->instance; // PHP 5.6
 
@@ -84,7 +84,7 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
         $this->assertNull($instance::getFormatPatternByGostType(null));
     }
 
-    public function testPatternToGostTypes()
+    public function testPatternToGostTypes(): void
     {
         $instance = $this->instance; // PHP 5.6
 
@@ -142,7 +142,7 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
     /**
      * {@inheritdoc}
      */
-    public function testGetType()
+    public function testGetType(): void
     {
         $this->assertEquals(IDEntity::ID_TYPE_GRZ, $this->instance->getType());
     }
@@ -150,7 +150,7 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
     /**
      * {@inheritdoc}
      */
-    public function testIsValid()
+    public function testIsValid(): void
     {
         $valid = [
             // М000ММ77 или М000ММ777 (тип 1 - Для легковых, грузовых, грузопассажирских ТС и автобусов)
@@ -526,7 +526,7 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
      *
      * @return void
      */
-    public function testGetFormatPattern()
+    public function testGetFormatPattern(): void
     {
         $instance = $this->instance; // PHP 5.6
 
@@ -646,7 +646,7 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
      *
      * @return void
      */
-    public function testGetRegionCode()
+    public function testGetRegionCode(): void
     {
         $expects = [
             // М000ММ77 или М000ММ777 (тип 1 - Для легковых, грузовых, грузопассажирских ТС и автобусов)
@@ -1004,7 +1004,7 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
      *
      * @return void
      */
-    public function testGetRegionData()
+    public function testGetRegionData(): void
     {
         $expects = [
             'С552ВХ102' => 'RU-BA',
@@ -1051,7 +1051,7 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
     /**
      * {@inheritdoc}
      */
-    public function testNormalize()
+    public function testNormalize(): void
     {
         $instance = $this->instance;
 

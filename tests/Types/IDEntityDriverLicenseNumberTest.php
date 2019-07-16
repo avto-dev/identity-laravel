@@ -14,7 +14,7 @@ class IDEntityDriverLicenseNumberTest extends AbstractIDEntityTestCase
     /**
      * {@inheritdoc}
      */
-    public function testGetType()
+    public function testGetType(): void
     {
         $this->assertEquals(IDEntity::ID_TYPE_DRIVER_LICENSE_NUMBER, $this->instance->getType());
     }
@@ -22,7 +22,7 @@ class IDEntityDriverLicenseNumberTest extends AbstractIDEntityTestCase
     /**
      * {@inheritdoc}
      */
-    public function testIsValid()
+    public function testIsValid(): void
     {
         $valid = [
             $this->getValidValue(),
@@ -77,7 +77,7 @@ class IDEntityDriverLicenseNumberTest extends AbstractIDEntityTestCase
      *
      * @return void
      */
-    public function testGetRegionData()
+    public function testGetRegionData(): void
     {
         $expects = [
             '7414292010' => 'RU-CHE',
@@ -107,7 +107,7 @@ class IDEntityDriverLicenseNumberTest extends AbstractIDEntityTestCase
     /**
      * {@inheritdoc}
      */
-    public function testNormalize()
+    public function testNormalize(): void
     {
         $instance = $this->instance;
 

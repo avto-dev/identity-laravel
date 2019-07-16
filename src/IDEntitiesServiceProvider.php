@@ -2,9 +2,9 @@
 
 namespace AvtoDev\IDEntity;
 
-use AvtoDev\StaticReferences\StaticReferencesServiceProvider;
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
-use AvtoDev\ExtendedLaravelValidator\ExtendedValidatorServiceProvider;
+use AvtoDev\StaticReferences\ServiceProvider as StaticReferencesServiceProvider;
+use AvtoDev\ExtendedLaravelValidator\ServiceProvider as ExtendedValidatorServiceProvider;
 
 class IDEntitiesServiceProvider extends IlluminateServiceProvider
 {

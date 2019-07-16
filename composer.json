@@ -17,13 +17,13 @@
         "php": "^7.1.3",
         "avto-dev/extended-laravel-validator": "^3.0",
         "avto-dev/static-references-laravel": "^3.0",
-        "laravel/framework": ">=5.4.0 <5.8.0"
+        "laravel/framework": ">=5.4.0 <5.9.0"
     },
     "require-dev": {
-        "laravel/laravel": ">=5.4.0 <5.8.0",
-        "phpunit/phpunit": "~5.7.10 || ^6.4 || ~7.0",
-        "mockery/mockery": "0.9.* || ~1.0",
-        "symfony/var-dumper": "~3.2 || ^4.0"
+        "laravel/laravel": ">=5.4.0 <5.9.0",
+        "mockery/mockery": "^1.0",
+        "phpstan/phpstan": "^0.11.3",
+        "phpunit/phpunit": "~5.7.10 || ^6.4 || ~7.5"
     },
     "autoload": {
         "psr-4": {
@@ -35,12 +35,19 @@
             "AvtoDev\\IDEntity\\Tests\\": "tests"
         }
     },
-    "config": {
-        "sort-packages": true
-    },
     "scripts": {
-        "test": "@php ./vendor/bin/phpunit --no-coverage",
-        "test-cover": "@php ./vendor/bin/phpunit --coverage-html='./coverage/html'"
+        "phpunit": "@php ./vendor/bin/phpunit --no-coverage --colors=always",
+        "phpunit-feature": "@php ./vendor/bin/phpunit --no-coverage --colors=always",
+        "phpunit-cover": "@php ./vendor/bin/phpunit --coverage-html='./coverage/html'",
+        "phpstan": "@php ./vendor/bin/phpstan analyze -c ./phpstan.neon.dist --no-progress --ansi",
+        "test": [
+            "@phpstan",
+            "@phpunit"
+        ],
+        "test-cover": [
+            "@phpstan",
+            "@phpunit-cover"
+        ]
     },
     "extra": {
         "laravel": {
@@ -50,11 +57,14 @@
         }
     },
     "suggest": {
-        "avto-dev/faker-identifiers-providers": "Identifiers providers for fzaninotto/Faker package (^1.1)"
+        "avto-dev/faker-identifiers-providers": "Identifiers providers for fzaninotto/Faker package"
     },
     "support": {
         "issues": "https://github.com/avto-dev/identity-laravel/issues",
         "source": "https://github.com/avto-dev/identity-laravel"
+    },
+    "config": {
+        "sort-packages": true
     },
     "prefer-stable": true
 }

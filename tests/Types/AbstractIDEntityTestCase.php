@@ -21,7 +21,7 @@ abstract class AbstractIDEntityTestCase extends AbstractTestCase
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -33,7 +33,7 @@ abstract class AbstractIDEntityTestCase extends AbstractTestCase
     /**
      * {@inheritdoc}
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         unset($this->instance);
 
@@ -45,7 +45,7 @@ abstract class AbstractIDEntityTestCase extends AbstractTestCase
      *
      * @return void
      */
-    public function testConstructor()
+    public function testConstructor(): void
     {
         $class_name = $this->getClassName();
 
@@ -59,7 +59,7 @@ abstract class AbstractIDEntityTestCase extends AbstractTestCase
      *
      * @return void
      */
-    public function testInstances()
+    public function testInstances(): void
     {
         foreach ([IDEntity::class, TypedIDEntityInterface::class] as $class_name) {
             $this->assertInstanceOf($class_name, $this->instance);
@@ -71,7 +71,7 @@ abstract class AbstractIDEntityTestCase extends AbstractTestCase
      *
      * @return void
      */
-    public function testToString()
+    public function testToString(): void
     {
         $this->assertEquals($this->instance->getValue(), (string) $this->instance);
     }
@@ -81,7 +81,7 @@ abstract class AbstractIDEntityTestCase extends AbstractTestCase
      *
      * @return void
      */
-    public function testGetMaskedValue()
+    public function testGetMaskedValue(): void
     {
         $this->instance->setValue('foo_blablabla_bar', false);
         $this->assertEquals('foo***********bar', $this->instance->getMaskedValue());
@@ -110,7 +110,7 @@ abstract class AbstractIDEntityTestCase extends AbstractTestCase
      *
      * @return void
      */
-    public function testMakeMethod()
+    public function testMakeMethod(): void
     {
         $instance = $this->instance;
 
@@ -122,7 +122,7 @@ abstract class AbstractIDEntityTestCase extends AbstractTestCase
      *
      * @return void
      */
-    public function testIsMethod()
+    public function testIsMethod(): void
     {
         $instance = $this->instance;
 
@@ -139,7 +139,7 @@ abstract class AbstractIDEntityTestCase extends AbstractTestCase
      *
      * @return void
      */
-    public function testGetAndSetValue()
+    public function testGetAndSetValue(): void
     {
         $this->assertInstanceOf(
             $this->getClassName(),
@@ -161,7 +161,7 @@ abstract class AbstractIDEntityTestCase extends AbstractTestCase
      *
      * @return void
      */
-    public function testToArrayAndToJson()
+    public function testToArrayAndToJson(): void
     {
         $this->assertEquals($array = [
             'value' => $this->instance->getValue(),
@@ -190,7 +190,7 @@ abstract class AbstractIDEntityTestCase extends AbstractTestCase
      *
      * @return null
      */
-    public function testNormalizeWithInvalidInputData()
+    public function testNormalizeWithInvalidInputData(): void
     {
         $invalid_values = [
             new stdClass,
@@ -209,7 +209,7 @@ abstract class AbstractIDEntityTestCase extends AbstractTestCase
     /**
      * Проверяем, что по умолчанию идентификатор доступен для автоматического определения.
      */
-    public function testCanAutodetect()
+    public function testCanAutodetect(): void
     {
         $this->assertTrue($this->instance->canBeAutoDetected());
     }

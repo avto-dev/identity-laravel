@@ -12,7 +12,7 @@ class NormalizerTest extends AbstractTestCase
      *
      * @return void
      */
-    public function testNormalizeDashChar()
+    public function testNormalizeDashChar(): void
     {
         foreach ([
                      '–' /* Юникод U+2013 */,
