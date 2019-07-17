@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace AvtoDev\IDEntity\Types;
 
-use Closure;
 use AvtoDev\IDEntity\IDEntity;
 
 abstract class AbstractTypedIDEntity extends IDEntity implements TypedIDEntityInterface
@@ -63,9 +62,7 @@ abstract class AbstractTypedIDEntity extends IDEntity implements TypedIDEntityIn
      */
     public static function is(string $value, $type = null): bool
     {
-        $instance = new static($value);
-
-        return $instance->isValid();
+        return static::make($value)->isValid();
     }
 
     /**
@@ -93,9 +90,9 @@ abstract class AbstractTypedIDEntity extends IDEntity implements TypedIDEntityIn
      */
     public function getMaskedValue(int $start_offset = 3, int $end_offset = 3, string $mask_char = '*'): ?string
     {
-        return ($current = $this->getValue()) === null
-            ? $current
-            : $this->hideString($current, $start_offset, $end_offset, $mask_char);
+        return $this->value === null
+            ? null
+            : $this->hideString($this->value, $start_offset, $end_offset, $mask_char);
     }
 
     /**
@@ -120,38 +117,10 @@ abstract class AbstractTypedIDEntity extends IDEntity implements TypedIDEntityIn
     /**
      * {@inheritdoc}
      */
-    public function isValid(): bool
-    {
-        $value        = $this->getValue();
-        $passed_count = 0;
-
-        foreach ($callbacks = (array) $this->getValidateCallbacks() as $callback) {
-            if ($callback($value) === true) {
-                $passed_count++;
-            } else {
-                return false;
-            }
-        }
-
-        return \count($callbacks) === $passed_count;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function canBeAutoDetected(): bool
     {
-        return $this->can_be_auto_detected === true;
+        return $this->can_be_auto_detected;
     }
-
-    /**
-     * Массив callback-функций, с помощью которых производится валидация значения.
-     *
-     * Первым аргументом в Closure передаётся валидируемое значение (не типизированное).
-     *
-     * @return Closure|Closure[]|null
-     */
-    abstract protected function getValidateCallbacks();
 
     /**
      * Скрытие строки под звездами.

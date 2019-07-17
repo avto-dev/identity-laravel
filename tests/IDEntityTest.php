@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace AvtoDev\IDEntity\Tests;
 
 use Exception;
@@ -342,7 +344,8 @@ class IDEntityTest extends AbstractTestCase
 
         $mock
             ->shouldReceive('getTypesMap')
-            ->andReturn($types_map);
+            ->andReturn($types_map)
+            ->getMock();
 
         return $mock;
     }

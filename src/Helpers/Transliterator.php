@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 class Transliterator
 {
     /**
-     * Набор кириллических символов.
+     * Cyrillic symbols set.
      *
      * @var string[]
      */
@@ -22,7 +22,7 @@ class Transliterator
     ];
 
     /**
-     * Набор латинских символов для обратной транслитерации.
+     * Latin symbols set for backward transliteration.
      *
      * @var string[]
      */
@@ -35,8 +35,8 @@ class Transliterator
     ];
 
     /**
-     * Набор латинских символов для "безопасной" обратной транслитерации (без опаски что один символ будет
-     * транслитерирован как два).
+     * Latin symbols set for "safe" backward transliteration (without cases when one symbol transliterated as 2 or
+     * more characters).
      *
      * @var string[]
      */
@@ -49,7 +49,7 @@ class Transliterator
     ];
 
     /**
-     * Карта для замен символов, имеющих латинские аналоги.
+     * Cyrillic <-> latin replaces analogs map.
      *
      * @var string[]
      */
@@ -59,7 +59,7 @@ class Transliterator
     ];
 
     /**
-     * Обратная карта для замен символов, имеющих латинские аналоги.
+     * Backward latin <-> cyrillic replaces analogs map.
      *
      * @var string[]
      */

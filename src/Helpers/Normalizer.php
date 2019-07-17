@@ -7,7 +7,7 @@ namespace AvtoDev\IDEntity\Helpers;
 class Normalizer
 {
     /**
-     * Нормализует символы дефиса.
+     * Normalize "dash" symbol.
      *
      * @see: <https://ru.wikipedia.org/wiki/%D0%A2%D0%B8%D1%80%D0%B5>
      *
@@ -18,10 +18,10 @@ class Normalizer
     public static function normalizeDashChar(string $input): string
     {
         return \str_replace([
-            '–' /* Юникод U+2013 */,
-            '—' /* Юникод U+2014 */,
-            '‒' /* Юникод U+2012 */,
-            '―' /* Юникод U+2015 */,
+            '–' /* Unicode U+2013 */,
+            '—' /* Unicode U+2014 */,
+            '‒' /* Unicode U+2012 */,
+            '―' /* Unicode U+2015 */,
         ], '-', $input);
     }
 }

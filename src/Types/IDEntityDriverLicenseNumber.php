@@ -81,19 +81,13 @@ class IDEntityDriverLicenseNumber extends AbstractTypedIDEntity implements HasRe
     /**
      * {@inheritdoc}
      */
-    protected function getValidateCallbacks()
+    public function isValid(): bool
     {
-        return [
-            function (): bool {
-                /** @var DriverLicenseNumberValidatorExtension $validator */
-                $validator = static::getContainer()->make(DriverLicenseNumberValidatorExtension::class);
+        /** @var DriverLicenseNumberValidatorExtension $validator */
+        $validator = static::getContainer()->make(DriverLicenseNumberValidatorExtension::class);
 
-                return \is_string($this->value) && $validator->passes('', $this->value);
-            },
-            function (): bool {
-                // Регион существует
-                return $this->getRegionData() instanceof AutoRegionEntry;
-            },
-        ];
+        return \is_string($this->value)
+               && $validator->passes('', $this->value)
+               && $this->getRegionData() instanceof AutoRegionEntry;
     }
 }

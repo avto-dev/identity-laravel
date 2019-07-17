@@ -85,13 +85,11 @@ class IDEntityVin extends AbstractTypedIDEntity
     /**
      * {@inheritdoc}
      */
-    protected function getValidateCallbacks()
+    public function isValid(): bool
     {
-        return function (): bool {
-            /** @var VinCodeValidatorExtension $validator */
-            $validator = static::getContainer()->make(VinCodeValidatorExtension::class);
+        /** @var VinCodeValidatorExtension $validator */
+        $validator = static::getContainer()->make(VinCodeValidatorExtension::class);
 
-            return \is_string($this->value) && $validator->passes('', $this->value);
-        };
+        return \is_string($this->value) && $validator->passes('', $this->value);
     }
 }

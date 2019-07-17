@@ -24,11 +24,9 @@ class IDEntityCantAutodetectMock extends AbstractTypedIDEntity
     /**
      * {@inheritdoc}
      */
-    public function getValidateCallbacks()
+    public function isValid(): bool
     {
-        return function () {
-            return true;
-        };
+        return true;
     }
 
     /**

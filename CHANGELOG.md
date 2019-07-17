@@ -20,7 +20,7 @@ The format is based on [Keep a Changelog][keepachangelog] and this project adher
 - Dependency `laravel/framework` changed to `illuminate/*`
 - Composer scripts
 - **Method signatures in classes now type-hinted (where it possible)**
-- Constants `ID_TYPE_AUTO`, `ID_TYPE_UNKNOWN`, `ID_TYPE_VIN`, `ID_TYPE_GRZ`, `ID_TYPE_STS`, `ID_TYPE_PTS`, `ID_TYPE_CHASSIS`, `ID_TYPE_BODY`, `ID_TYPE_DRIVER_LICENSE_NUMBER` moved into interface `IDEntityInterface` (from `IDEntityInterface` class)
+- Constants `ID_TYPE_AUTO`, `ID_TYPE_UNKNOWN`, `ID_TYPE_VIN`, `ID_TYPE_GRZ`, `ID_TYPE_STS`, `ID_TYPE_PTS`, `ID_TYPE_CHASSIS`, `ID_TYPE_BODY`, `ID_TYPE_DRIVER_LICENSE_NUMBER` moved into interface `IDEntityInterface` (from `IDEntity` class)
 - Constructor in class `IDEntity` now **protected** (not available outside class)
 - Method `getExtendedTypesMap` in `IDEntity` now uses direct call to the `Illuminate\Container\Container` instance instead calling `resolve` laravel helper
 - Validation using `avto-dev/extended-laravel-validator` now works without laravel validator

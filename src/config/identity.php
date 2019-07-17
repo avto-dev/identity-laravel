@@ -9,10 +9,7 @@ return [
     |
     | Here you may specify your types providers map.
     |
-    | Format:
-    | <code>
-    |   %some_type_id% => %type_provider_class_name%
-    | </code>
+    | Format: `%some_type_id% => %type_provider_class_name%`
     |
     */
     'extended_types_map' => [

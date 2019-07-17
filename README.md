@@ -1,13 +1,12 @@
 <p align="center">
-  <img src="https://laravel.com/assets/img/components/logo-laravel.svg" alt="Laravel" width="240" />
+  <img src="https://hsto.org/webt/fu/du/pt/fuduptocorcmar5s0o9hx3vld6g.png" alt="IDEntity" width="240" />
 </p>
 
-# IDEntity for Laravel
+# IDEntity <sub><sup>| _Native and Laravel_</sup></sub>
 
 [![Version][badge_packagist_version]][link_packagist]
 [![Version][badge_php_version]][link_packagist]
 [![Build Status][badge_build_status]][link_build_status]
-[![Coverage][badge_coverage]][link_coverage]
 [![Code quality][badge_code_quality]][link_code_quality]
 [![Downloads count][badge_downloads_count]][link_packagist]
 [![License][badge_license]][link_license]
@@ -19,7 +18,7 @@
 Require this package with composer using the next command:
 
 ```shell
-$ composer require avto-dev/identity-laravel "^3.1"
+$ composer require avto-dev/identity-laravel "^4.0"
 ```
 
 > Installed `composer` is required. To install composer, please [click here][getcomposer].
@@ -35,22 +34,13 @@ $ composer require avto-dev/identity-laravel "^3.1"
 > ];
 > ```
 
-После этого вы можете опубликовать конфигурационный файл пакета с помощью следующей команды:
+After that you **can** "publish" configuration file (`./config/identity.php`) using next command:
 
-```shell
+```bash
 $ ./artisan vendor:publish --provider="AvtoDev\IDEntity\ServiceProvider"
 ```
 
-### Dependent packages
-
-This package has next packages in dependencies:
-
- * `avto-dev/extended-laravel-validator` - used for values validation with [Laravel validator][laravel_validator_doc];
- * `avto-dev/static-references-laravel` - used for accessing to the GIBDD reference data  and GRZ regions validations.
- 
-Регистрация сервис-провайдеров указанных выше пакетов производится автоматически в том случае, если их сервис-провайдеры не были зарегистрированы до того, как была произведена регистрация сервис-провайдера данного пакета.
-
-## Использование
+## Usage
 
 Данный пакет предоставляет API для работы с идентификационными сущностями, такими так:
 
@@ -73,13 +63,15 @@ This package has next packages in dependencies:
  * Валидацию - произведение проверки корректности значения;
  * Автоматическое определение типа (работает не всегда корректно, так как форматы некоторых идентификаторов идентичны).
 
-> Опционально вы можете в конфигурационном файле указать те провайдеры типизированных идентификаторов, которые вам необходимы.
+> Опционально (при использовании вместе с Laravel) вы можете в конфигурационном файле указать дополнительные провайдеры типизированных идентификаторов, которые вам необходимы.
 
-### Примеры использования
+### Usage examples
 
 Для того, что бы получить все поддерживаемые типы идентификаторов, или проверить какой-либо на предмет поддержки данным пакетом вы можете воспользоваться следующими методами:
 
 ```php
+<?php
+
 use AvtoDev\IDEntity\IDEntity;
 
 IDEntity::getSupportedTypes(); // ['VIN', 'GRZ', 'STS', ...]
@@ -90,22 +82,24 @@ IDEntity::typeIsSupported('FOO BAR'); // false
 Для того, что бы создать объект идентификационной сущности вы можете воспользоваться фабричным методом `::make` у объекта `IDEntity`, или создать объект необходимого класса напрямую. Рассмотрим подробнее на примере VIN-кода:
 
 ```php
+<?php
+
 use AvtoDev\IDEntity\IDEntity;
 use AvtoDev\IDEntity\Types\IDEntityVin;
 
 $code = 'JF1SJ5LC5DG048667';
 
-$vin = IDEntity::make($code, IDEntity::ID_TYPE_VIN);
-$vin = new IDEntityVin($code);
+$vin         = IDEntity::make($code, IDEntity::ID_TYPE_VIN);
+$same_object = new IDEntityVin($code);
 ```
-
-В обоих случаях переменной `$vin` будет присвоен объект типа `IDEntityVin`. Необходимость наличия статичного метода `::make` обусловлена тем, что с его помощью возможно использование метода автоматического определения типа, и он является единой точкой входа в метод создания типизированных идентификаторов - его использование является более лучшей практикой.
 
 Если в метод `::make` вторым аргументом не будет передан тип идентификатора, и попытка автоматически определить его тип не увенчается успехом - будет возвращён объект типа `\AvtoDev\IDEntity\Types\IDEntityUnknown`. Данный объект всегда возвращает `false` при попытке его валидации.
 
 Без указания вторым аргументом типа идентификатора будет произведена попытка автоматического определения его типа:
 
 ```php
+<?php
+
 use AvtoDev\IDEntity\IDEntity;
 
 $vin = IDEntity::make('JF1SJ5LC5DG048667');
@@ -120,9 +114,11 @@ $vin->getType(); // 'GRZ'
 Так же реализован механизм "маскировки" значений (скрытия части идентификатора за, например, "звездочками"), для этого вы можете использовать метод `getMaskedValue()` у объекта типизированного идентификатора. Данный метод принимает первым аргументом число "отрытых" символов значения идентификатора в начале, вторым - в конце, и третьим - символ, которым необходимо "маскировать", например:
 
 ```php
+<?php
+
 use AvtoDev\IDEntity\Types\IDEntityVin;
 
-$vin = IDEntity::make('JF1SJ5LC5DG048667');
+$vin = IDEntityVin::make('JF1SJ5LC5DG048667');
 $vin->getMaskedValue(2, 4); // JF***********8667
 $vin->getMaskedValue(4, 2, '_'); // JF1S___________67
 ```
@@ -132,6 +128,8 @@ $vin->getMaskedValue(4, 2, '_'); // JF1S___________67
 В момент создания объекта производится автоматическая нормализация переданного в него идентификатора. Для того, что бы нормализация не производилась - вам необходимо создать необходимый объект с использованием ключевого слова `new` и передать в конструктор вторым аргументом `false`:
 
 ```php
+<?php
+
 use AvtoDev\IDEntity\Types\IDEntityVin;
 
 $un_noramalized = ' jf1SJ5LC5DG048 667';
@@ -147,6 +145,8 @@ new IDEntityVin($un_noramalized, false); // ' jf1SJ5LC5DG048 667'
 Для изменения значения идентификатора у объекта - можете воспользоваться методом `->setValue(...)`, например:
 
 ```php
+<?php
+
 use AvtoDev\IDEntity\Types\IDEntityVin;
 
 $vin = new IDEntityVin('JF1SJ5LC5DG048667'); // 'JF1SJ5LC5DG048667'
@@ -160,6 +160,8 @@ $vin->setValue('X9FDXXEEBDDG37057'); // Now 'X9FDXXEEBDDG37057'
 Для валидации значения используйте метод `->isValid()` у объекта типизированного идентификатора:
 
 ```php
+<?php
+
 use AvtoDev\IDEntity\IDEntity;
 
 $valid_vin = IDEntity::make('JF1SJ5LC5DG048667', IDEntity::ID_TYPE_VIN);
@@ -178,6 +180,8 @@ $invalid_grz->isValid(); // false
 Так же для валидации значений вы можете использовать следующий метод:
 
 ```php
+<?php
+
 use AvtoDev\IDEntity\IDEntity;
 
 IDEntity::is('JF1SJ5LC5DG048667', IDEntity::ID_TYPE_VIN); // true
@@ -204,12 +208,12 @@ IDEntity::is('А123АА177', [IDEntity::ID_TYPE_VIN, IDEntity::ID_TYPE_PTS]); //
 
 ### Testing
 
-For package testing we use `phpunit` framework. Just write into your terminal:
+For package testing we use `phpunit` framework and `docker-ce` + `docker-compose` as develop environment. So, just write into your terminal after repository cloning:
 
-```shell
-$ git clone git@github.com:avto-dev/identity-laravel.git ./identity-laravel && cd $_
-$ composer install
-$ composer test
+```bash
+$ make build
+$ make latest # or 'make lowest'
+$ make test
 ```
 
 ## Changes log
@@ -234,7 +238,6 @@ This is open-sourced software licensed under the [MIT License][link_license].
 [badge_php_version]:https://img.shields.io/packagist/php-v/avto-dev/identity-laravel.svg?longCache=true
 [badge_build_status]:https://travis-ci.org/avto-dev/identity-laravel.svg?branch=master
 [badge_code_quality]:https://img.shields.io/scrutinizer/g/avto-dev/identity-laravel.svg?maxAge=180
-[badge_coverage]:https://img.shields.io/codecov/c/github/avto-dev/identity-laravel/master.svg?maxAge=60
 [badge_downloads_count]:https://img.shields.io/packagist/dt/avto-dev/identity-laravel.svg?maxAge=180
 [badge_license]:https://img.shields.io/packagist/l/avto-dev/identity-laravel.svg?longCache=true
 [badge_release_date]:https://img.shields.io/github/release-date/avto-dev/identity-laravel.svg?style=flat-square&maxAge=180
@@ -244,7 +247,6 @@ This is open-sourced software licensed under the [MIT License][link_license].
 [link_releases]:https://github.com/avto-dev/identity-laravel/releases
 [link_packagist]:https://packagist.org/packages/avto-dev/identity-laravel
 [link_build_status]:https://travis-ci.org/avto-dev/identity-laravel
-[link_coverage]:https://codecov.io/gh/avto-dev/identity-laravel/
 [link_changes_log]:https://github.com/avto-dev/identity-laravel/blob/master/CHANGELOG.md
 [link_code_quality]:https://scrutinizer-ci.com/g/avto-dev/identity-laravel/
 [link_issues]:https://github.com/avto-dev/identity-laravel/issues

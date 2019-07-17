@@ -1,12 +1,12 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace AvtoDev\IDEntity\Tests;
 
 use AvtoDev\IDEntity\ServiceProvider;
 
 /**
- * Тесты сервис-провайдера пакета.
- *
  * @group service_provider
  */
 class ServiceProviderTest extends AbstractTestCase

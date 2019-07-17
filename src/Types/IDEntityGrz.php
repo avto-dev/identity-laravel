@@ -282,23 +282,20 @@ class IDEntityGrz extends AbstractTypedIDEntity implements HasRegionDataInterfac
     /**
      * {@inheritdoc}
      */
-    protected function getValidateCallbacks()
+    public function isValid(): bool
     {
-        return [
-            function (): bool {
-                /** @var GrzCodeValidatorExtension $validator */
-                $validator = static::getContainer()->make(GrzCodeValidatorExtension::class);
+        /** @var GrzCodeValidatorExtension $validator */
+        $validator = static::getContainer()->make(GrzCodeValidatorExtension::class);
 
-                return \is_string($this->value) && $validator->passes('', $this->value);
-            },
-            function (): bool {
-                // Пропускаем проверку формата, в котором в принципе нет кода региона
-                if ($this->getFormatPattern() === self::FORMAT_PATTERN_2) {
-                    return true;
-                }
+        $validated = \is_string($this->value) && $validator->passes('', $this->value);
 
-                return $this->getRegionData() instanceof AutoRegionEntry;
-            },
-        ];
+        $region_valid = false;
+
+        // Пропускаем проверку формата, в котором в принципе нет кода региона
+        if ($this->getFormatPattern() === self::FORMAT_PATTERN_2 || $this->getRegionData() instanceof AutoRegionEntry) {
+            $region_valid = true;
+        }
+
+        return $validated && $region_valid;
     }
 }

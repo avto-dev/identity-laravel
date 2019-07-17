@@ -43,13 +43,11 @@ class IDEntityPts extends AbstractTypedIDEntity
     /**
      * {@inheritdoc}
      */
-    protected function getValidateCallbacks()
+    public function isValid(): bool
     {
-        return function (): bool {
-            /** @var PtsCodeValidatorExtension $validator */
-            $validator = static::getContainer()->make(PtsCodeValidatorExtension::class);
+        /** @var PtsCodeValidatorExtension $validator */
+        $validator = static::getContainer()->make(PtsCodeValidatorExtension::class);
 
-            return \is_string($this->value) && $validator->passes('', $this->value);
-        };
+        return \is_string($this->value) && $validator->passes('', $this->value);
     }
 }

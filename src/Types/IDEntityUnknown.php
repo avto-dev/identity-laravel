@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace AvtoDev\IDEntity\Types;
 
-use Closure;
 use Exception;
 
 class IDEntityUnknown extends AbstractTypedIDEntity
@@ -32,10 +31,8 @@ class IDEntityUnknown extends AbstractTypedIDEntity
     /**
      * {@inheritdoc}
      */
-    protected function getValidateCallbacks(): Closure
+    public function isValid(): bool
     {
-        return function (): bool {
-            return false;
-        };
+        return false;
     }
 }
