@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace AvtoDev\IDEntity\Tests\Types;
 
 use stdClass;
@@ -8,9 +10,6 @@ use AvtoDev\IDEntity\Tests\AbstractTestCase;
 use AvtoDev\IDEntity\Types\AbstractTypedIDEntity;
 use AvtoDev\IDEntity\Types\TypedIDEntityInterface;
 
-/**
- * Class AbstractIDEntityTestCase.
- */
 abstract class AbstractIDEntityTestCase extends AbstractTestCase
 {
     /**
@@ -21,7 +20,7 @@ abstract class AbstractIDEntityTestCase extends AbstractTestCase
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -33,7 +32,7 @@ abstract class AbstractIDEntityTestCase extends AbstractTestCase
     /**
      * {@inheritdoc}
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         unset($this->instance);
 
@@ -45,7 +44,7 @@ abstract class AbstractIDEntityTestCase extends AbstractTestCase
      *
      * @return void
      */
-    public function testConstructor()
+    public function testConstructor(): void
     {
         $class_name = $this->getClassName();
 
@@ -59,7 +58,7 @@ abstract class AbstractIDEntityTestCase extends AbstractTestCase
      *
      * @return void
      */
-    public function testInstances()
+    public function testInstances(): void
     {
         foreach ([IDEntity::class, TypedIDEntityInterface::class] as $class_name) {
             $this->assertInstanceOf($class_name, $this->instance);
@@ -71,7 +70,7 @@ abstract class AbstractIDEntityTestCase extends AbstractTestCase
      *
      * @return void
      */
-    public function testToString()
+    public function testToString(): void
     {
         $this->assertEquals($this->instance->getValue(), (string) $this->instance);
     }
@@ -81,16 +80,13 @@ abstract class AbstractIDEntityTestCase extends AbstractTestCase
      *
      * @return void
      */
-    public function testGetMaskedValue()
+    public function testGetMaskedValue(): void
     {
         $this->instance->setValue('foo_blablabla_bar', false);
         $this->assertEquals('foo***********bar', $this->instance->getMaskedValue());
 
         $this->instance->setValue('foo_bla_bar', false);
         $this->assertEquals('foo^^^^^bar', $this->instance->getMaskedValue(3, 3, '^foo'));
-
-        $this->instance->setValue('foo_bla_bar', false);
-        $this->assertEquals('foo*****bar', $this->instance->getMaskedValue(3, 3, []));
 
         $this->instance->setValue('foo_blablabla_bar', false);
         $this->assertEquals('fo+++++++++++_bar', $this->instance->getMaskedValue(2, 4, '+'));
@@ -100,9 +96,6 @@ abstract class AbstractIDEntityTestCase extends AbstractTestCase
 
         $this->instance->setValue('foo_blablabla_bar', false);
         $this->assertEquals('*****************', $this->instance->getMaskedValue(0, 0));
-
-        $this->instance->setValue(null, false);
-        $this->assertNull($this->instance->getMaskedValue());
     }
 
     /**
@@ -110,11 +103,9 @@ abstract class AbstractIDEntityTestCase extends AbstractTestCase
      *
      * @return void
      */
-    public function testMakeMethod()
+    public function testMakeMethod(): void
     {
-        $instance = $this->instance;
-
-        $this->assertEquals($instance, $instance::make($instance->getValue()));
+        $this->assertEquals($this->instance, $this->instance::make($this->instance->getValue()));
     }
 
     /**
@@ -122,16 +113,14 @@ abstract class AbstractIDEntityTestCase extends AbstractTestCase
      *
      * @return void
      */
-    public function testIsMethod()
+    public function testIsMethod(): void
     {
-        $instance = $this->instance;
-
-        $this->assertEquals($instance->isValid(), $instance::is($instance->getValue()));
+        $this->assertEquals($this->instance->isValid(), $this->instance::is($this->instance->getValue()));
 
         // Второй аргумент для 'is' игнорируется
-        $this->assertEquals($instance->isValid(), $instance::is($instance->getValue(), [123, null]));
-        $this->assertEquals($instance->isValid(), $instance::is($instance->getValue(), ['foo']));
-        $this->assertEquals($instance->isValid(), $instance::is($instance->getValue(), [IDEntity::ID_TYPE_VIN]));
+        $this->assertEquals($this->instance->isValid(), $this->instance::is($this->instance->getValue(), [123, null]));
+        $this->assertEquals($this->instance->isValid(), $this->instance::is($this->instance->getValue(), ['foo']));
+        $this->assertEquals($this->instance->isValid(), $this->instance::is($this->instance->getValue(), [IDEntity::ID_TYPE_VIN]));
     }
 
     /**
@@ -139,7 +128,7 @@ abstract class AbstractIDEntityTestCase extends AbstractTestCase
      *
      * @return void
      */
-    public function testGetAndSetValue()
+    public function testGetAndSetValue(): void
     {
         $this->assertInstanceOf(
             $this->getClassName(),
@@ -161,7 +150,7 @@ abstract class AbstractIDEntityTestCase extends AbstractTestCase
      *
      * @return void
      */
-    public function testToArrayAndToJson()
+    public function testToArrayAndToJson(): void
     {
         $this->assertEquals($array = [
             'value' => $this->instance->getValue(),
@@ -190,7 +179,7 @@ abstract class AbstractIDEntityTestCase extends AbstractTestCase
      *
      * @return null
      */
-    public function testNormalizeWithInvalidInputData()
+    public function testNormalizeWithInvalidInputData(): void
     {
         $invalid_values = [
             new stdClass,
@@ -199,17 +188,15 @@ abstract class AbstractIDEntityTestCase extends AbstractTestCase
             },
         ];
 
-        $instance = $this->instance;
-
         foreach ($invalid_values as $value) {
-            $this->assertNull($instance::normalize($value));
+            $this->assertNull($this->instance::normalize($value));
         }
     }
 
     /**
      * Проверяем, что по умолчанию идентификатор доступен для автоматического определения.
      */
-    public function testCanAutodetect()
+    public function testCanAutodetect(): void
     {
         $this->assertTrue($this->instance->canBeAutoDetected());
     }
@@ -219,12 +206,12 @@ abstract class AbstractIDEntityTestCase extends AbstractTestCase
      *
      * @return string
      */
-    abstract protected function getClassName();
+    abstract protected function getClassName(): string;
 
     /**
      * Возвращает валидное значение сущности.
      *
      * @return string
      */
-    abstract protected function getValidValue();
+    abstract protected function getValidValue(): string;
 }

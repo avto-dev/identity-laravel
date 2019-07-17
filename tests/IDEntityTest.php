@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace AvtoDev\IDEntity\Tests;
 
 use Exception;
@@ -14,7 +16,7 @@ use AvtoDev\IDEntity\Tests\Traits\InstancesAccessorsTrait;
 use AvtoDev\IDEntity\Tests\Mocks\Types\IDEntityCantAutodetectMock;
 
 /**
- * Class IDEntityTest.
+ * @covers \AvtoDev\IDEntity\IDEntity<extended>
  */
 class IDEntityTest extends AbstractTestCase
 {
@@ -28,7 +30,7 @@ class IDEntityTest extends AbstractTestCase
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -38,7 +40,7 @@ class IDEntityTest extends AbstractTestCase
     /**
      * {@inheritdoc}
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         unset($this->instance);
 
@@ -50,7 +52,7 @@ class IDEntityTest extends AbstractTestCase
      *
      * @return void
      */
-    public function testConstants()
+    public function testConstants(): void
     {
         $checks = [
             'AUTODETECT' => IDEntity::ID_TYPE_AUTO,
@@ -74,7 +76,7 @@ class IDEntityTest extends AbstractTestCase
      *
      * @return void
      */
-    public function testImplements()
+    public function testImplements(): void
     {
         foreach ([IDEntityInterface::class] as $class_name) {
             $this->assertInstanceOf($class_name, $this->instance);
@@ -82,24 +84,11 @@ class IDEntityTest extends AbstractTestCase
     }
 
     /**
-     * Убеждаемся в том, что конструктор нельзя использовать.
-     *
-     * @return void
-     */
-    public function testConstructorException()
-    {
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessageRegExp('~use method.+::make~i');
-
-        new IDEntity;
-    }
-
-    /**
      * Тест метода 'getSupportedTypes'.
      *
      * @return void
      */
-    public function testGetSupportedTypes()
+    public function testGetSupportedTypes(): void
     {
         $expects = [
             IDEntity::ID_TYPE_VIN,
@@ -125,7 +114,7 @@ class IDEntityTest extends AbstractTestCase
      *
      * @return void
      */
-    public function testTypeIsSupported()
+    public function testTypeIsSupported(): void
     {
         $expects = [
             IDEntity::ID_TYPE_VIN,
@@ -149,7 +138,7 @@ class IDEntityTest extends AbstractTestCase
     /**
      * Проверяем, что возможность автоматического определения сущности задается свойством
      */
-    public function testCanAutodetectMethod()
+    public function testCanAutodetectMethod(): void
     {
         $instance = new IDEntityCantAutodetectMock('');
         $this->assertFalse($instance->canBeAutoDetected());
@@ -160,7 +149,7 @@ class IDEntityTest extends AbstractTestCase
      *
      * @return void
      */
-    public function testMakeWithPassedType()
+    public function testMakeWithPassedType(): void
     {
         $instance = IDEntity::make('JF1SJ5LC5DG048667', $type = IDEntity::ID_TYPE_VIN);
         $this->assertEquals($type, $instance->getType());
@@ -189,7 +178,7 @@ class IDEntityTest extends AbstractTestCase
      *
      * @return void
      */
-    public function testMakeWithAutoType()
+    public function testMakeWithAutoType(): void
     {
         $instance = IDEntity::make($value = 'JF1SJ5LC5DG048667');
         $this->assertEquals(IDEntity::ID_TYPE_VIN, $instance->getType());
@@ -218,7 +207,7 @@ class IDEntityTest extends AbstractTestCase
      *
      * @return void
      */
-    public function testMakeWithUnknownType()
+    public function testMakeWithUnknownType(): void
     {
         $instance = IDEntity::make('foo');
         $this->assertEquals(IDEntity::ID_TYPE_UNKNOWN, $instance->getType());
@@ -238,7 +227,7 @@ class IDEntityTest extends AbstractTestCase
      *
      * @return void
      */
-    public function testOneTypeCantAutodetect()
+    public function testOneTypeCantAutodetect(): void
     {
         /* @var IDEntity $mock */
         $mock = $this->createIDEntityMock([
@@ -275,7 +264,7 @@ class IDEntityTest extends AbstractTestCase
      *
      * @return void
      */
-    public function testIsMethod()
+    public function testIsMethod(): void
     {
         $this->assertTrue(IDEntity::is($value = 'JF1SJ5LC5DG048667', IDEntity::ID_TYPE_VIN));
         $this->assertFalse(IDEntity::is($value, IDEntity::ID_TYPE_GRZ));
@@ -313,7 +302,7 @@ class IDEntityTest extends AbstractTestCase
      *
      * @return void
      */
-    public function testExtendedTypesMapMethod()
+    public function testExtendedTypesMapMethod(): void
     {
         $extended_map = $this->callMethod($this->instance, 'getExtendedTypesMap');
 
@@ -329,7 +318,7 @@ class IDEntityTest extends AbstractTestCase
      *
      * @return void
      */
-    public function testExtendsGetTypesMapWithPackageConfig()
+    public function testExtendsGetTypesMapWithPackageConfig(): void
     {
         $original_map = $this->callMethod($this->instance, 'getTypesMap');
 
@@ -358,7 +347,8 @@ class IDEntityTest extends AbstractTestCase
 
         $mock
             ->shouldReceive('getTypesMap')
-            ->andReturn($types_map);
+            ->andReturn($types_map)
+            ->getMock();
 
         return $mock;
     }

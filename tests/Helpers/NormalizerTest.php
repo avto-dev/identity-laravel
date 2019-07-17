@@ -1,10 +1,15 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace AvtoDev\IDEntity\Tests\Helpers;
 
 use AvtoDev\IDEntity\Helpers\Normalizer;
 use AvtoDev\IDEntity\Tests\AbstractTestCase;
 
+/**
+ * @covers \AvtoDev\IDEntity\Helpers\Normalizer
+ */
 class NormalizerTest extends AbstractTestCase
 {
     /**
@@ -12,7 +17,7 @@ class NormalizerTest extends AbstractTestCase
      *
      * @return void
      */
-    public function testNormalizeDashChar()
+    public function testNormalizeDashChar(): void
     {
         foreach ([
                      '–' /* Юникод U+2013 */,
@@ -24,6 +29,6 @@ class NormalizerTest extends AbstractTestCase
             $this->assertEquals('-', Normalizer::normalizeDashChar($dash));
         }
 
-        $this->assertNull(Normalizer::normalizeDashChar(''));
+        $this->assertSame('', Normalizer::normalizeDashChar(''));
     }
 }

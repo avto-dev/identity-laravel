@@ -16,7 +16,7 @@ class IDEntityCantAutodetectMock extends AbstractTypedIDEntity
     /**
      * {@inheritdoc}
      */
-    public function getType()
+    public function getType(): string
     {
         return self::TYPE;
     }
@@ -24,17 +24,15 @@ class IDEntityCantAutodetectMock extends AbstractTypedIDEntity
     /**
      * {@inheritdoc}
      */
-    public function getValidateCallbacks()
+    public function isValid(): bool
     {
-        return function () {
-            return true;
-        };
+        return true;
     }
 
     /**
      * {@inheritdoc}
      */
-    public static function normalize($value)
+    public static function normalize($value): ?string
     {
         return $value;
     }

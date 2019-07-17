@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace AvtoDev\IDEntity\Tests\Types;
 
 use Illuminate\Support\Str;
@@ -7,14 +9,19 @@ use AvtoDev\IDEntity\IDEntity;
 use AvtoDev\IDEntity\Types\IDEntityVin;
 
 /**
- * Class IDEntityVinTest.
+ * @covers \AvtoDev\IDEntity\Types\IDEntityVin<extended>
  */
 class IDEntityVinTest extends AbstractIDEntityTestCase
 {
     /**
+     * @var IDEntityVin
+     */
+    protected $instance;
+
+    /**
      * {@inheritdoc}
      */
-    public function testGetType()
+    public function testGetType(): void
     {
         $this->assertEquals(IDEntity::ID_TYPE_VIN, $this->instance->getType());
     }
@@ -22,7 +29,7 @@ class IDEntityVinTest extends AbstractIDEntityTestCase
     /**
      * {@inheritdoc}
      */
-    public function testIsValid()
+    public function testIsValid(): void
     {
         $valid = [
             '5UXFA13585LY08847',
@@ -136,31 +143,80 @@ class IDEntityVinTest extends AbstractIDEntityTestCase
     /**
      * {@inheritdoc}
      */
-    public function testNormalize()
+    public function testNormalize(): void
     {
-        $instance = $this->instance;
-
         // Из нижнего регистра переведёт в верхний
-        $this->assertEquals($valid = $this->getValidValue(), $instance::normalize(Str::lower($this->getValidValue())));
+        $this->assertEquals($valid = $this->getValidValue(), $this->instance::normalize(Str::lower($this->getValidValue())));
 
         // Пробелы - успешно триммит
-        $this->assertEquals($valid, $instance::normalize(' ' . $this->getValidValue() . ' '));
+        $this->assertEquals($valid, $this->instance::normalize(' ' . $this->getValidValue() . ' '));
 
         // Кириллицу заменяет на латиницу ("С" - кириллическая)
-        $this->assertEquals($valid, $instance::normalize('JF1SJ5Lс5DG048667'));
+        $this->assertEquals($valid, $this->instance::normalize('JF1SJ5Lс5DG048667'));
 
         // Успешно заменяет кириллическую и латинскую "О" на "0"
-        $this->assertEquals($valid, $instance::normalize('JF1SJ5LC5DGО48667'));
-        $this->assertEquals($valid, $instance::normalize('JF1SJ5LC5DGO48667'));
+        $this->assertEquals($valid, $this->instance::normalize('JF1SJ5LC5DGО48667'));
+        $this->assertEquals($valid, $this->instance::normalize('JF1SJ5LC5DGO48667'));
 
         // Некорректные символы - удаляет
-        $this->assertEquals($valid, $instance::normalize('JF1SJ5L {}#$%^& C5DG048667 Ъ'));
+        $this->assertEquals($valid, $this->instance::normalize('JF1SJ5L {}#$%^& C5DG048667 Ъ'));
+    }
+
+    /**
+     * @return void
+     */
+    public function testChecksumValidation(): void
+    {
+        $valid = [
+            'JHMCM56557С404453',
+            '1C4NJDEB5FD340542',
+            'WD2PD744X55764973',
+            'WAUBB28D2XA299286',
+            'JHMCG56612C018010',
+            '1HD1BW517AB032841',
+            '3D7UT2CL4BG628593',
+            '1N4AZ0CP3FC321188',
+            '2HGFB2F65CH319973',
+            'JTJBT20X270137599',
+            '5NPEU46F96H063851',
+            '2T1KR32E43C162992',
+            'JTEBU29J805003909',
+            'X4X5A79400D363203',
+            'WAUZZZ4E35N002551',
+            '4S4WX83C164401449',
+        ];
+
+        $invalid = [
+            'JMZBK12Z261367366',
+            'SALLSAAF4BA268959',
+            'X9FMXXEEBMCG05797',
+            'WDC2923241A022925',
+            'YV1CM714681472368',
+            'Z94CB41ABDR105897',
+            'XUUNF486J90008440',
+            'Z94CT41DBFR411079',
+            'KMHE341CBFA025224',
+            'XWB3L32EDCA218918',
+            'VF1UDC3K640850971',
+            '!@#$%^&*()}{<>?/[',
+
+            'foo bar',
+            Str::random(512),
+        ];
+
+        foreach ($valid as $value) {
+            $this->assertTrue($this->instance->setValue($value)->isChecksumValidated());
+        }
+
+        foreach ($invalid as $value) {
+            $this->assertFalse($this->instance->setValue($value)->isChecksumValidated(), $value);
+        }
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function getClassName()
+    protected function getClassName(): string
     {
         return IDEntityVin::class;
     }
@@ -168,7 +224,7 @@ class IDEntityVinTest extends AbstractIDEntityTestCase
     /**
      * {@inheritdoc}
      */
-    protected function getValidValue()
+    protected function getValidValue(): string
     {
         return 'JF1SJ5LC5DG048667';
     }

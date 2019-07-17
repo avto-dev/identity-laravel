@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace AvtoDev\IDEntity\Tests\Types;
 
 use Illuminate\Support\Str;
@@ -7,7 +9,7 @@ use AvtoDev\IDEntity\IDEntity;
 use AvtoDev\IDEntity\Types\IDEntityGrz;
 
 /**
- * Class IDEntityGrzTest.
+ * @covers \AvtoDev\IDEntity\Types\IDEntityGrz<extended>
  */
 class IDEntityGrzTest extends AbstractIDEntityTestCase
 {
@@ -21,32 +23,30 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
      *
      * @return void
      */
-    public function testConstants()
+    public function testConstants(): void
     {
-        $instance = $this->instance; // PHP 5.6
+        $this->assertEquals('X000XX77_OR_X000XX777', $this->instance::FORMAT_PATTERN_1);
+        $this->assertEquals('X000XX', $this->instance::FORMAT_PATTERN_2);
+        $this->assertEquals('XX00077', $this->instance::FORMAT_PATTERN_3);
+        $this->assertEquals('0000XX77', $this->instance::FORMAT_PATTERN_4);
+        $this->assertEquals('XX000077', $this->instance::FORMAT_PATTERN_5);
+        $this->assertEquals('X000077', $this->instance::FORMAT_PATTERN_6);
+        $this->assertEquals('000X77', $this->instance::FORMAT_PATTERN_7);
+        $this->assertEquals('0000X77', $this->instance::FORMAT_PATTERN_8);
 
-        $this->assertEquals('X000XX77_OR_X000XX777', $instance::FORMAT_PATTERN_1);
-        $this->assertEquals('X000XX', $instance::FORMAT_PATTERN_2);
-        $this->assertEquals('XX00077', $instance::FORMAT_PATTERN_3);
-        $this->assertEquals('0000XX77', $instance::FORMAT_PATTERN_4);
-        $this->assertEquals('XX000077', $instance::FORMAT_PATTERN_5);
-        $this->assertEquals('X000077', $instance::FORMAT_PATTERN_6);
-        $this->assertEquals('000X77', $instance::FORMAT_PATTERN_7);
-        $this->assertEquals('0000X77', $instance::FORMAT_PATTERN_8);
-
-        $this->assertEquals('TYPE_1', $instance::GOST_TYPE_1);
-        $this->assertEquals('TYPE_1A', $instance::GOST_TYPE_1A);
-        $this->assertEquals('TYPE_1B', $instance::GOST_TYPE_1B);
-        $this->assertEquals('TYPE_2', $instance::GOST_TYPE_2);
-        $this->assertEquals('TYPE_3', $instance::GOST_TYPE_3);
-        $this->assertEquals('TYPE_4', $instance::GOST_TYPE_4);
-        $this->assertEquals('TYPE_5', $instance::GOST_TYPE_5);
-        $this->assertEquals('TYPE_6', $instance::GOST_TYPE_6);
-        $this->assertEquals('TYPE_7', $instance::GOST_TYPE_7);
-        $this->assertEquals('TYPE_8', $instance::GOST_TYPE_8);
-        $this->assertEquals('TYPE_20', $instance::GOST_TYPE_20);
-        $this->assertEquals('TYPE_21', $instance::GOST_TYPE_21);
-        $this->assertEquals('TYPE_22', $instance::GOST_TYPE_22);
+        $this->assertEquals('TYPE_1', $this->instance::GOST_TYPE_1);
+        $this->assertEquals('TYPE_1A', $this->instance::GOST_TYPE_1A);
+        $this->assertEquals('TYPE_1B', $this->instance::GOST_TYPE_1B);
+        $this->assertEquals('TYPE_2', $this->instance::GOST_TYPE_2);
+        $this->assertEquals('TYPE_3', $this->instance::GOST_TYPE_3);
+        $this->assertEquals('TYPE_4', $this->instance::GOST_TYPE_4);
+        $this->assertEquals('TYPE_5', $this->instance::GOST_TYPE_5);
+        $this->assertEquals('TYPE_6', $this->instance::GOST_TYPE_6);
+        $this->assertEquals('TYPE_7', $this->instance::GOST_TYPE_7);
+        $this->assertEquals('TYPE_8', $this->instance::GOST_TYPE_8);
+        $this->assertEquals('TYPE_20', $this->instance::GOST_TYPE_20);
+        $this->assertEquals('TYPE_21', $this->instance::GOST_TYPE_21);
+        $this->assertEquals('TYPE_22', $this->instance::GOST_TYPE_22);
     }
 
     /**
@@ -54,95 +54,91 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
      *
      * @return void
      */
-    public function testGostTypeToPattern()
+    public function testGostTypeToPattern(): void
     {
-        $instance = $this->instance; // PHP 5.6
+        $this->assertEquals($this->instance::FORMAT_PATTERN_1, $this->instance::getFormatPatternByGostType($this->instance::GOST_TYPE_1));
 
-        $this->assertEquals($instance::FORMAT_PATTERN_1, $instance::getFormatPatternByGostType($instance::GOST_TYPE_1));
+        $this->assertEquals($this->instance::FORMAT_PATTERN_2, $this->instance::getFormatPatternByGostType($this->instance::GOST_TYPE_1A));
 
-        $this->assertEquals($instance::FORMAT_PATTERN_2, $instance::getFormatPatternByGostType($instance::GOST_TYPE_1A));
+        $this->assertEquals($this->instance::FORMAT_PATTERN_3, $this->instance::getFormatPatternByGostType($this->instance::GOST_TYPE_1B));
+        $this->assertEquals($this->instance::FORMAT_PATTERN_3, $this->instance::getFormatPatternByGostType($this->instance::GOST_TYPE_2));
 
-        $this->assertEquals($instance::FORMAT_PATTERN_3, $instance::getFormatPatternByGostType($instance::GOST_TYPE_1B));
-        $this->assertEquals($instance::FORMAT_PATTERN_3, $instance::getFormatPatternByGostType($instance::GOST_TYPE_2));
+        $this->assertEquals($this->instance::FORMAT_PATTERN_4, $this->instance::getFormatPatternByGostType($this->instance::GOST_TYPE_3));
+        $this->assertEquals($this->instance::FORMAT_PATTERN_4, $this->instance::getFormatPatternByGostType($this->instance::GOST_TYPE_4));
+        $this->assertEquals($this->instance::FORMAT_PATTERN_4, $this->instance::getFormatPatternByGostType($this->instance::GOST_TYPE_5));
+        $this->assertEquals($this->instance::FORMAT_PATTERN_4, $this->instance::getFormatPatternByGostType($this->instance::GOST_TYPE_7));
+        $this->assertEquals($this->instance::FORMAT_PATTERN_4, $this->instance::getFormatPatternByGostType($this->instance::GOST_TYPE_8));
 
-        $this->assertEquals($instance::FORMAT_PATTERN_4, $instance::getFormatPatternByGostType($instance::GOST_TYPE_3));
-        $this->assertEquals($instance::FORMAT_PATTERN_4, $instance::getFormatPatternByGostType($instance::GOST_TYPE_4));
-        $this->assertEquals($instance::FORMAT_PATTERN_4, $instance::getFormatPatternByGostType($instance::GOST_TYPE_5));
-        $this->assertEquals($instance::FORMAT_PATTERN_4, $instance::getFormatPatternByGostType($instance::GOST_TYPE_7));
-        $this->assertEquals($instance::FORMAT_PATTERN_4, $instance::getFormatPatternByGostType($instance::GOST_TYPE_8));
+        $this->assertEquals($this->instance::FORMAT_PATTERN_5, $this->instance::getFormatPatternByGostType($this->instance::GOST_TYPE_6));
 
-        $this->assertEquals($instance::FORMAT_PATTERN_5, $instance::getFormatPatternByGostType($instance::GOST_TYPE_6));
+        $this->assertEquals($this->instance::FORMAT_PATTERN_6, $this->instance::getFormatPatternByGostType($this->instance::GOST_TYPE_20));
 
-        $this->assertEquals($instance::FORMAT_PATTERN_6, $instance::getFormatPatternByGostType($instance::GOST_TYPE_20));
+        $this->assertEquals($this->instance::FORMAT_PATTERN_7, $this->instance::getFormatPatternByGostType($this->instance::GOST_TYPE_21));
 
-        $this->assertEquals($instance::FORMAT_PATTERN_7, $instance::getFormatPatternByGostType($instance::GOST_TYPE_21));
+        $this->assertEquals($this->instance::FORMAT_PATTERN_8, $this->instance::getFormatPatternByGostType($this->instance::GOST_TYPE_22));
 
-        $this->assertEquals($instance::FORMAT_PATTERN_8, $instance::getFormatPatternByGostType($instance::GOST_TYPE_22));
-
-        $this->assertNull($instance::getFormatPatternByGostType('foo bar'));
-        $this->assertNull($instance::getFormatPatternByGostType(123));
-        $this->assertNull($instance::getFormatPatternByGostType(null));
+        $this->assertNull($this->instance::getFormatPatternByGostType('foo bar'));
+        $this->assertNull($this->instance::getFormatPatternByGostType(123));
+        $this->assertNull($this->instance::getFormatPatternByGostType(null));
     }
 
-    public function testPatternToGostTypes()
+    public function testPatternToGostTypes(): void
     {
-        $instance = $this->instance; // PHP 5.6
-
         $this->assertEquals(
-            $instance::getGostTypesByPattern($instance::FORMAT_PATTERN_1),
-            [$instance::GOST_TYPE_1]
+            $this->instance::getGostTypesByPattern($this->instance::FORMAT_PATTERN_1),
+            [$this->instance::GOST_TYPE_1]
         );
 
         $this->assertEquals(
-            $instance::getGostTypesByPattern($instance::FORMAT_PATTERN_2),
-            [$instance::GOST_TYPE_1A]
+            $this->instance::getGostTypesByPattern($this->instance::FORMAT_PATTERN_2),
+            [$this->instance::GOST_TYPE_1A]
         );
 
         $this->assertEquals(
-            $instance::getGostTypesByPattern($instance::FORMAT_PATTERN_3),
-            [$instance::GOST_TYPE_1B, $instance::GOST_TYPE_2]
+            $this->instance::getGostTypesByPattern($this->instance::FORMAT_PATTERN_3),
+            [$this->instance::GOST_TYPE_1B, $this->instance::GOST_TYPE_2]
         );
 
         $this->assertEquals(
-            $instance::getGostTypesByPattern($instance::FORMAT_PATTERN_4),
+            $this->instance::getGostTypesByPattern($this->instance::FORMAT_PATTERN_4),
             [
-                $instance::GOST_TYPE_3,
-                $instance::GOST_TYPE_4,
-                $instance::GOST_TYPE_5,
-                $instance::GOST_TYPE_7,
-                $instance::GOST_TYPE_8,
+                $this->instance::GOST_TYPE_3,
+                $this->instance::GOST_TYPE_4,
+                $this->instance::GOST_TYPE_5,
+                $this->instance::GOST_TYPE_7,
+                $this->instance::GOST_TYPE_8,
             ]
         );
 
         $this->assertEquals(
-            $instance::getGostTypesByPattern($instance::FORMAT_PATTERN_5),
-            [$instance::GOST_TYPE_6]
+            $this->instance::getGostTypesByPattern($this->instance::FORMAT_PATTERN_5),
+            [$this->instance::GOST_TYPE_6]
         );
 
         $this->assertEquals(
-            $instance::getGostTypesByPattern($instance::FORMAT_PATTERN_6),
-            [$instance::GOST_TYPE_20]
+            $this->instance::getGostTypesByPattern($this->instance::FORMAT_PATTERN_6),
+            [$this->instance::GOST_TYPE_20]
         );
 
         $this->assertEquals(
-            $instance::getGostTypesByPattern($instance::FORMAT_PATTERN_7),
-            [$instance::GOST_TYPE_21]
+            $this->instance::getGostTypesByPattern($this->instance::FORMAT_PATTERN_7),
+            [$this->instance::GOST_TYPE_21]
         );
 
         $this->assertEquals(
-            $instance::getGostTypesByPattern($instance::FORMAT_PATTERN_8),
-            [$instance::GOST_TYPE_22]
+            $this->instance::getGostTypesByPattern($this->instance::FORMAT_PATTERN_8),
+            [$this->instance::GOST_TYPE_22]
         );
 
-        $this->assertNull($instance::getGostTypesByPattern('foo bar'));
-        $this->assertNull($instance::getGostTypesByPattern(123));
-        $this->assertNull($instance::getGostTypesByPattern(null));
+        $this->assertNull($this->instance::getGostTypesByPattern('foo bar'));
+        $this->assertNull($this->instance::getGostTypesByPattern(123));
+        $this->assertNull($this->instance::getGostTypesByPattern(null));
     }
 
     /**
      * {@inheritdoc}
      */
-    public function testGetType()
+    public function testGetType(): void
     {
         $this->assertEquals(IDEntity::ID_TYPE_GRZ, $this->instance->getType());
     }
@@ -150,7 +146,7 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
     /**
      * {@inheritdoc}
      */
-    public function testIsValid()
+    public function testIsValid(): void
     {
         $valid = [
             // М000ММ77 или М000ММ777 (тип 1 - Для легковых, грузовых, грузопассажирских ТС и автобусов)
@@ -526,12 +522,10 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
      *
      * @return void
      */
-    public function testGetFormatPattern()
+    public function testGetFormatPattern(): void
     {
-        $instance = $this->instance; // PHP 5.6
-
         $asserts = [
-            $instance::FORMAT_PATTERN_1 => [
+            $this->instance::FORMAT_PATTERN_1 => [
                 'М000ММ77',
                 'М000ММ777',
                 'А825МС716',
@@ -546,7 +540,7 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
                 'Х894СВ59',
             ],
 
-            $instance::FORMAT_PATTERN_2 => [
+            $this->instance::FORMAT_PATTERN_2 => [
                 'М000ММ',
                 'О772ТХ',
                 'В771ЕК',
@@ -557,7 +551,7 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
                 'У868УК',
             ],
 
-            $instance::FORMAT_PATTERN_3 => [
+            $this->instance::FORMAT_PATTERN_3 => [
                 'ММ00077',
                 'СХ39646',
                 'НО13789',
@@ -566,7 +560,7 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
                 'ТА37373',
             ],
 
-            $instance::FORMAT_PATTERN_4 => [
+            $this->instance::FORMAT_PATTERN_4 => [
                 '0000ММ77',
                 '6868УК26',
                 '2824РН78',
@@ -578,7 +572,7 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
                 '8989ЕР72',
             ],
 
-            $instance::FORMAT_PATTERN_5 => [
+            $this->instance::FORMAT_PATTERN_5 => [
                 'ММ000077',
                 'УК868626',
                 'МН824278',
@@ -590,7 +584,7 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
                 'СР989872',
             ],
 
-            $instance::FORMAT_PATTERN_6 => [
+            $this->instance::FORMAT_PATTERN_6 => [
                 'М000077',
                 'К868626',
                 'Н824278',
@@ -605,7 +599,7 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
                 'Р515119',
             ],
 
-            $instance::FORMAT_PATTERN_7 => [
+            $this->instance::FORMAT_PATTERN_7 => [
                 '000М77',
                 '866К26',
                 '822Н78',
@@ -618,7 +612,7 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
                 '222Х33',
             ],
 
-            $instance::FORMAT_PATTERN_8 => [
+            $this->instance::FORMAT_PATTERN_8 => [
                 '0000М77',
                 '6868У26',
                 '2824Р78',
@@ -646,7 +640,7 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
      *
      * @return void
      */
-    public function testGetRegionCode()
+    public function testGetRegionCode(): void
     {
         $expects = [
             // М000ММ77 или М000ММ777 (тип 1 - Для легковых, грузовых, грузопассажирских ТС и автобусов)
@@ -989,12 +983,9 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
             'foo bar'   => null,
         ];
 
-        /** @var IDEntityGrz $instance */
-        $instance = $this->instance;
-
         foreach ($expects as $what => $with) {
             $this->assertEquals(
-                $with, $instance->setValue($what)->getRegionCode(), sprintf('"%s" !== "%s"', $what, $with)
+                $with, $this->instance->setValue($what)->getRegionCode(), sprintf('"%s" !== "%s"', $what, $with)
             );
         }
     }
@@ -1004,7 +995,7 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
      *
      * @return void
      */
-    public function testGetRegionData()
+    public function testGetRegionData(): void
     {
         $expects = [
             'С552ВХ102' => 'RU-BA',
@@ -1027,12 +1018,9 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
             '522Т02' => 'RU-BA',
         ];
 
-        /** @var IDEntityGrz $instance */
-        $instance = $this->instance;
-
         foreach ($expects as $what => $with) {
             $this->assertEquals(
-                $with, $instance->setValue($what)->getRegionData()->getIso31662(),
+                $with, $this->instance->setValue($what)->getRegionData()->getIso31662(),
                 sprintf('"%s" !== "%s"', $what, $with)
             );
         }
@@ -1044,28 +1032,26 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
         ];
 
         foreach ($fails as $fail) {
-            $this->assertNull($instance->setValue($fail)->getRegionData());
+            $this->assertNull($this->instance->setValue($fail)->getRegionData());
         }
     }
 
     /**
      * {@inheritdoc}
      */
-    public function testNormalize()
+    public function testNormalize(): void
     {
-        $instance = $this->instance;
-
         // Из нижнего регистра переведёт в верхний
-        $this->assertEquals($valid = $this->getValidValue(), $instance::normalize(Str::lower($this->getValidValue())));
+        $this->assertEquals($valid = $this->getValidValue(), $this->instance::normalize(Str::lower($this->getValidValue())));
 
         // Пробелы - успешно триммит
-        $this->assertEquals($valid, $instance::normalize(' ' . $this->getValidValue() . ' '));
+        $this->assertEquals($valid, $this->instance::normalize(' ' . $this->getValidValue() . ' '));
 
         // Латиницу заменяет на кириллицу
-        $this->assertEquals($valid, $instance::normalize('X123YO96'));
+        $this->assertEquals($valid, $this->instance::normalize('X123YO96'));
 
         // Некорректные символы - удаляет
-        $this->assertEquals($valid, $instance::normalize('X123 #$^&&&% YO96 '));
+        $this->assertEquals($valid, $this->instance::normalize('X123 #$^&&&% YO96 '));
 
         $asserts = [
             'Х123АВ96' => ['Х123АВ96', 'Х123AB96'],
@@ -1078,7 +1064,7 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
 
         foreach ($asserts as $with => $what) {
             foreach ($what as $item) {
-                $this->assertEquals($with, $instance::normalize($item));
+                $this->assertEquals($with, $this->instance::normalize($item));
             }
         }
     }
@@ -1086,7 +1072,7 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
     /**
      * {@inheritdoc}
      */
-    protected function getClassName()
+    protected function getClassName(): string
     {
         return IDEntityGrz::class;
     }
@@ -1094,7 +1080,7 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
     /**
      * {@inheritdoc}
      */
-    protected function getValidValue()
+    protected function getValidValue(): string
     {
         return 'Х123УО96';
     }

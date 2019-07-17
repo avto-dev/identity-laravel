@@ -1,21 +1,21 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace AvtoDev\IDEntity\Types;
 
 use Exception;
 use Illuminate\Support\Str;
 use AvtoDev\IDEntity\Helpers\Normalizer;
 use AvtoDev\IDEntity\Helpers\Transliterator;
+use AvtoDev\ExtendedLaravelValidator\Extensions\ChassisCodeValidatorExtension;
 
-/**
- * Идентификатор - номер шасси.
- */
 class IDEntityChassis extends AbstractTypedIDEntity
 {
     /**
      * {@inheritdoc}
      */
-    public function getType()
+    public function getType(): string
     {
         return static::ID_TYPE_CHASSIS;
     }
@@ -23,39 +23,38 @@ class IDEntityChassis extends AbstractTypedIDEntity
     /**
      * {@inheritdoc}
      */
-    public static function normalize($value)
+    public static function normalize($value): ?string
     {
         try {
             // Заменяем множественные пробелы - одиночными
-            $value = \preg_replace('~\s+~u', ' ', trim((string) $value));
+            $value = (string) \preg_replace('~\s+~u', ' ', trim((string) $value));
 
             // Нормализуем символы дефиса
-            $value = (string) Normalizer::normalizeDashChar($value);
+            $value = Normalizer::normalizeDashChar($value);
 
             // Производим замену кириллических символов на латинские аналоги
             $value = Transliterator::transliterateString(Str::upper($value), true);
 
             // Удаляем все символы, кроме разрешенных
-            $value = \preg_replace('~[^A-Z0-9\- ]~u', '', $value);
+            $value = (string) \preg_replace('~[^A-Z0-9\- ]~u', '', $value);
 
             // Заменяем множественные дефисы - одиночными
-            $value = \preg_replace('~\-+~', '-', $value);
+            $value = (string) \preg_replace('~\-+~', '-', $value);
 
             return $value;
         } catch (Exception $e) {
-            // Do nothing
+            return null;
         }
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function getValidateCallbacks()
+    public function isValid(): bool
     {
-        return [
-            function () {
-                return $this->validateWithValidatorRule($this->getValue(), 'required|string|chassis_code');
-            },
-        ];
+        /** @var ChassisCodeValidatorExtension $validator */
+        $validator = static::getContainer()->make(ChassisCodeValidatorExtension::class);
+
+        return \is_string($this->value) && $validator->passes('', $this->value);
     }
 }

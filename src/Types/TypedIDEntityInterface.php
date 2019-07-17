@@ -5,9 +5,6 @@ namespace AvtoDev\IDEntity\Types;
 use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Contracts\Support\Arrayable;
 
-/**
- * Типизированная идентификационная сущность.
- */
 interface TypedIDEntityInterface extends Arrayable, Jsonable
 {
     /**
@@ -15,7 +12,7 @@ interface TypedIDEntityInterface extends Arrayable, Jsonable
      *
      * @return string
      */
-    public function __toString();
+    public function __toString(): string;
 
     /**
      * Устанавливает значение идентификатора.
@@ -25,14 +22,14 @@ interface TypedIDEntityInterface extends Arrayable, Jsonable
      *
      * @return self|static
      */
-    public function setValue($value, $make_normalization = true);
+    public function setValue(string $value, bool $make_normalization = true);
 
     /**
      * Возвращает значение идентификатора.
      *
      * @return string|null
      */
-    public function getValue();
+    public function getValue(): ?string;
 
     /**
      * Возвращает значение идентификатора, но скрытое за маской.
@@ -43,28 +40,28 @@ interface TypedIDEntityInterface extends Arrayable, Jsonable
      *
      * @return string|null
      */
-    public function getMaskedValue($start_offset = 3, $end_offset = 3, $mask_char = '*');
+    public function getMaskedValue(int $start_offset = 3, int $end_offset = 3, string $mask_char = '*'): ?string;
 
     /**
      * Возвращает тип идентификатора.
      *
-     * @return string|null
+     * @return string
      */
-    public function getType();
+    public function getType(): string;
 
     /**
      * Производит проверку установленного значения с помощью callback-функций из стека callback-функций.
      *
      * @return bool
      */
-    public function isValid();
+    public function isValid(): bool;
 
     /**
      * Производит проверку на возможность идентификатора быть автоматически определяемым.
      *
      * @return bool
      */
-    public function canBeAutoDetected();
+    public function canBeAutoDetected(): bool;
 
     /**
      * Производит нормализацию входного значения согласно типу.
@@ -73,5 +70,5 @@ interface TypedIDEntityInterface extends Arrayable, Jsonable
      *
      * @return string|null
      */
-    public static function normalize($value);
+    public static function normalize($value): ?string;
 }

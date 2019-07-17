@@ -4,9 +4,6 @@ namespace AvtoDev\IDEntity\Types;
 
 use AvtoDev\StaticReferences\References\AutoRegions\AutoRegionEntry;
 
-/**
- * Сущность, содержащая данные о регионе.
- */
 interface HasRegionDataInterface
 {
     /**
@@ -14,12 +11,12 @@ interface HasRegionDataInterface
      *
      * @return int|null
      */
-    public function getRegionCode();
+    public function getRegionCode(): ?int;
 
     /**
      * Возвращает данные региона, связанного с идентификатором.
      *
      * @return AutoRegionEntry|null
      */
-    public function getRegionData();
+    public function getRegionData(): ?AutoRegionEntry;
 }

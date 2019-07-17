@@ -1,16 +1,15 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace AvtoDev\IDEntity\Helpers;
 
 use Illuminate\Support\Str;
 
-/**
- * Статический транслитератор / де-транслитератор.
- */
 class Transliterator
 {
     /**
-     * Набор кириллических символов.
+     * Cyrillic symbols set.
      *
      * @var string[]
      */
@@ -23,7 +22,7 @@ class Transliterator
     ];
 
     /**
-     * Набор латинских символов для обратной транслитерации.
+     * Latin symbols set for backward transliteration.
      *
      * @var string[]
      */
@@ -36,8 +35,8 @@ class Transliterator
     ];
 
     /**
-     * Набор латинских символов для "безопасной" обратной транслитерации (без опаски что один символ будет
-     * транслитерирован как два).
+     * Latin symbols set for "safe" backward transliteration (without cases when one symbol transliterated as 2 or
+     * more characters).
      *
      * @var string[]
      */
@@ -50,7 +49,7 @@ class Transliterator
     ];
 
     /**
-     * Карта для замен символов, имеющих латинские аналоги.
+     * Cyrillic <-> latin replaces analogs map.
      *
      * @var string[]
      */
@@ -60,7 +59,7 @@ class Transliterator
     ];
 
     /**
-     * Обратная карта для замен символов, имеющих латинские аналоги.
+     * Backward latin <-> cyrillic replaces analogs map.
      *
      * @var string[]
      */
@@ -76,13 +75,9 @@ class Transliterator
      *
      * @return string
      */
-    public static function transliterateLite($string)
+    public static function transliterateLite(string $string): string
     {
-        return \str_replace(
-            static::$lite_cyr_map,
-            static::$lite_latin_map,
-            (string) $string
-        );
+        return \str_replace(static::$lite_cyr_map, static::$lite_latin_map, $string);
     }
 
     /**
@@ -92,13 +87,9 @@ class Transliterator
      *
      * @return string
      */
-    public static function detransliterateLite($string)
+    public static function detransliterateLite(string $string): string
     {
-        return \str_replace(
-            static::$lite_latin_map,
-            static::$lite_cyr_map,
-            (string) $string
-        );
+        return \str_replace(static::$lite_latin_map, static::$lite_cyr_map, $string);
     }
 
     /**
@@ -110,10 +101,8 @@ class Transliterator
      *
      * @return string
      */
-    public static function transliterateString($string, $safe_mode = false)
+    public static function transliterateString(string $string, bool $safe_mode = false): string
     {
-        $string = (string) $string;
-
         if ($safe_mode === true) {
             $string = \str_replace(
                 static::$cyr_chars,
@@ -133,14 +122,14 @@ class Transliterator
      *
      * @return string
      */
-    public static function detransliterateString($string, $after_safe_mode = false)
+    public static function detransliterateString(string $string, bool $after_safe_mode = false): string
     {
         return \str_replace(
             $after_safe_mode === true
                 ? static::$latin_safe_analogs
                 : static::$latin_analogs,
             static::$cyr_chars,
-            (string) $string
+            $string
         );
     }
 }

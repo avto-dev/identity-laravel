@@ -1,18 +1,17 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace AvtoDev\IDEntity\Types;
 
 use Exception;
 
-/**
- * Неизвестный идентификатор.
- */
 class IDEntityUnknown extends AbstractTypedIDEntity
 {
     /**
      * {@inheritdoc}
      */
-    public function getType()
+    public function getType(): string
     {
         return static::ID_TYPE_UNKNOWN;
     }
@@ -20,22 +19,20 @@ class IDEntityUnknown extends AbstractTypedIDEntity
     /**
      * {@inheritdoc}
      */
-    public static function normalize($value)
+    public static function normalize($value): ?string
     {
         try {
             return (string) $value;
         } catch (Exception $e) {
-            // Do nothing
+            return null;
         }
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function getValidateCallbacks()
+    public function isValid(): bool
     {
-        return function () {
-            return false;
-        };
+        return false;
     }
 }

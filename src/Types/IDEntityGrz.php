@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace AvtoDev\IDEntity\Types;
 
 use Exception;
@@ -7,10 +9,9 @@ use Illuminate\Support\Str;
 use AvtoDev\IDEntity\Helpers\Transliterator;
 use AvtoDev\StaticReferences\References\AutoRegions\AutoRegions;
 use AvtoDev\StaticReferences\References\AutoRegions\AutoRegionEntry;
+use AvtoDev\ExtendedLaravelValidator\Extensions\GrzCodeValidatorExtension;
 
 /**
- * Идентификатор - номер ГРЗ.
- *
  * @link <http://internet-law.ru/gosts/gost/7327/#53635> ГОСТ Р 50577-93
  */
 class IDEntityGrz extends AbstractTypedIDEntity implements HasRegionDataInterface
@@ -18,43 +19,62 @@ class IDEntityGrz extends AbstractTypedIDEntity implements HasRegionDataInterfac
     /**
      * Format patterns.
      */
-    const FORMAT_PATTERN_1 = 'X000XX77_OR_X000XX777';
-    const FORMAT_PATTERN_2 = 'X000XX';
-    const FORMAT_PATTERN_3 = 'XX00077';
-    const FORMAT_PATTERN_4 = '0000XX77';
-    const FORMAT_PATTERN_5 = 'XX000077';
-    const FORMAT_PATTERN_6 = 'X000077';
-    const FORMAT_PATTERN_7 = '000X77';
-    const FORMAT_PATTERN_8 = '0000X77';
+    public const FORMAT_PATTERN_1 = 'X000XX77_OR_X000XX777';
+
+    public const FORMAT_PATTERN_2 = 'X000XX';
+
+    public const FORMAT_PATTERN_3 = 'XX00077';
+
+    public const FORMAT_PATTERN_4 = '0000XX77';
+
+    public const FORMAT_PATTERN_5 = 'XX000077';
+
+    public const FORMAT_PATTERN_6 = 'X000077';
+
+    public const FORMAT_PATTERN_7 = '000X77';
+
+    public const FORMAT_PATTERN_8 = '0000X77';
 
     /**
      * Types, declared in "ГОСТ Р 50577-93" (not all).
      */
-    const GOST_TYPE_1  = 'TYPE_1'; // тип 1 - Для легковых, грузовых, грузопассажирских ТС и автобусов
-    const GOST_TYPE_1A = 'TYPE_1A'; // тип 1А - Для легковых ТС должностных лиц
-    const GOST_TYPE_1B = 'TYPE_1B'; // тип 1Б - Для легковых ТС, исп. для перевозки людей на коммерч. основе, автобусов
-    const GOST_TYPE_2  = 'TYPE_2'; // тип 2 - Для автомобильных прицепов и полуприцепов
-    const GOST_TYPE_3  = 'TYPE_3'; // тип 3 - Для тракторов, самоход. дорожно-строительных машин и иных машин и прицепов
-    const GOST_TYPE_4  = 'TYPE_4'; // тип 4 - Для мотоциклов, мотороллеров, мопедов
-    const GOST_TYPE_5  = 'TYPE_5'; // тип 5 - Для легковых, грузовых, грузопассажирских автомобилей и автобусов
-    const GOST_TYPE_6  = 'TYPE_6'; // тип 6 - Для автомобильных прицепов и полуприцепов
-    const GOST_TYPE_7  = 'TYPE_7'; // тип 7 - Для тракторов, самоход. дорожно-строительных машин и иных машин и прицепов
-    const GOST_TYPE_8  = 'TYPE_8'; // тип 8 - Для мотоциклов, мотороллеров, мопедов
-    const GOST_TYPE_20 = 'TYPE_20'; // тип 20 - Для легковых, грузовых, грузопассажирских автомобилей и автобусов
-    const GOST_TYPE_21 = 'TYPE_21'; // тип 21 - Для автомобильных прицепов и полуприцепов
-    const GOST_TYPE_22 = 'TYPE_22'; // тип 22 - Для мотоциклов
+    public const GOST_TYPE_1  = 'TYPE_1'; // тип 1 - Для легковых, грузовых, грузопассажирских ТС и автобусов
+
+    public const GOST_TYPE_1A = 'TYPE_1A'; // тип 1А - Для легковых ТС должностных лиц
+
+    public const GOST_TYPE_1B = 'TYPE_1B'; // тип 1Б - Для легковых ТС, исп. для перевозки людей на коммерч. основе, автобусов
+
+    public const GOST_TYPE_2  = 'TYPE_2'; // тип 2 - Для автомобильных прицепов и полуприцепов
+
+    public const GOST_TYPE_3  = 'TYPE_3'; // тип 3 - Для тракторов, самоход. дорожно-строительных машин и иных машин и прицепов
+
+    public const GOST_TYPE_4  = 'TYPE_4'; // тип 4 - Для мотоциклов, мотороллеров, мопедов
+
+    public const GOST_TYPE_5  = 'TYPE_5'; // тип 5 - Для легковых, грузовых, грузопассажирских автомобилей и автобусов
+
+    public const GOST_TYPE_6  = 'TYPE_6'; // тип 6 - Для автомобильных прицепов и полуприцепов
+
+    public const GOST_TYPE_7  = 'TYPE_7'; // тип 7 - Для тракторов, самоход. дорожно-строительных машин и иных машин и прицепов
+
+    public const GOST_TYPE_8  = 'TYPE_8'; // тип 8 - Для мотоциклов, мотороллеров, мопедов
+
+    public const GOST_TYPE_20 = 'TYPE_20'; // тип 20 - Для легковых, грузовых, грузопассажирских автомобилей и автобусов
+
+    public const GOST_TYPE_21 = 'TYPE_21'; // тип 21 - Для автомобильных прицепов и полуприцепов
+
+    public const GOST_TYPE_22 = 'TYPE_22'; // тип 22 - Для мотоциклов
 
     /**
      * Разрешенные кириллические символы.
      */
-    const KYR_CHARS = 'АВЕКМНОРСТУХ';
+    protected const KYR_CHARS = 'АВЕКМНОРСТУХ';
 
     /**
      * Латинские аналоги разрешенных кириллических символов.
      *
      * Внимание! Важно соответствие порядка символов со `self::CYR_CHARS`.
      */
-    const KYR_ANALOGS = 'ABEKMHOPCTYX';
+    protected const KYR_ANALOGS = 'ABEKMHOPCTYX';
 
     /**
      * Pattern and types map.
@@ -98,7 +118,7 @@ class IDEntityGrz extends AbstractTypedIDEntity implements HasRegionDataInterfac
      *
      * @return string|null
      */
-    public static function getFormatPatternByGostType($gost_type)
+    public static function getFormatPatternByGostType($gost_type): ?string
     {
         foreach (static::$patterns_and_types_map as $format_pattern => $gost_types) {
             foreach ((array) $gost_types as $iterated_gost_type) {
@@ -107,6 +127,8 @@ class IDEntityGrz extends AbstractTypedIDEntity implements HasRegionDataInterfac
                 }
             }
         }
+
+        return null;
     }
 
     /**
@@ -116,17 +138,19 @@ class IDEntityGrz extends AbstractTypedIDEntity implements HasRegionDataInterfac
      *
      * @return string[]|null
      */
-    public static function getGostTypesByPattern($pattern)
+    public static function getGostTypesByPattern($pattern): ?array
     {
         if (isset(static::$patterns_and_types_map[$pattern])) {
             return static::$patterns_and_types_map[$pattern];
         }
+
+        return null;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getType()
+    public function getType(): string
     {
         return static::ID_TYPE_GRZ;
     }
@@ -136,56 +160,60 @@ class IDEntityGrz extends AbstractTypedIDEntity implements HasRegionDataInterfac
      *
      * @return string|null
      */
-    public function getFormatPattern()
+    public function getFormatPattern(): ?string
     {
         static $kyr = self::KYR_CHARS;
 
+        $value = (string) $this->value;
+
         switch (true) {
             // X000XX77_OR_X000XX777
-            case \preg_match("~^[{$kyr}]{1}\d{3}[{$kyr}]{2}\d{2,3}$~iu", $this->value) === 1:
+            case \preg_match("~^[{$kyr}]{1}\d{3}[{$kyr}]{2}\d{2,3}$~iu", $value) === 1:
                 return self::FORMAT_PATTERN_1;
 
             // X000XX
-            case \preg_match("~^[{$kyr}]{1}\d{3}[{$kyr}]{2}$~iu", $this->value) === 1:
+            case \preg_match("~^[{$kyr}]{1}\d{3}[{$kyr}]{2}$~iu", $value) === 1:
                 return self::FORMAT_PATTERN_2;
 
             // XX00077
-            case \preg_match("~^[{$kyr}]{2}\d{3}\d{2}$~iu", $this->value) === 1:
+            case \preg_match("~^[{$kyr}]{2}\d{3}\d{2}$~iu", $value) === 1:
                 return self::FORMAT_PATTERN_3;
 
             // 0000XX77
-            case \preg_match("~^\d{4}[{$kyr}]{2}\d{2}$~iu", $this->value) === 1:
+            case \preg_match("~^\d{4}[{$kyr}]{2}\d{2}$~iu", $value) === 1:
                 return self::FORMAT_PATTERN_4;
 
             // XX000077
-            case \preg_match("~^[{$kyr}]{2}\d{4}\d{2}$~iu", $this->value) === 1:
+            case \preg_match("~^[{$kyr}]{2}\d{4}\d{2}$~iu", $value) === 1:
                 return self::FORMAT_PATTERN_5;
 
             // X000077
-            case \preg_match("~^[{$kyr}]{1}\d{4}\d{2}$~iu", $this->value) === 1:
+            case \preg_match("~^[{$kyr}]{1}\d{4}\d{2}$~iu", $value) === 1:
                 return self::FORMAT_PATTERN_6;
 
             // 000X77
-            case \preg_match("~^\d{3}[{$kyr}]{1}\d{2}$~iu", $this->value) === 1:
+            case \preg_match("~^\d{3}[{$kyr}]{1}\d{2}$~iu", $value) === 1:
                 return self::FORMAT_PATTERN_7;
 
             // 0000X77
-            case \preg_match("~^\d{4}[{$kyr}]{1}\d{2}$~iu", $this->value) === 1:
+            case \preg_match("~^\d{4}[{$kyr}]{1}\d{2}$~iu", $value) === 1:
                 return self::FORMAT_PATTERN_8;
         }
+
+        return null;
     }
 
     /**
      * {@inheritdoc}
      */
-    public static function normalize($value)
+    public static function normalize($value): ?string
     {
         try {
             // Переводим в верхний регистр + trim
             $value = Str::upper(trim((string) $value));
 
             // Удаляем все символы, кроме разрешенных
-            $value = \preg_replace('~[^' . self::KYR_CHARS . self::KYR_ANALOGS . '0-9]~u', '', $value);
+            $value = (string) \preg_replace('~[^' . self::KYR_CHARS . self::KYR_ANALOGS . '0-9]~u', '', $value);
 
             // Производим замену латинских аналогов на кириллические (обратная транслитерация). Не прогоняю по всем
             // возможными символам, так как регулярка что выше всё кроме них как раз и удаляет
@@ -193,7 +221,7 @@ class IDEntityGrz extends AbstractTypedIDEntity implements HasRegionDataInterfac
 
             return $value;
         } catch (Exception $e) {
-            // Do nothing
+            return null;
         }
     }
 
@@ -202,7 +230,7 @@ class IDEntityGrz extends AbstractTypedIDEntity implements HasRegionDataInterfac
      *
      * @return int|null
      */
-    public function getRegionCode()
+    public function getRegionCode(): ?int
     {
         $format_pattern = $this->getFormatPattern();
 
@@ -211,7 +239,7 @@ class IDEntityGrz extends AbstractTypedIDEntity implements HasRegionDataInterfac
 
             switch ($format_pattern) {
                 case self::FORMAT_PATTERN_1: // X000XX77_OR_X000XX777
-                    \preg_match('~(?<region_code>\d{2,3})$~D', $this->value, $matches);
+                    \preg_match('~(?<region_code>\d{2,3})$~D', (string) $this->value, $matches);
                     break;
 
                 case self::FORMAT_PATTERN_2: // X000XX
@@ -223,7 +251,7 @@ class IDEntityGrz extends AbstractTypedIDEntity implements HasRegionDataInterfac
                 case self::FORMAT_PATTERN_6: // X000077
                 case self::FORMAT_PATTERN_7: // 000X77
                 case self::FORMAT_PATTERN_8: // 0000X77
-                    \preg_match('~(?<region_code>\d{2})$~D', $this->value, $matches);
+                    \preg_match('~(?<region_code>\d{2})$~D', (string) $this->value, $matches);
                     break;
             }
 
@@ -231,6 +259,8 @@ class IDEntityGrz extends AbstractTypedIDEntity implements HasRegionDataInterfac
                 return (int) $region_code;
             }
         }
+
+        return null;
     }
 
     /**
@@ -238,31 +268,34 @@ class IDEntityGrz extends AbstractTypedIDEntity implements HasRegionDataInterfac
      *
      * @return AutoRegionEntry|null
      */
-    public function getRegionData()
+    public function getRegionData(): ?AutoRegionEntry
     {
-        /** @var AutoRegions $reference */
-        $reference = resolve(AutoRegions::class);
+        static $regions = null;
 
-        return $reference->getByAutoCode($this->getRegionCode());
+        if (! $regions instanceof AutoRegions) {
+            $regions = new AutoRegions;
+        }
+
+        return $regions->getByAutoCode($this->getRegionCode());
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function getValidateCallbacks()
+    public function isValid(): bool
     {
-        return [
-            function () {
-                return $this->validateWithValidatorRule($this->getValue(), 'required|string|grz_code');
-            },
-            function () {
-                // Пропускаем проверку формата, в котором в принципе нет кода региона
-                if ($this->getFormatPattern() === self::FORMAT_PATTERN_2) {
-                    return true;
-                }
+        /** @var GrzCodeValidatorExtension $validator */
+        $validator = static::getContainer()->make(GrzCodeValidatorExtension::class);
 
-                return $this->getRegionData() instanceof AutoRegionEntry;
-            },
-        ];
+        $validated = \is_string($this->value) && $validator->passes('', $this->value);
+
+        $region_valid = false;
+
+        // Пропускаем проверку формата, в котором в принципе нет кода региона
+        if ($this->getFormatPattern() === self::FORMAT_PATTERN_2 || $this->getRegionData() instanceof AutoRegionEntry) {
+            $region_valid = true;
+        }
+
+        return $validated && $region_valid;
     }
 }
