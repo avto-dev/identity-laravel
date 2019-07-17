@@ -2,9 +2,9 @@
 
 namespace AvtoDev\IDEntity\Tests;
 
+use AvtoDev\IDEntity\ServiceProvider;
 use Illuminate\Foundation\Application;
 use Illuminate\Contracts\Console\Kernel;
-use AvtoDev\IDEntity\ServiceProvider;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
 abstract class AbstractTestCase extends BaseTestCase

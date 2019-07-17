@@ -160,14 +160,6 @@ class IDEntityVinTest extends AbstractIDEntityTestCase
     }
 
     /**
-     * {@inheritdoc}
-     */
-    protected function getClassName(): string
-    {
-        return IDEntityVin::class;
-    }
-
-    /**
      * @return void
      */
     public function testChecksumValidation(): void
@@ -216,6 +208,14 @@ class IDEntityVinTest extends AbstractIDEntityTestCase
         foreach ($invalid as $value) {
             $this->assertFalse($this->instance->setValue($value)->isChecksumValidated(), $value);
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getClassName(): string
+    {
+        return IDEntityVin::class;
     }
 
     /**
