@@ -8,6 +8,9 @@ use Illuminate\Support\Str;
 use AvtoDev\IDEntity\IDEntity;
 use AvtoDev\IDEntity\Types\IDEntityChassis;
 
+/**
+ * @covers \AvtoDev\IDEntity\Types\IDEntityChassis<extended>
+ */
 class IDEntityChassisTest extends AbstractIDEntityTestCase
 {
     /**

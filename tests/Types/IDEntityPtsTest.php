@@ -8,6 +8,9 @@ use Illuminate\Support\Str;
 use AvtoDev\IDEntity\IDEntity;
 use AvtoDev\IDEntity\Types\IDEntityPts;
 
+/**
+ * @covers \AvtoDev\IDEntity\Types\IDEntityPts<extended>
+ */
 class IDEntityPtsTest extends AbstractIDEntityTestCase
 {
     /**

@@ -66,11 +66,9 @@ class IDEntityVin extends AbstractTypedIDEntity
         }
 
         for ($i = 0; $i < $length; $i++) {
-            if (! \is_numeric($characters[$i])) {
-                $sum += ($transliterations[$characters[$i]] ?? 0) * $weights[$i];
-            } else {
-                $sum += $characters[$i] * $weights[$i];
-            }
+            $sum += \is_numeric($characters[$i])
+                ? $characters[$i] * $weights[$i]
+                : ($transliterations[$characters[$i]] ?? 0) * $weights[$i];
         }
 
         $check_digit = $sum % 11;

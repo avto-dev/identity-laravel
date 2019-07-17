@@ -8,6 +8,9 @@ use Illuminate\Support\Str;
 use AvtoDev\IDEntity\IDEntity;
 use AvtoDev\IDEntity\Types\IDEntityVin;
 
+/**
+ * @covers \AvtoDev\IDEntity\Types\IDEntityVin<extended>
+ */
 class IDEntityVinTest extends AbstractIDEntityTestCase
 {
     /**

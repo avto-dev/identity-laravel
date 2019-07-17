@@ -8,6 +8,9 @@ use Illuminate\Support\Str;
 use AvtoDev\IDEntity\IDEntity;
 use AvtoDev\IDEntity\Types\IDEntityBody;
 
+/**
+ * @covers \AvtoDev\IDEntity\Types\IDEntityBody<extended>
+ */
 class IDEntityBodyTest extends AbstractIDEntityTestCase
 {
     /**

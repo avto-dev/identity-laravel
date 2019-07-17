@@ -8,6 +8,8 @@ use AvtoDev\IDEntity\ServiceProvider;
 
 /**
  * @group service_provider
+ *
+ * @covers \AvtoDev\IDEntity\ServiceProvider
  */
 class ServiceProviderTest extends AbstractTestCase
 {

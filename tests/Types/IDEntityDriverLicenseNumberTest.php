@@ -8,6 +8,9 @@ use Illuminate\Support\Str;
 use AvtoDev\IDEntity\IDEntity;
 use AvtoDev\IDEntity\Types\IDEntityDriverLicenseNumber;
 
+/**
+ * @covers \AvtoDev\IDEntity\Types\IDEntityDriverLicenseNumber<extended>
+ */
 class IDEntityDriverLicenseNumberTest extends AbstractIDEntityTestCase
 {
     /**

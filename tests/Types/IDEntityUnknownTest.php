@@ -7,6 +7,9 @@ namespace AvtoDev\IDEntity\Tests\Types;
 use AvtoDev\IDEntity\IDEntity;
 use AvtoDev\IDEntity\Types\IDEntityUnknown;
 
+/**
+ * @covers \AvtoDev\IDEntity\Types\IDEntityUnknown<extended>
+ */
 class IDEntityUnknownTest extends AbstractIDEntityTestCase
 {
     /**

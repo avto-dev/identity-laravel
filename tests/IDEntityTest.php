@@ -15,6 +15,9 @@ use AvtoDev\IDEntity\Tests\Mocks\IDEntityMock;
 use AvtoDev\IDEntity\Tests\Traits\InstancesAccessorsTrait;
 use AvtoDev\IDEntity\Tests\Mocks\Types\IDEntityCantAutodetectMock;
 
+/**
+ * @covers \AvtoDev\IDEntity\IDEntity<extended>
+ */
 class IDEntityTest extends AbstractTestCase
 {
     use InstancesAccessorsTrait;
