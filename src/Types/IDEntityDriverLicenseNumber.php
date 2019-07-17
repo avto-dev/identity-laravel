@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace AvtoDev\IDEntity\Types;
 
 use Exception;
@@ -7,16 +9,14 @@ use Illuminate\Support\Str;
 use AvtoDev\IDEntity\Helpers\Transliterator;
 use AvtoDev\StaticReferences\References\AutoRegions\AutoRegions;
 use AvtoDev\StaticReferences\References\AutoRegions\AutoRegionEntry;
+use AvtoDev\ExtendedLaravelValidator\Extensions\DriverLicenseNumberValidatorExtension;
 
-/**
- * Идентификатор - номер водительского удостоверения.
- */
 class IDEntityDriverLicenseNumber extends AbstractTypedIDEntity implements HasRegionDataInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function getType()
+    public function getType(): string
     {
         return static::ID_TYPE_DRIVER_LICENSE_NUMBER;
     }
@@ -29,13 +29,15 @@ class IDEntityDriverLicenseNumber extends AbstractTypedIDEntity implements HasRe
      *
      * @return int|null
      */
-    public function getRegionCode()
+    public function getRegionCode(): ?int
     {
-        \preg_match('~^(?<region_digits>[\d]{2}).+$~', $this->getValue(), $matches);
+        \preg_match('~^(?<region_digits>[\d]{2}).+$~', (string) $this->getValue(), $matches);
 
         if (isset($matches['region_digits']) && \is_numeric($region_digits = (string) $matches['region_digits'])) {
             return (int) $region_digits;
         }
+
+        return null;
     }
 
     /**
@@ -43,25 +45,28 @@ class IDEntityDriverLicenseNumber extends AbstractTypedIDEntity implements HasRe
      *
      * @return AutoRegionEntry|null
      */
-    public function getRegionData()
+    public function getRegionData(): ?AutoRegionEntry
     {
-        /** @var AutoRegions $auto_regions */
-        $auto_regions = resolve(AutoRegions::class);
+        static $regions = null;
 
-        return $auto_regions->getByRegionCode($this->getRegionCode());
+        if (! $regions instanceof AutoRegions) {
+            $regions = new AutoRegions;
+        }
+
+        return $regions->getByRegionCode($this->getRegionCode());
     }
 
     /**
      * {@inheritdoc}
      */
-    public static function normalize($value)
+    public static function normalize($value): ?string
     {
         try {
             // Переводим в верхний регистр + trim
-            $value = Str::upper(trim((string) $value));
+            $value = Str::upper(\trim((string) $value));
 
             // Удаляем все символы, кроме разрешенных (ВКЛЮЧАЯ разделители)
-            $value = \preg_replace('~[^' . 'АВЕКМНОРСТУХ' . 'ABEKMHOPCTYX' . '0-9]~u', '', $value);
+            $value = (string) \preg_replace('~[^' . 'АВЕКМНОРСТУХ' . 'ABEKMHOPCTYX' . '0-9]~u', '', $value);
 
             // Производим замену латинских аналогов на кириллические (обратная транслитерация). Не прогоняю по всем
             // возможными символам, так как регулярка что выше всё кроме них как раз и удаляет
@@ -69,7 +74,7 @@ class IDEntityDriverLicenseNumber extends AbstractTypedIDEntity implements HasRe
 
             return $value;
         } catch (Exception $e) {
-            // Do nothing
+            return null;
         }
     }
 
@@ -80,7 +85,10 @@ class IDEntityDriverLicenseNumber extends AbstractTypedIDEntity implements HasRe
     {
         return [
             function () {
-                return $this->validateWithValidatorRule($this->getValue(), 'required|string|driver_license_number');
+                /** @var DriverLicenseNumberValidatorExtension $validator */
+                $validator = static::getContainer()->make(DriverLicenseNumberValidatorExtension::class);
+
+                return \is_string($this->value) && $validator->passes('', $this->value);
             },
             function () {
                 // Регион существует

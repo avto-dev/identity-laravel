@@ -31,14 +31,14 @@ $ composer require avto-dev/identity-laravel "^3.1"
 > ```php
 > 'providers' => [
 >     // ...
->     AvtoDev\IDEntity\IDEntitiesServiceProvider::class,
+>     AvtoDev\IDEntity\ServiceProvider::class,
 > ];
 > ```
 
 После этого вы можете опубликовать конфигурационный файл пакета с помощью следующей команды:
 
 ```shell
-$ ./artisan vendor:publish --provider="AvtoDev\IDEntity\IDEntitiesServiceProvider"
+$ ./artisan vendor:publish --provider="AvtoDev\IDEntity\ServiceProvider"
 ```
 
 ### Dependent packages

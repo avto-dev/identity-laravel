@@ -1,16 +1,20 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace AvtoDev\IDEntity\Tests\Types;
 
 use Illuminate\Support\Str;
 use AvtoDev\IDEntity\IDEntity;
 use AvtoDev\IDEntity\Types\IDEntityChassis;
 
-/**
- * Class IDEntityChassisTest.
- */
 class IDEntityChassisTest extends AbstractIDEntityTestCase
 {
+    /**
+     * @var IDEntityChassis
+     */
+    protected $instance;
+
     /**
      * {@inheritdoc}
      */
@@ -46,34 +50,32 @@ class IDEntityChassisTest extends AbstractIDEntityTestCase
      */
     public function testNormalize(): void
     {
-        $instance = $this->instance;
-
         // Из нижнего регистра переведёт в верхний
-        $this->assertEquals($valid = $this->getValidValue(), $instance::normalize(Str::lower($this->getValidValue())));
+        $this->assertEquals($valid = $this->getValidValue(), $this->instance::normalize(Str::lower($this->getValidValue())));
 
         // Пробелы - успешно триммит
-        $this->assertEquals($valid, $instance::normalize(' ' . $this->getValidValue() . ' '));
+        $this->assertEquals($valid, $this->instance::normalize(' ' . $this->getValidValue() . ' '));
 
         // Не корректный, длинный тире
-        $this->assertEquals($valid, $instance::normalize('LA130–0128818'));
+        $this->assertEquals($valid, $this->instance::normalize('LA130–0128818'));
 
         // С кириллицей
-        $this->assertEquals($valid, $instance::normalize('Lа130-0128818'));
+        $this->assertEquals($valid, $this->instance::normalize('Lа130-0128818'));
 
         // С двумя тире (должны преобразоваться в одиночное тире)
-        $this->assertEquals($valid, $instance::normalize('LA130--0128818'));
+        $this->assertEquals($valid, $this->instance::normalize('LA130--0128818'));
 
         // Некорректные символы - удаляет
-        $this->assertEquals($valid, $instance::normalize('LA130-0128№;:?№?*№%$@$%@#818'));
+        $this->assertEquals($valid, $this->instance::normalize('LA130-0128№;:?№?*№%$@$%@#818'));
 
         // С двумя пробелами (должны преобразоваться в одиночное тире)
-        $this->assertEquals('LA130 0128818', $instance::normalize(' LA130  0128818'));
+        $this->assertEquals('LA130 0128818', $this->instance::normalize(' LA130  0128818'));
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function getClassName()
+    protected function getClassName(): string
     {
         return IDEntityChassis::class;
     }
@@ -81,7 +83,7 @@ class IDEntityChassisTest extends AbstractIDEntityTestCase
     /**
      * {@inheritdoc}
      */
-    protected function getValidValue()
+    protected function getValidValue(): string
     {
         return 'LA130-0128818';
     }

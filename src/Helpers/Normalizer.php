@@ -1,10 +1,9 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace AvtoDev\IDEntity\Helpers;
 
-/**
- * Статический строковый нормализатор.
- */
 class Normalizer
 {
     /**
@@ -14,17 +13,15 @@ class Normalizer
      *
      * @param string $input
      *
-     * @return string|null
+     * @return string
      */
-    public static function normalizeDashChar($input)
+    public static function normalizeDashChar(string $input): string
     {
-        if (\is_string($input) && ! empty($input)) {
-            return \str_replace([
-                '–' /* Юникод U+2013 */,
-                '—' /* Юникод U+2014 */,
-                '‒' /* Юникод U+2012 */,
-                '―' /* Юникод U+2015 */,
-            ], '-', $input);
-        }
+        return \str_replace([
+            '–' /* Юникод U+2013 */,
+            '—' /* Юникод U+2014 */,
+            '‒' /* Юникод U+2012 */,
+            '―' /* Юникод U+2015 */,
+        ], '-', $input);
     }
 }

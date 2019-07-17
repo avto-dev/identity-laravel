@@ -13,9 +13,6 @@ use AvtoDev\IDEntity\Tests\Mocks\IDEntityMock;
 use AvtoDev\IDEntity\Tests\Traits\InstancesAccessorsTrait;
 use AvtoDev\IDEntity\Tests\Mocks\Types\IDEntityCantAutodetectMock;
 
-/**
- * Class IDEntityTest.
- */
 class IDEntityTest extends AbstractTestCase
 {
     use InstancesAccessorsTrait;
@@ -79,19 +76,6 @@ class IDEntityTest extends AbstractTestCase
         foreach ([IDEntityInterface::class] as $class_name) {
             $this->assertInstanceOf($class_name, $this->instance);
         }
-    }
-
-    /**
-     * Убеждаемся в том, что конструктор нельзя использовать.
-     *
-     * @return void
-     */
-    public function testConstructorException(): void
-    {
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessageRegExp('~use method.+::make~i');
-
-        new IDEntity;
     }
 
     /**

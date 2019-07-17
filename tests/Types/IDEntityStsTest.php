@@ -1,16 +1,20 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace AvtoDev\IDEntity\Tests\Types;
 
 use Illuminate\Support\Str;
 use AvtoDev\IDEntity\IDEntity;
 use AvtoDev\IDEntity\Types\IDEntitySts;
 
-/**
- * Class IDEntityStsTest.
- */
 class IDEntityStsTest extends AbstractIDEntityTestCase
 {
+    /**
+     * @var IDEntitySts
+     */
+    protected $instance;
+
     /**
      * {@inheritdoc}
      */
@@ -140,25 +144,23 @@ class IDEntityStsTest extends AbstractIDEntityTestCase
      */
     public function testNormalize(): void
     {
-        $instance = $this->instance;
-
         // Из нижнего регистра переведёт в верхний
-        $this->assertEquals($valid = $this->getValidValue(), $instance::normalize(Str::lower($this->getValidValue())));
+        $this->assertEquals($valid = $this->getValidValue(), $this->instance::normalize(Str::lower($this->getValidValue())));
 
         // Пробелы - успешно триммит
-        $this->assertEquals($valid, $instance::normalize(' ' . $this->getValidValue() . ' '));
+        $this->assertEquals($valid, $this->instance::normalize(' ' . $this->getValidValue() . ' '));
 
         // Латиницу заменяет на кириллицу
-        $this->assertEquals($valid, $instance::normalize('61me524040'));
+        $this->assertEquals($valid, $this->instance::normalize('61me524040'));
 
         // Некорректные символы - удаляет
-        $this->assertEquals($valid, $instance::normalize('61МЕ ;?*:;% 524040 '));
+        $this->assertEquals($valid, $this->instance::normalize('61МЕ ;?*:;% 524040 '));
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function getClassName()
+    protected function getClassName(): string
     {
         return IDEntitySts::class;
     }
@@ -166,7 +168,7 @@ class IDEntityStsTest extends AbstractIDEntityTestCase
     /**
      * {@inheritdoc}
      */
-    protected function getValidValue()
+    protected function getValidValue(): string
     {
         return '61МЕ524040';
     }

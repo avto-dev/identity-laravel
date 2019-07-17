@@ -1,16 +1,20 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace AvtoDev\IDEntity\Tests\Types;
 
 use Illuminate\Support\Str;
 use AvtoDev\IDEntity\IDEntity;
 use AvtoDev\IDEntity\Types\IDEntityPts;
 
-/**
- * Class IDEntityPtsTest.
- */
 class IDEntityPtsTest extends AbstractIDEntityTestCase
 {
+    /**
+     * @var IDEntityPts
+     */
+    protected $instance;
+
     /**
      * {@inheritdoc}
      */
@@ -60,25 +64,23 @@ class IDEntityPtsTest extends AbstractIDEntityTestCase
      */
     public function testNormalize(): void
     {
-        $instance = $this->instance;
-
         // Из нижнего регистра переведёт в верхний
-        $this->assertEquals($valid = $this->getValidValue(), $instance::normalize(Str::lower($this->getValidValue())));
+        $this->assertEquals($valid = $this->getValidValue(), $this->instance::normalize(Str::lower($this->getValidValue())));
 
         // Пробелы - успешно триммит
-        $this->assertEquals($valid, $instance::normalize(' ' . $this->getValidValue() . ' '));
+        $this->assertEquals($valid, $this->instance::normalize(' ' . $this->getValidValue() . ' '));
 
         // Латиницу заменяет на кириллицу
-        $this->assertEquals($valid, $instance::normalize('36tc369230'));
+        $this->assertEquals($valid, $this->instance::normalize('36tc369230'));
 
         // Некорректные символы - удаляет
-        $this->assertEquals($valid, $instance::normalize('36ТС3 $%@*%^$ 69230 '));
+        $this->assertEquals($valid, $this->instance::normalize('36ТС3 $%@*%^$ 69230 '));
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function getClassName()
+    protected function getClassName(): string
     {
         return IDEntityPts::class;
     }
@@ -86,7 +88,7 @@ class IDEntityPtsTest extends AbstractIDEntityTestCase
     /**
      * {@inheritdoc}
      */
-    protected function getValidValue()
+    protected function getValidValue(): string
     {
         return '36ТС369230';
     }

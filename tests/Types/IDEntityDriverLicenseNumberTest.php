@@ -1,16 +1,20 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace AvtoDev\IDEntity\Tests\Types;
 
 use Illuminate\Support\Str;
 use AvtoDev\IDEntity\IDEntity;
 use AvtoDev\IDEntity\Types\IDEntityDriverLicenseNumber;
 
-/**
- * Class IDEntityDriverLicenseNumberTest.
- */
 class IDEntityDriverLicenseNumberTest extends AbstractIDEntityTestCase
 {
+    /**
+     * @var IDEntityDriverLicenseNumber
+     */
+    protected $instance;
+
     /**
      * {@inheritdoc}
      */
@@ -86,11 +90,8 @@ class IDEntityDriverLicenseNumberTest extends AbstractIDEntityTestCase
             '8666112233' => 'RU-KHM',
         ];
 
-        /** @var IDEntityDriverLicenseNumber $instance */
-        $instance = $this->instance;
-
         foreach ($expects as $what => $with) {
-            $this->assertEquals($with, $instance->setValue($what)->getRegionData()->getIso31662());
+            $this->assertEquals($with, $this->instance->setValue((string) $what)->getRegionData()->getIso31662());
         }
 
         $fails = [
@@ -100,7 +101,7 @@ class IDEntityDriverLicenseNumberTest extends AbstractIDEntityTestCase
         ];
 
         foreach ($fails as $fail) {
-            $this->assertNull($instance->setValue($fail)->getRegionData());
+            $this->assertNull($this->instance->setValue($fail)->getRegionData());
         }
     }
 
@@ -109,24 +110,22 @@ class IDEntityDriverLicenseNumberTest extends AbstractIDEntityTestCase
      */
     public function testNormalize(): void
     {
-        $instance = $this->instance;
-
         // Из нижнего регистра переведёт в верхний
-        $this->assertEquals($valid = $this->getValidValue(), $instance::normalize(Str::lower($valid)));
+        $this->assertEquals($valid = $this->getValidValue(), $this->instance::normalize(Str::lower($valid)));
 
         // Пробелы - успешно триммит
-        $this->assertEquals($valid, $instance::normalize(' ' . $this->getValidValue() . ' '));
+        $this->assertEquals($valid, $this->instance::normalize(' ' . $this->getValidValue() . ' '));
 
         // Латиницу заменяет на кириллицу ("а" и "В" - латинские)
-        $this->assertEquals('74АВ142910', $instance::normalize('74 aB 142910'));
+        $this->assertEquals('74АВ142910', $this->instance::normalize('74 aB 142910'));
 
         // Успешно заменяет множественные разделители - сплитит
-        $this->assertEquals($valid, $instance::normalize('74 14  292010'));
-        $this->assertEquals($valid, $instance::normalize('74  14 292010'));
-        $this->assertEquals($valid, $instance::normalize('74  14  292010'));
+        $this->assertEquals($valid, $this->instance::normalize('74 14  292010'));
+        $this->assertEquals($valid, $this->instance::normalize('74  14 292010'));
+        $this->assertEquals($valid, $this->instance::normalize('74  14  292010'));
 
         // Некорректные символы - удаляет
-        $this->assertEquals($valid, $instance::normalize('7&#%4 14 2^(**^%920({]10 Ъ'));
+        $this->assertEquals($valid, $this->instance::normalize('7&#%4 14 2^(**^%920({]10 Ъ'));
 
         $asserts = [
             '66АВ123456' => ['66 АВ 123456', '66 AB 123456'],
@@ -139,7 +138,7 @@ class IDEntityDriverLicenseNumberTest extends AbstractIDEntityTestCase
 
         foreach ($asserts as $with => $what) {
             foreach ($what as $item) {
-                $this->assertEquals($with, $instance::normalize($item));
+                $this->assertEquals($with, $this->instance::normalize($item));
             }
         }
     }
@@ -147,7 +146,7 @@ class IDEntityDriverLicenseNumberTest extends AbstractIDEntityTestCase
     /**
      * {@inheritdoc}
      */
-    protected function getClassName()
+    protected function getClassName(): string
     {
         return IDEntityDriverLicenseNumber::class;
     }
@@ -155,7 +154,7 @@ class IDEntityDriverLicenseNumberTest extends AbstractIDEntityTestCase
     /**
      * {@inheritdoc}
      */
-    protected function getValidValue()
+    protected function getValidValue(): string
     {
         return '7414292010';
     }

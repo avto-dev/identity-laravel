@@ -1,86 +1,23 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace AvtoDev\IDEntity;
 
-use LogicException;
+use Exception;
+use Illuminate\Container\Container;
 use AvtoDev\IDEntity\Types\IDEntityUnknown;
 use AvtoDev\IDEntity\Types\TypedIDEntityInterface;
+use Illuminate\Contracts\Config\Repository as ConfigRepository;
 
 class IDEntity implements IDEntityInterface
 {
     /**
-     * Обозначает необходимость в автоматическом определении типа.
-     *
-     * @var string
+     * Create a new IDEntity instance.
      */
-    const ID_TYPE_AUTO = 'AUTODETECT';
-
-    /**
-     * Неизвестный тип идентификатора.
-     *
-     * @var string
-     */
-    const ID_TYPE_UNKNOWN = 'UNKNOWN';
-
-    /**
-     * Тип - VIN-код.
-     *
-     * @var string
-     */
-    const ID_TYPE_VIN = 'VIN';
-
-    /**
-     * Тип - регистрационный (ГРЗ) знак.
-     *
-     * @var string
-     */
-    const ID_TYPE_GRZ = 'GRZ';
-
-    /**
-     * Тип - код СТС (Номер свидетельства о регистрации ТС).
-     *
-     * @var string
-     */
-    const ID_TYPE_STS = 'STS';
-
-    /**
-     * Тип - код ПТС (паспорт транспортного средства).
-     *
-     * @var string
-     */
-    const ID_TYPE_PTS = 'PTS';
-
-    /**
-     * Тип - номер шасси (встречается редко, но всё же встречается).
-     *
-     * @var string
-     */
-    const ID_TYPE_CHASSIS = 'CHASSIS';
-
-    /**
-     * Тип - номер кузова.
-     *
-     * @var string
-     */
-    const ID_TYPE_BODY = 'BODY';
-
-    /**
-     * Тип - номер водительского удостоверения (driver license number).
-     *
-     * @var string
-     */
-    const ID_TYPE_DRIVER_LICENSE_NUMBER = 'DLN';
-
-    /**
-     * IDEntity constructor.
-     *
-     * Запрещаем использование конструктора в пользу фабричного метода.
-     *
-     * @throws LogicException
-     */
-    public function __construct()
+    protected function __construct()
     {
-        throw new LogicException('Constructor for this object is unsupported. Use method "::make()" instead');
+        // Disable outside constructor calling
     }
 
     /**
@@ -88,7 +25,7 @@ class IDEntity implements IDEntityInterface
      *
      * @return string[]
      */
-    public static function getSupportedTypes()
+    public static function getSupportedTypes(): array
     {
         return \array_keys(static::getTypesMap());
     }
@@ -96,11 +33,11 @@ class IDEntity implements IDEntityInterface
     /**
      * Проверяет наличие поддержки переданного типа идентификатора.
      *
-     * @param string $type
+     * @param string|mixed $type
      *
      * @return bool
      */
-    public static function typeIsSupported($type)
+    public static function typeIsSupported($type): bool
     {
         return \is_string($type) && \in_array($type, static::getSupportedTypes(), true);
     }
@@ -108,10 +45,12 @@ class IDEntity implements IDEntityInterface
     /**
      * {@inheritdoc}
      */
-    public static function make($value, $type = self::ID_TYPE_AUTO)
+    public static function make(string $value, ?string $type = self::ID_TYPE_AUTO)
     {
+        $class_name = static::getEntityClassByType($type);
+
         // Если указанный тип идентификатора нам известен - то его и создаём
-        if (\class_exists($class_name = static::getEntityClassByType($type))) {
+        if (\is_string($class_name) && \class_exists($class_name)) {
             return new $class_name($value, true);
         }
 
@@ -134,7 +73,7 @@ class IDEntity implements IDEntityInterface
     /**
      * {@inheritdoc}
      */
-    public static function is($value, $type)
+    public static function is(string $value, $type): bool
     {
         foreach ((array) $type as $type_value) {
             if (self::make($value, $type_value)->isValid()) {
@@ -150,11 +89,11 @@ class IDEntity implements IDEntityInterface
      *
      * Порядок элементов важен для механизма автоматического определения типа.
      *
-     * @return string[]|array
+     * @return string[]
      */
-    protected static function getTypesMap()
+    protected static function getTypesMap(): array
     {
-        return array_replace([
+        return \array_merge([
             self::ID_TYPE_VIN                   => Types\IDEntityVin::class,
             self::ID_TYPE_GRZ                   => Types\IDEntityGrz::class,
             self::ID_TYPE_STS                   => Types\IDEntitySts::class,
@@ -170,23 +109,36 @@ class IDEntity implements IDEntityInterface
      *
      * @return string[]|array
      */
-    protected static function getExtendedTypesMap()
+    protected static function getExtendedTypesMap(): array
     {
-        return (array) resolve('config')->get(implode('.', [
-            IDEntitiesServiceProvider::getConfigRootKeyName(),
-            'extended_types_map',
-        ]));
+        try {
+            return (array) static::getContainer()->make(ConfigRepository::class)->get(
+                \sprintf('%s.extended_types_map', ServiceProvider::getConfigRootKeyName())
+            );
+        } catch (Exception $e) {
+            return [];
+        }
+    }
+
+    /**
+     * Resolve container instance.
+     *
+     * @return Container
+     */
+    protected static function getContainer(): Container
+    {
+        return Container::getInstance();
     }
 
     /**
      * Возвращает имя класса, который обслуживает идентификатор по его типу. В случае ошибки или не обнаружения - вернет
      * null.
      *
-     * @param string $type
+     * @param string|null $type
      *
      * @return string|null
      */
-    protected static function getEntityClassByType($type)
+    protected static function getEntityClassByType(?string $type): ?string
     {
         return static::typeIsSupported($type)
             ? static::getTypesMap()[$type]

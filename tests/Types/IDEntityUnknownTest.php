@@ -1,15 +1,19 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace AvtoDev\IDEntity\Tests\Types;
 
 use AvtoDev\IDEntity\IDEntity;
 use AvtoDev\IDEntity\Types\IDEntityUnknown;
 
-/**
- * Class IDEntityUnknownTest.
- */
 class IDEntityUnknownTest extends AbstractIDEntityTestCase
 {
+    /**
+     * @var IDEntityUnknown
+     */
+    protected $instance;
+
     /**
      * {@inheritdoc}
      */
@@ -31,15 +35,13 @@ class IDEntityUnknownTest extends AbstractIDEntityTestCase
      */
     public function testNormalize(): void
     {
-        $instance = $this->instance;
-
-        $this->assertEquals($value = ' foo bar ', $instance::normalize($value));
+        $this->assertEquals($value = ' foo bar ', $this->instance::normalize($value));
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function getClassName()
+    protected function getClassName(): string
     {
         return IDEntityUnknown::class;
     }
@@ -47,7 +49,7 @@ class IDEntityUnknownTest extends AbstractIDEntityTestCase
     /**
      * {@inheritdoc}
      */
-    protected function getValidValue()
+    protected function getValidValue(): string
     {
         return 'foo bar';
     }

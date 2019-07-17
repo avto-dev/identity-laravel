@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace AvtoDev\IDEntity\Tests\Helpers;
 
 use AvtoDev\IDEntity\Helpers\Normalizer;
@@ -24,6 +26,6 @@ class NormalizerTest extends AbstractTestCase
             $this->assertEquals('-', Normalizer::normalizeDashChar($dash));
         }
 
-        $this->assertNull(Normalizer::normalizeDashChar(''));
+        $this->assertSame('', Normalizer::normalizeDashChar(''));
     }
 }

@@ -1,16 +1,20 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace AvtoDev\IDEntity\Tests\Types;
 
 use Illuminate\Support\Str;
 use AvtoDev\IDEntity\IDEntity;
 use AvtoDev\IDEntity\Types\IDEntityBody;
 
-/**
- * Class IDEntityBodyTest.
- */
 class IDEntityBodyTest extends AbstractIDEntityTestCase
 {
+    /**
+     * @var IDEntityBody
+     */
+    protected $instance;
+
     /**
      * {@inheritdoc}
      */
@@ -110,41 +114,39 @@ class IDEntityBodyTest extends AbstractIDEntityTestCase
      */
     public function testNormalize(): void
     {
-        $instance = $this->instance;
-
         // Из нижнего регистра переведёт в верхний
-        $this->assertEquals($valid = $this->getValidValue(), $instance::normalize(Str::lower($this->getValidValue())));
+        $this->assertEquals($valid = $this->getValidValue(), $this->instance::normalize(Str::lower($this->getValidValue())));
 
         // Пробелы - успешно триммит
-        $this->assertEquals($valid, $instance::normalize(' ' . $this->getValidValue() . ' '));
+        $this->assertEquals($valid, $this->instance::normalize(' ' . $this->getValidValue() . ' '));
 
         // Не корректный, длинный тире
-        $this->assertEquals($valid, $instance::normalize('JS3SE–102734'));
+        $this->assertEquals($valid, $this->instance::normalize('JS3SE–102734'));
 
         // С кириллицей
-        $this->assertEquals($valid, $instance::normalize('JS3Sе–102734'));
+        $this->assertEquals($valid, $this->instance::normalize('JS3Sе–102734'));
 
         // С двумя тире (должны преобразоваться в одиночное тире)
-        $this->assertEquals($valid, $instance::normalize('JS3SE--102734'));
+        $this->assertEquals($valid, $this->instance::normalize('JS3SE--102734'));
 
         // Встречающиеся идущие подряд тире и пробел - заменяются на одиночный тире
-        $this->assertEquals($valid, $instance::normalize('JS3SE -102734'));
-        $this->assertEquals($valid, $instance::normalize('JS3SE- 102734'));
-        $this->assertEquals($valid, $instance::normalize('JS3SE - 102734'));
-        $this->assertEquals($valid, $instance::normalize('JS3SE -  102734'));
-        $this->assertEquals($valid, $instance::normalize('JS3SE  -  102734'));
+        $this->assertEquals($valid, $this->instance::normalize('JS3SE -102734'));
+        $this->assertEquals($valid, $this->instance::normalize('JS3SE- 102734'));
+        $this->assertEquals($valid, $this->instance::normalize('JS3SE - 102734'));
+        $this->assertEquals($valid, $this->instance::normalize('JS3SE -  102734'));
+        $this->assertEquals($valid, $this->instance::normalize('JS3SE  -  102734'));
 
         // Некорректные символы - удаляет
-        $this->assertEquals($valid, $instance::normalize('JS3#^&@^^SE–102":";%?734'));
+        $this->assertEquals($valid, $this->instance::normalize('JS3#^&@^^SE–102":";%?734'));
 
         // Дублирующиеся пробелы заменяются на одиночные, но замена их на тире НЕ происходит
-        $this->assertEquals('JS3SE 102734', $instance::normalize(' JS3SE  102734'));
+        $this->assertEquals('JS3SE 102734', $this->instance::normalize(' JS3SE  102734'));
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function getClassName()
+    protected function getClassName(): string
     {
         return IDEntityBody::class;
     }
@@ -152,7 +154,7 @@ class IDEntityBodyTest extends AbstractIDEntityTestCase
     /**
      * {@inheritdoc}
      */
-    protected function getValidValue()
+    protected function getValidValue(): string
     {
         return 'JS3SE-102734';
     }

@@ -1,14 +1,12 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace AvtoDev\IDEntity\Types;
 
 use Closure;
 use AvtoDev\IDEntity\IDEntity;
-use Illuminate\Contracts\Validation\Factory as ValidationFactory;
 
-/**
- * Абстрактный класс типизированного идентификатора.
- */
 abstract class AbstractTypedIDEntity extends IDEntity implements TypedIDEntityInterface
 {
     /**
@@ -26,22 +24,24 @@ abstract class AbstractTypedIDEntity extends IDEntity implements TypedIDEntityIn
     protected $can_be_auto_detected = true;
 
     /**
-     * AbstractTypedIDEntity constructor.
+     * Create a new AbstractTypedIDEntity instance.
      *
      * @param string $value
      * @param bool   $make_normalization
      */
-    public function __construct($value, $make_normalization = true)
+    public function __construct(string $value, bool $make_normalization = true)
     {
+        parent::__construct();
+
         $this->setValue($value, $make_normalization);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function __toString()
+    public function __toString(): string
     {
-        return (string) $this->getValue();
+        return (string) $this->value;
     }
 
     /**
@@ -49,7 +49,7 @@ abstract class AbstractTypedIDEntity extends IDEntity implements TypedIDEntityIn
      *
      * Метод-заглушка для родительского метода-факторки.
      */
-    public static function make($value, $type = null)
+    public static function make(string $value, ?string $type = null)
     {
         return new static($value);
     }
@@ -61,7 +61,7 @@ abstract class AbstractTypedIDEntity extends IDEntity implements TypedIDEntityIn
      *
      * Метод-заглушка для родительского метода
      */
-    public static function is($value, $type = null)
+    public static function is(string $value, $type = null): bool
     {
         $instance = new static($value);
 
@@ -71,7 +71,7 @@ abstract class AbstractTypedIDEntity extends IDEntity implements TypedIDEntityIn
     /**
      * {@inheritdoc}
      */
-    public function setValue($value, $make_normalization = true)
+    public function setValue(string $value, bool $make_normalization = true)
     {
         $this->value = $make_normalization === true
             ? static::normalize($value)
@@ -83,7 +83,7 @@ abstract class AbstractTypedIDEntity extends IDEntity implements TypedIDEntityIn
     /**
      * {@inheritdoc}
      */
-    public function getValue()
+    public function getValue(): ?string
     {
         return $this->value;
     }
@@ -91,7 +91,7 @@ abstract class AbstractTypedIDEntity extends IDEntity implements TypedIDEntityIn
     /**
      * {@inheritdoc}
      */
-    public function getMaskedValue($start_offset = 3, $end_offset = 3, $mask_char = '*')
+    public function getMaskedValue(int $start_offset = 3, int $end_offset = 3, string $mask_char = '*'): ?string
     {
         return ($current = $this->getValue()) === null
             ? $current
@@ -101,12 +101,7 @@ abstract class AbstractTypedIDEntity extends IDEntity implements TypedIDEntityIn
     /**
      * {@inheritdoc}
      */
-    abstract public function getType();
-
-    /**
-     * {@inheritdoc}
-     */
-    public function toArray()
+    public function toArray(): array
     {
         return [
             'value' => $this->getValue(),
@@ -117,15 +112,15 @@ abstract class AbstractTypedIDEntity extends IDEntity implements TypedIDEntityIn
     /**
      * {@inheritdoc}
      */
-    public function toJson($options = 0)
+    public function toJson($options = 0): string
     {
-        return \json_encode($this->toArray(), $options);
+        return (string) \json_encode($this->toArray(), $options);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function isValid()
+    public function isValid(): bool
     {
         $value        = $this->getValue();
         $passed_count = 0;
@@ -144,7 +139,7 @@ abstract class AbstractTypedIDEntity extends IDEntity implements TypedIDEntityIn
     /**
      * {@inheritdoc}
      */
-    public function canBeAutoDetected()
+    public function canBeAutoDetected(): bool
     {
         return $this->can_be_auto_detected === true;
     }
@@ -159,29 +154,6 @@ abstract class AbstractTypedIDEntity extends IDEntity implements TypedIDEntityIn
     abstract protected function getValidateCallbacks();
 
     /**
-     * Возвращает инстанс валидатора.
-     *
-     * @return ValidationFactory
-     */
-    protected function laravelValidatorFactory()
-    {
-        return resolve('validator');
-    }
-
-    /**
-     * Производит валидацию переданного (произвольного строкового значения) значения с помощью Laravel-валидатора.
-     *
-     * @param string $value
-     * @param string $rule
-     *
-     * @return bool
-     */
-    protected function validateWithValidatorRule($value, $rule = 'required')
-    {
-        return $this->laravelValidatorFactory()->make(['value' => $value], ['value' => $rule])->fails() === false;
-    }
-
-    /**
      * Скрытие строки под звездами.
      *
      * @param string $string       Входящая строка
@@ -191,14 +163,13 @@ abstract class AbstractTypedIDEntity extends IDEntity implements TypedIDEntityIn
      *
      * @return string
      */
-    protected function hideString($string, $start_offset = 3, $end_offset = 3, $mask_char = '*')
+    protected function hideString(string $string,
+                                  int $start_offset = 3,
+                                  int $end_offset = 3,
+                                  string $mask_char = '*'): string
     {
-        if (\is_string($mask_char) && ! empty($mask_char)) {
-            $mask_char = \mb_strlen($mask_char) > 1
-                ? \mb_substr($mask_char, 0, 1)
-                : $mask_char;
-        } else {
-            $mask_char = '*';
+        if (\mb_strlen($mask_char) > 1) {
+            $mask_char = (string) \mb_substr($mask_char, 0, 1);
         }
 
         $number_length = \mb_strlen($string);

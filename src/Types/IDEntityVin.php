@@ -1,20 +1,20 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace AvtoDev\IDEntity\Types;
 
 use Exception;
 use Illuminate\Support\Str;
 use AvtoDev\IDEntity\Helpers\Transliterator;
+use AvtoDev\ExtendedLaravelValidator\Extensions\VinCodeValidatorExtension;
 
-/**
- * Идентификатор - VIN код.
- */
 class IDEntityVin extends AbstractTypedIDEntity
 {
     /**
      * {@inheritdoc}
      */
-    public function getType()
+    public function getType(): string
     {
         return static::ID_TYPE_VIN;
     }
@@ -22,7 +22,7 @@ class IDEntityVin extends AbstractTypedIDEntity
     /**
      * {@inheritdoc}
      */
-    public static function normalize($value)
+    public static function normalize($value): ?string
     {
         try {
             // Производим замену кириллических символов на латинские аналоги.
@@ -36,7 +36,7 @@ class IDEntityVin extends AbstractTypedIDEntity
 
             return $value;
         } catch (Exception $e) {
-            // Do nothing
+            return null;
         }
     }
 
@@ -57,9 +57,9 @@ class IDEntityVin extends AbstractTypedIDEntity
             'x' => 7, 'y' => 8, 'z' => 9,
         ];
 
-        $characters = (array) \str_split(Str::lower((string) $this->getValue()));
-        $sum        = 0;
+        $characters = (array) \str_split(Str::lower((string) $this->value));
         $length     = \count($characters);
+        $sum        = 0;
 
         if ($length !== 17) {
             return false;
@@ -87,10 +87,11 @@ class IDEntityVin extends AbstractTypedIDEntity
      */
     protected function getValidateCallbacks()
     {
-        return [
-            function () {
-                return $this->validateWithValidatorRule($this->getValue(), 'required|string|vin_code');
-            },
-        ];
+        return function (): bool {
+            /** @var VinCodeValidatorExtension $validator */
+            $validator = static::getContainer()->make(VinCodeValidatorExtension::class);
+
+            return \is_string($this->value) && $validator->passes('', $this->value);
+        };
     }
 }
