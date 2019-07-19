@@ -70,6 +70,13 @@ interface IDEntityInterface
     public const ID_TYPE_DRIVER_LICENSE_NUMBER = 'DLN';
 
     /**
+     * Тип - кадастровый номер (уникальный номер объекта недвижимости).
+     *
+     * @var string
+     */
+    const ID_TYPE_CADASTRAL_NUMBER = 'CAD';
+
+    /**
      * Фабричный метод, замена конструктору.
      *
      * @param string $value
