@@ -197,7 +197,7 @@ IDEntity::is('А123АА177', [IDEntity::ID_TYPE_VIN, IDEntity::ID_TYPE_PTS]); //
 
 ### Расширенные методы
 
-Некоторые объекты типизированных идентификаторов имеют расширенные методы, например `IDEntityGrz` и `IDEntityDriverLicenseNumber` умеют:
+Некоторые объекты типизированных идентификаторов имеют расширенные методы, например `IDEntityGrz`, `IDEntityDriverLicenseNumber` и `IDEntityCadastralNumber` умеют:
 
 Имя метода | Его описание
 ---------: | :-----------

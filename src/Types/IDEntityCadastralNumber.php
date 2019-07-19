@@ -33,7 +33,7 @@ class IDEntityCadastralNumber extends AbstractTypedIDEntity implements HasRegion
     }
 
     /**
-     * Возвращает код региона.
+     * Возвращает код субъекта, связанный с идентификатором.
      *
      * @return int|null
      */
@@ -49,9 +49,7 @@ class IDEntityCadastralNumber extends AbstractTypedIDEntity implements HasRegion
     }
 
     /**
-     * Возвращает данные региона по коду региона кадастрового номера (первые 2 цифры).
-     *
-     * @return AutoRegionEntry|null
+     * {@inheritdoc}
      */
     public function getRegionData(): ?AutoRegionEntry
     {
@@ -74,13 +72,6 @@ class IDEntityCadastralNumber extends AbstractTypedIDEntity implements HasRegion
 
         $validated = \is_string($this->value) && $validator->passes('', $this->value);
 
-        $region_valid = false;
-
-        // Пропускаем проверку формата, в котором в принципе нет кода региона
-        if ($this->getRegionData() instanceof AutoRegionEntry) {
-            $region_valid = true;
-        }
-
-        return $validated && $region_valid;
+        return $validated && $this->getRegionData() instanceof AutoRegionEntry;
     }
 }
