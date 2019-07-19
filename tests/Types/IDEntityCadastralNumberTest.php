@@ -49,14 +49,33 @@ class IDEntityCadastralNumberTest extends AbstractIDEntityTestCase
             '21:27:9584113:671510',
             '72:51:372923:8028',
             '79:96:2700420:365298',
-
         ];
 
         foreach ($valid as $value) {
             $this->assertTrue($this->instance->setValue($value)->isValid());
         }
 
-        $this->assertFalse($this->instance->setValue('66:41:123456102360')->isValid());
+        $invalid = [
+            '359:924:190:795',
+            '5:01:4286525/047215',
+            '0:22:4357409:744560',
+            '9:79:822:078276',
+            '061:212:111:597',
+            '2:42:9790497/271694',
+            '923:045:888:214',
+            '0:65:260:685116',
+            '266:320:100:338',
+            '7:42:2550168/906215',
+            '9:69:3759000:798065',
+            '5:66:5951772:833946',
+            '2:24:3483960/790543',
+            '6:15:5787963:669678',
+            '7:41:944:150150',
+        ];
+
+        foreach ($invalid as $value) {
+            $this->assertFalse($this->instance->setValue($value)->isValid());
+        }
     }
 
     /**
@@ -77,7 +96,7 @@ class IDEntityCadastralNumberTest extends AbstractIDEntityTestCase
         // С буквами
         $this->assertEquals($valid, $instance::normalize('Start6Шесть6:4One1:01ZeRO05001:ThrEE3'));
         //Первый символ не цифра
-        $this->assertTrue($instance->setValue(':x:y:ц:61:41:123456:102360')->isValid());
+        $this->assertTrue($instance->setValue(':D61:41:123456:102360')->isValid());
     }
 
     /**
