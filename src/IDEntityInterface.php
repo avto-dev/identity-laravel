@@ -74,7 +74,7 @@ interface IDEntityInterface
      *
      * @var string
      */
-    const ID_TYPE_CADASTRAL_NUMBER = 'CAD';
+    const ID_TYPE_CADASTRAL_NUMBER = 'CADNUM';
 
     /**
      * Фабричный метод, замена конструктору.

@@ -7,9 +7,6 @@ namespace AvtoDev\IDEntity\Tests\Types;
 use AvtoDev\IDEntity\IDEntity;
 use AvtoDev\IDEntity\Types\IDEntityCadastralNumber;
 
-/**
- * Class IDEntityCadastralNumberTest.
- */
 class IDEntityCadastralNumberTest extends AbstractIDEntityTestCase
 {
     /**
@@ -32,6 +29,27 @@ class IDEntityCadastralNumberTest extends AbstractIDEntityTestCase
             '02:00:456789:736',
             '66:41:1234567:81545',
             '66:41:123456:102360',
+            '29:28:2414138:3',
+            '31:32:6107179:2',
+            '13:01:167778:560',
+            '27:46:729107:5843',
+            '29:95:3773025:02',
+            '15:17:7022097:973',
+            '75:27:2374845:29545',
+            '83:38:5396372:0778',
+            '90:98:437369:87',
+            '49:45:2136040:347',
+            '73:74:2025396:33',
+            '13:21:519846:854',
+            '88:50:226635:1',
+            '86:77:031622:8428',
+            '84:27:427934:1',
+            '87:32:1246950:4661',
+            '74:81:1535682:971',
+            '21:27:9584113:671510',
+            '72:51:372923:8028',
+            '79:96:2700420:365298',
+
         ];
 
         foreach ($valid as $value) {
