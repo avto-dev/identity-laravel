@@ -321,7 +321,7 @@ class IDEntityTest extends AbstractTestCase
     {
         $extended_map = $this->callMethod($this->instance, 'getExtendedTypesMap');
 
-        $this->assertIsArray($extended_map);
+        $this->assertInternalType('array', $extended_map);
 
         $this->app->make('config')->set('identity.extended_types_map', $expects = ['foo' => \stdClass::class]);
 
