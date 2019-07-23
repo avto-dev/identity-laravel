@@ -11,9 +11,44 @@ use Exception;
 use AvtoDev\StaticReferences\References\AutoRegions\AutoRegions;
 use AvtoDev\StaticReferences\References\AutoRegions\AutoRegionEntry;
 use AvtoDev\ExtendedLaravelValidator\Extensions\CadastralNumberValidatorExtension;
+use Illuminate\Support\Arr;
 
 class IDEntityCadastralNumber extends AbstractTypedIDEntity implements HasDistrictDataInterface
 {
+    /**
+     * @var string|int Код субъекта
+     */
+    protected $region_code;
+
+    /**
+     * @var string|int Номер района
+     */
+    protected $district_code;
+
+    /**
+     * @var string|int Номер квартала
+     */
+    protected $quarter_code;
+
+    /**
+     * @var string|int Номер участка
+     */
+    protected $area_code;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setValue(string $value, bool $make_normalization = true)
+    {
+        parent::setValue($value, $make_normalization);
+
+        if ($make_normalization) {
+            $this->splitCadastralNumber();
+        }
+
+        return $this;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -36,27 +71,17 @@ class IDEntityCadastralNumber extends AbstractTypedIDEntity implements HasDistri
     }
 
     /**
-     * {@inheritdoc}
+     * Split cadastral number to fragments.
+     *
+     * @return void
      */
-    public function getRegionCode(): ?int
+    public function splitCadastralNumber(): void
     {
-        \preg_match('~^(?<region>[0-9]{2})~', (string) $this->value, $matches);
-
-        return isset($matches['region'])
-            ? (int) $matches['region']
-            : null;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDistrictCode(): ?int
-    {
-        \preg_match('~^[0-9]{2}:(?<district>[0-9]{2})~', (string) $this->value, $matches);
-
-        return isset($matches['district'])
-            ? (int) $matches['district']
-            : null;
+        $codes               = \mb_split(':', $this->value ?? '');
+        $this->region_code   = $codes[0] ?? null;
+        $this->district_code = $codes[1] ?? null;
+        $this->quarter_code  = $codes[2] ?? null;
+        $this->area_code     = $codes[3] ?? null;
     }
 
     /**
@@ -69,11 +94,9 @@ class IDEntityCadastralNumber extends AbstractTypedIDEntity implements HasDistri
         if (! $districts instanceof CadastralRegions) {
             $districts = new CadastralRegions;
         }
-        $region   = $this->getRegionCode();
-        $district = $this->getDistrictCode();
 
-        if (($region = $districts->getRegionByCode($region)) instanceof CadastralRegionEntry) {
-            return $region->getDistricts()->getDistrictByCode($district);
+        if (($region = $districts->getRegionByCode($this->region_code)) instanceof CadastralRegionEntry) {
+            return $region->getDistricts()->getDistrictByCode($this->district_code);
         }
 
         return null;
