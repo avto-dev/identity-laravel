@@ -4,12 +4,15 @@ declare(strict_types = 1);
 
 namespace AvtoDev\IDEntity\Types;
 
+use AvtoDev\StaticReferences\References\CadastralDistricts\CadastralDistrictEntry;
+use AvtoDev\StaticReferences\References\CadastralDistricts\CadastralRegionEntry;
+use AvtoDev\StaticReferences\References\CadastralDistricts\CadastralRegions;
 use Exception;
 use AvtoDev\StaticReferences\References\AutoRegions\AutoRegions;
 use AvtoDev\StaticReferences\References\AutoRegions\AutoRegionEntry;
 use AvtoDev\ExtendedLaravelValidator\Extensions\CadastralNumberValidatorExtension;
 
-class IDEntityCadastralNumber extends AbstractTypedIDEntity implements HasRegionDataInterface
+class IDEntityCadastralNumber extends AbstractTypedIDEntity implements HasDistrictDataInterface
 {
     /**
      * {@inheritdoc}
@@ -33,33 +36,47 @@ class IDEntityCadastralNumber extends AbstractTypedIDEntity implements HasRegion
     }
 
     /**
-     * Возвращает код субъекта, связанный с идентификатором.
-     *
-     * @return int|null
+     * {@inheritdoc}
      */
     public function getRegionCode(): ?int
     {
-        if (\preg_match('~^(?<region_code>[0-9]{2})~', (string) $this->value, $matches)) {
-            if (isset($matches['region_code']) && ! \trim($region_code = $matches['region_code']) !== '') {
-                return (int) $region_code;
-            }
-        }
+        \preg_match('~^(?<region>[0-9]{2})~', (string) $this->value, $matches);
 
-        return null;
+        return isset($matches['region'])
+            ? (int) $matches['region']
+            : null;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getRegionData(): ?AutoRegionEntry
+    public function getDistrictCode(): ?int
     {
-        static $regions = null;
+        \preg_match('~^[0-9]{2}:(?<district>[0-9]{2})~', (string) $this->value, $matches);
 
-        if (! $regions instanceof AutoRegions) {
-            $regions = new AutoRegions;
+        return isset($matches['district'])
+            ? (int) $matches['district']
+            : null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDistrictData(): ?CadastralDistrictEntry
+    {
+        static $districts = null;
+
+        if (! $districts instanceof CadastralRegions) {
+            $districts = new CadastralRegions;
+        }
+        $region   = $this->getRegionCode();
+        $district = $this->getDistrictCode();
+
+        if (($region = $districts->getRegionByCode($region)) instanceof CadastralRegionEntry) {
+            return $region->getDistricts()->getDistrictByCode($district);
         }
 
-        return $regions->getByRegionCode($this->getRegionCode());
+        return null;
     }
 
     /**
@@ -72,6 +89,6 @@ class IDEntityCadastralNumber extends AbstractTypedIDEntity implements HasRegion
 
         $validated = \is_string($this->value) && $validator->passes('', $this->value);
 
-        return $validated && $this->getRegionData() instanceof AutoRegionEntry;
+        return $validated && $this->getDistrictData() instanceof CadastralDistrictEntry;
     }
 }
