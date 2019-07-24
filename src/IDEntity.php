@@ -101,6 +101,7 @@ class IDEntity implements IDEntityInterface
             self::ID_TYPE_BODY                  => Types\IDEntityBody::class,
             self::ID_TYPE_CHASSIS               => Types\IDEntityChassis::class,
             self::ID_TYPE_DRIVER_LICENSE_NUMBER => Types\IDEntityDriverLicenseNumber::class,
+            self::ID_TYPE_CADASTRAL_NUMBER      => Types\IDEntityCadastralNumber::class,
         ], static::getExtendedTypesMap());
     }
 

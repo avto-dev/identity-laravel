@@ -64,6 +64,7 @@ class IDEntityTest extends AbstractTestCase
             'BODY'       => IDEntity::ID_TYPE_BODY,
             'CHASSIS'    => IDEntity::ID_TYPE_CHASSIS,
             'DLN'        => IDEntity::ID_TYPE_DRIVER_LICENSE_NUMBER,
+            'CADNUM'     => IDEntity::ID_TYPE_CADASTRAL_NUMBER,
         ];
 
         foreach ($checks as $what => $with) {
@@ -98,6 +99,7 @@ class IDEntityTest extends AbstractTestCase
             IDEntity::ID_TYPE_CHASSIS,
             IDEntity::ID_TYPE_BODY,
             IDEntity::ID_TYPE_DRIVER_LICENSE_NUMBER,
+            IDEntity::ID_TYPE_CADASTRAL_NUMBER,
         ];
 
         foreach ($expects as $type) {
@@ -124,6 +126,7 @@ class IDEntityTest extends AbstractTestCase
             IDEntity::ID_TYPE_CHASSIS,
             IDEntity::ID_TYPE_BODY,
             IDEntity::ID_TYPE_DRIVER_LICENSE_NUMBER,
+            IDEntity::ID_TYPE_CADASTRAL_NUMBER,
         ];
 
         foreach ($expects as $type) {
@@ -171,6 +174,9 @@ class IDEntityTest extends AbstractTestCase
 
         $instance = IDEntity::make('77 16 235662', $type = IDEntity::ID_TYPE_DRIVER_LICENSE_NUMBER);
         $this->assertEquals($type, $instance->getType());
+
+        $instance = IDEntity::make('33:22:011262:526', $type = IDEntity::ID_TYPE_CADASTRAL_NUMBER);
+        $this->assertEquals($type, $instance->getType());
     }
 
     /**
@@ -200,6 +206,7 @@ class IDEntityTest extends AbstractTestCase
 
         // Тип "номер ШАССИ" автоматически отдетектить невозможно, так как правила проверки шасси и кузова идентичны
         // Тип "номер водительского удостоверения" тоже :(
+        // Тип "кадастровый номер" тоже :(
     }
 
     /**
@@ -231,29 +238,29 @@ class IDEntityTest extends AbstractTestCase
     {
         /* @var IDEntity $mock */
         $mock = $this->createIDEntityMock([
-            IDEntity::ID_TYPE_VIN                => IDEntityVin::class,
-            IDEntity::ID_TYPE_GRZ                => $except = IDEntityGrz::class,
-            IDEntityCantAutodetectMock::TYPE     => IDEntityCantAutodetectMock::class,
+            IDEntity::ID_TYPE_VIN            => IDEntityVin::class,
+            IDEntity::ID_TYPE_GRZ            => $except = IDEntityGrz::class,
+            IDEntityCantAutodetectMock::TYPE => IDEntityCantAutodetectMock::class,
         ]);
 
         $this->assertInstanceOf($except, $mock::make('А111АА77'));
 
         /* @var IDEntity $mock */
         $mock = $this->createIDEntityMock([
-            IDEntity::ID_TYPE_BODY               => IDEntityBody::class,
-            IDEntity::ID_TYPE_VIN                => IDEntityVin::class,
-            IDEntityCantAutodetectMock::TYPE     => IDEntityCantAutodetectMock::class,
-            IDEntity::ID_TYPE_GRZ                => $except = IDEntityGrz::class,
+            IDEntity::ID_TYPE_BODY           => IDEntityBody::class,
+            IDEntity::ID_TYPE_VIN            => IDEntityVin::class,
+            IDEntityCantAutodetectMock::TYPE => IDEntityCantAutodetectMock::class,
+            IDEntity::ID_TYPE_GRZ            => $except = IDEntityGrz::class,
         ]);
 
         $this->assertInstanceOf($except, $mock::make('А111АА77'));
 
         /* @var IDEntity $mock */
         $mock = $this->createIDEntityMock([
-            IDEntityCantAutodetectMock::TYPE     => IDEntityCantAutodetectMock::class,
-            IDEntity::ID_TYPE_BODY               => IDEntityBody::class,
-            IDEntity::ID_TYPE_VIN                => IDEntityVin::class,
-            IDEntity::ID_TYPE_GRZ                => $except = IDEntityGrz::class,
+            IDEntityCantAutodetectMock::TYPE => IDEntityCantAutodetectMock::class,
+            IDEntity::ID_TYPE_BODY           => IDEntityBody::class,
+            IDEntity::ID_TYPE_VIN            => IDEntityVin::class,
+            IDEntity::ID_TYPE_GRZ            => $except = IDEntityGrz::class,
         ]);
 
         $this->assertInstanceOf($except, $mock::make('А111АА77'));
@@ -290,11 +297,19 @@ class IDEntityTest extends AbstractTestCase
         $this->assertFalse(IDEntity::is($value, IDEntity::ID_TYPE_VIN));
         $this->assertFalse(IDEntity::is($value, IDEntity::ID_TYPE_GRZ));
 
+        $this->assertTrue(IDEntity::is($value = '33:22:011262:526', IDEntity::ID_TYPE_CADASTRAL_NUMBER));
+        $this->assertFalse(IDEntity::is($value, IDEntity::ID_TYPE_DRIVER_LICENSE_NUMBER));
+        $this->assertFalse(IDEntity::is($value, IDEntity::ID_TYPE_VIN));
+
         // Тестируем проверку по набору типов
         $this->assertTrue(IDEntity::is('FN15-102153', [IDEntity::ID_TYPE_VIN, IDEntity::ID_TYPE_CHASSIS]));
         $this->assertTrue(IDEntity::is('JF1SJ5LC5DG048667', [IDEntity::ID_TYPE_VIN, IDEntity::ID_TYPE_CHASSIS]));
         $this->assertFalse(IDEntity::is('А123АА177', [IDEntity::ID_TYPE_VIN, IDEntity::ID_TYPE_PTS]));
         $this->assertFalse(IDEntity::is('JF1SJ5LC5DG048667', [IDEntity::ID_TYPE_STS, IDEntity::ID_TYPE_GRZ]));
+        $this->assertTrue(IDEntity::is('33:22:011262:526', [
+            IDEntity::ID_TYPE_CADASTRAL_NUMBER,
+            IDEntity::ID_TYPE_BODY,
+        ]));
     }
 
     /**

@@ -53,6 +53,7 @@ $ ./artisan vendor:publish --provider="AvtoDev\IDEntity\ServiceProvider"
 `BODY`    | Номер кузова транспортного средства                            | `\AvtoDev\IDEntity\Types\IDEntityBody`
 `CHASSIS` | Номер шасси транспортного средства                             | `\AvtoDev\IDEntity\Types\IDEntityChassis`
 `DLN`     | Номер водительского удостоверения                              | `\AvtoDev\IDEntity\Types\IDEntityDriverLicenseNumber`
+`CADNUM`  | Кадастровый номер объекта недвижимости                         | `\AvtoDev\IDEntity\Types\IDEntityCadastralNumber`
 `UNKNOWN` | Неизвестный идентификатор                                      | `\AvtoDev\IDEntity\Types\IDEntityUnknown`
 
 > Все объекты, обслуживающие типы идентификаторов (типизированные идентификаторы) являются наследниками класса `AvtoDev\IDEntity\IDEntity`.
@@ -203,6 +204,15 @@ IDEntity::is('А123АА177', [IDEntity::ID_TYPE_VIN, IDEntity::ID_TYPE_PTS]); //
 `getRegionCode()` | Возвращает код региона, связанный с идентификатором
 `getRegionData()` | Возвращает объект с детализированными данными о регионе, связанным с идентификатором
 `getFormatPattern()` | Возвращает формат значения идентификатора
+
+
+Идентификатор `IDEntityCadastralNumber` имеет расширенные методы:
+
+Имя метода | Его описание
+---------: | :-----------
+`getRegionCode()` | Возвращает кадастровый номер округа, связанный с идентификатором
+`getDistrictCode()` | Возвращает кадастровый номер района, связанный с идентификатором
+`getDistrictData()` | Возвращает объект с данными об кадастровом районе
 
 Более подробно о расширенных методах смотрите в классах-реализациях типизированных идентификаторов.
 
