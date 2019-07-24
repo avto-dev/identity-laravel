@@ -48,13 +48,13 @@ class IDEntityCadastralNumber extends AbstractTypedIDEntity implements HasCadast
      */
     public function getRegionData(string $region_code): ?CadastralRegionEntry
     {
-        static $districts = null;
+        static $regions = null;
 
-        if (! $districts instanceof CadastralRegions) {
-            $districts = new CadastralRegions;
+        if (! $regions instanceof CadastralRegions) {
+            $regions = new CadastralRegions;
         }
 
-        return $districts->getRegionByCode($region_code);
+        return $regions->getRegionByCode($region_code);
     }
 
     /**
