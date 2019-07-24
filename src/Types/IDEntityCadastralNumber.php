@@ -4,14 +4,11 @@ declare(strict_types = 1);
 
 namespace AvtoDev\IDEntity\Types;
 
-use AvtoDev\StaticReferences\References\CadastralDistricts\CadastralDistrictEntry;
-use AvtoDev\StaticReferences\References\CadastralDistricts\CadastralRegionEntry;
-use AvtoDev\StaticReferences\References\CadastralDistricts\CadastralRegions;
 use Exception;
-use AvtoDev\StaticReferences\References\AutoRegions\AutoRegions;
-use AvtoDev\StaticReferences\References\AutoRegions\AutoRegionEntry;
+use AvtoDev\StaticReferences\References\CadastralDistricts\CadastralRegions;
+use AvtoDev\StaticReferences\References\CadastralDistricts\CadastralRegionEntry;
+use AvtoDev\StaticReferences\References\CadastralDistricts\CadastralDistrictEntry;
 use AvtoDev\ExtendedLaravelValidator\Extensions\CadastralNumberValidatorExtension;
-use Illuminate\Support\Arr;
 
 class IDEntityCadastralNumber extends AbstractTypedIDEntity implements HasDistrictDataInterface
 {
