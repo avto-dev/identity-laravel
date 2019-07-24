@@ -9,9 +9,7 @@ interface HasCadastralNumberInterface
     /**
      * Return cadastral data by region & district codes.
      *
-     * @param string $region_code
-     *
      * @return CadastralRegionEntry|null
      */
-    public function getRegionData(string $region_code): ?CadastralRegionEntry;
+    public function getRegionData(): ?CadastralRegionEntry;
 }

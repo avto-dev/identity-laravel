@@ -46,7 +46,7 @@ class IDEntityCadastralNumber extends AbstractTypedIDEntity implements HasCadast
     /**
      * {@inheritdoc}
      */
-    public function getRegionData(string $region_code): ?CadastralRegionEntry
+    public function getRegionData(): ?CadastralRegionEntry
     {
         static $regions = null;
 
@@ -54,7 +54,9 @@ class IDEntityCadastralNumber extends AbstractTypedIDEntity implements HasCadast
             $regions = new CadastralRegions;
         }
 
-        return $regions->getRegionByCode($region_code);
+        $cadastral_number_info = $this->getCadastralNumberInfo();
+
+        return $regions->getRegionByCode($cadastral_number_info->getRegionCode());
     }
 
     /**
@@ -67,11 +69,11 @@ class IDEntityCadastralNumber extends AbstractTypedIDEntity implements HasCadast
 
         $validated = \is_string($this->value) && $validator->passes('', $this->value);
 
-        $cadastral_number = $this->getCadastralNumberInfo();
-        $region_data      = $this->getRegionData($cadastral_number->getRegionCode());
+        $region_data           = $this->getRegionData();
+        $cadastral_number_info = $this->getCadastralNumberInfo();
 
         return $validated
                && $region_data instanceof CadastralRegionEntry
-               && $region_data->getDistricts()->hasDistrictCode($cadastral_number->getDistrictCode());
+               && $region_data->getDistricts()->hasDistrictCode($cadastral_number_info->getDistrictCode());
     }
 }
