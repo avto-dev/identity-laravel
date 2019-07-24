@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace AvtoDev\IDEntity\Types;
 
+use AvtoDev\IDEntity\Helpers\CadastralNumberInfo;
 use Exception;
 use AvtoDev\StaticReferences\References\CadastralDistricts\CadastralRegions;
 use AvtoDev\StaticReferences\References\CadastralDistricts\CadastralRegionEntry;
@@ -13,24 +14,9 @@ use AvtoDev\StaticReferences\References\CadastralDistricts\CadastralDistrictEntr
 class IDEntityCadastralNumber extends AbstractTypedIDEntity implements HasDistrictDataInterface
 {
     /**
-     * @var string|int Код субъекта
+     * @var CadastralNumberInfo
      */
-    protected $region_code;
-
-    /**
-     * @var string|int Номер района
-     */
-    protected $district_code;
-
-    /**
-     * @var string|int Номер квартала
-     */
-    protected $quarter_code;
-
-    /**
-     * @var string|int Номер участка
-     */
-    protected $area_code;
+    protected $cadastral_number;
 
     /**
      * {@inheritdoc}
@@ -39,9 +25,7 @@ class IDEntityCadastralNumber extends AbstractTypedIDEntity implements HasDistri
     {
         parent::setValue($value, $make_normalization);
 
-        if ($make_normalization) {
-            $this->splitCadastralNumber();
-        }
+        $this->cadastral_number = CadastralNumberInfo::parse($value);
 
         return $this;
     }
@@ -68,20 +52,6 @@ class IDEntityCadastralNumber extends AbstractTypedIDEntity implements HasDistri
     }
 
     /**
-     * Split cadastral number to fragments.
-     *
-     * @return void
-     */
-    public function splitCadastralNumber(): void
-    {
-        $codes               = \mb_split(':', $this->value ?? '');
-        $this->region_code   = $codes[0] ?? null;
-        $this->district_code = $codes[1] ?? null;
-        $this->quarter_code  = $codes[2] ?? null;
-        $this->area_code     = $codes[3] ?? null;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function getDistrictData(): ?CadastralDistrictEntry
@@ -92,8 +62,10 @@ class IDEntityCadastralNumber extends AbstractTypedIDEntity implements HasDistri
             $districts = new CadastralRegions;
         }
 
-        if (($region = $districts->getRegionByCode($this->region_code)) instanceof CadastralRegionEntry) {
-            return $region->getDistricts()->getDistrictByCode($this->district_code);
+        if (($region = $districts->getRegionByCode($this->cadastral_number->getRegionCode()))
+            instanceof CadastralRegionEntry
+        ) {
+            return $region->getDistricts()->getDistrictByCode($this->cadastral_number->getDistrictCode());
         }
 
         return null;

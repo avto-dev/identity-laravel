@@ -206,7 +206,7 @@ IDEntity::is('А123АА177', [IDEntity::ID_TYPE_VIN, IDEntity::ID_TYPE_PTS]); //
 `getFormatPattern()` | Возвращает формат значения идентификатора
 
 
-Идентификатор `IDEntityCadastralNumber` имеет расширенные методы: 
+Идентификатор `IDEntityCadastralNumber` имеет расширенные методы:
 
 Имя метода | Его описание
 ---------: | :-----------
