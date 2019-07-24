@@ -174,8 +174,6 @@ class IDEntityCadastralNumberTest extends AbstractIDEntityTestCase
 
     /**
      * Test of method getRegionData.
-     *
-     * @group Eldar
      */
     public function testGetRegionData(): void
     {
