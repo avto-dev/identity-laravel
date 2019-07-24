@@ -4,8 +4,8 @@ declare(strict_types = 1);
 
 namespace AvtoDev\IDEntity\Tests\Types;
 
-use AvtoDev\IDEntity\Helpers\CadastralNumberInfo;
 use AvtoDev\IDEntity\IDEntity;
+use AvtoDev\IDEntity\Helpers\CadastralNumberInfo;
 use AvtoDev\IDEntity\Types\IDEntityCadastralNumber;
 use AvtoDev\StaticReferences\References\CadastralDistricts\CadastralRegionEntry;
 

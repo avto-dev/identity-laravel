@@ -66,7 +66,7 @@ class IDEntityCadastralNumber extends AbstractTypedIDEntity implements HasCadast
         $validator = static::getContainer()->make(CadastralNumberValidatorExtension::class);
 
         $validated = \is_string($this->value) && $validator->passes('', $this->value);
-        
+
         $region_data = $this->getRegionData();
 
         return $validated
