@@ -5,28 +5,28 @@ namespace AvtoDev\IDEntity\Helpers;
 class CadastralNumberInfo
 {
     /**
-     * Код субъекта
+     * Код субъекта.
      *
      * @var string|null
      */
     protected $region_code;
 
     /**
-     * Номер района
+     * Номер района.
      *
      * @var string|null
      */
     protected $district_code;
 
     /**
-     * Номер квартала
+     * Номер квартала.
      *
      * @var string|null
      */
     protected $quarter_code;
 
     /**
-     * Номер участка
+     * Номер участка.
      *
      * @var string|null
      */
@@ -45,8 +45,7 @@ class CadastralNumberInfo
         string $district_code,
         string $quarter_code,
         string $area_code
-    )
-    {
+    ) {
         $this->region_code   = $region_code;
         $this->district_code = $district_code;
         $this->quarter_code  = $quarter_code;

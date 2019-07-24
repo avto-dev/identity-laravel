@@ -2,8 +2,8 @@
 
 namespace AvtoDev\IDEntity\Tests\Helpers;
 
-use AvtoDev\IDEntity\Helpers\CadastralNumberInfo;
 use AvtoDev\IDEntity\Tests\AbstractTestCase;
+use AvtoDev\IDEntity\Helpers\CadastralNumberInfo;
 
 /**
  * @covers \AvtoDev\IDEntity\Helpers\CadastralNumberInfo
@@ -35,33 +35,33 @@ class CadastralNumberInfoTest extends AbstractTestCase
         // Check with empty string
         $helper = CadastralNumberInfo::parse('');
         $this->assertInternalType('object', $helper);
-        $this->assertSame(['region' => '', 'district' => '', 'quarter' => '', 'area' => '',], $helper->getFragments());
+        $this->assertSame(['region' => '', 'district' => '', 'quarter' => '', 'area' => ''], $helper->getFragments());
 
         // Check if value contains letters
         $helper = CadastralNumberInfo::parse('foo:bar:this:shit');
         $this->assertSame(
-            ['region' => 'foo', 'district' => 'bar', 'quarter' => 'this', 'area' => 'shit',],
+            ['region' => 'foo', 'district' => 'bar', 'quarter' => 'this', 'area' => 'shit'],
             $helper->getFragments()
         );
 
         // Check \trim in fragments
         $helper = CadastralNumberInfo::parse('   foo  : bar:this :shit   ');
         $this->assertSame(
-            ['region' => 'foo', 'district' => 'bar', 'quarter' => 'this', 'area' => 'shit',],
+            ['region' => 'foo', 'district' => 'bar', 'quarter' => 'this', 'area' => 'shit'],
             $helper->getFragments()
         );
 
         // Check without delimiter
         $helper = CadastralNumberInfo::parse('   foo   ');
         $this->assertSame(
-            ['region' => 'foo', 'district' => '', 'quarter' => '', 'area' => '',],
+            ['region' => 'foo', 'district' => '', 'quarter' => '', 'area' => ''],
             $helper->getFragments()
         );
 
         // Check with null
         $helper = CadastralNumberInfo::parse(null);
         $this->assertSame(
-            ['region' => '', 'district' => '', 'quarter' => '', 'area' => '',],
+            ['region' => '', 'district' => '', 'quarter' => '', 'area' => ''],
             $helper->getFragments()
         );
     }

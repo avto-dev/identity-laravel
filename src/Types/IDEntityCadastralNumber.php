@@ -4,8 +4,8 @@ declare(strict_types = 1);
 
 namespace AvtoDev\IDEntity\Types;
 
-use AvtoDev\IDEntity\Helpers\CadastralNumberInfo;
 use Exception;
+use AvtoDev\IDEntity\Helpers\CadastralNumberInfo;
 use AvtoDev\StaticReferences\References\CadastralDistricts\CadastralRegions;
 use AvtoDev\StaticReferences\References\CadastralDistricts\CadastralRegionEntry;
 use AvtoDev\ExtendedLaravelValidator\Extensions\CadastralNumberValidatorExtension;
