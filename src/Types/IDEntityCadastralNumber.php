@@ -14,23 +14,6 @@ use AvtoDev\StaticReferences\References\CadastralDistricts\CadastralDistrictEntr
 class IDEntityCadastralNumber extends AbstractTypedIDEntity implements HasDistrictDataInterface
 {
     /**
-     * @var CadastralNumberInfo
-     */
-    protected $cadastral_number;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setValue(string $value, bool $make_normalization = true)
-    {
-        parent::setValue($value, $make_normalization);
-
-        $this->cadastral_number = CadastralNumberInfo::parse($value);
-
-        return $this;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function getType(): string
@@ -62,10 +45,12 @@ class IDEntityCadastralNumber extends AbstractTypedIDEntity implements HasDistri
             $districts = new CadastralRegions;
         }
 
-        if (($region = $districts->getRegionByCode($this->cadastral_number->getRegionCode()))
+        $cadastral_number = CadastralNumberInfo::parse($this->value);
+
+        if (($region = $districts->getRegionByCode($cadastral_number->getRegionCode()))
             instanceof CadastralRegionEntry
         ) {
-            return $region->getDistricts()->getDistrictByCode($this->cadastral_number->getDistrictCode());
+            return $region->getDistricts()->getDistrictByCode($cadastral_number->getDistrictCode());
         }
 
         return null;
