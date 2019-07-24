@@ -9,9 +9,8 @@ use AvtoDev\IDEntity\Helpers\CadastralNumberInfo;
 use AvtoDev\StaticReferences\References\CadastralDistricts\CadastralRegions;
 use AvtoDev\StaticReferences\References\CadastralDistricts\CadastralRegionEntry;
 use AvtoDev\ExtendedLaravelValidator\Extensions\CadastralNumberValidatorExtension;
-use AvtoDev\StaticReferences\References\CadastralDistricts\CadastralDistrictEntry;
 
-class IDEntityCadastralNumber extends AbstractTypedIDEntity implements HasDistrictDataInterface
+class IDEntityCadastralNumber extends AbstractTypedIDEntity implements HasCadastralNumberInterface
 {
     /**
      * {@inheritdoc}
@@ -35,9 +34,19 @@ class IDEntityCadastralNumber extends AbstractTypedIDEntity implements HasDistri
     }
 
     /**
+     * Return parsed fragments of cadastral number.
+     *
+     * @return CadastralNumberInfo
+     */
+    public function getCadastralNumberInfo(): CadastralNumberInfo
+    {
+        return CadastralNumberInfo::parse($this->value);
+    }
+
+    /**
      * {@inheritdoc}
      */
-    public function getDistrictData(): ?CadastralDistrictEntry
+    public function getRegionData(string $region_code): ?CadastralRegionEntry
     {
         static $districts = null;
 
@@ -45,15 +54,7 @@ class IDEntityCadastralNumber extends AbstractTypedIDEntity implements HasDistri
             $districts = new CadastralRegions;
         }
 
-        $cadastral_number = CadastralNumberInfo::parse($this->value);
-
-        if (($region = $districts->getRegionByCode($cadastral_number->getRegionCode()))
-            instanceof CadastralRegionEntry
-        ) {
-            return $region->getDistricts()->getDistrictByCode($cadastral_number->getDistrictCode());
-        }
-
-        return null;
+        return $districts->getRegionByCode($region_code);
     }
 
     /**
@@ -66,6 +67,11 @@ class IDEntityCadastralNumber extends AbstractTypedIDEntity implements HasDistri
 
         $validated = \is_string($this->value) && $validator->passes('', $this->value);
 
-        return $validated && $this->getDistrictData() instanceof CadastralDistrictEntry;
+        $cadastral_number = $this->getCadastralNumberInfo();
+        $region_data      = $this->getRegionData($cadastral_number->getRegionCode());
+
+        return $validated
+               && $region_data instanceof CadastralRegionEntry
+               && $region_data->getDistricts()->hasDistrictCode($cadastral_number->getDistrictCode());
     }
 }
