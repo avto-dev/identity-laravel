@@ -7,8 +7,8 @@ namespace AvtoDev\IDEntity\Types;
 use Exception;
 use AvtoDev\StaticReferences\References\CadastralDistricts\CadastralRegions;
 use AvtoDev\StaticReferences\References\CadastralDistricts\CadastralRegionEntry;
-use AvtoDev\StaticReferences\References\CadastralDistricts\CadastralDistrictEntry;
 use AvtoDev\ExtendedLaravelValidator\Extensions\CadastralNumberValidatorExtension;
+use AvtoDev\StaticReferences\References\CadastralDistricts\CadastralDistrictEntry;
 
 class IDEntityCadastralNumber extends AbstractTypedIDEntity implements HasDistrictDataInterface
 {
