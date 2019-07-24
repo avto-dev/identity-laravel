@@ -150,7 +150,7 @@ class IDEntityCadastralNumberTest extends AbstractIDEntityTestCase
                      new \stdClass,
                      ['foo' => 'bar'],
                  ] as $item) {
-            $this->assertNull($this->instance::normalize($item), $item);
+            $this->assertNull($this->instance::normalize($item));
         }
     }
 
