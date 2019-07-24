@@ -7,28 +7,28 @@ class CadastralNumberInfo
     /**
      * Код субъекта.
      *
-     * @var string|null
+     * @var string
      */
     protected $region_code;
 
     /**
      * Номер района.
      *
-     * @var string|null
+     * @var string
      */
     protected $district_code;
 
     /**
      * Номер квартала.
      *
-     * @var string|null
+     * @var string
      */
     protected $quarter_code;
 
     /**
      * Номер участка.
      *
-     * @var string|null
+     * @var string
      */
     protected $area_code;
 
@@ -45,7 +45,8 @@ class CadastralNumberInfo
         string $district_code,
         string $quarter_code,
         string $area_code
-    ) {
+    )
+    {
         $this->region_code   = $region_code;
         $this->district_code = $district_code;
         $this->quarter_code  = $quarter_code;
@@ -72,33 +73,33 @@ class CadastralNumberInfo
     }
 
     /**
-     * @return null|string
+     * @return string
      */
-    public function getRegionCode(): ?string
+    public function getRegionCode(): string
     {
         return $this->region_code;
     }
 
     /**
-     * @return null|string
+     * @return string
      */
-    public function getDistrictCode(): ?string
+    public function getDistrictCode(): string
     {
         return $this->district_code;
     }
 
     /**
-     * @return null|string
+     * @return string
      */
-    public function getQuarterCode(): ?string
+    public function getQuarterCode(): string
     {
         return $this->quarter_code;
     }
 
     /**
-     * @return null|string
+     * @return string
      */
-    public function getAreaCode(): ?string
+    public function getAreaCode(): string
     {
         return $this->area_code;
     }
