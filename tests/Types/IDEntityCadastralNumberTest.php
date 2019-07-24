@@ -4,11 +4,21 @@ declare(strict_types = 1);
 
 namespace AvtoDev\IDEntity\Tests\Types;
 
+use AvtoDev\IDEntity\Helpers\CadastralNumberInfo;
 use AvtoDev\IDEntity\IDEntity;
 use AvtoDev\IDEntity\Types\IDEntityCadastralNumber;
+use AvtoDev\StaticReferences\References\CadastralDistricts\CadastralRegionEntry;
 
+/**
+ * @covers \AvtoDev\IDEntity\Types\IDEntityCadastralNumber<extended>
+ */
 class IDEntityCadastralNumberTest extends AbstractIDEntityTestCase
 {
+    /**
+     * @var IDEntityCadastralNumber
+     */
+    protected $instance;
+
     /**
      * {@inheritdoc}
      */
@@ -134,6 +144,43 @@ class IDEntityCadastralNumberTest extends AbstractIDEntityTestCase
         $this->assertEquals($valid, $instance::normalize('Start6Шесть6:4One1:01ZeRO05001:ThrEE3'));
         //Первый символ не цифра
         $this->assertFalse($instance->setValue(':D61:41:123456:102360')->isValid());
+    }
+
+    /**
+     * Test of method getNumberInfo.
+     */
+    public function testGetNumberInfo(): void
+    {
+        $instance = $this->instance;
+
+        $this->assertInstanceOf(CadastralNumberInfo::class, $instance->getNumberInfo());
+        $this->assertSame('66', $instance->getNumberInfo()->getRegionCode());
+        $this->assertSame('41', $instance->getNumberInfo()->getDistrictCode());
+        $this->assertSame('0105001', $instance->getNumberInfo()->getQuarterCode());
+        $this->assertSame('3', $instance->getNumberInfo()->getAreaCode());
+
+        $instance->setValue('52:25');
+        $this->assertSame(
+            ['region' => '52', 'district' => '25', 'quarter' => '', 'area' => ''],
+            $instance->getNumberInfo()->getFragments()
+        );
+    }
+
+    /**
+     * Test of method getRegionData.
+     */
+    public function testGetRegionData(): void
+    {
+        $instance = $this->instance;
+
+        $this->assertInstanceOf(CadastralRegionEntry::class, $redion_data = $instance->getRegionData());
+
+        foreach (['getRegionCode', 'getRegionName', 'getDistricts'] as $method) {
+            $this->assertTrue(\method_exists($redion_data, $method), $method);
+        }
+
+        $instance->setValue('');
+        $this->assertNull($instance->getRegionData());
     }
 
     /**

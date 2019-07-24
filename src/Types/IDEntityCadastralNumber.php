@@ -38,7 +38,7 @@ class IDEntityCadastralNumber extends AbstractTypedIDEntity implements HasCadast
      *
      * @return CadastralNumberInfo
      */
-    public function getCadastralNumberInfo(): CadastralNumberInfo
+    public function getNumberInfo(): CadastralNumberInfo
     {
         return CadastralNumberInfo::parse($this->value);
     }
@@ -54,9 +54,7 @@ class IDEntityCadastralNumber extends AbstractTypedIDEntity implements HasCadast
             $regions = new CadastralRegions;
         }
 
-        $cadastral_number_info = $this->getCadastralNumberInfo();
-
-        return $regions->getRegionByCode($cadastral_number_info->getRegionCode());
+        return $regions->getRegionByCode($this->getNumberInfo()->getRegionCode());
     }
 
     /**
@@ -68,12 +66,11 @@ class IDEntityCadastralNumber extends AbstractTypedIDEntity implements HasCadast
         $validator = static::getContainer()->make(CadastralNumberValidatorExtension::class);
 
         $validated = \is_string($this->value) && $validator->passes('', $this->value);
-
-        $region_data           = $this->getRegionData();
-        $cadastral_number_info = $this->getCadastralNumberInfo();
+        
+        $region_data = $this->getRegionData();
 
         return $validated
                && $region_data instanceof CadastralRegionEntry
-               && $region_data->getDistricts()->hasDistrictCode($cadastral_number_info->getDistrictCode());
+               && $region_data->getDistricts()->hasDistrictCode($this->getNumberInfo()->getDistrictCode());
     }
 }

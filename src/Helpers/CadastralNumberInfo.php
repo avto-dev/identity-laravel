@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace AvtoDev\IDEntity\Helpers;
 
 class CadastralNumberInfo
@@ -45,7 +47,8 @@ class CadastralNumberInfo
         string $district_code,
         string $quarter_code,
         string $area_code
-    ) {
+    )
+    {
         $this->region_code   = $region_code;
         $this->district_code = $district_code;
         $this->quarter_code  = $quarter_code;
