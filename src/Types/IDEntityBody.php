@@ -4,11 +4,11 @@ declare(strict_types = 1);
 
 namespace AvtoDev\IDEntity\Types;
 
-use AvtoDev\ExtendedLaravelValidator\Extensions\BodyCodeValidatorExtension;
-use AvtoDev\IDEntity\Helpers\Normalizer;
-use AvtoDev\IDEntity\Helpers\Transliterator;
 use Exception;
 use Illuminate\Support\Str;
+use AvtoDev\IDEntity\Helpers\Normalizer;
+use AvtoDev\IDEntity\Helpers\Transliterator;
+use AvtoDev\ExtendedLaravelValidator\Extensions\BodyCodeValidatorExtension;
 
 class IDEntityBody extends AbstractTypedIDEntity
 {

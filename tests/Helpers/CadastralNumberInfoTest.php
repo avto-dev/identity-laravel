@@ -4,8 +4,8 @@ declare(strict_types = 1);
 
 namespace AvtoDev\IDEntity\Tests\Helpers;
 
-use AvtoDev\IDEntity\Helpers\CadastralNumberInfo;
 use AvtoDev\IDEntity\Tests\AbstractTestCase;
+use AvtoDev\IDEntity\Helpers\CadastralNumberInfo;
 
 /**
  * @covers \AvtoDev\IDEntity\Helpers\CadastralNumberInfo

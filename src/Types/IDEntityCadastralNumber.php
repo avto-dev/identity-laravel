@@ -4,11 +4,11 @@ declare(strict_types = 1);
 
 namespace AvtoDev\IDEntity\Types;
 
-use AvtoDev\ExtendedLaravelValidator\Extensions\CadastralNumberValidatorExtension;
-use AvtoDev\IDEntity\Helpers\CadastralNumberInfo;
-use AvtoDev\StaticReferences\References\CadastralDistricts\CadastralRegionEntry;
-use AvtoDev\StaticReferences\References\CadastralDistricts\CadastralRegions;
 use Exception;
+use AvtoDev\IDEntity\Helpers\CadastralNumberInfo;
+use AvtoDev\StaticReferences\References\CadastralDistricts\CadastralRegions;
+use AvtoDev\StaticReferences\References\CadastralDistricts\CadastralRegionEntry;
+use AvtoDev\ExtendedLaravelValidator\Extensions\CadastralNumberValidatorExtension;
 
 class IDEntityCadastralNumber extends AbstractTypedIDEntity implements HasCadastralNumberInterface
 {

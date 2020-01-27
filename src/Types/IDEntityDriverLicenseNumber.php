@@ -4,12 +4,12 @@ declare(strict_types = 1);
 
 namespace AvtoDev\IDEntity\Types;
 
-use AvtoDev\ExtendedLaravelValidator\Extensions\DriverLicenseNumberValidatorExtension;
-use AvtoDev\IDEntity\Helpers\Transliterator;
-use AvtoDev\StaticReferences\References\AutoRegions\AutoRegionEntry;
-use AvtoDev\StaticReferences\References\AutoRegions\AutoRegions;
 use Exception;
 use Illuminate\Support\Str;
+use AvtoDev\IDEntity\Helpers\Transliterator;
+use AvtoDev\StaticReferences\References\AutoRegions\AutoRegions;
+use AvtoDev\StaticReferences\References\AutoRegions\AutoRegionEntry;
+use AvtoDev\ExtendedLaravelValidator\Extensions\DriverLicenseNumberValidatorExtension;
 
 class IDEntityDriverLicenseNumber extends AbstractTypedIDEntity implements HasRegionDataInterface
 {

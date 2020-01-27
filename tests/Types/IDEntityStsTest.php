@@ -4,9 +4,9 @@ declare(strict_types = 1);
 
 namespace AvtoDev\IDEntity\Tests\Types;
 
+use Illuminate\Support\Str;
 use AvtoDev\IDEntity\IDEntity;
 use AvtoDev\IDEntity\Types\IDEntitySts;
-use Illuminate\Support\Str;
 
 /**
  * @covers \AvtoDev\IDEntity\Types\IDEntitySts<extended>

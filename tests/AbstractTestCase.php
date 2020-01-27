@@ -5,8 +5,8 @@ declare(strict_types = 1);
 namespace AvtoDev\IDEntity\Tests;
 
 use AvtoDev\IDEntity\ServiceProvider;
-use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Foundation\Application;
+use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
 abstract class AbstractTestCase extends BaseTestCase
