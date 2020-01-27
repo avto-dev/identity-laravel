@@ -20,12 +20,12 @@ class NormalizerTest extends AbstractTestCase
     public function testNormalizeDashChar(): void
     {
         foreach ([
-                     '–' /* Юникод U+2013 */,
-                     '—' /* Юникод U+2014 */,
-                     '‒' /* Юникод U+2012 */,
-                     '―' /* Юникод U+2015 */,
-                     '-',
-                 ] as $dash) {
+            '–' /* Юникод U+2013 */,
+            '—' /* Юникод U+2014 */,
+            '‒' /* Юникод U+2012 */,
+            '―' /* Юникод U+2015 */,
+            '-',
+        ] as $dash) {
             $this->assertEquals('-', Normalizer::normalizeDashChar($dash));
         }
 

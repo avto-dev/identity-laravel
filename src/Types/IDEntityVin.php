@@ -4,10 +4,10 @@ declare(strict_types = 1);
 
 namespace AvtoDev\IDEntity\Types;
 
+use AvtoDev\ExtendedLaravelValidator\Extensions\VinCodeValidatorExtension;
+use AvtoDev\IDEntity\Helpers\Transliterator;
 use Exception;
 use Illuminate\Support\Str;
-use AvtoDev\IDEntity\Helpers\Transliterator;
-use AvtoDev\ExtendedLaravelValidator\Extensions\VinCodeValidatorExtension;
 
 class IDEntityVin extends AbstractTypedIDEntity
 {
@@ -57,7 +57,7 @@ class IDEntityVin extends AbstractTypedIDEntity
             'x' => 7, 'y' => 8, 'z' => 9,
         ];
 
-        $characters = (array) \str_split(Str::lower((string) $this->value));
+        $characters = (array) \mb_str_split(Str::lower((string) $this->value));
         $length     = \count($characters);
         $sum        = 0;
 

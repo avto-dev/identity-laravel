@@ -2,8 +2,8 @@
 
 namespace AvtoDev\IDEntity\Types;
 
-use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Contracts\Support\Jsonable;
 
 interface TypedIDEntityInterface extends Arrayable, Jsonable
 {

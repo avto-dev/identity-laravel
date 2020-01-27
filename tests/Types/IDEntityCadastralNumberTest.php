@@ -4,8 +4,8 @@ declare(strict_types = 1);
 
 namespace AvtoDev\IDEntity\Tests\Types;
 
-use AvtoDev\IDEntity\IDEntity;
 use AvtoDev\IDEntity\Helpers\CadastralNumberInfo;
+use AvtoDev\IDEntity\IDEntity;
 use AvtoDev\IDEntity\Types\IDEntityCadastralNumber;
 use AvtoDev\StaticReferences\References\CadastralDistricts\CadastralRegionEntry;
 
@@ -144,12 +144,12 @@ class IDEntityCadastralNumberTest extends AbstractIDEntityTestCase
         $this->assertFalse($this->instance->setValue(':D61:41:123456:102360')->isValid());
         // Засовываем всякую шляпу
         foreach ([
-                     function () {
-                     },
-                     new static,
-                     new \stdClass,
-                     ['foo' => 'bar'],
-                 ] as $item) {
+            function () {
+            },
+            new static,
+            new \stdClass,
+            ['foo' => 'bar'],
+        ] as $item) {
             $this->assertNull($this->instance::normalize($item));
         }
     }

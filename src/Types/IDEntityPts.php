@@ -4,10 +4,10 @@ declare(strict_types = 1);
 
 namespace AvtoDev\IDEntity\Types;
 
+use AvtoDev\ExtendedLaravelValidator\Extensions\PtsCodeValidatorExtension;
+use AvtoDev\IDEntity\Helpers\Transliterator;
 use Exception;
 use Illuminate\Support\Str;
-use AvtoDev\IDEntity\Helpers\Transliterator;
-use AvtoDev\ExtendedLaravelValidator\Extensions\PtsCodeValidatorExtension;
 
 class IDEntityPts extends AbstractTypedIDEntity
 {

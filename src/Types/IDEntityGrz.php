@@ -4,12 +4,12 @@ declare(strict_types = 1);
 
 namespace AvtoDev\IDEntity\Types;
 
+use AvtoDev\ExtendedLaravelValidator\Extensions\GrzCodeValidatorExtension;
+use AvtoDev\IDEntity\Helpers\Transliterator;
+use AvtoDev\StaticReferences\References\AutoRegions\AutoRegionEntry;
+use AvtoDev\StaticReferences\References\AutoRegions\AutoRegions;
 use Exception;
 use Illuminate\Support\Str;
-use AvtoDev\IDEntity\Helpers\Transliterator;
-use AvtoDev\StaticReferences\References\AutoRegions\AutoRegions;
-use AvtoDev\StaticReferences\References\AutoRegions\AutoRegionEntry;
-use AvtoDev\ExtendedLaravelValidator\Extensions\GrzCodeValidatorExtension;
 
 /**
  * @link <http://internet-law.ru/gosts/gost/7327/#53635> ГОСТ Р 50577-93

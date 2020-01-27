@@ -4,10 +4,10 @@ declare(strict_types = 1);
 
 namespace AvtoDev\IDEntity;
 
-use Exception;
-use Illuminate\Container\Container;
 use AvtoDev\IDEntity\Types\IDEntityUnknown;
 use AvtoDev\IDEntity\Types\TypedIDEntityInterface;
+use Exception;
+use Illuminate\Container\Container;
 use Illuminate\Contracts\Config\Repository as ConfigRepository;
 
 class IDEntity implements IDEntityInterface

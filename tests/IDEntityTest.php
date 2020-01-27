@@ -4,16 +4,16 @@ declare(strict_types = 1);
 
 namespace AvtoDev\IDEntity\Tests;
 
-use Exception;
 use AvtoDev\IDEntity\IDEntity;
 use AvtoDev\IDEntity\IDEntityInterface;
-use AvtoDev\IDEntity\Types\IDEntityGrz;
-use AvtoDev\IDEntity\Types\IDEntityVin;
-use AvtoDev\IDEntity\Types\IDEntityBody;
-use AvtoDev\IDEntity\Types\IDEntityUnknown;
 use AvtoDev\IDEntity\Tests\Mocks\IDEntityMock;
-use AvtoDev\IDEntity\Tests\Traits\InstancesAccessorsTrait;
 use AvtoDev\IDEntity\Tests\Mocks\Types\IDEntityCantAutodetectMock;
+use AvtoDev\IDEntity\Tests\Traits\InstancesAccessorsTrait;
+use AvtoDev\IDEntity\Types\IDEntityBody;
+use AvtoDev\IDEntity\Types\IDEntityGrz;
+use AvtoDev\IDEntity\Types\IDEntityUnknown;
+use AvtoDev\IDEntity\Types\IDEntityVin;
+use Exception;
 
 /**
  * @covers \AvtoDev\IDEntity\IDEntity<extended>

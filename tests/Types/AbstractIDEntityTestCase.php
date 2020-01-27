@@ -4,11 +4,11 @@ declare(strict_types = 1);
 
 namespace AvtoDev\IDEntity\Tests\Types;
 
-use stdClass;
 use AvtoDev\IDEntity\IDEntity;
 use AvtoDev\IDEntity\Tests\AbstractTestCase;
 use AvtoDev\IDEntity\Types\AbstractTypedIDEntity;
 use AvtoDev\IDEntity\Types\TypedIDEntityInterface;
+use stdClass;
 
 abstract class AbstractIDEntityTestCase extends AbstractTestCase
 {
