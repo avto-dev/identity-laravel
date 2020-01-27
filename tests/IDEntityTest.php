@@ -232,7 +232,11 @@ class IDEntityTest extends AbstractTestCase
 
         foreach ($values as $value) {
             $instance = IDEntity::make($value);
-            $this->assertEquals(IDEntity::ID_TYPE_GRZ, $instance->getType());
+            $this->assertEquals(
+                IDEntity::ID_TYPE_GRZ,
+                $instance->getType(),
+                \sprintf('Type [%s] not detected for [%s]', IDEntity::ID_TYPE_GRZ, $value)
+            );
             $this->assertEquals($value, $instance->getValue());
         }
 

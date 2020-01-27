@@ -113,7 +113,10 @@ class IDEntity implements IDEntityInterface
     protected static function getExtendedTypesMap(): array
     {
         try {
-            return (array) static::getContainer()->make(ConfigRepository::class)->get(
+            /** @var ConfigRepository $config */
+            $config = static::getContainer()->make(ConfigRepository::class);
+
+            return (array) $config->get(
                 \sprintf('%s.extended_types_map', ServiceProvider::getConfigRootKeyName())
             );
         } catch (Exception $e) {

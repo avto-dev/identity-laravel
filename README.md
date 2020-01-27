@@ -7,7 +7,7 @@
 [![Version][badge_packagist_version]][link_packagist]
 [![Version][badge_php_version]][link_packagist]
 [![Build Status][badge_build_status]][link_build_status]
-[![Code quality][badge_code_quality]][link_code_quality]
+[![Coverage][badge_coverage]][link_coverage]
 [![Downloads count][badge_downloads_count]][link_packagist]
 [![License][badge_license]][link_license]
 
@@ -247,7 +247,7 @@ This is open-sourced software licensed under the [MIT License][link_license].
 [badge_packagist_version]:https://img.shields.io/packagist/v/avto-dev/identity-laravel.svg?maxAge=180
 [badge_php_version]:https://img.shields.io/packagist/php-v/avto-dev/identity-laravel.svg?longCache=true
 [badge_build_status]:https://travis-ci.org/avto-dev/identity-laravel.svg?branch=master
-[badge_code_quality]:https://img.shields.io/scrutinizer/g/avto-dev/identity-laravel.svg?maxAge=180
+[badge_coverage]:https://img.shields.io/codecov/c/github/avto-dev/identity-laravel/master.svg?maxAge=60
 [badge_downloads_count]:https://img.shields.io/packagist/dt/avto-dev/identity-laravel.svg?maxAge=180
 [badge_license]:https://img.shields.io/packagist/l/avto-dev/identity-laravel.svg?longCache=true
 [badge_release_date]:https://img.shields.io/github/release-date/avto-dev/identity-laravel.svg?style=flat-square&maxAge=180
@@ -258,7 +258,7 @@ This is open-sourced software licensed under the [MIT License][link_license].
 [link_packagist]:https://packagist.org/packages/avto-dev/identity-laravel
 [link_build_status]:https://travis-ci.org/avto-dev/identity-laravel
 [link_changes_log]:https://github.com/avto-dev/identity-laravel/blob/master/CHANGELOG.md
-[link_code_quality]:https://scrutinizer-ci.com/g/avto-dev/identity-laravel/
+[link_coverage]:https://codecov.io/gh/avto-dev/identity-laravel/
 [link_issues]:https://github.com/avto-dev/identity-laravel/issues
 [link_create_issue]:https://github.com/avto-dev/identity-laravel/issues/new/choose
 [link_commits]:https://github.com/avto-dev/identity-laravel/commits

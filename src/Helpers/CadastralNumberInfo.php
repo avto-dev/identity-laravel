@@ -42,12 +42,8 @@ class CadastralNumberInfo
      * @param string $quarter_code
      * @param string $area_code
      */
-    protected function __construct(
-        string $region_code,
-        string $district_code,
-        string $quarter_code,
-        string $area_code
-    ) {
+    protected function __construct(string $region_code, string $district_code, string $quarter_code, string $area_code)
+    {
         $this->region_code   = $region_code;
         $this->district_code = $district_code;
         $this->quarter_code  = $quarter_code;

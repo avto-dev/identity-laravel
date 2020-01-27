@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | IDEntity Configuration.
@@ -12,8 +11,8 @@ return [
     | Format: `%some_type_id% => %type_provider_class_name%`
     |
     */
+
     'extended_types_map' => [
         // 'ID_TYPE' => \Your\IDEntityType::class
     ],
-
 ];
