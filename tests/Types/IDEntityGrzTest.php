@@ -33,6 +33,7 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
         $this->assertEquals('X000077', $this->instance::FORMAT_PATTERN_6);
         $this->assertEquals('000X77', $this->instance::FORMAT_PATTERN_7);
         $this->assertEquals('0000X77', $this->instance::FORMAT_PATTERN_8);
+        $this->assertEquals('XX000X77_OR_XX000X777', $this->instance::FORMAT_PATTERN_9);
 
         $this->assertEquals('TYPE_1', $this->instance::GOST_TYPE_1);
         $this->assertEquals('TYPE_1A', $this->instance::GOST_TYPE_1A);
@@ -44,6 +45,7 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
         $this->assertEquals('TYPE_6', $this->instance::GOST_TYPE_6);
         $this->assertEquals('TYPE_7', $this->instance::GOST_TYPE_7);
         $this->assertEquals('TYPE_8', $this->instance::GOST_TYPE_8);
+        $this->assertEquals('TYPE_15', $this->instance::GOST_TYPE_15);
         $this->assertEquals('TYPE_20', $this->instance::GOST_TYPE_20);
         $this->assertEquals('TYPE_21', $this->instance::GOST_TYPE_21);
         $this->assertEquals('TYPE_22', $this->instance::GOST_TYPE_22);
@@ -70,6 +72,8 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
         $this->assertEquals($this->instance::FORMAT_PATTERN_4, $this->instance::getFormatPatternByGostType($this->instance::GOST_TYPE_8));
 
         $this->assertEquals($this->instance::FORMAT_PATTERN_5, $this->instance::getFormatPatternByGostType($this->instance::GOST_TYPE_6));
+
+        $this->assertEquals($this->instance::FORMAT_PATTERN_9, $this->instance::getFormatPatternByGostType($this->instance::GOST_TYPE_15));
 
         $this->assertEquals($this->instance::FORMAT_PATTERN_6, $this->instance::getFormatPatternByGostType($this->instance::GOST_TYPE_20));
 
@@ -113,6 +117,11 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
         $this->assertEquals(
             $this->instance::getGostTypesByPattern($this->instance::FORMAT_PATTERN_5),
             [$this->instance::GOST_TYPE_6]
+        );
+
+        $this->assertEquals(
+            $this->instance::getGostTypesByPattern($this->instance::FORMAT_PATTERN_9),
+            [$this->instance::GOST_TYPE_15]
         );
 
         $this->assertEquals(
@@ -474,6 +483,63 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
             '0606К33',
             '2029х70',
             '2528к37',
+
+            // ММ000М77 или ММ000М777 (тип 15 - Транзит, ламинированный)
+            'АХ368У69',
+            'АХ368У196',
+            'АА368Х77',
+            'ВА111М777',
+            'УХ111О177',
+            'РО123Т96',
+            'НО123С177',
+            'Но000к777',
+            'рО522Т196',
+            'ЕТ444А73',
+            'АА777А77',
+            'КО710О190',
+            'УК831У26',
+            'МР825Н78',
+            'ТО150Е190',
+            'ТТ293А178',
+            'ЕЕ476О750',
+            'ВС777Т190',
+            'УУ462А77',
+            'ТС258А77',
+            'СР475У777',
+            'РЕ295Е178',
+            'Ху918У116',
+            'ХЕ116Р96',
+            'УЕ888К99',
+            'ОО292М77',
+            'СЕ989Р72',
+            'КУ324М750',
+            'ТК085Р123',
+            'УК220Х61',
+            'КС700С82',
+            'ТК039Р60',
+            'ЕУ751Х197',
+            'СЕ572У777',
+            'ЕМ400Н33',
+            'СВ152Х102',
+            'НС127М777',
+            'АА214Р777',
+            'УК606Е33',
+            'ух401к47',
+            'от590т98',
+            'ус092у98',
+            'ор545е197',
+            'тм444м77',
+            'тк455о750',
+            'рм462а34',
+            'ур544у174',
+            'во577е190',
+            'ов888т31',
+            'ео555а77',
+            'аа118а99',
+            'ет557у777',
+            'ес884в777',
+            'ме965е26',
+            'вх545н199',
         ];
 
         foreach ($valid as $value) {
@@ -622,6 +688,16 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
                 '8888Е99',
                 '9292О77',
                 '8989Е72',
+            ],
+
+            $this->instance::FORMAT_PATTERN_9 => [
+                'АХ368У69',
+                'АХ368У196',
+                'АА368Х77',
+                'ВА111М777',
+                'УХ111О177',
+                'РО123Т96',
+                'НО123С177',
             ],
         ];
 
@@ -978,6 +1054,51 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
             '0606К33'   => 33,
             '9393М777'  => null,
             '0606К197'  => null,
+
+            // ММ000М77 или ММ000М777 (тип 15 - Транзит, ламинированный)
+            'АХ368У69'  => 69,
+            'АХ368У196' => 196,
+            'АА368Х77'  => 77,
+            'ВА111М777' => 777,
+            'УХ111О177' => 177,
+            'РО123Т96'  => 96,
+            'НО123С177' => 177,
+            'Но000к777' => 777,
+            'рО522Т196' => 196,
+            'ЕТ444А73'  => 73,
+            'АА777А77'  => 77,
+            'КО710О190' => 190,
+            'УК831У26'  => 26,
+            'МР825Н78'  => 78,
+            'ТО150Е190' => 190,
+            'ТТ293А178' => 178,
+            'ЕЕ476О750' => 750,
+            'ВС777Т190' => 190,
+            'УУ462А77'  => 77,
+            'ТС258А77'  => 77,
+            'СР475У777' => 777,
+            'РЕ295Е178' => 178,
+            'Ху918У116' => 116,
+            'АА214Р74'  => 74,
+            'УК606Е33'  => 33,
+            'ух401к47'  => 47,
+            'от590т98'  => 98,
+            'ус092у198' => 198,
+            'ор545е197' => 197,
+            'тм444м77'  => 77,
+            'тк455о750' => 750,
+            'рм462а34'  => 34,
+            'ур544у174' => 174,
+            'во577е190' => 190,
+            'ов888т31'  => 31,
+            'ео555а77'  => 77,
+            'аа118а99'  => 99,
+            'ет557у777' => 777,
+            'ес884в177' => 177,
+            'ме965е26'  => 26,
+            'вх545н199' => 199,
+            '9393ММ777' => null,
+            '0606КК197' => null,
 
             '123А098АА' => null,
             'foo bar'   => null,

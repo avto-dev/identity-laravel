@@ -35,6 +35,8 @@ class IDEntityGrz extends AbstractTypedIDEntity implements HasRegionDataInterfac
 
     public const FORMAT_PATTERN_8 = '0000X77';
 
+    public const FORMAT_PATTERN_9 = 'XX000X77_OR_XX000X777';
+
     /**
      * Types, declared in "ГОСТ Р 50577-93" (not all).
      */
@@ -57,6 +59,8 @@ class IDEntityGrz extends AbstractTypedIDEntity implements HasRegionDataInterfac
     public const GOST_TYPE_7  = 'TYPE_7'; // тип 7 - Для тракторов, самоход. дорожно-строительных машин и иных машин и прицепов
 
     public const GOST_TYPE_8  = 'TYPE_8'; // тип 8 - Для мотоциклов, мотороллеров, мопедов
+
+    public const GOST_TYPE_15 = 'TYPE_15'; // тип 15 - Для легковых, грузовых, грузопассажирских автомобилей, автобусов, прицепов и полуприцепов (Транзит, ламинированный)
 
     public const GOST_TYPE_20 = 'TYPE_20'; // тип 20 - Для легковых, грузовых, грузопассажирских автомобилей и автобусов
 
@@ -108,6 +112,9 @@ class IDEntityGrz extends AbstractTypedIDEntity implements HasRegionDataInterfac
         ],
         self::FORMAT_PATTERN_8 => [ // 0000X77
             self::GOST_TYPE_22,
+        ],
+        self::FORMAT_PATTERN_9 => [ // XX000X77_OR_XX000X777
+            self::GOST_TYPE_15,
         ],
     ];
 
@@ -198,6 +205,10 @@ class IDEntityGrz extends AbstractTypedIDEntity implements HasRegionDataInterfac
             // 0000X77
             case \preg_match("~^\d{4}[{$kyr}]{1}\d{2}$~iu", $value) === 1:
                 return self::FORMAT_PATTERN_8;
+
+            // XX000X77_OR_XX000X777
+            case \preg_match("~^[{$kyr}]{2}\d{3}[{$kyr}]\d{2,3}$~iu", $value) === 1:
+                return self::FORMAT_PATTERN_9;
         }
 
         return null;
@@ -239,6 +250,7 @@ class IDEntityGrz extends AbstractTypedIDEntity implements HasRegionDataInterfac
 
             switch ($format_pattern) {
                 case self::FORMAT_PATTERN_1: // X000XX77_OR_X000XX777
+                case self::FORMAT_PATTERN_9: // XX000X77_OR_XX000X777
                     \preg_match('~(?<region_code>\d{2,3})$~D', (string) $this->value, $matches);
                     break;
 
