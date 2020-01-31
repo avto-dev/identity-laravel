@@ -57,7 +57,7 @@ class IDEntityVin extends AbstractTypedIDEntity
             'x' => 7, 'y' => 8, 'z' => 9,
         ];
 
-        $characters = (array) \explode('', Str::lower((string) $this->value), 17);
+        $characters = (array) \str_split(Str::lower((string) $this->value));
         $length     = \count($characters);
         $sum        = 0;
 

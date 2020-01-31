@@ -61,7 +61,7 @@ class CadastralNumberInfo
     {
         $codes = \mb_split(':', $cadastral_number ?? '');
 
-        return new static(
+        return new self(
             \trim($codes[0] ?? ''),
             \trim($codes[1] ?? ''),
             \trim($codes[2] ?? ''),
