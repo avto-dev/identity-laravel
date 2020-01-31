@@ -37,7 +37,7 @@ class ServiceProviderTest extends AbstractTestCase
     {
         $original_config_content = require __DIR__ . '/../src/config/identity.php';
 
-        $this->assertInternalType('array', $original_config_content);
+        $this->assertIsArray($original_config_content);
         $this->assertArrayHasKey('extended_types_map', $original_config_content);
         $this->assertEmpty($original_config_content['extended_types_map']);
 

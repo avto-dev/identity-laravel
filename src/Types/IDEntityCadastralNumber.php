@@ -6,6 +6,9 @@ namespace AvtoDev\IDEntity\Types;
 
 use Exception;
 use AvtoDev\IDEntity\Helpers\CadastralNumberInfo;
+use AvtoDev\StaticReferences\References\SubjectCodes;
+use AvtoDev\StaticReferences\References\CadastralDistricts;
+use AvtoDev\StaticReferences\References\Entities\CadastralDistrict;
 use AvtoDev\StaticReferences\References\CadastralDistricts\CadastralRegions;
 use AvtoDev\StaticReferences\References\CadastralDistricts\CadastralRegionEntry;
 use AvtoDev\ExtendedLaravelValidator\Extensions\CadastralNumberValidatorExtension;
@@ -46,15 +49,12 @@ class IDEntityCadastralNumber extends AbstractTypedIDEntity implements HasCadast
     /**
      * {@inheritdoc}
      */
-    public function getRegionData(): ?CadastralRegionEntry
+    public function getRegionData(): ?CadastralDistrict
     {
-        static $regions = null;
+        /** @var CadastralDistricts $districts */
+        $districts = static::getContainer()->make(CadastralDistricts::class);
 
-        if (! $regions instanceof CadastralRegions) {
-            $regions = new CadastralRegions;
-        }
-
-        return $regions->getRegionByCode($this->getNumberInfo()->getRegionCode());
+        return $districts->getByCode((int) $this->getNumberInfo()->getRegionCode());
     }
 
     /**
@@ -70,7 +70,7 @@ class IDEntityCadastralNumber extends AbstractTypedIDEntity implements HasCadast
         $region_data = $this->getRegionData();
 
         return $validated
-               && $region_data instanceof CadastralRegionEntry
-               && $region_data->getDistricts()->hasDistrictCode($this->getNumberInfo()->getDistrictCode());
+               && $region_data instanceof CadastralDistrict
+               && $region_data->hasAreaWithCode((int) $this->getNumberInfo()->getDistrictCode());
     }
 }

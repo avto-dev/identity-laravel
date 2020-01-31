@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace AvtoDev\IDEntity\Tests;
 
-use AvtoDev\IDEntity\ServiceProvider;
 use Illuminate\Foundation\Application;
 use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
@@ -18,7 +17,10 @@ abstract class AbstractTestCase extends BaseTestCase
      *
      * @return Application
      */
-    public function createApplication($service_providers = [ServiceProvider::class])
+    public function createApplication($service_providers = [
+        \AvtoDev\IDEntity\ServiceProvider::class,
+        \AvtoDev\StaticReferences\ServiceProvider::class
+    ])
     {
         $app = require __DIR__ . '/../vendor/laravel/laravel/bootstrap/app.php';
 

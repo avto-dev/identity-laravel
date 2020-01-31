@@ -2,7 +2,7 @@
 
 namespace AvtoDev\IDEntity\Types;
 
-use AvtoDev\StaticReferences\References\AutoRegions\AutoRegionEntry;
+use AvtoDev\StaticReferences\References\Entities\SubjectCodesInfo;
 
 interface HasRegionDataInterface
 {
@@ -16,7 +16,7 @@ interface HasRegionDataInterface
     /**
      * Возвращает данные региона, связанного с идентификатором.
      *
-     * @return AutoRegionEntry|null
+     * @return SubjectCodesInfo|null
      */
-    public function getRegionData(): ?AutoRegionEntry;
+    public function getRegionData(): ?SubjectCodesInfo;
 }

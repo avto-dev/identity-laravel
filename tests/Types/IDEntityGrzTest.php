@@ -1141,7 +1141,7 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
 
         foreach ($expects as $what => $with) {
             $this->assertEquals(
-                $with, $this->instance->setValue($what)->getRegionData()->getIso31662(),
+                $with, $this->instance->setValue($what)->getRegionData()->getIso31662Code(),
                 sprintf('"%s" !== "%s"', $what, $with)
             );
         }

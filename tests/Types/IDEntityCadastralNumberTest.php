@@ -7,7 +7,8 @@ namespace AvtoDev\IDEntity\Tests\Types;
 use AvtoDev\IDEntity\IDEntity;
 use AvtoDev\IDEntity\Helpers\CadastralNumberInfo;
 use AvtoDev\IDEntity\Types\IDEntityCadastralNumber;
-use AvtoDev\StaticReferences\References\CadastralDistricts\CadastralRegionEntry;
+use AvtoDev\StaticReferences\References\CadastralDistricts;
+use AvtoDev\StaticReferences\References\Entities\CadastralDistrict;
 
 /**
  * @covers \AvtoDev\IDEntity\Types\IDEntityCadastralNumber<extended>
@@ -177,7 +178,7 @@ class IDEntityCadastralNumberTest extends AbstractIDEntityTestCase
      */
     public function testGetRegionData(): void
     {
-        $this->assertInstanceOf(CadastralRegionEntry::class, $this->instance->getRegionData());
+        $this->assertInstanceOf(CadastralDistrict::class, $this->instance->getRegionData());
 
         $this->instance->setValue('');
         $this->assertNull($this->instance->getRegionData());

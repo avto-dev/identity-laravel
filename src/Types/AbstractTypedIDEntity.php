@@ -96,7 +96,7 @@ abstract class AbstractTypedIDEntity extends IDEntity implements TypedIDEntityIn
     }
 
     /**
-     * {@inheritdoc}
+     * @return array<string, mixed>
      */
     public function toArray(): array
     {

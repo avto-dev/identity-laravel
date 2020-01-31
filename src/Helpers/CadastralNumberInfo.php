@@ -104,7 +104,7 @@ class CadastralNumberInfo
     /**
      * Get all parsed elements in array.
      *
-     * @return array
+     * @return array<string, string>
      */
     public function getFragments(): array
     {

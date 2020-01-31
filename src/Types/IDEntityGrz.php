@@ -7,8 +7,8 @@ namespace AvtoDev\IDEntity\Types;
 use Exception;
 use Illuminate\Support\Str;
 use AvtoDev\IDEntity\Helpers\Transliterator;
-use AvtoDev\StaticReferences\References\AutoRegions\AutoRegions;
-use AvtoDev\StaticReferences\References\AutoRegions\AutoRegionEntry;
+use AvtoDev\StaticReferences\References\SubjectCodes;
+use AvtoDev\StaticReferences\References\Entities\SubjectCodesInfo;
 use AvtoDev\ExtendedLaravelValidator\Extensions\GrzCodeValidatorExtension;
 
 /**
@@ -82,6 +82,8 @@ class IDEntityGrz extends AbstractTypedIDEntity implements HasRegionDataInterfac
 
     /**
      * Pattern and types map.
+     *
+     * @var array<string, array<string>>
      */
     protected static $patterns_and_types_map = [
         self::FORMAT_PATTERN_1 => [ // X000XX77_OR_X000XX777
@@ -278,17 +280,20 @@ class IDEntityGrz extends AbstractTypedIDEntity implements HasRegionDataInterfac
     /**
      * Возвращает данные региона по коду региона ГРЗ.
      *
-     * @return AutoRegionEntry|null
+     * @return SubjectCodesInfo|null
      */
-    public function getRegionData(): ?AutoRegionEntry
+    public function getRegionData(): ?SubjectCodesInfo
     {
-        static $regions = null;
+        $region_code = $this->getRegionCode();
 
-        if (! $regions instanceof AutoRegions) {
-            $regions = new AutoRegions;
+        if (\is_int($region_code)) {
+            /** @var SubjectCodes $subjects */
+            $subjects = static::getContainer()->make(SubjectCodes::class);
+
+            return $subjects->getByGibddCode($region_code);
         }
 
-        return $regions->getByAutoCode($this->getRegionCode());
+        return null;
     }
 
     /**
@@ -304,7 +309,7 @@ class IDEntityGrz extends AbstractTypedIDEntity implements HasRegionDataInterfac
         $region_valid = false;
 
         // Пропускаем проверку формата, в котором в принципе нет кода региона
-        if ($this->getFormatPattern() === self::FORMAT_PATTERN_2 || $this->getRegionData() instanceof AutoRegionEntry) {
+        if ($this->getFormatPattern() === self::FORMAT_PATTERN_2 || $this->getRegionData() instanceof SubjectCodesInfo) {
             $region_valid = true;
         }
 

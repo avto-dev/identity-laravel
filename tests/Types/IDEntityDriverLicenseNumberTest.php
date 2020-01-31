@@ -94,7 +94,7 @@ class IDEntityDriverLicenseNumberTest extends AbstractIDEntityTestCase
         ];
 
         foreach ($expects as $what => $with) {
-            $this->assertEquals($with, $this->instance->setValue((string) $what)->getRegionData()->getIso31662());
+            $this->assertEquals($with, $this->instance->setValue((string) $what)->getRegionData()->getIso31662Code());
         }
 
         $fails = [

@@ -7,8 +7,8 @@ namespace AvtoDev\IDEntity\Types;
 use Exception;
 use Illuminate\Support\Str;
 use AvtoDev\IDEntity\Helpers\Transliterator;
-use AvtoDev\StaticReferences\References\AutoRegions\AutoRegions;
-use AvtoDev\StaticReferences\References\AutoRegions\AutoRegionEntry;
+use AvtoDev\StaticReferences\References\SubjectCodes;
+use AvtoDev\StaticReferences\References\Entities\SubjectCodesInfo;
 use AvtoDev\ExtendedLaravelValidator\Extensions\DriverLicenseNumberValidatorExtension;
 
 class IDEntityDriverLicenseNumber extends AbstractTypedIDEntity implements HasRegionDataInterface
@@ -43,17 +43,20 @@ class IDEntityDriverLicenseNumber extends AbstractTypedIDEntity implements HasRe
     /**
      * Возвращает данные региона из номера водительского удостоверения.
      *
-     * @return AutoRegionEntry|null
+     * @return SubjectCodesInfo|null
      */
-    public function getRegionData(): ?AutoRegionEntry
+    public function getRegionData(): ?SubjectCodesInfo
     {
-        static $regions = null;
+        $region_code = $this->getRegionCode();
 
-        if (! $regions instanceof AutoRegions) {
-            $regions = new AutoRegions;
+        if (\is_int($region_code)) {
+            /** @var SubjectCodes $subjects */
+            $subjects = static::getContainer()->make(SubjectCodes::class);
+
+            return $subjects->getBySubjectCode($region_code);
         }
 
-        return $regions->getByRegionCode($this->getRegionCode());
+        return null;
     }
 
     /**
@@ -88,6 +91,6 @@ class IDEntityDriverLicenseNumber extends AbstractTypedIDEntity implements HasRe
 
         return \is_string($this->value)
                && $validator->passes('', $this->value)
-               && $this->getRegionData() instanceof AutoRegionEntry;
+               && $this->getRegionData() instanceof SubjectCodesInfo;
     }
 }
