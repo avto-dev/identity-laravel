@@ -5,7 +5,6 @@ enabled:
   - align_double_arrow
   - dir_constant
   - linebreak_after_opening_tag
-  - mb_str_functions
   - no_short_echo_tag
   - non_printable_character
   - ordered_class_elements
@@ -24,3 +23,4 @@ disabled:
   - concat_without_spaces
   - declare_equal_normalize
   - alpha_ordered_imports
+  - mb_str_functions
