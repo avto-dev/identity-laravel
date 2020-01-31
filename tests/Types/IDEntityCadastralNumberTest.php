@@ -7,7 +7,6 @@ namespace AvtoDev\IDEntity\Tests\Types;
 use AvtoDev\IDEntity\IDEntity;
 use AvtoDev\IDEntity\Helpers\CadastralNumberInfo;
 use AvtoDev\IDEntity\Types\IDEntityCadastralNumber;
-use AvtoDev\StaticReferences\References\CadastralDistricts;
 use AvtoDev\StaticReferences\References\Entities\CadastralDistrict;
 
 /**

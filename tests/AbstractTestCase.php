@@ -19,7 +19,7 @@ abstract class AbstractTestCase extends BaseTestCase
      */
     public function createApplication($service_providers = [
         \AvtoDev\IDEntity\ServiceProvider::class,
-        \AvtoDev\StaticReferences\ServiceProvider::class
+        \AvtoDev\StaticReferences\ServiceProvider::class,
     ])
     {
         $app = require __DIR__ . '/../vendor/laravel/laravel/bootstrap/app.php';
