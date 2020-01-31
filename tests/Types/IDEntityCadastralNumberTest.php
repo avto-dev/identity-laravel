@@ -144,12 +144,12 @@ class IDEntityCadastralNumberTest extends AbstractIDEntityTestCase
         $this->assertFalse($this->instance->setValue(':D61:41:123456:102360')->isValid());
         // Засовываем всякую шляпу
         foreach ([
-            function () {
-            },
-            new static,
-            new \stdClass,
-            ['foo' => 'bar'],
-        ] as $item) {
+                     function () {
+                     },
+                     new static,
+                     new \stdClass,
+                     ['foo' => 'bar'],
+                 ] as $item) {
             $this->assertNull($this->instance::normalize($item));
         }
     }
@@ -160,14 +160,14 @@ class IDEntityCadastralNumberTest extends AbstractIDEntityTestCase
     public function testGetNumberInfo(): void
     {
         $this->assertInstanceOf(CadastralNumberInfo::class, $this->instance->getNumberInfo());
-        $this->assertSame('66', $this->instance->getNumberInfo()->getRegionCode());
-        $this->assertSame('41', $this->instance->getNumberInfo()->getDistrictCode());
-        $this->assertSame('0105001', $this->instance->getNumberInfo()->getQuarterCode());
-        $this->assertSame('3', $this->instance->getNumberInfo()->getAreaCode());
+        $this->assertSame(66, $this->instance->getNumberInfo()->getDistrictCode());
+        $this->assertSame(41, $this->instance->getNumberInfo()->getAreaCode());
+        $this->assertSame('0105001', $this->instance->getNumberInfo()->getSectionCode());
+        $this->assertSame('3', $this->instance->getNumberInfo()->getParcelNumber());
 
         $this->instance->setValue('52:25');
         $this->assertSame(
-            ['region' => '52', 'district' => '25', 'quarter' => '', 'area' => ''],
+            ['district' => 52, 'area' => 25, 'section' => '', 'parcel_number' => ''],
             $this->instance->getNumberInfo()->getFragments()
         );
     }
@@ -177,10 +177,10 @@ class IDEntityCadastralNumberTest extends AbstractIDEntityTestCase
      */
     public function testGetRegionData(): void
     {
-        $this->assertInstanceOf(CadastralDistrict::class, $this->instance->getRegionData());
+        $this->assertInstanceOf(CadastralDistrict::class, $this->instance->getDistrictData());
 
         $this->instance->setValue('');
-        $this->assertNull($this->instance->getRegionData());
+        $this->assertNull($this->instance->getDistrictData());
     }
 
     /**

@@ -46,12 +46,12 @@ class IDEntityCadastralNumber extends AbstractTypedIDEntity implements HasCadast
     /**
      * {@inheritdoc}
      */
-    public function getRegionData(): ?CadastralDistrict
+    public function getDistrictData(): ?CadastralDistrict
     {
         /** @var CadastralDistricts $districts */
         $districts = static::getContainer()->make(CadastralDistricts::class);
 
-        return $districts->getByCode((int) $this->getNumberInfo()->getRegionCode());
+        return $districts->getByCode((int) $this->getNumberInfo()->getDistrictCode());
     }
 
     /**
@@ -64,10 +64,10 @@ class IDEntityCadastralNumber extends AbstractTypedIDEntity implements HasCadast
 
         $validated = \is_string($this->value) && $validator->passes('', $this->value);
 
-        $region_data = $this->getRegionData();
+        $district_data = $this->getDistrictData();
 
         return $validated
-               && $region_data instanceof CadastralDistrict
-               && $region_data->hasAreaWithCode((int) $this->getNumberInfo()->getDistrictCode());
+               && $district_data instanceof CadastralDistrict
+               && $district_data->hasAreaWithCode($this->getNumberInfo()->getAreaCode());
     }
 }

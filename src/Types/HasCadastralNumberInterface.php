@@ -11,5 +11,5 @@ interface HasCadastralNumberInterface
      *
      * @return CadastralDistrict|null
      */
-    public function getRegionData(): ?CadastralDistrict;
+    public function getDistrictData(): ?CadastralDistrict;
 }
