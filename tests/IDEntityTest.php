@@ -265,6 +265,7 @@ class IDEntityTest extends AbstractTestCase
      * Тест метода 'make' с передачей неизвестного типа.
      *
      * @group Eldar
+     *
      * @return void
      */
     public function testMakeWithUnknownType(): void
