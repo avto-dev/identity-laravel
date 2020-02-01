@@ -90,7 +90,7 @@ interface IDEntityInterface
      * Проверяет, является ли переданное значение в $value типом $type (значения типов можно передать массивом).
      *
      * @param string          $value
-     * @param string[]|string $type
+     * @param string|string[] $type
      *
      * @return bool
      */

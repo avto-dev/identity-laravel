@@ -28,7 +28,7 @@ abstract class AbstractTypedIDEntity extends IDEntity implements TypedIDEntityIn
      * @param string $value
      * @param bool   $make_normalization
      */
-    public function __construct(string $value, bool $make_normalization = true)
+    final public function __construct(string $value, bool $make_normalization = true)
     {
         parent::__construct();
 

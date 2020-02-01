@@ -56,7 +56,7 @@ class CadastralNumberInfo
     /**
      * Parse given cadastral number.
      *
-     * @param null|string $cadastral_number
+     * @param string|null $cadastral_number
      *
      * @return CadastralNumberInfo
      */

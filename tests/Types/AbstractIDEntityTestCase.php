@@ -143,7 +143,7 @@ abstract class AbstractIDEntityTestCase extends AbstractTestCase
      *
      * @return void
      */
-    abstract public function testGetType();
+    abstract public function testGetType(): void;
 
     /**
      * Тест методов преобразования объекта в массив и json.
@@ -165,26 +165,26 @@ abstract class AbstractIDEntityTestCase extends AbstractTestCase
      *
      * @return void
      */
-    abstract public function testIsValid();
+    abstract public function testIsValid(): void;
 
     /**
      * Тест метода нормализации значения.
      *
      * @return void
      */
-    abstract public function testNormalize();
+    abstract public function testNormalize(): void;
 
     /**
      * Тест работы метода нормализации с некорректными данными на входе.
      *
-     * @return null
+     * @return void
      */
     public function testNormalizeWithInvalidInputData(): void
     {
         $invalid_values = [
             new stdClass,
             [],
-            function () {
+            function (): void {
             },
         ];
 
