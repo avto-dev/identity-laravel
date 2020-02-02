@@ -1,4 +1,9 @@
 parameters:
   level: 'max'
+  ignoreErrors:
+    -
+      message: '#Unsafe usage of new static\(\)#'
+      paths:
+        - src/Types/AbstractTypedIDEntity.php
   paths:
     - src
