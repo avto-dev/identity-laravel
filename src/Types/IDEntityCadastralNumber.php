@@ -51,7 +51,7 @@ class IDEntityCadastralNumber extends AbstractTypedIDEntity implements HasCadast
         /** @var CadastralDistricts $districts */
         $districts = static::getContainer()->make(CadastralDistricts::class);
 
-        return $districts->getByCode((int) $this->getNumberInfo()->getDistrictCode());
+        return $districts->getByCode($this->getNumberInfo()->getDistrictCode());
     }
 
     /**
