@@ -147,12 +147,12 @@ class IDEntityCadastralNumberTest extends AbstractIDEntityTestCase
         $this->assertFalse($this->instance->setValue(':D61:41:123456:102360')->isValid());
         // Засовываем всякую шляпу
         foreach ([
-                     function (): void {
-                     },
-                     new static,
-                     new stdClass,
-                     ['foo' => 'bar'],
-                 ] as $item) {
+            function (): void {
+            },
+            new static,
+            new stdClass,
+            ['foo' => 'bar'],
+        ] as $item) {
             $this->assertNull($this->instance::normalize($item));
         }
     }
