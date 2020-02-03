@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace AvtoDev\IDEntity\Tests\Types;
 
+use stdClass;
 use AvtoDev\IDEntity\IDEntity;
 use AvtoDev\IDEntity\Helpers\CadastralNumberInfo;
 use AvtoDev\IDEntity\Types\IDEntityCadastralNumber;
@@ -22,7 +23,7 @@ class IDEntityCadastralNumberTest extends AbstractIDEntityTestCase
     /**
      * {@inheritdoc}
      */
-    public function testGetType()
+    public function testGetType(): void
     {
         $this->assertEquals(IDEntity::ID_TYPE_CADASTRAL_NUMBER, $this->instance->getType());
     }
@@ -30,9 +31,10 @@ class IDEntityCadastralNumberTest extends AbstractIDEntityTestCase
     /**
      * {@inheritdoc}
      */
-    public function testIsValid()
+    public function testIsValid(): void
     {
         $valid = [
+            '02:04:000221:2',
             '09:04:0134001:102',
             '10:01:0030104:691',
             '11:05:0105013:390',
@@ -61,6 +63,7 @@ class IDEntityCadastralNumberTest extends AbstractIDEntityTestCase
             '37:29:010121:75',
             '38:06:100801:26333',
             '39:15:131926:797',
+            '39:05:131926:7',
         ];
 
         foreach ($valid as $value) {
@@ -128,7 +131,7 @@ class IDEntityCadastralNumberTest extends AbstractIDEntityTestCase
     /**
      * {@inheritdoc}
      */
-    public function testNormalize()
+    public function testNormalize(): void
     {
         $valid = $this->getValidValue();
 
@@ -144,10 +147,10 @@ class IDEntityCadastralNumberTest extends AbstractIDEntityTestCase
         $this->assertFalse($this->instance->setValue(':D61:41:123456:102360')->isValid());
         // Засовываем всякую шляпу
         foreach ([
-            function () {
+            function (): void {
             },
             new static,
-            new \stdClass,
+            new stdClass,
             ['foo' => 'bar'],
         ] as $item) {
             $this->assertNull($this->instance::normalize($item));
@@ -160,14 +163,14 @@ class IDEntityCadastralNumberTest extends AbstractIDEntityTestCase
     public function testGetNumberInfo(): void
     {
         $this->assertInstanceOf(CadastralNumberInfo::class, $this->instance->getNumberInfo());
-        $this->assertSame('66', $this->instance->getNumberInfo()->getRegionCode());
-        $this->assertSame('41', $this->instance->getNumberInfo()->getDistrictCode());
-        $this->assertSame('0105001', $this->instance->getNumberInfo()->getQuarterCode());
-        $this->assertSame('3', $this->instance->getNumberInfo()->getAreaCode());
+        $this->assertSame(66, $this->instance->getNumberInfo()->getDistrictCode());
+        $this->assertSame(41, $this->instance->getNumberInfo()->getAreaCode());
+        $this->assertSame('0105001', $this->instance->getNumberInfo()->getSectionCode());
+        $this->assertSame('3', $this->instance->getNumberInfo()->getParcelNumber());
 
         $this->instance->setValue('52:25');
         $this->assertSame(
-            ['region' => '52', 'district' => '25', 'quarter' => '', 'area' => ''],
+            ['district' => 52, 'area' => 25, 'section' => '', 'parcel_number' => ''],
             $this->instance->getNumberInfo()->getFragments()
         );
     }
@@ -177,10 +180,10 @@ class IDEntityCadastralNumberTest extends AbstractIDEntityTestCase
      */
     public function testGetRegionData(): void
     {
-        $this->assertInstanceOf(CadastralDistrict::class, $this->instance->getRegionData());
+        $this->assertInstanceOf(CadastralDistrict::class, $this->instance->getDistrictData());
 
         $this->instance->setValue('');
-        $this->assertNull($this->instance->getRegionData());
+        $this->assertNull($this->instance->getDistrictData());
     }
 
     /**

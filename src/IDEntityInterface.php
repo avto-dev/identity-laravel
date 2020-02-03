@@ -90,7 +90,7 @@ interface IDEntityInterface
      * Check for passed value has passed type?
      *
      * @param string          $value
-     * @param string[]|string $type
+     * @param string|string[] $type
      *
      * @return bool
      */

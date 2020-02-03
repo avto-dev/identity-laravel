@@ -4,56 +4,62 @@ declare(strict_types = 1);
 
 namespace AvtoDev\IDEntity\Helpers;
 
+/**
+ * @see https://ru.wikipedia.org/wiki/%D0%9A%D0%B0%D0%B4%D0%B0%D1%81%D1%82%D1%80%D0%BE%D0%B2%D1%8B%D0%B9_%D0%BD%D0%BE%D0%BC%D0%B5%D1%80
+ */
 class CadastralNumberInfo
 {
     /**
      * Код субъекта.
      *
-     * @var string
+     * @var int
      */
-    protected $region_code;
+    protected $district_code;
 
     /**
      * Номер района.
      *
-     * @var string
+     * @var int
      */
-    protected $district_code;
+    protected $area_code;
 
     /**
      * Номер квартала.
      *
      * @var string
      */
-    protected $quarter_code;
+    protected $section_code;
 
     /**
      * Номер участка.
      *
      * @var string
      */
-    protected $area_code;
+    protected $parcel_number;
 
     /**
      * CadastralNumberInfo constructor.
      *
-     * @param string $region_code
-     * @param string $district_code
-     * @param string $quarter_code
-     * @param string $area_code
+     * @param int    $district_code
+     * @param int    $area_code
+     * @param string $section_code
+     * @param string $parcel_number
      */
-    protected function __construct(string $region_code, string $district_code, string $quarter_code, string $area_code)
+    protected function __construct(int $district_code,
+                                   int $area_code,
+                                   string $section_code,
+                                   string $parcel_number)
     {
-        $this->region_code   = $region_code;
         $this->district_code = $district_code;
-        $this->quarter_code  = $quarter_code;
         $this->area_code     = $area_code;
+        $this->section_code  = $section_code;
+        $this->parcel_number = $parcel_number;
     }
 
     /**
      * Parse given cadastral number.
      *
-     * @param null|string $cadastral_number
+     * @param string|null $cadastral_number
      *
      * @return CadastralNumberInfo
      */
@@ -62,57 +68,57 @@ class CadastralNumberInfo
         $codes = \mb_split(':', $cadastral_number ?? '');
 
         return new self(
-            \trim($codes[0] ?? ''),
-            \trim($codes[1] ?? ''),
+            (int) ($codes[0] ?? 0),
+            (int) ($codes[1] ?? 0),
             \trim($codes[2] ?? ''),
             \trim($codes[3] ?? '')
         );
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getRegionCode(): string
-    {
-        return $this->region_code;
-    }
-
-    /**
-     * @return string
-     */
-    public function getDistrictCode(): string
+    public function getDistrictCode(): int
     {
         return $this->district_code;
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getQuarterCode(): string
-    {
-        return $this->quarter_code;
-    }
-
-    /**
-     * @return string
-     */
-    public function getAreaCode(): string
+    public function getAreaCode(): int
     {
         return $this->area_code;
     }
 
     /**
+     * @return string
+     */
+    public function getSectionCode(): string
+    {
+        return $this->section_code;
+    }
+
+    /**
+     * @return string
+     */
+    public function getParcelNumber(): string
+    {
+        return $this->parcel_number;
+    }
+
+    /**
      * Get all parsed elements in array.
      *
-     * @return array<string, string>
+     * @return array<string, int|string>
      */
     public function getFragments(): array
     {
         return [
-            'region'   => $this->region_code,
-            'district' => $this->district_code,
-            'quarter'  => $this->quarter_code,
-            'area'     => $this->area_code,
+            'district'      => $this->district_code,
+            'area'          => $this->area_code,
+            'section'       => $this->section_code,
+            'parcel_number' => $this->parcel_number,
         ];
     }
 }
