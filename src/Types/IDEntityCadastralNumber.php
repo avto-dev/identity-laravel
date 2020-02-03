@@ -36,8 +36,8 @@ class IDEntityCadastralNumber extends AbstractTypedIDEntity implements HasCadast
     public static function normalize($value): ?string
     {
         try {
-            // Удаляем все символы, кроме разрешенных (цифры и знак ":")
-            return (string) \preg_replace('~[^\d\:]~u', '', (string) $value);
+            // Remove all chars except allowed (numbers and ':')
+            return (string) \preg_replace('~[^\d:]~u', '', (string) $value);
         } catch (Exception $e) {
             return null;
         }
@@ -69,15 +69,18 @@ class IDEntityCadastralNumber extends AbstractTypedIDEntity implements HasCadast
      */
     public function isValid(): bool
     {
-        /** @var CadastralNumberValidatorExtension $validator */
-        $validator = static::getContainer()->make(CadastralNumberValidatorExtension::class);
+        if (\is_string($this->value)) {
+            /** @var CadastralNumberValidatorExtension $validator */
+            $validator = static::getContainer()->make(CadastralNumberValidatorExtension::class);
 
-        $validated = \is_string($this->value) && $validator->passes('', $this->value);
+            if ($validator->passes('', $this->value)) {
+                $district_data = $this->getDistrictData();
 
-        $district_data = $this->getDistrictData();
+                return $district_data instanceof CadastralDistrict
+                       && $district_data->hasAreaWithCode($this->getNumberInfo()->getAreaCode());
+            }
+        }
 
-        return $validated
-               && $district_data instanceof CadastralDistrict
-               && $district_data->hasAreaWithCode($this->getNumberInfo()->getAreaCode());
+        return false;
     }
 }
