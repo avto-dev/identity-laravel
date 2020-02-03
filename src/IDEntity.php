@@ -13,11 +13,16 @@ use Illuminate\Contracts\Config\Repository as ConfigRepository;
 class IDEntity implements IDEntityInterface
 {
     /**
-     * Create a new IDEntity instance.
+     * Disable outside constructor calling.
      */
     protected function __construct()
     {
-        // Disable outside constructor calling
+        //
+    }
+
+    protected static function getContainer(): Container
+    {
+        return Container::getInstance();
     }
 
     /**
@@ -122,16 +127,6 @@ class IDEntity implements IDEntityInterface
         } catch (Exception $e) {
             return [];
         }
-    }
-
-    /**
-     * Resolve container instance.
-     *
-     * @return Container
-     */
-    protected static function getContainer(): Container
-    {
-        return Container::getInstance();
     }
 
     /**

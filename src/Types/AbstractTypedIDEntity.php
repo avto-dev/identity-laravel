@@ -5,25 +5,22 @@ declare(strict_types = 1);
 namespace AvtoDev\IDEntity\Types;
 
 use AvtoDev\IDEntity\IDEntity;
+use Tarampampam\Wrappers\Json;
 
 abstract class AbstractTypedIDEntity extends IDEntity implements TypedIDEntityInterface
 {
     /**
-     * Значение идентификатора.
-     *
      * @var string|null
      */
     protected $value;
 
     /**
-     * Может ли тип быть автоматически определяемым.
-     *
      * @var bool
      */
     protected $can_be_auto_detected = true;
 
     /**
-     * Create a new AbstractTypedIDEntity instance.
+     * Create a new typed IDEntity instance.
      *
      * @param string $value
      * @param bool   $make_normalization
@@ -36,7 +33,7 @@ abstract class AbstractTypedIDEntity extends IDEntity implements TypedIDEntityIn
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function __toString(): string
     {
@@ -44,9 +41,7 @@ abstract class AbstractTypedIDEntity extends IDEntity implements TypedIDEntityIn
     }
 
     /**
-     * {@inheritdoc}
-     *
-     * Метод-заглушка для родительского метода-факторки.
+     * {@inheritDoc}
      */
     public static function make(string $value, ?string $type = null)
     {
@@ -54,11 +49,7 @@ abstract class AbstractTypedIDEntity extends IDEntity implements TypedIDEntityIn
     }
 
     /**
-     * {@inheritdoc}
-     *
-     * @param mixed $type Тип ИГНОРИРУЕТСЯ
-     *
-     * Метод-заглушка для родительского метода
+     * {@inheritDoc}
      */
     public static function is(string $value, $type = null): bool
     {
@@ -96,7 +87,7 @@ abstract class AbstractTypedIDEntity extends IDEntity implements TypedIDEntityIn
     }
 
     /**
-     * @return array<string, mixed>
+     * @return array{value:?string, type:string}
      */
     public function toArray(): array
     {
@@ -111,7 +102,7 @@ abstract class AbstractTypedIDEntity extends IDEntity implements TypedIDEntityIn
      */
     public function toJson($options = 0): string
     {
-        return (string) \json_encode($this->toArray(), $options);
+        return Json::encode($this->toArray(), $options);
     }
 
     /**
@@ -123,12 +114,12 @@ abstract class AbstractTypedIDEntity extends IDEntity implements TypedIDEntityIn
     }
 
     /**
-     * Скрытие строки под звездами.
+     * Hide part of string using 'mask char'.
      *
-     * @param string $string       Входящая строка
-     * @param int    $start_offset Сдвиг с начала
-     * @param int    $end_offset   Сдвиг с конца
-     * @param string $mask_char    Замещающий символ
+     * @param string $string
+     * @param int    $start_offset
+     * @param int    $end_offset
+     * @param string $mask_char
      *
      * @return string
      */

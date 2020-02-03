@@ -7,77 +7,77 @@ use AvtoDev\IDEntity\Types\TypedIDEntityInterface;
 interface IDEntityInterface
 {
     /**
-     * Обозначает необходимость в автоматическом определении типа.
+     * Internal type, which means "automatic type detection is required".
      *
      * @var string
      */
     public const ID_TYPE_AUTO = 'AUTODETECT';
 
     /**
-     * Неизвестный тип идентификатора.
+     * Unknown type.
      *
      * @var string
      */
     public const ID_TYPE_UNKNOWN = 'UNKNOWN';
 
     /**
-     * Тип - VIN-код.
+     * Vehicle identification number.
      *
      * @var string
      */
     public const ID_TYPE_VIN = 'VIN';
 
     /**
-     * Тип - регистрационный (ГРЗ) знак.
+     * Vehicle registration sign number (as usual - russian).
      *
      * @var string
      */
     public const ID_TYPE_GRZ = 'GRZ';
 
     /**
-     * Тип - код СТС (Номер свидетельства о регистрации ТС).
+     * Number of vehicle registration certificate.
      *
      * @var string
      */
     public const ID_TYPE_STS = 'STS';
 
     /**
-     * Тип - код ПТС (паспорт транспортного средства).
+     * Vehicle passport number.
      *
      * @var string
      */
     public const ID_TYPE_PTS = 'PTS';
 
     /**
-     * Тип - номер шасси (встречается редко, но всё же встречается).
+     * Vehicle chassis number.
      *
      * @var string
      */
     public const ID_TYPE_CHASSIS = 'CHASSIS';
 
     /**
-     * Тип - номер кузова.
+     * Vehicle body number.
      *
      * @var string
      */
     public const ID_TYPE_BODY = 'BODY';
 
     /**
-     * Тип - номер водительского удостоверения (driver license number).
+     * Driver license number.
      *
      * @var string
      */
     public const ID_TYPE_DRIVER_LICENSE_NUMBER = 'DLN';
 
     /**
-     * Тип - кадастровый номер (уникальный номер объекта недвижимости).
+     * Cadastral number (unique property number).
      *
      * @var string
      */
     public const ID_TYPE_CADASTRAL_NUMBER = 'CADNUM';
 
     /**
-     * Фабричный метод, замена конструктору.
+     * Create a new IDEntity instance.
      *
      * @param string $value
      * @param string $type
@@ -87,7 +87,7 @@ interface IDEntityInterface
     public static function make(string $value, ?string $type);
 
     /**
-     * Проверяет, является ли переданное значение в $value типом $type (значения типов можно передать массивом).
+     * Check for passed value has passed type?
      *
      * @param string          $value
      * @param string[]|string $type

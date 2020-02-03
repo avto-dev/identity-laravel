@@ -33,10 +33,10 @@ class IDEntityBody extends AbstractTypedIDEntity
             $value = Normalizer::normalizeDashChar($value);
 
             // Заменяем множественные дефисы - одиночными
-            $value = (string) \preg_replace('~\-+~', '-', $value);
+            $value = (string) \preg_replace('~-+~', '-', $value);
 
             // Заменяем идущие подряд тире и пробел (в любом порядке) на одиночное тире
-            $value = (string) \preg_replace('~\s*\-\s*~', '-', $value);
+            $value = (string) \preg_replace('~\s*-\s*~', '-', $value);
 
             // Производим замену кириллических символов на латинские аналоги
             $value = Transliterator::transliterateString(Str::upper($value), true);
