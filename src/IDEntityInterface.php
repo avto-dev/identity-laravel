@@ -89,8 +89,8 @@ interface IDEntityInterface
     /**
      * Check for passed value has passed type?
      *
-     * @param string          $value
-     * @param string|string[] $type
+     * @param string               $value
+     * @param string|array<string> $type
      *
      * @return bool
      */

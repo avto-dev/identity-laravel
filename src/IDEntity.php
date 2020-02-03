@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace AvtoDev\IDEntity;
 
-use Exception;
 use Illuminate\Container\Container;
 use AvtoDev\IDEntity\Types\IDEntityUnknown;
 use AvtoDev\IDEntity\Types\TypedIDEntityInterface;
@@ -20,13 +19,16 @@ class IDEntity implements IDEntityInterface
         //
     }
 
+    /**
+     * @return Container
+     */
     protected static function getContainer(): Container
     {
         return Container::getInstance();
     }
 
     /**
-     * Возвращает массив поддерживаемых типов идентификаторов.
+     * Get supported types.
      *
      * @return string[]
      */
@@ -36,7 +38,7 @@ class IDEntity implements IDEntityInterface
     }
 
     /**
-     * Проверяет наличие поддержки переданного типа идентификатора.
+     * Passed type is supported?
      *
      * @param string|mixed $type
      *
@@ -54,13 +56,10 @@ class IDEntity implements IDEntityInterface
     {
         $class_name = static::getEntityClassByType($type);
 
-        // Если указанный тип идентификатора нам известен - то его и создаём
         if (\is_string($class_name) && \class_exists($class_name)) {
             return new $class_name($value, true);
         }
 
-        // Если указан тип "авто-определение" - то поочерёдно создаем каждый тип, проверяем, может ли он быть
-        // автоматически определяемым, и проверяем соответствие методом валидации
         if ($type === self::ID_TYPE_AUTO) {
             foreach (static::getTypesMap() as $class_name) {
                 /** @var TypedIDEntityInterface $instance */
@@ -90,11 +89,11 @@ class IDEntity implements IDEntityInterface
     }
 
     /**
-     * Метод, возвращающий массив связок "%тип_идентификатора% => %класс_его_обслуживающий%".
+     * This method returns an array, where key is supported IDEntity type, and value is a class for this type.
      *
-     * Порядок элементов важен для механизма автоматического определения типа.
+     * Note: Order is important for automatic detection.
      *
-     * @return string[]
+     * @return array<string, class-string>
      */
     protected static function getTypesMap(): array
     {
@@ -113,29 +112,22 @@ class IDEntity implements IDEntityInterface
     /**
      * Get an extended types map, declared in configuration file.
      *
-     * @return string[]|array
+     * @return array<string, class-string>
      */
     protected static function getExtendedTypesMap(): array
     {
-        try {
-            /** @var ConfigRepository $config */
-            $config = static::getContainer()->make(ConfigRepository::class);
+        /** @var ConfigRepository $config */
+        $config = static::getContainer()->make(ConfigRepository::class);
 
-            return (array) $config->get(
-                \sprintf('%s.extended_types_map', ServiceProvider::getConfigRootKeyName())
-            );
-        } catch (Exception $e) {
-            return [];
-        }
+        return (array) $config->get(ServiceProvider::getConfigRootKeyName() . '.extended_types_map', []);
     }
 
     /**
-     * Возвращает имя класса, который обслуживает идентификатор по его типу. В случае ошибки или не обнаружения - вернет
-     * null.
+     * Get IDEntity typed class name for passed type.
      *
      * @param string|null $type
      *
-     * @return string|null
+     * @return class-string|null
      */
     protected static function getEntityClassByType(?string $type): ?string
     {

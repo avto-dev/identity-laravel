@@ -12,6 +12,16 @@ use AvtoDev\ExtendedLaravelValidator\Extensions\VinCodeValidatorExtension;
 class IDEntityVin extends AbstractTypedIDEntity
 {
     /**
+     * {@inheritDoc}
+     *
+     * @return static
+     */
+    final public static function make(string $value, ?string $type = null): self
+    {
+        return new static($value);
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getType(): string
@@ -25,13 +35,13 @@ class IDEntityVin extends AbstractTypedIDEntity
     public static function normalize($value): ?string
     {
         try {
-            // Производим замену кириллических символов на латинские аналоги.
+            // Transliterate kyr- chars with latin-
             $value = Transliterator::transliterateString(Str::upper($value), true);
 
-            // Латинская "O" заменяется на ноль
+            // Latin "O" char replace with zero
             $value = \str_replace('O', '0', $value);
 
-            // Удаляем все символы, кроме разрешенных
+            // Remove all chars except allowed
             $value = \preg_replace('~[^ABCDEFGHJKLMNPRSTUVWXYZ0-9]~u', '', $value);
 
             return $value;

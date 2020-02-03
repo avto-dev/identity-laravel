@@ -5,40 +5,32 @@ declare(strict_types = 1);
 namespace AvtoDev\IDEntity\Helpers;
 
 /**
- * @see https://ru.wikipedia.org/wiki/%D0%9A%D0%B0%D0%B4%D0%B0%D1%81%D1%82%D1%80%D0%BE%D0%B2%D1%8B%D0%B9_%D0%BD%D0%BE%D0%BC%D0%B5%D1%80
+ * @link <https://bit.ly/37TO76H>
  */
-class CadastralNumberInfo
+class CadastralNumberInfo implements \Illuminate\Contracts\Support\Arrayable
 {
     /**
-     * Код субъекта.
-     *
      * @var int
      */
     protected $district_code;
 
     /**
-     * Номер района.
-     *
      * @var int
      */
     protected $area_code;
 
     /**
-     * Номер квартала.
-     *
      * @var string
      */
     protected $section_code;
 
     /**
-     * Номер участка.
-     *
      * @var string
      */
     protected $parcel_number;
 
     /**
-     * CadastralNumberInfo constructor.
+     * Create a new CadastralNumberInfo instance.
      *
      * @param int    $district_code
      * @param int    $area_code
@@ -108,11 +100,9 @@ class CadastralNumberInfo
     }
 
     /**
-     * Get all parsed elements in array.
-     *
-     * @return array<string, int|string>
+     * @return array{district:int, area:int, section:string, parcel_number:string}
      */
-    public function getFragments(): array
+    public function toArray(): array
     {
         return [
             'district'      => $this->district_code,

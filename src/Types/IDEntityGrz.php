@@ -17,6 +17,16 @@ use AvtoDev\ExtendedLaravelValidator\Extensions\GrzCodeValidatorExtension;
 class IDEntityGrz extends AbstractTypedIDEntity implements HasRegionDataInterface
 {
     /**
+     * {@inheritDoc}
+     *
+     * @return static
+     */
+    final public static function make(string $value, ?string $type = null): self
+    {
+        return new static($value);
+    }
+
+    /**
      * Format patterns.
      */
     public const FORMAT_PATTERN_1 = 'X000XX77_OR_X000XX777';

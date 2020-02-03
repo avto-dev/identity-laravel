@@ -13,6 +13,16 @@ use AvtoDev\ExtendedLaravelValidator\Extensions\BodyCodeValidatorExtension;
 class IDEntityBody extends AbstractTypedIDEntity
 {
     /**
+     * {@inheritDoc}
+     *
+     * @return static
+     */
+    final public static function make(string $value, ?string $type = null): self
+    {
+        return new static($value);
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getType(): string
@@ -26,22 +36,22 @@ class IDEntityBody extends AbstractTypedIDEntity
     public static function normalize($value): ?string
     {
         try {
-            // Заменяем множественные пробелы - одиночными
+            // Replace multiple whitespaces with one
             $value = (string) \preg_replace('~\s+~u', ' ', \trim((string) $value));
 
-            // Нормализуем символы дефиса
+            // Normalize dash char
             $value = Normalizer::normalizeDashChar($value);
 
-            // Заменяем множественные дефисы - одиночными
+            // Replace multiple dashes with one
             $value = (string) \preg_replace('~-+~', '-', $value);
 
-            // Заменяем идущие подряд тире и пробел (в любом порядке) на одиночное тире
+            // Replace white spaces around dash with one dash
             $value = (string) \preg_replace('~\s*-\s*~', '-', $value);
 
-            // Производим замену кириллических символов на латинские аналоги
+            // Transliterate kyr- chars with latin-
             $value = Transliterator::transliterateString(Str::upper($value), true);
 
-            // Удаляем все символы, кроме разрешенных
+            // Remove all chars except allowed
             $value = (string) \preg_replace('~[^A-Z0-9\- ]~u', '', $value);
 
             return $value;

@@ -171,7 +171,7 @@ class IDEntityCadastralNumberTest extends AbstractIDEntityTestCase
         $this->instance->setValue('52:25');
         $this->assertSame(
             ['district' => 52, 'area' => 25, 'section' => '', 'parcel_number' => ''],
-            $this->instance->getNumberInfo()->getFragments()
+            $this->instance->getNumberInfo()->toArray()
         );
     }
 

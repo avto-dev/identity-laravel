@@ -39,35 +39,35 @@ class CadastralNumberInfoTest extends AbstractTestCase
         $this->assertIsObject($helper);
         $this->assertSame(
             ['district' => 0, 'area' => 0, 'section' => '', 'parcel_number' => ''],
-            $helper->getFragments()
+            $helper->toArray()
         );
 
         // Check if value contains letters
         $helper = CadastralNumberInfo::parse('foo:bar:this:shit');
         $this->assertSame(
             ['district' => 0, 'area' => 0, 'section' => 'this', 'parcel_number' => 'shit'],
-            $helper->getFragments()
+            $helper->toArray()
         );
 
         // Check \trim in fragments
         $helper = CadastralNumberInfo::parse('   foo  : bar:this :shit   ');
         $this->assertSame(
             ['district' => 0, 'area' => 0, 'section' => 'this', 'parcel_number' => 'shit'],
-            $helper->getFragments()
+            $helper->toArray()
         );
 
         // Check without delimiter
         $helper = CadastralNumberInfo::parse('   foo   ');
         $this->assertSame(
             ['district' => 0, 'area' => 0, 'section' => '', 'parcel_number' => ''],
-            $helper->getFragments()
+            $helper->toArray()
         );
 
         // Check with null
         $helper = CadastralNumberInfo::parse(null);
         $this->assertSame(
             ['district' => 0, 'area' => 0, 'section' => '', 'parcel_number' => ''],
-            $helper->getFragments()
+            $helper->toArray()
         );
     }
 }

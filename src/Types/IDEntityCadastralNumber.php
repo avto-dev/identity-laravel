@@ -13,6 +13,16 @@ use AvtoDev\ExtendedLaravelValidator\Extensions\CadastralNumberValidatorExtensio
 class IDEntityCadastralNumber extends AbstractTypedIDEntity implements HasCadastralNumberInterface
 {
     /**
+     * {@inheritDoc}
+     *
+     * @return static
+     */
+    final public static function make(string $value, ?string $type = null): self
+    {
+        return new static($value);
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getType(): string

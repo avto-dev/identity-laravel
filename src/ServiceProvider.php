@@ -23,7 +23,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
      */
     public static function getConfigPath(): string
     {
-        return __DIR__ . '/config/identity.php';
+        return __DIR__ . '/../config/identity.php';
     }
 
     /**

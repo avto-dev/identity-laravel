@@ -7,8 +7,6 @@ namespace AvtoDev\IDEntity\Tests;
 use AvtoDev\IDEntity\ServiceProvider;
 
 /**
- * @group service_provider
- *
  * @covers \AvtoDev\IDEntity\ServiceProvider
  */
 class ServiceProviderTest extends AbstractTestCase
@@ -23,8 +21,8 @@ class ServiceProviderTest extends AbstractTestCase
         $this->assertEquals('identity', ServiceProvider::getConfigRootKeyName());
 
         $this->assertEquals(
-            \realpath(__DIR__ . '/../src/config/identity.php'),
-            ServiceProvider::getConfigPath()
+            \realpath(__DIR__ . '/../config/identity.php'),
+            \realpath(ServiceProvider::getConfigPath())
         );
     }
 
@@ -35,7 +33,7 @@ class ServiceProviderTest extends AbstractTestCase
      */
     public function testPackageConfig(): void
     {
-        $original_config_content = require __DIR__ . '/../src/config/identity.php';
+        $original_config_content = require __DIR__ . '/../config/identity.php';
 
         $this->assertIsArray($original_config_content);
         $this->assertArrayHasKey('extended_types_map', $original_config_content);

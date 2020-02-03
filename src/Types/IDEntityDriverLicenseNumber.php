@@ -14,6 +14,16 @@ use AvtoDev\ExtendedLaravelValidator\Extensions\DriverLicenseNumberValidatorExte
 class IDEntityDriverLicenseNumber extends AbstractTypedIDEntity implements HasRegionDataInterface
 {
     /**
+     * {@inheritDoc}
+     *
+     * @return static
+     */
+    final public static function make(string $value, ?string $type = null): self
+    {
+        return new static($value);
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getType(): string

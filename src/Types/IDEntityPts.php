@@ -12,6 +12,16 @@ use AvtoDev\ExtendedLaravelValidator\Extensions\PtsCodeValidatorExtension;
 class IDEntityPts extends AbstractTypedIDEntity
 {
     /**
+     * {@inheritDoc}
+     *
+     * @return static
+     */
+    final public static function make(string $value, ?string $type = null): self
+    {
+        return new static($value);
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getType(): string
@@ -25,13 +35,13 @@ class IDEntityPts extends AbstractTypedIDEntity
     public static function normalize($value): ?string
     {
         try {
-            // Переводим в верхний регистр + trim
+            // Uppercase + trim
             $value = Str::upper(trim((string) $value));
 
-            // Удаляем все символы, кроме разрешенных
+            // Remove all chars except allowed
             $value = (string) \preg_replace('~[^' . 'АБВГДЕЖЗИКЛМНОПРСТУФХЦЧШЩЫЭЮЯ' . 'A-Z' . '0-9]~u', '', $value);
 
-            // Производим замену латинских аналогов на кириллические (обратная транслитерация)
+            // Replace latin- chars with kyr- analogs (backward transliteration)
             $value = Transliterator::detransliterateString($value, true);
 
             return $value;
