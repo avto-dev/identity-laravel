@@ -23,7 +23,7 @@ class IDEntityChassisTest extends AbstractIDEntityTestCase
      */
     public function testGetType(): void
     {
-        $this->assertEquals(IDEntity::ID_TYPE_CHASSIS, $this->instance->getType());
+        $this->assertSame(IDEntity::ID_TYPE_CHASSIS, $this->instance->getType());
     }
 
     /**
@@ -54,25 +54,25 @@ class IDEntityChassisTest extends AbstractIDEntityTestCase
     public function testNormalize(): void
     {
         // Из нижнего регистра переведёт в верхний
-        $this->assertEquals($valid = $this->getValidValue(), $this->instance::normalize(Str::lower($this->getValidValue())));
+        $this->assertSame($valid = $this->getValidValue(), $this->instance::normalize(Str::lower($this->getValidValue())));
 
         // Пробелы - успешно триммит
-        $this->assertEquals($valid, $this->instance::normalize(' ' . $this->getValidValue() . ' '));
+        $this->assertSame($valid, $this->instance::normalize(' ' . $this->getValidValue() . ' '));
 
         // Не корректный, длинный тире
-        $this->assertEquals($valid, $this->instance::normalize('LA130–0128818'));
+        $this->assertSame($valid, $this->instance::normalize('LA130–0128818'));
 
         // С кириллицей
-        $this->assertEquals($valid, $this->instance::normalize('Lа130-0128818'));
+        $this->assertSame($valid, $this->instance::normalize('Lа130-0128818'));
 
         // С двумя тире (должны преобразоваться в одиночное тире)
-        $this->assertEquals($valid, $this->instance::normalize('LA130--0128818'));
+        $this->assertSame($valid, $this->instance::normalize('LA130--0128818'));
 
         // Некорректные символы - удаляет
-        $this->assertEquals($valid, $this->instance::normalize('LA130-0128№;:?№?*№%$@$%@#818'));
+        $this->assertSame($valid, $this->instance::normalize('LA130-0128№;:?№?*№%$@$%@#818'));
 
         // С двумя пробелами (должны преобразоваться в одиночное тире)
-        $this->assertEquals('LA130 0128818', $this->instance::normalize(' LA130  0128818'));
+        $this->assertSame('LA130 0128818', $this->instance::normalize(' LA130  0128818'));
     }
 
     /**

@@ -28,10 +28,10 @@ class CadastralNumberInfoTest extends AbstractTestCase
             );
             $attempts++;
             $helper = CadastralNumberInfo::parse($cadastral_number);
-            $this->assertEquals($helper->getDistrictCode(), $district);
-            $this->assertEquals($helper->getAreaCode(), $area);
-            $this->assertEquals($helper->getSectionCode(), $section);
-            $this->assertEquals($helper->getParcelNumber(), $parcel_number);
+            $this->assertSame($helper->getDistrictCode(), $district);
+            $this->assertSame($helper->getAreaCode(), $area);
+            $this->assertSame($helper->getSectionCode(), $section);
+            $this->assertSame($helper->getParcelNumber(), $parcel_number);
         } while ($attempts < 10);
 
         // Check with empty string

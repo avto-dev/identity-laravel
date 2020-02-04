@@ -4,15 +4,13 @@ declare(strict_types = 1);
 
 namespace AvtoDev\IDEntity\Types;
 
-use Exception;
-use Illuminate\Support\Str;
 use AvtoDev\IDEntity\Helpers\Transliterator;
 use AvtoDev\ExtendedLaravelValidator\Extensions\StsCodeValidatorExtension;
 
 class IDEntitySts extends AbstractTypedIDEntity
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @return static
      */
@@ -36,7 +34,7 @@ class IDEntitySts extends AbstractTypedIDEntity
     {
         try {
             // Uppercase + trim
-            $value = Str::upper(\trim((string) $value));
+            $value = \mb_strtoupper(\trim((string) $value), 'UTF-8');
 
             // Remove all chars except allowed
             $value = (string) \preg_replace('~[^' . 'АБВГДЕЖЗИКЛМНОПРСТУФХЦЧШЩЫЭЮЯ' . 'A-Z' . '0-9]~u', '', $value);
@@ -45,7 +43,7 @@ class IDEntitySts extends AbstractTypedIDEntity
             $value = Transliterator::detransliterateString($value, true);
 
             return $value;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return null;
         }
     }

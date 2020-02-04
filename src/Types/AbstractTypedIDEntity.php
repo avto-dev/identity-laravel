@@ -4,10 +4,10 @@ declare(strict_types = 1);
 
 namespace AvtoDev\IDEntity\Types;
 
-use AvtoDev\IDEntity\IDEntity;
-use Tarampampam\Wrappers\Json;
 use function mb_strlen;
 use function mb_substr;
+use AvtoDev\IDEntity\IDEntity;
+use Tarampampam\Wrappers\Json;
 
 abstract class AbstractTypedIDEntity extends IDEntity implements TypedIDEntityInterface
 {
@@ -35,7 +35,7 @@ abstract class AbstractTypedIDEntity extends IDEntity implements TypedIDEntityIn
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function __toString(): string
     {
@@ -43,7 +43,7 @@ abstract class AbstractTypedIDEntity extends IDEntity implements TypedIDEntityIn
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public static function make(string $value, ?string $type = null)
     {
@@ -51,7 +51,7 @@ abstract class AbstractTypedIDEntity extends IDEntity implements TypedIDEntityIn
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public static function is(string $value, $type = null): bool
     {

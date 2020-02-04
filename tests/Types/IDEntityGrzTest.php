@@ -25,30 +25,30 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
      */
     public function testConstants(): void
     {
-        $this->assertEquals('X000XX77_OR_X000XX777', $this->instance::FORMAT_PATTERN_1);
-        $this->assertEquals('X000XX', $this->instance::FORMAT_PATTERN_2);
-        $this->assertEquals('XX00077', $this->instance::FORMAT_PATTERN_3);
-        $this->assertEquals('0000XX77', $this->instance::FORMAT_PATTERN_4);
-        $this->assertEquals('XX000077', $this->instance::FORMAT_PATTERN_5);
-        $this->assertEquals('X000077', $this->instance::FORMAT_PATTERN_6);
-        $this->assertEquals('000X77', $this->instance::FORMAT_PATTERN_7);
-        $this->assertEquals('0000X77', $this->instance::FORMAT_PATTERN_8);
-        $this->assertEquals('XX000X77_OR_XX000X777', $this->instance::FORMAT_PATTERN_9);
+        $this->assertSame('X000XX77_OR_X000XX777', $this->instance::FORMAT_PATTERN_1);
+        $this->assertSame('X000XX', $this->instance::FORMAT_PATTERN_2);
+        $this->assertSame('XX00077', $this->instance::FORMAT_PATTERN_3);
+        $this->assertSame('0000XX77', $this->instance::FORMAT_PATTERN_4);
+        $this->assertSame('XX000077', $this->instance::FORMAT_PATTERN_5);
+        $this->assertSame('X000077', $this->instance::FORMAT_PATTERN_6);
+        $this->assertSame('000X77', $this->instance::FORMAT_PATTERN_7);
+        $this->assertSame('0000X77', $this->instance::FORMAT_PATTERN_8);
+        $this->assertSame('XX000X77_OR_XX000X777', $this->instance::FORMAT_PATTERN_9);
 
-        $this->assertEquals('TYPE_1', $this->instance::GOST_TYPE_1);
-        $this->assertEquals('TYPE_1A', $this->instance::GOST_TYPE_1A);
-        $this->assertEquals('TYPE_1B', $this->instance::GOST_TYPE_1B);
-        $this->assertEquals('TYPE_2', $this->instance::GOST_TYPE_2);
-        $this->assertEquals('TYPE_3', $this->instance::GOST_TYPE_3);
-        $this->assertEquals('TYPE_4', $this->instance::GOST_TYPE_4);
-        $this->assertEquals('TYPE_5', $this->instance::GOST_TYPE_5);
-        $this->assertEquals('TYPE_6', $this->instance::GOST_TYPE_6);
-        $this->assertEquals('TYPE_7', $this->instance::GOST_TYPE_7);
-        $this->assertEquals('TYPE_8', $this->instance::GOST_TYPE_8);
-        $this->assertEquals('TYPE_15', $this->instance::GOST_TYPE_15);
-        $this->assertEquals('TYPE_20', $this->instance::GOST_TYPE_20);
-        $this->assertEquals('TYPE_21', $this->instance::GOST_TYPE_21);
-        $this->assertEquals('TYPE_22', $this->instance::GOST_TYPE_22);
+        $this->assertSame('TYPE_1', $this->instance::GOST_TYPE_1);
+        $this->assertSame('TYPE_1A', $this->instance::GOST_TYPE_1A);
+        $this->assertSame('TYPE_1B', $this->instance::GOST_TYPE_1B);
+        $this->assertSame('TYPE_2', $this->instance::GOST_TYPE_2);
+        $this->assertSame('TYPE_3', $this->instance::GOST_TYPE_3);
+        $this->assertSame('TYPE_4', $this->instance::GOST_TYPE_4);
+        $this->assertSame('TYPE_5', $this->instance::GOST_TYPE_5);
+        $this->assertSame('TYPE_6', $this->instance::GOST_TYPE_6);
+        $this->assertSame('TYPE_7', $this->instance::GOST_TYPE_7);
+        $this->assertSame('TYPE_8', $this->instance::GOST_TYPE_8);
+        $this->assertSame('TYPE_15', $this->instance::GOST_TYPE_15);
+        $this->assertSame('TYPE_20', $this->instance::GOST_TYPE_20);
+        $this->assertSame('TYPE_21', $this->instance::GOST_TYPE_21);
+        $this->assertSame('TYPE_22', $this->instance::GOST_TYPE_22);
     }
 
     /**
@@ -58,52 +58,50 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
      */
     public function testGostTypeToPattern(): void
     {
-        $this->assertEquals($this->instance::FORMAT_PATTERN_1, $this->instance::getFormatPatternByGostType($this->instance::GOST_TYPE_1));
+        $this->assertSame($this->instance::FORMAT_PATTERN_1, $this->instance::getFormatPatternByGostType($this->instance::GOST_TYPE_1));
 
-        $this->assertEquals($this->instance::FORMAT_PATTERN_2, $this->instance::getFormatPatternByGostType($this->instance::GOST_TYPE_1A));
+        $this->assertSame($this->instance::FORMAT_PATTERN_2, $this->instance::getFormatPatternByGostType($this->instance::GOST_TYPE_1A));
 
-        $this->assertEquals($this->instance::FORMAT_PATTERN_3, $this->instance::getFormatPatternByGostType($this->instance::GOST_TYPE_1B));
-        $this->assertEquals($this->instance::FORMAT_PATTERN_3, $this->instance::getFormatPatternByGostType($this->instance::GOST_TYPE_2));
+        $this->assertSame($this->instance::FORMAT_PATTERN_3, $this->instance::getFormatPatternByGostType($this->instance::GOST_TYPE_1B));
+        $this->assertSame($this->instance::FORMAT_PATTERN_3, $this->instance::getFormatPatternByGostType($this->instance::GOST_TYPE_2));
 
-        $this->assertEquals($this->instance::FORMAT_PATTERN_4, $this->instance::getFormatPatternByGostType($this->instance::GOST_TYPE_3));
-        $this->assertEquals($this->instance::FORMAT_PATTERN_4, $this->instance::getFormatPatternByGostType($this->instance::GOST_TYPE_4));
-        $this->assertEquals($this->instance::FORMAT_PATTERN_4, $this->instance::getFormatPatternByGostType($this->instance::GOST_TYPE_5));
-        $this->assertEquals($this->instance::FORMAT_PATTERN_4, $this->instance::getFormatPatternByGostType($this->instance::GOST_TYPE_7));
-        $this->assertEquals($this->instance::FORMAT_PATTERN_4, $this->instance::getFormatPatternByGostType($this->instance::GOST_TYPE_8));
+        $this->assertSame($this->instance::FORMAT_PATTERN_4, $this->instance::getFormatPatternByGostType($this->instance::GOST_TYPE_3));
+        $this->assertSame($this->instance::FORMAT_PATTERN_4, $this->instance::getFormatPatternByGostType($this->instance::GOST_TYPE_4));
+        $this->assertSame($this->instance::FORMAT_PATTERN_4, $this->instance::getFormatPatternByGostType($this->instance::GOST_TYPE_5));
+        $this->assertSame($this->instance::FORMAT_PATTERN_4, $this->instance::getFormatPatternByGostType($this->instance::GOST_TYPE_7));
+        $this->assertSame($this->instance::FORMAT_PATTERN_4, $this->instance::getFormatPatternByGostType($this->instance::GOST_TYPE_8));
 
-        $this->assertEquals($this->instance::FORMAT_PATTERN_5, $this->instance::getFormatPatternByGostType($this->instance::GOST_TYPE_6));
+        $this->assertSame($this->instance::FORMAT_PATTERN_5, $this->instance::getFormatPatternByGostType($this->instance::GOST_TYPE_6));
 
-        $this->assertEquals($this->instance::FORMAT_PATTERN_9, $this->instance::getFormatPatternByGostType($this->instance::GOST_TYPE_15));
+        $this->assertSame($this->instance::FORMAT_PATTERN_9, $this->instance::getFormatPatternByGostType($this->instance::GOST_TYPE_15));
 
-        $this->assertEquals($this->instance::FORMAT_PATTERN_6, $this->instance::getFormatPatternByGostType($this->instance::GOST_TYPE_20));
+        $this->assertSame($this->instance::FORMAT_PATTERN_6, $this->instance::getFormatPatternByGostType($this->instance::GOST_TYPE_20));
 
-        $this->assertEquals($this->instance::FORMAT_PATTERN_7, $this->instance::getFormatPatternByGostType($this->instance::GOST_TYPE_21));
+        $this->assertSame($this->instance::FORMAT_PATTERN_7, $this->instance::getFormatPatternByGostType($this->instance::GOST_TYPE_21));
 
-        $this->assertEquals($this->instance::FORMAT_PATTERN_8, $this->instance::getFormatPatternByGostType($this->instance::GOST_TYPE_22));
+        $this->assertSame($this->instance::FORMAT_PATTERN_8, $this->instance::getFormatPatternByGostType($this->instance::GOST_TYPE_22));
 
-        $this->assertNull($this->instance::getFormatPatternByGostType('foo bar'));
-        $this->assertNull($this->instance::getFormatPatternByGostType(123));
-        $this->assertNull($this->instance::getFormatPatternByGostType(null));
+        $this->assertNull($this->instance::getFormatPatternByGostType(Str::random()));
     }
 
     public function testPatternToGostTypes(): void
     {
-        $this->assertEquals(
+        $this->assertSame(
             $this->instance::getGostTypesByPattern($this->instance::FORMAT_PATTERN_1),
             [$this->instance::GOST_TYPE_1]
         );
 
-        $this->assertEquals(
+        $this->assertSame(
             $this->instance::getGostTypesByPattern($this->instance::FORMAT_PATTERN_2),
             [$this->instance::GOST_TYPE_1A]
         );
 
-        $this->assertEquals(
+        $this->assertSame(
             $this->instance::getGostTypesByPattern($this->instance::FORMAT_PATTERN_3),
             [$this->instance::GOST_TYPE_1B, $this->instance::GOST_TYPE_2]
         );
 
-        $this->assertEquals(
+        $this->assertSame(
             $this->instance::getGostTypesByPattern($this->instance::FORMAT_PATTERN_4),
             [
                 $this->instance::GOST_TYPE_3,
@@ -114,27 +112,27 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
             ]
         );
 
-        $this->assertEquals(
+        $this->assertSame(
             $this->instance::getGostTypesByPattern($this->instance::FORMAT_PATTERN_5),
             [$this->instance::GOST_TYPE_6]
         );
 
-        $this->assertEquals(
+        $this->assertSame(
             $this->instance::getGostTypesByPattern($this->instance::FORMAT_PATTERN_9),
             [$this->instance::GOST_TYPE_15]
         );
 
-        $this->assertEquals(
+        $this->assertSame(
             $this->instance::getGostTypesByPattern($this->instance::FORMAT_PATTERN_6),
             [$this->instance::GOST_TYPE_20]
         );
 
-        $this->assertEquals(
+        $this->assertSame(
             $this->instance::getGostTypesByPattern($this->instance::FORMAT_PATTERN_7),
             [$this->instance::GOST_TYPE_21]
         );
 
-        $this->assertEquals(
+        $this->assertSame(
             $this->instance::getGostTypesByPattern($this->instance::FORMAT_PATTERN_8),
             [$this->instance::GOST_TYPE_22]
         );
@@ -149,7 +147,7 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
      */
     public function testGetType(): void
     {
-        $this->assertEquals(IDEntity::ID_TYPE_GRZ, $this->instance->getType());
+        $this->assertSame(IDEntity::ID_TYPE_GRZ, $this->instance->getType());
     }
 
     /**
@@ -703,7 +701,7 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
 
         foreach ($asserts as $pattern => $cases) {
             foreach ($cases as $case) {
-                $this->assertEquals(
+                $this->assertSame(
                     $pattern,
                     $this->instance->setValue($case)->getFormatPattern(), sprintf('GRZ "%s" != "%s"', $case, $pattern)
                 );
@@ -1105,7 +1103,7 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
         ];
 
         foreach ($expects as $what => $with) {
-            $this->assertEquals(
+            $this->assertSame(
                 $with, $this->instance->setValue($what)->getRegionCode(), sprintf('"%s" !== "%s"', $what, $with)
             );
         }
@@ -1140,7 +1138,7 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
         ];
 
         foreach ($expects as $what => $with) {
-            $this->assertEquals(
+            $this->assertSame(
                 $with, $this->instance->setValue($what)->getRegionData()->getIso31662Code(),
                 sprintf('"%s" !== "%s"', $what, $with)
             );
@@ -1163,16 +1161,16 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
     public function testNormalize(): void
     {
         // Из нижнего регистра переведёт в верхний
-        $this->assertEquals($valid = $this->getValidValue(), $this->instance::normalize(Str::lower($this->getValidValue())));
+        $this->assertSame($valid = $this->getValidValue(), $this->instance::normalize(Str::lower($this->getValidValue())));
 
         // Пробелы - успешно триммит
-        $this->assertEquals($valid, $this->instance::normalize(' ' . $this->getValidValue() . ' '));
+        $this->assertSame($valid, $this->instance::normalize(' ' . $this->getValidValue() . ' '));
 
         // Латиницу заменяет на кириллицу
-        $this->assertEquals($valid, $this->instance::normalize('X123YO96'));
+        $this->assertSame($valid, $this->instance::normalize('X123YO96'));
 
         // Некорректные символы - удаляет
-        $this->assertEquals($valid, $this->instance::normalize('X123 #$^&&&% YO96 '));
+        $this->assertSame($valid, $this->instance::normalize('X123 #$^&&&% YO96 '));
 
         $asserts = [
             'Х123АВ96' => ['Х123АВ96', 'Х123AB96'],
@@ -1185,7 +1183,7 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
 
         foreach ($asserts as $with => $what) {
             foreach ($what as $item) {
-                $this->assertEquals($with, $this->instance::normalize($item));
+                $this->assertSame($with, $this->instance::normalize($item));
             }
         }
     }

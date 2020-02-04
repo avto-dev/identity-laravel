@@ -18,9 +18,9 @@ class ServiceProviderTest extends AbstractTestCase
      */
     public function testServiceProviderMethods(): void
     {
-        $this->assertEquals('identity', ServiceProvider::getConfigRootKeyName());
+        $this->assertSame('identity', ServiceProvider::getConfigRootKeyName());
 
-        $this->assertEquals(
+        $this->assertSame(
             \realpath(__DIR__ . '/../config/identity.php'),
             \realpath(ServiceProvider::getConfigPath())
         );
@@ -39,6 +39,6 @@ class ServiceProviderTest extends AbstractTestCase
         $this->assertArrayHasKey('extended_types_map', $original_config_content);
         $this->assertEmpty($original_config_content['extended_types_map']);
 
-        $this->assertEquals($this->app->make('config')->get('identity'), $original_config_content);
+        $this->assertSame($this->app->make('config')->get('identity'), $original_config_content);
     }
 }

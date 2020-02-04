@@ -23,7 +23,7 @@ class IDEntityBodyTest extends AbstractIDEntityTestCase
      */
     public function testGetType(): void
     {
-        $this->assertEquals(IDEntity::ID_TYPE_BODY, $this->instance->getType());
+        $this->assertSame(IDEntity::ID_TYPE_BODY, $this->instance->getType());
     }
 
     /**
@@ -118,32 +118,32 @@ class IDEntityBodyTest extends AbstractIDEntityTestCase
     public function testNormalize(): void
     {
         // Из нижнего регистра переведёт в верхний
-        $this->assertEquals($valid = $this->getValidValue(), $this->instance::normalize(Str::lower($this->getValidValue())));
+        $this->assertSame($valid = $this->getValidValue(), $this->instance::normalize(Str::lower($this->getValidValue())));
 
         // Пробелы - успешно триммит
-        $this->assertEquals($valid, $this->instance::normalize(' ' . $this->getValidValue() . ' '));
+        $this->assertSame($valid, $this->instance::normalize(' ' . $this->getValidValue() . ' '));
 
         // Не корректный, длинный тире
-        $this->assertEquals($valid, $this->instance::normalize('JS3SE–102734'));
+        $this->assertSame($valid, $this->instance::normalize('JS3SE–102734'));
 
         // С кириллицей
-        $this->assertEquals($valid, $this->instance::normalize('JS3Sе–102734'));
+        $this->assertSame($valid, $this->instance::normalize('JS3Sе–102734'));
 
         // С двумя тире (должны преобразоваться в одиночное тире)
-        $this->assertEquals($valid, $this->instance::normalize('JS3SE--102734'));
+        $this->assertSame($valid, $this->instance::normalize('JS3SE--102734'));
 
         // Встречающиеся идущие подряд тире и пробел - заменяются на одиночный тире
-        $this->assertEquals($valid, $this->instance::normalize('JS3SE -102734'));
-        $this->assertEquals($valid, $this->instance::normalize('JS3SE- 102734'));
-        $this->assertEquals($valid, $this->instance::normalize('JS3SE - 102734'));
-        $this->assertEquals($valid, $this->instance::normalize('JS3SE -  102734'));
-        $this->assertEquals($valid, $this->instance::normalize('JS3SE  -  102734'));
+        $this->assertSame($valid, $this->instance::normalize('JS3SE -102734'));
+        $this->assertSame($valid, $this->instance::normalize('JS3SE- 102734'));
+        $this->assertSame($valid, $this->instance::normalize('JS3SE - 102734'));
+        $this->assertSame($valid, $this->instance::normalize('JS3SE -  102734'));
+        $this->assertSame($valid, $this->instance::normalize('JS3SE  -  102734'));
 
         // Некорректные символы - удаляет
-        $this->assertEquals($valid, $this->instance::normalize('JS3#^&@^^SE–102":";%?734'));
+        $this->assertSame($valid, $this->instance::normalize('JS3#^&@^^SE–102":";%?734'));
 
         // Дублирующиеся пробелы заменяются на одиночные, но замена их на тире НЕ происходит
-        $this->assertEquals('JS3SE 102734', $this->instance::normalize(' JS3SE  102734'));
+        $this->assertSame('JS3SE 102734', $this->instance::normalize(' JS3SE  102734'));
     }
 
     /**

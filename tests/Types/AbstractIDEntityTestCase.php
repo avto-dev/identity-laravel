@@ -50,7 +50,7 @@ abstract class AbstractIDEntityTestCase extends AbstractTestCase
 
         /** @var AbstractTypedIDEntity $instance */
         $instance = new $class_name($value = $this->getValidValue());
-        $this->assertEquals($instance->getValue(), $value);
+        $this->assertSame($instance->getValue(), $value);
     }
 
     /**
@@ -72,7 +72,7 @@ abstract class AbstractIDEntityTestCase extends AbstractTestCase
      */
     public function testToString(): void
     {
-        $this->assertEquals($this->instance->getValue(), (string) $this->instance);
+        $this->assertSame($this->instance->getValue(), (string) $this->instance);
     }
 
     /**
@@ -83,19 +83,19 @@ abstract class AbstractIDEntityTestCase extends AbstractTestCase
     public function testGetMaskedValue(): void
     {
         $this->instance->setValue('foo_blablabla_bar', false);
-        $this->assertEquals('foo***********bar', $this->instance->getMaskedValue());
+        $this->assertSame('foo***********bar', $this->instance->getMaskedValue());
 
         $this->instance->setValue('foo_bla_bar', false);
-        $this->assertEquals('foo^^^^^bar', $this->instance->getMaskedValue(3, 3, '^foo'));
+        $this->assertSame('foo^^^^^bar', $this->instance->getMaskedValue(3, 3, '^foo'));
 
         $this->instance->setValue('foo_blablabla_bar', false);
-        $this->assertEquals('fo+++++++++++_bar', $this->instance->getMaskedValue(2, 4, '+'));
+        $this->assertSame('fo+++++++++++_bar', $this->instance->getMaskedValue(2, 4, '+'));
 
         $this->instance->setValue('foo_blablabla_bar', false);
-        $this->assertEquals('foo_blablabla_bar', $this->instance->getMaskedValue(20, 20));
+        $this->assertSame('foo_blablabla_bar', $this->instance->getMaskedValue(20, 20));
 
         $this->instance->setValue('foo_blablabla_bar', false);
-        $this->assertEquals('*****************', $this->instance->getMaskedValue(0, 0));
+        $this->assertSame('*****************', $this->instance->getMaskedValue(0, 0));
     }
 
     /**
@@ -105,7 +105,7 @@ abstract class AbstractIDEntityTestCase extends AbstractTestCase
      */
     public function testMakeMethod(): void
     {
-        $this->assertEquals($this->instance, $this->instance::make($this->instance->getValue()));
+        $this->assertSame(\serialize($this->instance), \serialize($this->instance::make($this->instance->getValue())));
     }
 
     /**
@@ -115,12 +115,12 @@ abstract class AbstractIDEntityTestCase extends AbstractTestCase
      */
     public function testIsMethod(): void
     {
-        $this->assertEquals($this->instance->isValid(), $this->instance::is($this->instance->getValue()));
+        $this->assertSame($this->instance->isValid(), $this->instance::is($this->instance->getValue()));
 
         // Второй аргумент для 'is' игнорируется
-        $this->assertEquals($this->instance->isValid(), $this->instance::is($this->instance->getValue(), [123, null]));
-        $this->assertEquals($this->instance->isValid(), $this->instance::is($this->instance->getValue(), ['foo']));
-        $this->assertEquals($this->instance->isValid(), $this->instance::is($this->instance->getValue(), [IDEntity::ID_TYPE_VIN]));
+        $this->assertSame($this->instance->isValid(), $this->instance::is($this->instance->getValue(), [123, null]));
+        $this->assertSame($this->instance->isValid(), $this->instance::is($this->instance->getValue(), ['foo']));
+        $this->assertSame($this->instance->isValid(), $this->instance::is($this->instance->getValue(), [IDEntity::ID_TYPE_VIN]));
     }
 
     /**
@@ -135,7 +135,7 @@ abstract class AbstractIDEntityTestCase extends AbstractTestCase
             $this->instance->setValue($value = 'foo bar', false)
         );
 
-        $this->assertEquals($this->instance->getValue(), $value);
+        $this->assertSame($this->instance->getValue(), $value);
     }
 
     /**
@@ -152,12 +152,12 @@ abstract class AbstractIDEntityTestCase extends AbstractTestCase
      */
     public function testToArrayAndToJson(): void
     {
-        $this->assertEquals($array = [
+        $this->assertSame($array = [
             'value' => $this->instance->getValue(),
             'type'  => $this->instance->getType(),
         ], $this->instance->toArray());
 
-        $this->assertEquals(json_encode($array), $this->instance->toJson());
+        $this->assertSame(json_encode($array), $this->instance->toJson());
     }
 
     /**

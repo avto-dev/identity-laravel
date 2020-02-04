@@ -4,15 +4,13 @@ declare(strict_types = 1);
 
 namespace AvtoDev\IDEntity\Types;
 
-use Exception;
-use Illuminate\Support\Str;
 use AvtoDev\IDEntity\Helpers\Transliterator;
 use AvtoDev\ExtendedLaravelValidator\Extensions\VinCodeValidatorExtension;
 
 class IDEntityVin extends AbstractTypedIDEntity
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @return static
      */
@@ -36,7 +34,7 @@ class IDEntityVin extends AbstractTypedIDEntity
     {
         try {
             // Transliterate kyr- chars with latin-
-            $value = Transliterator::transliterateString(Str::upper($value), true);
+            $value = Transliterator::transliterateString(\mb_strtoupper((string) $value, 'UTF-8'), true);
 
             // Latin "O" char replace with zero
             $value = \str_replace('O', '0', $value);
@@ -45,7 +43,7 @@ class IDEntityVin extends AbstractTypedIDEntity
             $value = \preg_replace('~[^ABCDEFGHJKLMNPRSTUVWXYZ0-9]~u', '', $value);
 
             return $value;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return null;
         }
     }
@@ -67,7 +65,7 @@ class IDEntityVin extends AbstractTypedIDEntity
             'x' => 7, 'y' => 8, 'z' => 9,
         ];
 
-        $characters = (array) \str_split(Str::lower((string) $this->value));
+        $characters = (array) \str_split(\mb_strtolower((string) $this->value, 'UTF-8'));
         $length     = \count($characters);
         $sum        = 0;
 

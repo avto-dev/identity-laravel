@@ -4,8 +4,6 @@ declare(strict_types = 1);
 
 namespace AvtoDev\IDEntity\Types;
 
-use Exception;
-use Illuminate\Support\Str;
 use AvtoDev\IDEntity\Helpers\Normalizer;
 use AvtoDev\IDEntity\Helpers\Transliterator;
 use AvtoDev\ExtendedLaravelValidator\Extensions\ChassisCodeValidatorExtension;
@@ -13,7 +11,7 @@ use AvtoDev\ExtendedLaravelValidator\Extensions\ChassisCodeValidatorExtension;
 class IDEntityChassis extends AbstractTypedIDEntity
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @return static
      */
@@ -43,7 +41,7 @@ class IDEntityChassis extends AbstractTypedIDEntity
             $value = Normalizer::normalizeDashChar($value);
 
             // Transliterate kyr- chars with latin-
-            $value = Transliterator::transliterateString(Str::upper($value), true);
+            $value = Transliterator::transliterateString(\mb_strtoupper($value, 'UTF-8'), true);
 
             // Remove all chars except allowed
             $value = (string) \preg_replace('~[^A-Z0-9\- ]~u', '', $value);
@@ -52,7 +50,7 @@ class IDEntityChassis extends AbstractTypedIDEntity
             $value = (string) \preg_replace('~-+~', '-', $value);
 
             return $value;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return null;
         }
     }
