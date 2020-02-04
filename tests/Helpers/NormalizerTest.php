@@ -26,7 +26,7 @@ class NormalizerTest extends AbstractTestCase
             '―' /* Юникод U+2015 */,
             '-',
         ] as $dash) {
-            $this->assertEquals('-', Normalizer::normalizeDashChar($dash));
+            $this->assertSame('-', Normalizer::normalizeDashChar($dash));
         }
 
         $this->assertSame('', Normalizer::normalizeDashChar(''));

@@ -68,7 +68,7 @@ class IDEntityTest extends AbstractTestCase
         ];
 
         foreach ($checks as $what => $with) {
-            $this->assertEquals($what, $with);
+            $this->assertSame($what, $with);
         }
     }
 
@@ -155,28 +155,28 @@ class IDEntityTest extends AbstractTestCase
     public function testMakeWithPassedType(): void
     {
         $instance = IDEntity::make('JF1SJ5LC5DG048667', $type = IDEntity::ID_TYPE_VIN);
-        $this->assertEquals($type, $instance->getType());
+        $this->assertSame($type, $instance->getType());
 
         $instance = IDEntity::make('А123АА177', $type = IDEntity::ID_TYPE_GRZ);
-        $this->assertEquals($type, $instance->getType());
+        $this->assertSame($type, $instance->getType());
 
         $instance = IDEntity::make('11АА112233', $type = IDEntity::ID_TYPE_STS);
-        $this->assertEquals($type, $instance->getType());
+        $this->assertSame($type, $instance->getType());
 
         $instance = IDEntity::make('11АА112233', $type = IDEntity::ID_TYPE_PTS);
-        $this->assertEquals($type, $instance->getType());
+        $this->assertSame($type, $instance->getType());
 
         $instance = IDEntity::make('FN15-002153', $type = IDEntity::ID_TYPE_BODY);
-        $this->assertEquals($type, $instance->getType());
+        $this->assertSame($type, $instance->getType());
 
         $instance = IDEntity::make('FN15-002153', $type = IDEntity::ID_TYPE_CHASSIS);
-        $this->assertEquals($type, $instance->getType());
+        $this->assertSame($type, $instance->getType());
 
         $instance = IDEntity::make('77 16 235662', $type = IDEntity::ID_TYPE_DRIVER_LICENSE_NUMBER);
-        $this->assertEquals($type, $instance->getType());
+        $this->assertSame($type, $instance->getType());
 
         $instance = IDEntity::make('33:22:011262:526', $type = IDEntity::ID_TYPE_CADASTRAL_NUMBER);
-        $this->assertEquals($type, $instance->getType());
+        $this->assertSame($type, $instance->getType());
     }
 
     /**
@@ -232,29 +232,29 @@ class IDEntityTest extends AbstractTestCase
 
         foreach ($values as $value) {
             $instance = IDEntity::make($value);
-            $this->assertEquals(
+            $this->assertSame(
                 IDEntity::ID_TYPE_GRZ,
                 $instance->getType(),
                 \sprintf('Type [%s] not detected for [%s]', IDEntity::ID_TYPE_GRZ, $value)
             );
-            $this->assertEquals($value, $instance->getValue());
+            $this->assertSame($value, $instance->getValue());
         }
 
         $instance = IDEntity::make($value = 'JF1SJ5LC5DG048667');
-        $this->assertEquals(IDEntity::ID_TYPE_VIN, $instance->getType());
-        $this->assertEquals($value, $instance->getValue());
+        $this->assertSame(IDEntity::ID_TYPE_VIN, $instance->getType());
+        $this->assertSame($value, $instance->getValue());
 
-        $this->assertEquals($value, $instance->getValue());
+        $this->assertSame($value, $instance->getValue());
 
         $instance = IDEntity::make($value = '11АА112233');
-        $this->assertEquals(IDEntity::ID_TYPE_STS, $instance->getType());
-        $this->assertEquals($value, $instance->getValue());
+        $this->assertSame(IDEntity::ID_TYPE_STS, $instance->getType());
+        $this->assertSame($value, $instance->getValue());
 
         // Тип "номер ПТС" автоматически отдетектить невозможно, так как правила проверки птс и стс идентичны
 
         $instance = IDEntity::make($value = 'FN15-002153');
-        $this->assertEquals(IDEntity::ID_TYPE_BODY, $instance->getType());
-        $this->assertEquals($value, $instance->getValue());
+        $this->assertSame(IDEntity::ID_TYPE_BODY, $instance->getType());
+        $this->assertSame($value, $instance->getValue());
 
         // Тип "номер ШАССИ" автоматически отдетектить невозможно, так как правила проверки шасси и кузова идентичны
         // Тип "номер водительского удостоверения" тоже :(
@@ -269,15 +269,15 @@ class IDEntityTest extends AbstractTestCase
     public function testMakeWithUnknownType(): void
     {
         $instance = IDEntity::make('foo');
-        $this->assertEquals(IDEntity::ID_TYPE_UNKNOWN, $instance->getType());
+        $this->assertSame(IDEntity::ID_TYPE_UNKNOWN, $instance->getType());
         $this->assertInstanceOf(IDEntityUnknown::class, $instance);
 
         $instance = IDEntity::make('foo', 'bar');
-        $this->assertEquals(IDEntity::ID_TYPE_UNKNOWN, $instance->getType());
+        $this->assertSame(IDEntity::ID_TYPE_UNKNOWN, $instance->getType());
         $this->assertInstanceOf(IDEntityUnknown::class, $instance);
 
         $instance = IDEntity::make('foo', IDEntity::ID_TYPE_AUTO);
-        $this->assertEquals(IDEntity::ID_TYPE_UNKNOWN, $instance->getType());
+        $this->assertSame(IDEntity::ID_TYPE_UNKNOWN, $instance->getType());
         $this->assertInstanceOf(IDEntityUnknown::class, $instance);
     }
 
@@ -377,7 +377,7 @@ class IDEntityTest extends AbstractTestCase
 
         $this->app->make('config')->set('identity.extended_types_map', $expects = ['foo' => \stdClass::class]);
 
-        $this->assertEquals($expects, $this->callMethod($this->instance, 'getExtendedTypesMap'));
+        $this->assertSame($expects, $this->callMethod($this->instance, 'getExtendedTypesMap'));
     }
 
     /**
@@ -395,10 +395,10 @@ class IDEntityTest extends AbstractTestCase
 
         $map = $this->callMethod($this->instance, 'getTypesMap');
 
-        $this->assertEquals($type, $map['foo']);
+        $this->assertSame($type, $map['foo']);
 
         foreach ($original_map as $expected_type => $expected_class) {
-            $this->assertEquals($map[$expected_type], $expected_class);
+            $this->assertSame($map[$expected_type], $expected_class);
         }
     }
 

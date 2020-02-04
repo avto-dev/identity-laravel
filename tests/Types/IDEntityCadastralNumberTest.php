@@ -25,7 +25,7 @@ class IDEntityCadastralNumberTest extends AbstractIDEntityTestCase
      */
     public function testGetType(): void
     {
-        $this->assertEquals(IDEntity::ID_TYPE_CADASTRAL_NUMBER, $this->instance->getType());
+        $this->assertSame(IDEntity::ID_TYPE_CADASTRAL_NUMBER, $this->instance->getType());
     }
 
     /**
@@ -136,13 +136,13 @@ class IDEntityCadastralNumberTest extends AbstractIDEntityTestCase
         $valid = $this->getValidValue();
 
         // Пробелы с двум сторон
-        $this->assertEquals($valid, $this->instance::normalize(' ' . $valid . ' '));
+        $this->assertSame($valid, $this->instance::normalize(' ' . $valid . ' '));
 
         // Запрещенные символы
-        $this->assertEquals($valid, $this->instance::normalize('6+6:/4$1:;0(1%^0)&5*-0!0@1#:=?3'));
+        $this->assertSame($valid, $this->instance::normalize('6+6:/4$1:;0(1%^0)&5*-0!0@1#:=?3'));
 
         // С буквами
-        $this->assertEquals($valid, $this->instance::normalize('Start6Шесть6:4One1:01ZeRO05001:ThrEE3'));
+        $this->assertSame($valid, $this->instance::normalize('Start6Шесть6:4One1:01ZeRO05001:ThrEE3'));
         //Первый символ не цифра
         $this->assertFalse($this->instance->setValue(':D61:41:123456:102360')->isValid());
         // Засовываем всякую шляпу
@@ -165,12 +165,12 @@ class IDEntityCadastralNumberTest extends AbstractIDEntityTestCase
         $this->assertInstanceOf(CadastralNumberInfo::class, $this->instance->getNumberInfo());
         $this->assertSame(66, $this->instance->getNumberInfo()->getDistrictCode());
         $this->assertSame(41, $this->instance->getNumberInfo()->getAreaCode());
-        $this->assertSame('0105001', $this->instance->getNumberInfo()->getSectionCode());
-        $this->assertSame('3', $this->instance->getNumberInfo()->getParcelNumber());
+        $this->assertSame(105001, $this->instance->getNumberInfo()->getSectionCode());
+        $this->assertSame(3, $this->instance->getNumberInfo()->getParcelNumber());
 
         $this->instance->setValue('52:25');
         $this->assertSame(
-            ['district' => 52, 'area' => 25, 'section' => '', 'parcel_number' => ''],
+            ['district' => 52, 'area' => 25, 'section' => 0, 'parcel_number' => 0],
             $this->instance->getNumberInfo()->toArray()
         );
     }

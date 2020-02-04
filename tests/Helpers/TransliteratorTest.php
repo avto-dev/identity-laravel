@@ -26,10 +26,10 @@ class TransliteratorTest extends AbstractTestCase
         ];
 
         foreach ($asserts as $what => $with) {
-            $this->assertEquals($with, Transliterator::transliterateString($what, false));
+            $this->assertSame($with, Transliterator::transliterateString($what, false));
         }
 
-        $this->assertEquals(
+        $this->assertSame(
             'a b v g d e e zh z i y k l m n o p r s t u f kh ts ch sh shch  y  e yu ya',
             Transliterator::transliterateString(
                 'а б в г д е ё ж з и й к л м н о п р с т у ф х ц ч ш щ ъ ы ь э ю я',
@@ -46,10 +46,10 @@ class TransliteratorTest extends AbstractTestCase
         ];
 
         foreach ($asserts_safe as $what => $with) {
-            $this->assertEquals($with, Transliterator::transliterateString($what, true));
+            $this->assertSame($with, Transliterator::transliterateString($what, true));
         }
 
-        $this->assertEquals(
+        $this->assertSame(
             'a b b g d e e j z i i k l m h o p p c t y f x c c w w    e u y',
             Transliterator::transliterateString(
                 'а б в г д е ё ж з и й к л м н о п р с т у ф х ц ч ш щ ъ ы ь э ю я',
@@ -72,10 +72,10 @@ class TransliteratorTest extends AbstractTestCase
         ];
 
         foreach ($asserts as $what => $with) {
-            $this->assertEquals($with, Transliterator::detransliterateString($what));
+            $this->assertSame($with, Transliterator::detransliterateString($what));
         }
 
-        $this->assertEquals(
+        $this->assertSame(
             'а б в г д е е ж з и ы к л м н о п р с т у ф кх тс ч сх схч ы е ыу ыа',
             Transliterator::detransliterateString(
                 'a b v g d e e zh z i y k l m n o p r s t u f kh ts ch sh shch y e yu ya'
@@ -85,11 +85,11 @@ class TransliteratorTest extends AbstractTestCase
 
     public function testLiteLtansliterator(): void
     {
-        $this->assertEquals(
+        $this->assertSame(
             'АВЕКМНОРСТУХ авекмнорстух',
             Transliterator::detransliterateLite('ABEKMHOPCTYX abekmhopctyx')
         );
-        $this->assertEquals(
+        $this->assertSame(
             'ABEKMHOPCTYX abekmhopctyx',
             Transliterator::transliterateLite('АВЕКМНОРСТУХ авекмнорстух')
         );

@@ -28,45 +28,45 @@ class CadastralNumberInfoTest extends AbstractTestCase
             );
             $attempts++;
             $helper = CadastralNumberInfo::parse($cadastral_number);
-            $this->assertEquals($helper->getDistrictCode(), $district);
-            $this->assertEquals($helper->getAreaCode(), $area);
-            $this->assertEquals($helper->getSectionCode(), $section);
-            $this->assertEquals($helper->getParcelNumber(), $parcel_number);
+            $this->assertSame($helper->getDistrictCode(), $district);
+            $this->assertSame($helper->getAreaCode(), $area);
+            $this->assertSame($helper->getSectionCode(), $section);
+            $this->assertSame($helper->getParcelNumber(), $parcel_number);
         } while ($attempts < 10);
 
         // Check with empty string
         $helper = CadastralNumberInfo::parse('');
         $this->assertIsObject($helper);
         $this->assertSame(
-            ['district' => 0, 'area' => 0, 'section' => '', 'parcel_number' => ''],
+            ['district' => 0, 'area' => 0, 'section' => 0, 'parcel_number' => 0],
             $helper->toArray()
         );
 
         // Check if value contains letters
         $helper = CadastralNumberInfo::parse('foo:bar:this:shit');
         $this->assertSame(
-            ['district' => 0, 'area' => 0, 'section' => 'this', 'parcel_number' => 'shit'],
+            ['district' => 0, 'area' => 0, 'section' => 0, 'parcel_number' => 0],
             $helper->toArray()
         );
 
         // Check \trim in fragments
         $helper = CadastralNumberInfo::parse('   foo  : bar:this :shit   ');
         $this->assertSame(
-            ['district' => 0, 'area' => 0, 'section' => 'this', 'parcel_number' => 'shit'],
+            ['district' => 0, 'area' => 0, 'section' => 0, 'parcel_number' => 0],
             $helper->toArray()
         );
 
         // Check without delimiter
         $helper = CadastralNumberInfo::parse('   foo   ');
         $this->assertSame(
-            ['district' => 0, 'area' => 0, 'section' => '', 'parcel_number' => ''],
+            ['district' => 0, 'area' => 0, 'section' => 0, 'parcel_number' => 0],
             $helper->toArray()
         );
 
         // Check with null
         $helper = CadastralNumberInfo::parse(null);
         $this->assertSame(
-            ['district' => 0, 'area' => 0, 'section' => '', 'parcel_number' => ''],
+            ['district' => 0, 'area' => 0, 'section' => 0, 'parcel_number' => 0],
             $helper->toArray()
         );
     }

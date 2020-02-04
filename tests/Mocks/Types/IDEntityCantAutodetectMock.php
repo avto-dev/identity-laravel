@@ -6,7 +6,7 @@ use AvtoDev\IDEntity\Types\AbstractTypedIDEntity;
 
 class IDEntityCantAutodetectMock extends AbstractTypedIDEntity
 {
-    const TYPE = 'CANT_BE_AUTODETECT';
+    public const TYPE = 'CANT_BE_AUTODETECT';
 
     /**
      * {@inheritdoc}

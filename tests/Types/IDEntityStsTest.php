@@ -23,7 +23,7 @@ class IDEntityStsTest extends AbstractIDEntityTestCase
      */
     public function testGetType(): void
     {
-        $this->assertEquals(IDEntity::ID_TYPE_STS, $this->instance->getType());
+        $this->assertSame(IDEntity::ID_TYPE_STS, $this->instance->getType());
     }
 
     /**
@@ -148,16 +148,16 @@ class IDEntityStsTest extends AbstractIDEntityTestCase
     public function testNormalize(): void
     {
         // Из нижнего регистра переведёт в верхний
-        $this->assertEquals($valid = $this->getValidValue(), $this->instance::normalize(Str::lower($this->getValidValue())));
+        $this->assertSame($valid = $this->getValidValue(), $this->instance::normalize(Str::lower($this->getValidValue())));
 
         // Пробелы - успешно триммит
-        $this->assertEquals($valid, $this->instance::normalize(' ' . $this->getValidValue() . ' '));
+        $this->assertSame($valid, $this->instance::normalize(' ' . $this->getValidValue() . ' '));
 
         // Латиницу заменяет на кириллицу
-        $this->assertEquals($valid, $this->instance::normalize('61me524040'));
+        $this->assertSame($valid, $this->instance::normalize('61me524040'));
 
         // Некорректные символы - удаляет
-        $this->assertEquals($valid, $this->instance::normalize('61МЕ ;?*:;% 524040 '));
+        $this->assertSame($valid, $this->instance::normalize('61МЕ ;?*:;% 524040 '));
     }
 
     /**

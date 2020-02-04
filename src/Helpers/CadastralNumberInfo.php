@@ -20,27 +20,27 @@ class CadastralNumberInfo implements \Illuminate\Contracts\Support\Arrayable
     protected $area_code;
 
     /**
-     * @var string
+     * @var int
      */
     protected $section_code;
 
     /**
-     * @var string
+     * @var int
      */
     protected $parcel_number;
 
     /**
      * Create a new CadastralNumberInfo instance.
      *
-     * @param int    $district_code
-     * @param int    $area_code
-     * @param string $section_code
-     * @param string $parcel_number
+     * @param int $district_code
+     * @param int $area_code
+     * @param int $section_code
+     * @param int $parcel_number
      */
     protected function __construct(int $district_code,
                                    int $area_code,
-                                   string $section_code,
-                                   string $parcel_number)
+                                   int $section_code,
+                                   int $parcel_number)
     {
         $this->district_code = $district_code;
         $this->area_code     = $area_code;
@@ -62,8 +62,8 @@ class CadastralNumberInfo implements \Illuminate\Contracts\Support\Arrayable
         return new self(
             (int) ($codes[0] ?? 0),
             (int) ($codes[1] ?? 0),
-            \trim($codes[2] ?? ''),
-            \trim($codes[3] ?? '')
+            (int) ($codes[2] ?? 0),
+            (int) ($codes[3] ?? 0)
         );
     }
 
@@ -84,23 +84,23 @@ class CadastralNumberInfo implements \Illuminate\Contracts\Support\Arrayable
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getSectionCode(): string
+    public function getSectionCode(): int
     {
         return $this->section_code;
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getParcelNumber(): string
+    public function getParcelNumber(): int
     {
         return $this->parcel_number;
     }
 
     /**
-     * @return array{district:int, area:int, section:string, parcel_number:string}
+     * @return array{district:int, area:int, section:int, parcel_number:int}
      */
     public function toArray(): array
     {

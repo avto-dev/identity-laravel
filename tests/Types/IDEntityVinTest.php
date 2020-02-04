@@ -23,7 +23,7 @@ class IDEntityVinTest extends AbstractIDEntityTestCase
      */
     public function testGetType(): void
     {
-        $this->assertEquals(IDEntity::ID_TYPE_VIN, $this->instance->getType());
+        $this->assertSame(IDEntity::ID_TYPE_VIN, $this->instance->getType());
     }
 
     /**
@@ -146,20 +146,20 @@ class IDEntityVinTest extends AbstractIDEntityTestCase
     public function testNormalize(): void
     {
         // Из нижнего регистра переведёт в верхний
-        $this->assertEquals($valid = $this->getValidValue(), $this->instance::normalize(Str::lower($this->getValidValue())));
+        $this->assertSame($valid = $this->getValidValue(), $this->instance::normalize(Str::lower($this->getValidValue())));
 
         // Пробелы - успешно триммит
-        $this->assertEquals($valid, $this->instance::normalize(' ' . $this->getValidValue() . ' '));
+        $this->assertSame($valid, $this->instance::normalize(' ' . $this->getValidValue() . ' '));
 
         // Кириллицу заменяет на латиницу ("С" - кириллическая)
-        $this->assertEquals($valid, $this->instance::normalize('JF1SJ5Lс5DG048667'));
+        $this->assertSame($valid, $this->instance::normalize('JF1SJ5Lс5DG048667'));
 
         // Успешно заменяет кириллическую и латинскую "О" на "0"
-        $this->assertEquals($valid, $this->instance::normalize('JF1SJ5LC5DGО48667'));
-        $this->assertEquals($valid, $this->instance::normalize('JF1SJ5LC5DGO48667'));
+        $this->assertSame($valid, $this->instance::normalize('JF1SJ5LC5DGО48667'));
+        $this->assertSame($valid, $this->instance::normalize('JF1SJ5LC5DGO48667'));
 
         // Некорректные символы - удаляет
-        $this->assertEquals($valid, $this->instance::normalize('JF1SJ5L {}#$%^& C5DG048667 Ъ'));
+        $this->assertSame($valid, $this->instance::normalize('JF1SJ5L {}#$%^& C5DG048667 Ъ'));
     }
 
     /**
