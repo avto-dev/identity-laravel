@@ -149,7 +149,7 @@ class IDEntityCadastralNumberTest extends AbstractIDEntityTestCase
         ];
 
         foreach ($data as $invalid => $valid) {
-            $this->assertEquals($valid, $this->instance::normalize($invalid));
+            $this->assertSame($valid, $this->instance::normalize($invalid));
             $this->assertTrue($this->instance->setValue($invalid)->isValid());
         }
 
@@ -166,12 +166,12 @@ class IDEntityCadastralNumberTest extends AbstractIDEntityTestCase
 
         // Засовываем всякую шляпу
         foreach ([
-                     function (): void {
-                     },
-                     new static,
-                     new stdClass,
-                     ['foo' => 'bar'],
-                 ] as $item) {
+            function (): void {
+            },
+            new static,
+            new stdClass,
+            ['foo' => 'bar'],
+        ] as $item) {
             $this->assertNull($this->instance::normalize($item));
         }
     }
@@ -220,7 +220,7 @@ class IDEntityCadastralNumberTest extends AbstractIDEntityTestCase
         $this->assertSame('04:05:0000006:7', $this->instance->getValue());
 
         // Not enough numbers in cadastral number
-        foreach (['52', '52:', '52:0', '52:0:', '52:0:1',] as $value) {
+        foreach (['52', '52:', '52:0', '52:0:', '52:0:1'] as $value) {
             $this->instance->setValue($value);
             $this->assertNull($this->instance->getValue());
         }
