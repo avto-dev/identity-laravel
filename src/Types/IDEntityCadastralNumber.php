@@ -83,4 +83,16 @@ class IDEntityCadastralNumber extends AbstractTypedIDEntity implements HasCadast
 
         return false;
     }
+
+    /**
+     * @param bool $format
+     *
+     * @return string|null
+     */
+    public function getValue(bool $format = false): ?string
+    {
+        return $format
+            ? (string) $this->getNumberInfo()
+            : parent::getValue();
+    }
 }

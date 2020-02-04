@@ -187,6 +187,17 @@ class IDEntityCadastralNumberTest extends AbstractIDEntityTestCase
     }
 
     /**
+     * @return void
+     */
+    public function testGetValue(): void
+    {
+        $this->instance->setValue('04:5:000006:7');
+
+        $this->assertSame('04:05:0000006:7', $this->instance->getValue(true));
+        $this->assertSame('04:5:000006:7', $this->instance->getValue(false));
+    }
+
+    /**
      * {@inheritdoc}
      */
     protected function getClassName(): string

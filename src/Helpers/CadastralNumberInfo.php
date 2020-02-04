@@ -111,4 +111,17 @@ class CadastralNumberInfo implements \Illuminate\Contracts\Support\Arrayable
             'parcel_number' => $this->parcel_number,
         ];
     }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return \sprintf('%02d:%02d:%07d:%d',
+            $this->district_code,
+            $this->area_code,
+            $this->section_code,
+            $this->parcel_number
+        );
+    }
 }
