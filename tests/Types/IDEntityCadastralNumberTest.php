@@ -64,6 +64,9 @@ class IDEntityCadastralNumberTest extends AbstractIDEntityTestCase
             '38:06:100801:26333',
             '39:15:131926:797',
             '39:05:131926:7',
+
+            // Last part more than 1
+            '66:41:0:1',
         ];
 
         foreach ($valid as $value) {
@@ -71,6 +74,9 @@ class IDEntityCadastralNumberTest extends AbstractIDEntityTestCase
         }
 
         $invalid = [
+            '0:0:0:0',
+            '66:0:0:0',
+            '66:41:0:0',
             '359:924:190:795',
             '5:01:4286525/047215',
             '0:22:4357409:744560',
@@ -133,18 +139,21 @@ class IDEntityCadastralNumberTest extends AbstractIDEntityTestCase
      */
     public function testNormalize(): void
     {
-        $valid = $this->getValidValue();
 
-        // Пробелы с двум сторон
-        $this->assertEquals($valid, $this->instance::normalize(' ' . $valid . ' '));
+        /**
+         * @todo Incomplete test
+         */
+        $data = [
+            '6+6:/4$1:;0(1%^0)&5*-0!0@1#:=?3'       => '66:41:0105001:3',
+            'Start6Шесть6:4One1:01ZeRO05001:ThrEE3' => '66:41:0105001:3',
+            'D61:41:123456:102360'                  => '61:41:0123456:102360',
+        ];
 
-        // Запрещенные символы
-        $this->assertEquals($valid, $this->instance::normalize('6+6:/4$1:;0(1%^0)&5*-0!0@1#:=?3'));
+        foreach ($data as $invalid => $valid) {
+            $this->assertEquals($valid, $this->instance::normalize($invalid));
+            $this->assertTrue($this->instance->setValue($invalid)->isValid());
+        }
 
-        // С буквами
-        $this->assertEquals($valid, $this->instance::normalize('Start6Шесть6:4One1:01ZeRO05001:ThrEE3'));
-        //Первый символ не цифра
-        $this->assertFalse($this->instance->setValue(':D61:41:123456:102360')->isValid());
         // Засовываем всякую шляпу
         foreach ([
                      function (): void {

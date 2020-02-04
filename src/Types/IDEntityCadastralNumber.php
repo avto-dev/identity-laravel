@@ -85,7 +85,8 @@ class IDEntityCadastralNumber extends AbstractTypedIDEntity implements HasCadast
                 $district_data = $this->getDistrictData();
 
                 return $district_data instanceof CadastralDistrict
-                       && $district_data->hasAreaWithCode($this->getNumberInfo()->getAreaCode());
+                       && $district_data->hasAreaWithCode($this->getNumberInfo()->getAreaCode())
+                       && $this->getNumberInfo()->getParcelNumber() > 0;
             }
         }
 
