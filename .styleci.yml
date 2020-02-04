@@ -23,4 +23,3 @@ disabled:
   - concat_without_spaces
   - declare_equal_normalize
   - alpha_ordered_imports
-  - mb_str_functions
