@@ -37,7 +37,15 @@ class IDEntityCadastralNumber extends AbstractTypedIDEntity implements HasCadast
     {
         try {
             // Remove all chars except allowed (numbers and ':')
-            return (string) \preg_replace('~[^\d:]~u', '', (string) $value);
+            $value = (string) \preg_replace('~[^\d:]~u', '', (string) $value);
+            $parts = \explode(':', $value);
+
+            return \sprintf('%02d:%02d:%07d:%d',
+                (int) ($parts[0] ?? 0),
+                (int) ($parts[1] ?? 0),
+                (int) ($parts[2] ?? 0),
+                (int) ($parts[3] ?? 0)
+            );
         } catch (Exception $e) {
             return null;
         }
