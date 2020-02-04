@@ -10,15 +10,33 @@ interface IDEntityInterface
      * Allowed ID entity types.
      */
     public const
-        ID_TYPE_AUTO = 'AUTODETECT', // Internal type, which means "automatic type detection is required"
-        ID_TYPE_UNKNOWN = 'UNKNOWN', // Unknown type
-        ID_TYPE_VIN = 'VIN',         // Vehicle identification number
-        ID_TYPE_GRZ = 'GRZ',         // Vehicle registration sign number (as usual - russian)
-        ID_TYPE_STS = 'STS',         // Number of vehicle registration certificate
-        ID_TYPE_PTS = 'PTS',         // Vehicle passport number
-        ID_TYPE_CHASSIS = 'CHASSIS', // Vehicle chassis number
-        ID_TYPE_BODY = 'BODY',       // Vehicle body number
-        ID_TYPE_DRIVER_LICENSE_NUMBER = 'DLN', // Driver license number
+        ID_TYPE_AUTO = 'AUTODETECT';
+    public const
+        // Internal type, which means "automatic type detection is required"
+        ID_TYPE_UNKNOWN = 'UNKNOWN';
+    public const
+        // Unknown type
+        ID_TYPE_VIN = 'VIN';
+    public const
+        // Vehicle identification number
+        ID_TYPE_GRZ = 'GRZ';
+    public const
+        // Vehicle registration sign number (as usual - russian)
+        ID_TYPE_STS = 'STS';
+    public const
+        // Number of vehicle registration certificate
+        ID_TYPE_PTS = 'PTS';
+    public const
+        // Vehicle passport number
+        ID_TYPE_CHASSIS = 'CHASSIS';
+    public const
+        // Vehicle chassis number
+        ID_TYPE_BODY = 'BODY';
+    public const
+        // Vehicle body number
+        ID_TYPE_DRIVER_LICENSE_NUMBER = 'DLN';
+    public const
+        // Driver license number
         ID_TYPE_CADASTRAL_NUMBER = 'CADNUM';   // Cadastral number (unique property number)
 
     /**

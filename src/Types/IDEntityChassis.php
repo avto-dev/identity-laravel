@@ -11,7 +11,7 @@ use AvtoDev\ExtendedLaravelValidator\Extensions\ChassisCodeValidatorExtension;
 class IDEntityChassis extends AbstractTypedIDEntity
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @return static
      */

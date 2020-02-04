@@ -10,7 +10,7 @@ use AvtoDev\ExtendedLaravelValidator\Extensions\PtsCodeValidatorExtension;
 class IDEntityPts extends AbstractTypedIDEntity
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @return static
      */

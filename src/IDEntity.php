@@ -20,14 +20,6 @@ class IDEntity implements IDEntityInterface
     }
 
     /**
-     * @return Container
-     */
-    protected static function getContainer(): Container
-    {
-        return Container::getInstance();
-    }
-
-    /**
      * Get supported types.
      *
      * @return string[]
@@ -86,6 +78,14 @@ class IDEntity implements IDEntityInterface
         }
 
         return false;
+    }
+
+    /**
+     * @return Container
+     */
+    protected static function getContainer(): Container
+    {
+        return Container::getInstance();
     }
 
     /**

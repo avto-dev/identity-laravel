@@ -10,7 +10,7 @@ use AvtoDev\ExtendedLaravelValidator\Extensions\StsCodeValidatorExtension;
 class IDEntitySts extends AbstractTypedIDEntity
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @return static
      */

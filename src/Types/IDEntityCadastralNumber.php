@@ -13,7 +13,7 @@ use AvtoDev\ExtendedLaravelValidator\Extensions\CadastralNumberValidatorExtensio
 class IDEntityCadastralNumber extends AbstractTypedIDEntity implements HasCadastralNumberInterface
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @return static
      */

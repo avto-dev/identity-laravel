@@ -7,7 +7,7 @@ namespace AvtoDev\IDEntity\Types;
 class IDEntityUnknown extends AbstractTypedIDEntity
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @return static
      */

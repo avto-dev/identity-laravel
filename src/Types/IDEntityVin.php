@@ -10,7 +10,7 @@ use AvtoDev\ExtendedLaravelValidator\Extensions\VinCodeValidatorExtension;
 class IDEntityVin extends AbstractTypedIDEntity
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @return static
      */

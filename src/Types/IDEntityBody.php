@@ -11,7 +11,7 @@ use AvtoDev\ExtendedLaravelValidator\Extensions\BodyCodeValidatorExtension;
 class IDEntityBody extends AbstractTypedIDEntity
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @return static
      */
@@ -69,7 +69,6 @@ class IDEntityBody extends AbstractTypedIDEntity
         return \is_string($this->value) && $validator->passes('', $this->value);
     }
 
-
     /**
      * {@inheritdoc}
      */
@@ -77,5 +76,4 @@ class IDEntityBody extends AbstractTypedIDEntity
     {
         return $this->value;
     }
-
 }

@@ -12,7 +12,7 @@ use AvtoDev\ExtendedLaravelValidator\Extensions\DriverLicenseNumberValidatorExte
 class IDEntityDriverLicenseNumber extends AbstractTypedIDEntity implements HasRegionDataInterface
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @return static
      */
