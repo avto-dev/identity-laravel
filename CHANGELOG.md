@@ -18,7 +18,7 @@ The format is based on [Keep a Changelog][keepachangelog] and this project adher
 
 ### Added
 
-- `IDEntityCadastralNumber` for cadastral number 
+- `IDEntityCadastralNumber` for cadastral number
 
 ## v4.0.0
 
@@ -128,13 +128,13 @@ The format is based on [Keep a Changelog][keepachangelog] and this project adher
 
 - Supports for `GRZ` "taxi" format
 
-## v2.1
+## v2.1.0
 
 ### Added
 
 - Supports for "Driver License Number" (`DLN`)
 
-## v2.0
+## v2.0.0
 
 ### Changed
 

@@ -39,7 +39,7 @@ class IDEntityCadastralNumber extends AbstractTypedIDEntity implements HasCadast
 
             // Pad value parts with zeros
             return \sprintf('%02d:%02d:%07d:%d', ...\array_slice(\explode(':', $value), 0, 4));
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             return null;
         }
     }

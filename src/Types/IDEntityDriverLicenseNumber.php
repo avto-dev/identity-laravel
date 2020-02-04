@@ -45,7 +45,7 @@ class IDEntityDriverLicenseNumber extends AbstractTypedIDEntity implements HasRe
             $value = Transliterator::detransliterateLite($value);
 
             return $value;
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             return null;
         }
     }

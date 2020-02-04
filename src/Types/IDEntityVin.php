@@ -43,7 +43,7 @@ class IDEntityVin extends AbstractTypedIDEntity
             $value = \preg_replace('~[^ABCDEFGHJKLMNPRSTUVWXYZ0-9]~u', '', $value);
 
             return $value;
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             return null;
         }
     }

@@ -50,7 +50,7 @@ class IDEntityChassis extends AbstractTypedIDEntity
             $value = (string) \preg_replace('~-+~', '-', $value);
 
             return $value;
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             return null;
         }
     }

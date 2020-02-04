@@ -53,7 +53,7 @@ class IDEntityBody extends AbstractTypedIDEntity
             $value = (string) \preg_replace('~[^A-Z0-9\- ]~u', '', $value);
 
             return $value;
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             return null;
         }
     }

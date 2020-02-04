@@ -31,7 +31,7 @@ class IDEntityUnknown extends AbstractTypedIDEntity
     {
         try {
             return (string) $value;
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             return null;
         }
     }

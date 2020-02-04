@@ -43,7 +43,7 @@ class IDEntitySts extends AbstractTypedIDEntity
             $value = Transliterator::detransliterateString($value, true);
 
             return $value;
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             return null;
         }
     }
