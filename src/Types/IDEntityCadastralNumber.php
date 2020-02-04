@@ -4,8 +4,6 @@ declare(strict_types = 1);
 
 namespace AvtoDev\IDEntity\Types;
 
-use Exception;
-use AvtoDev\IDEntity\Helpers\CadastralNumberInfo;
 use AvtoDev\StaticReferences\References\CadastralDistricts;
 use AvtoDev\StaticReferences\References\Entities\CadastralDistrict;
 use AvtoDev\ExtendedLaravelValidator\Extensions\CadastralNumberValidatorExtension;
@@ -37,28 +35,71 @@ class IDEntityCadastralNumber extends AbstractTypedIDEntity implements HasCadast
     {
         try {
             // Remove all chars except allowed (numbers and ':')
-            $value = (string) \preg_replace('~[^\d:]~u', '', (string) $value);
-            $parts = \explode(':', $value);
+            $value = \trim((string) \preg_replace('~[^\d:]~u', '', (string) $value), ':');
 
-            return \sprintf('%02d:%02d:%07d:%d',
-                (int) $parts[0],
-                (int) $parts[1],
-                (int) $parts[2],
-                (int) $parts[3]
-            );
-        } catch (Exception $e) {
+            // Pad value parts with zeros
+            return \sprintf('%02d:%02d:%07d:%d', ...\array_slice(\explode(':', $value), 0, 4));
+        } catch (\Exception $e) {
             return null;
         }
     }
 
     /**
-     * Return parsed fragments of cadastral number.
+     * @param int $part_number 0, 1, 2 or 3
      *
-     * @return CadastralNumberInfo
+     * @return int|null
      */
-    public function getNumberInfo(): CadastralNumberInfo
+    protected function getNumberPart(int $part_number): ?int
     {
-        return CadastralNumberInfo::parse($this->value);
+        if (\is_string($this->value)) {
+            $parts = \mb_split(':', $this->value, 4);
+
+            return \count($parts) === 4 && isset($parts[$part_number]) && \is_numeric($parts[$part_number])
+                ? (int) $parts[$part_number]
+                : null;
+        }
+
+        return null;
+    }
+
+    /**
+     * Get district code.
+     *
+     * @return int|null
+     */
+    public function getDistrictCode(): ?int
+    {
+        return $this->getNumberPart(0);
+    }
+
+    /**
+     * Get area code.
+     *
+     * @return int|null
+     */
+    public function getAreaCode(): ?int
+    {
+        return $this->getNumberPart(1);
+    }
+
+    /**
+     * Get section code.
+     *
+     * @return int|null
+     */
+    public function getSectionCode(): ?int
+    {
+        return $this->getNumberPart(2);
+    }
+
+    /**
+     * Get parcel code.
+     *
+     * @return int|null
+     */
+    public function getParcelCode(): ?int
+    {
+        return $this->getNumberPart(3);
     }
 
     /**
@@ -66,10 +107,16 @@ class IDEntityCadastralNumber extends AbstractTypedIDEntity implements HasCadast
      */
     public function getDistrictData(): ?CadastralDistrict
     {
-        /** @var CadastralDistricts $districts */
-        $districts = static::getContainer()->make(CadastralDistricts::class);
+        $district_code = $this->getDistrictCode();
 
-        return $districts->getByCode($this->getNumberInfo()->getDistrictCode());
+        if (\is_int($district_code)) {
+            /** @var CadastralDistricts $districts */
+            $districts = static::getContainer()->make(CadastralDistricts::class);
+
+            return $districts->getByCode($district_code);
+        }
+
+        return null;
     }
 
     /**
@@ -82,11 +129,13 @@ class IDEntityCadastralNumber extends AbstractTypedIDEntity implements HasCadast
             $validator = static::getContainer()->make(CadastralNumberValidatorExtension::class);
 
             if ($validator->passes('', $this->value)) {
+                $area_code     = $this->getAreaCode();
+                $parcel_code   = $this->getParcelCode();
                 $district_data = $this->getDistrictData();
 
-                return $district_data instanceof CadastralDistrict
-                       && $district_data->hasAreaWithCode($this->getNumberInfo()->getAreaCode())
-                       && $this->getNumberInfo()->getParcelNumber() > 0;
+                if ($district_data instanceof CadastralDistrict && \is_int($area_code) && \is_int($parcel_code)) {
+                    return $district_data->hasAreaWithCode($area_code) && $parcel_code > 0;
+                }
             }
         }
 

@@ -5,8 +5,8 @@ declare(strict_types = 1);
 namespace AvtoDev\IDEntity\Tests\Types;
 
 use stdClass;
+use Illuminate\Support\Str;
 use AvtoDev\IDEntity\IDEntity;
-use AvtoDev\IDEntity\Helpers\CadastralNumberInfo;
 use AvtoDev\IDEntity\Types\IDEntityCadastralNumber;
 use AvtoDev\StaticReferences\References\Entities\CadastralDistrict;
 
@@ -135,71 +135,85 @@ class IDEntityCadastralNumberTest extends AbstractIDEntityTestCase
     }
 
     /**
+     * @return void
+     */
+    public function testGetDistrictCode(): void
+    {
+        foreach (\range(0, 99) as $code) {
+            $this->assertSame($code, $this->instance->setValue("{$code}:41:0:1")->getDistrictCode());
+        }
+
+        $this->assertNull($this->instance->setValue('')->getDistrictCode());
+        $this->assertNull($this->instance->setValue('41:0:1')->getDistrictCode());
+        $this->assertNull($this->instance->setValue(Str::random())->getDistrictCode());
+    }
+
+    /**
+     * @return void
+     */
+    public function testGetAreaCode(): void
+    {
+        foreach (\range(0, 99) as $code) {
+            $this->assertSame($code, $this->instance->setValue("66:{$code}:0:1")->getAreaCode());
+        }
+
+        $this->assertNull($this->instance->setValue('')->getAreaCode());
+        $this->assertNull($this->instance->setValue('41:0:1')->getAreaCode());
+        $this->assertNull($this->instance->setValue(Str::random())->getAreaCode());
+    }
+
+    /**
+     * @return void
+     */
+    public function testGetSectionCode(): void
+    {
+        foreach (\range(0, 99) as $code) {
+            $this->assertSame($code, $this->instance->setValue("66:41:{$code}:1")->getSectionCode());
+        }
+
+        $this->assertNull($this->instance->setValue('')->getSectionCode());
+        $this->assertNull($this->instance->setValue('41:0:1')->getSectionCode());
+        $this->assertNull($this->instance->setValue(Str::random())->getSectionCode());
+    }
+
+    /**
+     * @return void
+     */
+    public function testGetParcelCode(): void
+    {
+        foreach (\range(0, 99) as $code) {
+            $this->assertSame($code, $this->instance->setValue("66:41:0003321:{$code}")->getParcelCode());
+        }
+
+        $this->assertNull($this->instance->setValue('')->getParcelCode());
+        $this->assertNull($this->instance->setValue('41:0:1')->getParcelCode());
+        $this->assertNull($this->instance->setValue(Str::random())->getParcelCode());
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function testNormalize(): void
     {
-        /**
-         * @todo Incomplete test
-         */
-        $data = [
+        $input_data = [
             '6+6:/4$1:;0(1%^0)&5*-0!0@1#:=?3'       => '66:41:0105001:3',
-            'Start6Шесть6:4One1:01ZeRO05001:ThrEE3' => '66:41:0105001:3',
             'D61:41:123456:102360'                  => '61:41:0123456:102360',
+            'Start6Шесть6:4One1:01ZeRO05001:ThrEE3' => '66:41:0105001:3',
+            ':D61:41:123456:102360'                 => '61:41:0123456:102360',
+            '4:5:6:7'                               => '04:05:0000006:7',
         ];
 
-        foreach ($data as $invalid => $valid) {
-            $this->assertSame($valid, $this->instance::normalize($invalid));
-            $this->assertTrue($this->instance->setValue($invalid)->isValid());
+        foreach ($input_data as $what => $with) {
+            $this->assertSame($with, $this->instance::normalize($what));
         }
 
-        // Пробелы с двум сторон
-        $this->assertSame($valid, $this->instance::normalize(' ' . $valid . ' '));
-
-        // Запрещенные символы
-        $this->assertSame($valid, $this->instance::normalize('6+6:/4$1:;0(1%^0)&5*-0!0@1#:=?3'));
-
-        // С буквами
-        $this->assertSame($valid, $this->instance::normalize('Start6Шесть6:4One1:01ZeRO05001:ThrEE3'));
-        //Первый символ не цифра
-        $this->assertFalse($this->instance->setValue(':D61:41:123456:102360')->isValid());
-
-        // Засовываем всякую шляпу
-        foreach ([
-            function (): void {
-            },
-            new static,
-            new stdClass,
-            ['foo' => 'bar'],
-        ] as $item) {
+        foreach ([\tmpfile(), new static, new stdClass, ['foo' => 'bar']] as $item) {
             $this->assertNull($this->instance::normalize($item));
         }
     }
 
     /**
-     * Test of method getNumberInfo.
-     *
-     * @group Eldar
-     */
-    public function testGetNumberInfo(): void
-    {
-        $this->assertInstanceOf(CadastralNumberInfo::class, $this->instance->getNumberInfo());
-        $this->assertSame(66, $this->instance->getNumberInfo()->getDistrictCode());
-        $this->assertSame(41, $this->instance->getNumberInfo()->getAreaCode());
-        $this->assertSame(105001, $this->instance->getNumberInfo()->getSectionCode());
-        $this->assertSame(3, $this->instance->getNumberInfo()->getParcelNumber());
-
-        $this->instance->setValue('52:25');
-        $this->assertNull($this->instance->getValue());
-
-        $this->assertSame(
-            ['district' => 52, 'area' => 25, 'section' => 0, 'parcel_number' => 0],
-            $this->instance->getNumberInfo()->toArray()
-        );
-    }
-
-    /**
-     * Test of method getRegionData.
+     * @return void
      */
     public function testGetRegionData(): void
     {
@@ -212,17 +226,10 @@ class IDEntityCadastralNumberTest extends AbstractIDEntityTestCase
     /**
      * @return void
      */
-    public function testGetValue(): void
+    public function testGetValueWhenInvalidValueIsSet(): void
     {
-        // After normalization, missing ZERO will be added.
-        $this->instance->setValue('4:5:6:7');
-
-        $this->assertSame('04:05:0000006:7', $this->instance->getValue());
-
-        // Not enough numbers in cadastral number
         foreach (['52', '52:', '52:0', '52:0:', '52:0:1'] as $value) {
-            $this->instance->setValue($value);
-            $this->assertNull($this->instance->getValue());
+            $this->assertNull($this->instance->setValue($value)->getValue());
         }
     }
 

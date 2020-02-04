@@ -157,7 +157,7 @@ abstract class AbstractIDEntityTestCase extends AbstractTestCase
             'type'  => $this->instance->getType(),
         ], $this->instance->toArray());
 
-        $this->assertSame(json_encode($array), $this->instance->toJson());
+        $this->assertSame(\json_encode($array), $this->instance->toJson());
     }
 
     /**
