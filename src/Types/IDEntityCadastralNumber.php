@@ -37,7 +37,15 @@ class IDEntityCadastralNumber extends AbstractTypedIDEntity implements HasCadast
     {
         try {
             // Remove all chars except allowed (numbers and ':')
-            return (string) \preg_replace('~[^\d:]~u', '', (string) $value);
+            $value = (string) \preg_replace('~[^\d:]~u', '', (string) $value);
+            $parts = \explode(':', $value);
+
+            return \sprintf('%02d:%02d:%07d:%d',
+                (int) $parts[0],
+                (int) $parts[1],
+                (int) $parts[2],
+                (int) $parts[3]
+            );
         } catch (Exception $e) {
             return null;
         }
@@ -77,7 +85,8 @@ class IDEntityCadastralNumber extends AbstractTypedIDEntity implements HasCadast
                 $district_data = $this->getDistrictData();
 
                 return $district_data instanceof CadastralDistrict
-                       && $district_data->hasAreaWithCode($this->getNumberInfo()->getAreaCode());
+                       && $district_data->hasAreaWithCode($this->getNumberInfo()->getAreaCode())
+                       && $this->getNumberInfo()->getParcelNumber() > 0;
             }
         }
 

@@ -49,6 +49,19 @@ class CadastralNumberInfo implements \Illuminate\Contracts\Support\Arrayable
     }
 
     /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return \sprintf('%02d:%02d:%07d:%d',
+            $this->district_code,
+            $this->area_code,
+            $this->section_code,
+            $this->parcel_number
+        );
+    }
+
+    /**
      * Parse given cadastral number.
      *
      * @param string|null $cadastral_number
