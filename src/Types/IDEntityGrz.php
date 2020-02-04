@@ -29,9 +29,9 @@ class IDEntityGrz extends AbstractTypedIDEntity implements HasRegionDataInterfac
     /**
      * Format patterns.
      */
-    public const FORMAT_PATTERN_1 = 'X000XX77_OR_X000XX777';
-
-    public const FORMAT_PATTERN_2 = 'X000XX';
+    public const
+        FORMAT_PATTERN_1 = 'X000XX77_OR_X000XX777',
+        FORMAT_PATTERN_2 = 'X000XX';
 
     public const FORMAT_PATTERN_3 = 'XX00077';
 
