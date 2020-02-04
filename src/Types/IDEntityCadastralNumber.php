@@ -45,24 +45,6 @@ class IDEntityCadastralNumber extends AbstractTypedIDEntity implements HasCadast
     }
 
     /**
-     * @param int $part_number 0, 1, 2 or 3
-     *
-     * @return int|null
-     */
-    protected function getNumberPart(int $part_number): ?int
-    {
-        if (\is_string($this->value)) {
-            $parts = \mb_split(':', $this->value, 4);
-
-            return \count($parts) === 4 && isset($parts[$part_number]) && \is_numeric($parts[$part_number])
-                ? (int) $parts[$part_number]
-                : null;
-        }
-
-        return null;
-    }
-
-    /**
      * Get district code.
      *
      * @return int|null
@@ -140,5 +122,23 @@ class IDEntityCadastralNumber extends AbstractTypedIDEntity implements HasCadast
         }
 
         return false;
+    }
+
+    /**
+     * @param int $part_number 0, 1, 2 or 3
+     *
+     * @return int|null
+     */
+    protected function getNumberPart(int $part_number): ?int
+    {
+        if (\is_string($this->value)) {
+            $parts = \mb_split(':', $this->value, 4);
+
+            return \count($parts) === 4 && isset($parts[$part_number]) && \is_numeric($parts[$part_number])
+                ? (int) $parts[$part_number]
+                : null;
+        }
+
+        return null;
     }
 }
