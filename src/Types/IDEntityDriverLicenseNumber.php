@@ -4,8 +4,6 @@ declare(strict_types = 1);
 
 namespace AvtoDev\IDEntity\Types;
 
-use Exception;
-use Illuminate\Support\Str;
 use AvtoDev\IDEntity\Helpers\Transliterator;
 use AvtoDev\StaticReferences\References\SubjectCodes;
 use AvtoDev\StaticReferences\References\Entities\SubjectCodesInfo;
@@ -38,7 +36,7 @@ class IDEntityDriverLicenseNumber extends AbstractTypedIDEntity implements HasRe
     {
         try {
             // Uppercase + trim
-            $value = Str::upper(\trim((string) $value));
+            $value = \mb_strtoupper(\trim((string) $value), 'UTF-8');
 
             // Remove all chars except allowed (delimiters are included)
             $value = (string) \preg_replace('~[^' . 'АВЕКМНОРСТУХ' . 'ABEKMHOPCTYX' . '0-9]~u', '', $value);
@@ -47,7 +45,7 @@ class IDEntityDriverLicenseNumber extends AbstractTypedIDEntity implements HasRe
             $value = Transliterator::detransliterateLite($value);
 
             return $value;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return null;
         }
     }
@@ -76,6 +74,8 @@ class IDEntityDriverLicenseNumber extends AbstractTypedIDEntity implements HasRe
 
     /**
      * Get information about region where driver license was issued.
+     *
+     * @see \AvtoDev\StaticReferences\ServiceProvider Must be loaded
      *
      * @return SubjectCodesInfo|null
      */

@@ -7,77 +7,22 @@ use AvtoDev\IDEntity\Types\TypedIDEntityInterface;
 interface IDEntityInterface
 {
     /**
-     * Internal type, which means "automatic type detection is required".
-     *
-     * @var string
+     * Allowed ID entity types.
      */
-    public const ID_TYPE_AUTO = 'AUTODETECT';
+    public const
+        ID_TYPE_AUTO = 'AUTODETECT', // Internal type, which means "automatic type detection is required"
+        ID_TYPE_UNKNOWN = 'UNKNOWN', // Unknown type
+        ID_TYPE_VIN = 'VIN',         // Vehicle identification number
+        ID_TYPE_GRZ = 'GRZ',         // Vehicle registration sign number (as usual - russian)
+        ID_TYPE_STS = 'STS',         // Number of vehicle registration certificate
+        ID_TYPE_PTS = 'PTS',         // Vehicle passport number
+        ID_TYPE_CHASSIS = 'CHASSIS', // Vehicle chassis number
+        ID_TYPE_BODY = 'BODY',       // Vehicle body number
+        ID_TYPE_DRIVER_LICENSE_NUMBER = 'DLN', // Driver license number
+        ID_TYPE_CADASTRAL_NUMBER = 'CADNUM';   // Cadastral number (unique property number)
 
     /**
-     * Unknown type.
-     *
-     * @var string
-     */
-    public const ID_TYPE_UNKNOWN = 'UNKNOWN';
-
-    /**
-     * Vehicle identification number.
-     *
-     * @var string
-     */
-    public const ID_TYPE_VIN = 'VIN';
-
-    /**
-     * Vehicle registration sign number (as usual - russian).
-     *
-     * @var string
-     */
-    public const ID_TYPE_GRZ = 'GRZ';
-
-    /**
-     * Number of vehicle registration certificate.
-     *
-     * @var string
-     */
-    public const ID_TYPE_STS = 'STS';
-
-    /**
-     * Vehicle passport number.
-     *
-     * @var string
-     */
-    public const ID_TYPE_PTS = 'PTS';
-
-    /**
-     * Vehicle chassis number.
-     *
-     * @var string
-     */
-    public const ID_TYPE_CHASSIS = 'CHASSIS';
-
-    /**
-     * Vehicle body number.
-     *
-     * @var string
-     */
-    public const ID_TYPE_BODY = 'BODY';
-
-    /**
-     * Driver license number.
-     *
-     * @var string
-     */
-    public const ID_TYPE_DRIVER_LICENSE_NUMBER = 'DLN';
-
-    /**
-     * Cadastral number (unique property number).
-     *
-     * @var string
-     */
-    public const ID_TYPE_CADASTRAL_NUMBER = 'CADNUM';
-
-    /**
-     * Create a new IDEntity instance.
+     * Create a new ID entity instance.
      *
      * @param string $value
      * @param string $type

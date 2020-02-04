@@ -13,6 +13,6 @@ return [
     */
 
     'extended_types_map' => [
-        // 'ID_TYPE' => \Your\IDEntityType::class
+        // 'ID_TYPE' => \Your\IDEntityType::class,
     ],
 ];

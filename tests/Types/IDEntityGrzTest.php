@@ -81,9 +81,7 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
 
         $this->assertEquals($this->instance::FORMAT_PATTERN_8, $this->instance::getFormatPatternByGostType($this->instance::GOST_TYPE_22));
 
-        $this->assertNull($this->instance::getFormatPatternByGostType('foo bar'));
-        $this->assertNull($this->instance::getFormatPatternByGostType(123));
-        $this->assertNull($this->instance::getFormatPatternByGostType(null));
+        $this->assertNull($this->instance::getFormatPatternByGostType(Str::random()));
     }
 
     public function testPatternToGostTypes(): void
