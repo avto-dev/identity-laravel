@@ -41,10 +41,10 @@ class IDEntityCadastralNumber extends AbstractTypedIDEntity implements HasCadast
             $parts = \explode(':', $value);
 
             return \sprintf('%02d:%02d:%07d:%d',
-                (int) ($parts[0] ?? 0),
-                (int) ($parts[1] ?? 0),
-                (int) ($parts[2] ?? 0),
-                (int) ($parts[3] ?? 0)
+                (int) $parts[0],
+                (int) $parts[1],
+                (int) $parts[2],
+                (int) $parts[3]
             );
         } catch (Exception $e) {
             return null;
@@ -90,17 +90,5 @@ class IDEntityCadastralNumber extends AbstractTypedIDEntity implements HasCadast
         }
 
         return false;
-    }
-
-    /**
-     * @param bool $format
-     *
-     * @return string|null
-     */
-    public function getValue(bool $format = false): ?string
-    {
-        return $format
-            ? (string) $this->getNumberInfo()
-            : parent::getValue();
     }
 }

@@ -67,7 +67,7 @@ class IDEntityCadastralNumberTest extends AbstractIDEntityTestCase
         ];
 
         foreach ($valid as $value) {
-            $this->assertTrue($this->instance->setValue($value, false)->isValid(), $value);
+            $this->assertTrue($this->instance->setValue($value)->isValid(), $value);
         }
 
         $invalid = [
@@ -124,7 +124,7 @@ class IDEntityCadastralNumberTest extends AbstractIDEntityTestCase
         ];
 
         foreach ($invalid as $value) {
-            $this->assertFalse($this->instance->setValue($value, false)->isValid(), $value);
+            $this->assertFalse($this->instance->setValue($value)->isValid(), $value);
         }
     }
 
@@ -159,6 +159,8 @@ class IDEntityCadastralNumberTest extends AbstractIDEntityTestCase
 
     /**
      * Test of method getNumberInfo.
+     *
+     * @group Eldar
      */
     public function testGetNumberInfo(): void
     {
@@ -169,8 +171,10 @@ class IDEntityCadastralNumberTest extends AbstractIDEntityTestCase
         $this->assertSame(3, $this->instance->getNumberInfo()->getParcelNumber());
 
         $this->instance->setValue('52:25');
+        $this->assertNull($this->instance->getValue());
+
         $this->assertSame(
-            ['district' => 52, 'area' => 25, 'section' => 0, 'parcel_number' => 0],
+            ['district' => 0, 'area' => 0, 'section' => 0, 'parcel_number' => 0],
             $this->instance->getNumberInfo()->toArray()
         );
     }
@@ -191,10 +195,16 @@ class IDEntityCadastralNumberTest extends AbstractIDEntityTestCase
      */
     public function testGetValue(): void
     {
-        $this->instance->setValue('04:5:000006:7');
+        // After normalization, missing ZERO will be added.
+        $this->instance->setValue('4:5:6:7');
 
-        $this->assertSame('04:05:0000006:7', $this->instance->getValue(true));
-        $this->assertSame('04:05:0000006:7', $this->instance->getValue(false));
+        $this->assertSame('04:05:0000006:7', $this->instance->getValue());
+
+        // Not enough numbers in cadastral number
+        foreach (['52', '52:', '52:0', '52:0:', '52:0:1',] as $value) {
+            $this->instance->setValue($value);
+            $this->assertNull($this->instance->getValue());
+        }
     }
 
     /**
