@@ -34,10 +34,10 @@ interface IDEntityInterface
     /**
      * Check for passed value has passed type?
      *
-     * @param string               $value
-     * @param string|array<string> $type
+     * @param string $value
+     * @param string $type
      *
      * @return bool
      */
-    public static function is(string $value, $type): bool;
+    public static function is(string $value, string $type): bool;
 }

@@ -352,16 +352,6 @@ class IDEntityTest extends AbstractTestCase
         $this->assertTrue(IDEntity::is($value = '33:22:011262:526', IDEntity::ID_TYPE_CADASTRAL_NUMBER));
         $this->assertFalse(IDEntity::is($value, IDEntity::ID_TYPE_DRIVER_LICENSE_NUMBER));
         $this->assertFalse(IDEntity::is($value, IDEntity::ID_TYPE_VIN));
-
-        // Тестируем проверку по набору типов
-        $this->assertTrue(IDEntity::is('FN15-102153', [IDEntity::ID_TYPE_VIN, IDEntity::ID_TYPE_CHASSIS]));
-        $this->assertTrue(IDEntity::is('JF1SJ5LC5DG048667', [IDEntity::ID_TYPE_VIN, IDEntity::ID_TYPE_CHASSIS]));
-        $this->assertFalse(IDEntity::is('А123АА177', [IDEntity::ID_TYPE_VIN, IDEntity::ID_TYPE_PTS]));
-        $this->assertFalse(IDEntity::is('JF1SJ5LC5DG048667', [IDEntity::ID_TYPE_STS, IDEntity::ID_TYPE_GRZ]));
-        $this->assertTrue(IDEntity::is('33:22:011262:526', [
-            IDEntity::ID_TYPE_CADASTRAL_NUMBER,
-            IDEntity::ID_TYPE_BODY,
-        ]));
     }
 
     /**

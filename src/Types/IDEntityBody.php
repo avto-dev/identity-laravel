@@ -68,12 +68,4 @@ class IDEntityBody extends AbstractTypedIDEntity
 
         return \is_string($this->value) && $validator->passes('', $this->value);
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getValue(bool $f = false): ?string
-    {
-        return $this->value;
-    }
 }

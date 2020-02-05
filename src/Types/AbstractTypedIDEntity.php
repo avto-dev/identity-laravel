@@ -53,7 +53,7 @@ abstract class AbstractTypedIDEntity extends IDEntity implements TypedIDEntityIn
     /**
      * {@inheritdoc}
      */
-    public static function is(string $value, $type = null): bool
+    public static function is(string $value, ?string $type = null): bool
     {
         return static::make($value)->isValid();
     }

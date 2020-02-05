@@ -116,11 +116,6 @@ abstract class AbstractIDEntityTestCase extends AbstractTestCase
     public function testIsMethod(): void
     {
         $this->assertSame($this->instance->isValid(), $this->instance::is($this->instance->getValue()));
-
-        // Второй аргумент для 'is' игнорируется
-        $this->assertSame($this->instance->isValid(), $this->instance::is($this->instance->getValue(), [123, null]));
-        $this->assertSame($this->instance->isValid(), $this->instance::is($this->instance->getValue(), ['foo']));
-        $this->assertSame($this->instance->isValid(), $this->instance::is($this->instance->getValue(), [IDEntity::ID_TYPE_VIN]));
     }
 
     /**

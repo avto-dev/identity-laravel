@@ -69,15 +69,9 @@ class IDEntity implements IDEntityInterface
     /**
      * {@inheritdoc}
      */
-    public static function is(string $value, $type): bool
+    public static function is(string $value, string $type): bool
     {
-        foreach ((array) $type as $type_value) {
-            if (self::make($value, $type_value)->isValid()) {
-                return true;
-            }
-        }
-
-        return false;
+        return self::make($value, $type)->isValid();
     }
 
     /**
