@@ -131,7 +131,7 @@ class IDEntityCadastralNumber extends AbstractTypedIDEntity implements HasCadast
      */
     protected function getNumberPart(int $part_number): ?int
     {
-        if (\is_string($this->value)) {
+        if (\is_string($this->value) && $this->value !== '') {
             $parts = \mb_split(':', $this->value, 4);
 
             return \count($parts) === 4 && isset($parts[$part_number]) && \is_numeric($parts[$part_number])

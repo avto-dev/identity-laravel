@@ -9,7 +9,7 @@ use AvtoDev\IDEntity\IDEntityInterface;
 use AvtoDev\IDEntity\Types\IDEntityPts;
 
 /**
- * @covers \AvtoDev\IDEntity\Types\IDEntityPts
+ * @covers \AvtoDev\IDEntity\Types\IDEntityPts<extended>
  */
 class IDEntityPtsTest extends AbstractIDEntityTestCase
 {
@@ -78,6 +78,7 @@ class IDEntityPtsTest extends AbstractIDEntityTestCase
             'A111AA177',
             'А123АА77',
 
+            '',
             Str::random(32),
         ];
     }

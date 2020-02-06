@@ -65,7 +65,7 @@ class IDEntityVin extends AbstractTypedIDEntity
             'x' => 7, 'y' => 8, 'z' => 9,
         ];
 
-        if (! \is_string($this->value)) {
+        if (! \is_string($this->value) || $this->value === '') {
             return false;
         }
 
@@ -97,9 +97,13 @@ class IDEntityVin extends AbstractTypedIDEntity
      */
     public function isValid(): bool
     {
-        /** @var VinCodeValidatorExtension $validator */
-        $validator = static::getContainer()->make(VinCodeValidatorExtension::class);
+        if (\is_string($this->value) && $this->value !== '') {
+            /** @var VinCodeValidatorExtension $validator */
+            $validator = static::getContainer()->make(VinCodeValidatorExtension::class);
 
-        return \is_string($this->value) && $validator->passes('', $this->value);
+            return \is_string($this->value) && $validator->passes('', $this->value);
+        }
+
+        return false;
     }
 }

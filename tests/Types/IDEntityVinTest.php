@@ -9,7 +9,7 @@ use AvtoDev\IDEntity\IDEntityInterface;
 use AvtoDev\IDEntity\Types\IDEntityVin;
 
 /**
- * @covers \AvtoDev\IDEntity\Types\IDEntityVin
+ * @covers \AvtoDev\IDEntity\Types\IDEntityVin<extended>
  */
 class IDEntityVinTest extends AbstractIDEntityTestCase
 {
@@ -78,6 +78,7 @@ class IDEntityVinTest extends AbstractIDEntityTestCase
             '!@#$%^&*()}{<>?/[',
 
             'foo bar',
+            '',
             Str::random(32),
         ];
 
@@ -211,6 +212,7 @@ class IDEntityVinTest extends AbstractIDEntityTestCase
             'FN15-002153',
             '38:49:924785:832907',
 
+            '',
             Str::random(32),
         ];
     }

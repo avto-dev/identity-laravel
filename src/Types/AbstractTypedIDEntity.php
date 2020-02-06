@@ -44,6 +44,8 @@ abstract class AbstractTypedIDEntity extends IDEntity implements TypedIDEntityIn
 
     /**
      * {@inheritdoc}
+     *
+     * @codeCoverageIgnore
      */
     public static function make(string $value, ?string $type = null)
     {
@@ -83,9 +85,7 @@ abstract class AbstractTypedIDEntity extends IDEntity implements TypedIDEntityIn
      */
     public function getMaskedValue(int $start_offset = 3, int $end_offset = 3, string $mask_char = '*'): ?string
     {
-        return $this->value === null
-            ? null
-            : $this->hideString($this->value, $start_offset, $end_offset, $mask_char);
+        return $this->hideString((string) $this->value, $start_offset, $end_offset, $mask_char);
     }
 
     /**

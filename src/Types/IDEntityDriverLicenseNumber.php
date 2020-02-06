@@ -98,7 +98,7 @@ class IDEntityDriverLicenseNumber extends AbstractTypedIDEntity implements HasRe
      */
     public function isValid(): bool
     {
-        if (\is_string($this->value)) {
+        if (\is_string($this->value) && $this->value !== '') {
             /** @var DriverLicenseNumberValidatorExtension $validator */
             $validator = static::getContainer()->make(DriverLicenseNumberValidatorExtension::class);
 

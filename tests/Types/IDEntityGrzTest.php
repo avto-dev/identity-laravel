@@ -9,7 +9,7 @@ use AvtoDev\IDEntity\IDEntityInterface;
 use AvtoDev\IDEntity\Types\IDEntityGrz;
 
 /**
- * @covers \AvtoDev\IDEntity\Types\IDEntityGrz
+ * @covers \AvtoDev\IDEntity\Types\IDEntityGrz<extended>
  */
 class IDEntityGrzTest extends AbstractIDEntityTestCase
 {
@@ -1219,6 +1219,7 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
             'TSMEYB21S00610448',
             'LN130-0128818',
 
+            '',
             Str::random(32),
         ];
     }

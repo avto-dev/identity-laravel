@@ -9,7 +9,7 @@ use AvtoDev\IDEntity\IDEntityInterface;
 use AvtoDev\IDEntity\Types\IDEntityDriverLicenseNumber;
 
 /**
- * @covers \AvtoDev\IDEntity\Types\IDEntityDriverLicenseNumber
+ * @covers \AvtoDev\IDEntity\Types\IDEntityDriverLicenseNumber<extended>
  */
 class IDEntityDriverLicenseNumberTest extends AbstractIDEntityTestCase
 {
@@ -131,6 +131,7 @@ class IDEntityDriverLicenseNumberTest extends AbstractIDEntityTestCase
             'YX 12 123456',
             '38:49:924785:832907',
 
+            '',
             Str::random(32),
         ];
     }

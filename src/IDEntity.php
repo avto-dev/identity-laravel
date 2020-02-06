@@ -125,7 +125,7 @@ class IDEntity implements IDEntityInterface
      */
     protected static function getEntityClassByType(?string $type): ?string
     {
-        return static::typeIsSupported($type)
+        return \is_string($type) && static::typeIsSupported($type)
             ? static::getTypesMap()[$type]
             : null;
     }

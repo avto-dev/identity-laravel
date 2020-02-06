@@ -282,7 +282,7 @@ class IDEntityGrz extends AbstractTypedIDEntity implements HasRegionDataInterfac
      */
     public function isValid(): bool
     {
-        if (\is_string($this->value)) {
+        if (\is_string($this->value) && $this->value !== '') {
             /** @var GrzCodeValidatorExtension $validator */
             $validator = static::getContainer()->make(GrzCodeValidatorExtension::class);
 

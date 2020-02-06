@@ -63,9 +63,13 @@ class IDEntityBody extends AbstractTypedIDEntity
      */
     public function isValid(): bool
     {
-        /** @var BodyCodeValidatorExtension $validator */
-        $validator = static::getContainer()->make(BodyCodeValidatorExtension::class);
+        if (\is_string($this->value) && $this->value !== '') {
+            /** @var BodyCodeValidatorExtension $validator */
+            $validator = static::getContainer()->make(BodyCodeValidatorExtension::class);
 
-        return \is_string($this->value) && $validator->passes('', $this->value);
+            return \is_string($this->value) && $validator->passes('', $this->value);
+        }
+
+        return false;
     }
 }

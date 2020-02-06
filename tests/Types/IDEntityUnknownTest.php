@@ -9,7 +9,7 @@ use AvtoDev\IDEntity\IDEntityInterface;
 use AvtoDev\IDEntity\Types\IDEntityUnknown;
 
 /**
- * @covers \AvtoDev\IDEntity\Types\IDEntityUnknown
+ * @covers \AvtoDev\IDEntity\Types\IDEntityUnknown<extended>
  */
 class IDEntityUnknownTest extends AbstractIDEntityTestCase
 {

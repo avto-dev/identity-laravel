@@ -9,7 +9,7 @@ use AvtoDev\IDEntity\IDEntityInterface;
 use AvtoDev\IDEntity\Types\IDEntitySts;
 
 /**
- * @covers \AvtoDev\IDEntity\Types\IDEntitySts
+ * @covers \AvtoDev\IDEntity\Types\IDEntitySts<extended>
  */
 class IDEntityStsTest extends AbstractIDEntityTestCase
 {
@@ -158,6 +158,7 @@ class IDEntityStsTest extends AbstractIDEntityTestCase
             'LN130-0128818',
             '38:49:924785:832907',
 
+            '',
             Str::random(32),
         ];
     }

@@ -9,7 +9,7 @@ use AvtoDev\IDEntity\IDEntityInterface;
 use AvtoDev\IDEntity\Types\IDEntityChassis;
 
 /**
- * @covers \AvtoDev\IDEntity\Types\IDEntityChassis
+ * @covers \AvtoDev\IDEntity\Types\IDEntityChassis<extended>
  */
 class IDEntityChassisTest extends AbstractIDEntityTestCase
 {
@@ -67,6 +67,8 @@ class IDEntityChassisTest extends AbstractIDEntityTestCase
         return [
             'TSMEYB21S00610448',
             '38:49:924785:832907',
+
+            '',
             Str::random(32),
         ];
     }

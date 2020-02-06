@@ -10,7 +10,7 @@ use AvtoDev\IDEntity\Types\IDEntityCadastralNumber;
 use AvtoDev\StaticReferences\References\Entities\CadastralDistrict;
 
 /**
- * @covers \AvtoDev\IDEntity\Types\IDEntityCadastralNumber
+ * @covers \AvtoDev\IDEntity\Types\IDEntityCadastralNumber<extended>
  */
 class IDEntityCadastralNumberTest extends AbstractIDEntityTestCase
 {
@@ -232,6 +232,7 @@ class IDEntityCadastralNumberTest extends AbstractIDEntityTestCase
             '77:84:996770:5193',
             '38:49:924785:832907',
 
+            '',
             Str::random(32),
         ];
     }

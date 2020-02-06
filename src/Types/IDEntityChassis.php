@@ -60,9 +60,13 @@ class IDEntityChassis extends AbstractTypedIDEntity
      */
     public function isValid(): bool
     {
-        /** @var ChassisCodeValidatorExtension $validator */
-        $validator = static::getContainer()->make(ChassisCodeValidatorExtension::class);
+        if (\is_string($this->value) && $this->value !== '') {
+            /** @var ChassisCodeValidatorExtension $validator */
+            $validator = static::getContainer()->make(ChassisCodeValidatorExtension::class);
 
-        return \is_string($this->value) && $validator->passes('', $this->value);
+            return \is_string($this->value) && $validator->passes('', $this->value);
+        }
+
+        return false;
     }
 }

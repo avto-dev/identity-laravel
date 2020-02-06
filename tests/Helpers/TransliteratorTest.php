@@ -77,6 +77,13 @@ class TransliteratorTest extends AbstractTestCase
                 'a b v g d e e zh z i y k l m n o p r s t u f kh ts ch sh shch y e yu ya'
             )
         );
+
+        $this->assertSame(
+            'а б v г д е е зн з и у к л м n о п r s т ю ф кн тs сн sн sнсн у е ую уа',
+            Transliterator::detransliterateString(
+                'a b v g d e e zh z i y k l m n o p r s t u f kh ts ch sh shch y e yu ya', true
+            )
+        );
     }
 
     /**
