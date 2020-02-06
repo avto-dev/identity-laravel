@@ -52,8 +52,8 @@ class IDEntityGrz extends AbstractTypedIDEntity implements HasRegionDataInterfac
      * Allowed chars.
      */
     protected const
-        KYR_CHARS   = 'АВЕКМНОРСТУХ',
-        KYR_ANALOGS = 'ABEKMHOPCTYX'; // Order is important!
+        CYRILLIC_CHARS = 'АВЕКМНОРСТУХ',
+        CYRILLIC_ANALOGS = 'ABEKMHOPCTYX'; // Order is important!
 
     /**
      * Pattern and types map.
@@ -151,44 +151,44 @@ class IDEntityGrz extends AbstractTypedIDEntity implements HasRegionDataInterfac
     public function getFormatPattern(): ?string
     {
         if (\is_string($this->value)) {
-            static $kyr = self::KYR_CHARS;
+            static $cyrillic = self::CYRILLIC_CHARS;
             $value      = (string) $this->value;
 
             switch (true) {
                 // X000XX77_OR_X000XX777
-                case \preg_match("~^[{$kyr}]\d{3}[{$kyr}]{2}\d{2,3}$~iu", $value) === 1:
+                case \preg_match("~^[{$cyrillic}]\d{3}[{$cyrillic}]{2}\d{2,3}$~iu", $value) === 1:
                     return self::FORMAT_PATTERN_1;
 
                 // X000XX
-                case \preg_match("~^[{$kyr}]\d{3}[{$kyr}]{2}$~iu", $value) === 1:
+                case \preg_match("~^[{$cyrillic}]\d{3}[{$cyrillic}]{2}$~iu", $value) === 1:
                     return self::FORMAT_PATTERN_2;
 
                 // XX00077
-                case \preg_match("~^[{$kyr}]{2}\d{3}\d{2}$~iu", $value) === 1:
+                case \preg_match("~^[{$cyrillic}]{2}\d{3}\d{2}$~iu", $value) === 1:
                     return self::FORMAT_PATTERN_3;
 
                 // 0000XX77
-                case \preg_match("~^\d{4}[{$kyr}]{2}\d{2}$~iu", $value) === 1:
+                case \preg_match("~^\d{4}[{$cyrillic}]{2}\d{2}$~iu", $value) === 1:
                     return self::FORMAT_PATTERN_4;
 
                 // XX000077
-                case \preg_match("~^[{$kyr}]{2}\d{4}\d{2}$~iu", $value) === 1:
+                case \preg_match("~^[{$cyrillic}]{2}\d{4}\d{2}$~iu", $value) === 1:
                     return self::FORMAT_PATTERN_5;
 
                 // X000077
-                case \preg_match("~^[{$kyr}]\d{4}\d{2}$~iu", $value) === 1:
+                case \preg_match("~^[{$cyrillic}]\d{4}\d{2}$~iu", $value) === 1:
                     return self::FORMAT_PATTERN_6;
 
                 // 000X77
-                case \preg_match("~^\d{3}[{$kyr}]\d{2}$~iu", $value) === 1:
+                case \preg_match("~^\d{3}[{$cyrillic}]\d{2}$~iu", $value) === 1:
                     return self::FORMAT_PATTERN_7;
 
                 // 0000X77
-                case \preg_match("~^\d{4}[{$kyr}]\d{2}$~iu", $value) === 1:
+                case \preg_match("~^\d{4}[{$cyrillic}]\d{2}$~iu", $value) === 1:
                     return self::FORMAT_PATTERN_8;
 
                 // XX000X77_OR_XX000X777
-                case \preg_match("~^[{$kyr}]{2}\d{3}[{$kyr}]\d{2,3}$~iu", $value) === 1:
+                case \preg_match("~^[{$cyrillic}]{2}\d{3}[{$cyrillic}]\d{2,3}$~iu", $value) === 1:
                     return self::FORMAT_PATTERN_9;
             }
         }
@@ -206,7 +206,7 @@ class IDEntityGrz extends AbstractTypedIDEntity implements HasRegionDataInterfac
             $value = \mb_strtoupper(\trim((string) $value), 'UTF-8');
 
             // Remove all chars except allowed
-            $value = (string) \preg_replace('~[^' . self::KYR_CHARS . self::KYR_ANALOGS . '0-9]~u', '', $value);
+            $value = (string) \preg_replace('~[^' . self::CYRILLIC_CHARS . self::CYRILLIC_ANALOGS . '0-9]~u', '', $value);
 
             // Transliterate latin chars with cyrillic (backward transliteration)
             $value = Transliterator::detransliterateLite($value);
