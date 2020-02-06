@@ -7,7 +7,7 @@ use AvtoDev\StaticReferences\References\Entities\CadastralDistrict;
 interface HasCadastralNumberInterface
 {
     /**
-     * Get cadastral data by region & district codes.
+     * Get cadastral data by district & area codes.
      *
      * @return CadastralDistrict|null
      */
