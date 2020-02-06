@@ -208,7 +208,7 @@ class IDEntityGrz extends AbstractTypedIDEntity implements HasRegionDataInterfac
             // Remove all chars except allowed
             $value = (string) \preg_replace('~[^' . self::KYR_CHARS . self::KYR_ANALOGS . '0-9]~u', '', $value);
 
-            // Transliterate latin- chars with kyr- (backward transliteration)
+            // Transliterate latin chars with cyrillic (backward transliteration)
             $value = Transliterator::detransliterateLite($value);
 
             return $value;

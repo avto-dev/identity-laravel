@@ -46,7 +46,7 @@ class IDEntityBody extends AbstractTypedIDEntity
             // Replace white spaces around dash with one dash
             $value = (string) \preg_replace('~\s*-\s*~', '-', $value);
 
-            // Transliterate kyr- chars with latin-
+            // Transliterate cyrillic chars with latin
             $value = Transliterator::transliterateString(\mb_strtoupper($value, 'UTF-8'), true);
 
             // Remove all chars except allowed

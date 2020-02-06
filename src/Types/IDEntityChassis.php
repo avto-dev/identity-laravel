@@ -40,7 +40,7 @@ class IDEntityChassis extends AbstractTypedIDEntity
             // Normalize dash chars
             $value = Normalizer::normalizeDashChar($value);
 
-            // Transliterate kyr- chars with latin-
+            // Transliterate cyrillic chars with latin
             $value = Transliterator::transliterateString(\mb_strtoupper($value, 'UTF-8'), true);
 
             // Remove all chars except allowed

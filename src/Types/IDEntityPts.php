@@ -39,7 +39,7 @@ class IDEntityPts extends AbstractTypedIDEntity
             // Remove all chars except allowed
             $value = (string) \preg_replace('~[^' . 'АБВГДЕЖЗИКЛМНОПРСТУФХЦЧШЩЫЭЮЯ' . 'A-Z' . '0-9]~u', '', $value);
 
-            // Replace latin- chars with kyr- analogs (backward transliteration)
+            // Replace latin chars with cyrillic analogs (backward transliteration)
             $value = Transliterator::detransliterateString($value, true);
 
             return $value;

@@ -33,7 +33,7 @@ class IDEntityVin extends AbstractTypedIDEntity
     public static function normalize($value): ?string
     {
         try {
-            // Transliterate kyr- chars with latin-
+            // Transliterate cyrillic chars with latin
             $value = Transliterator::transliterateString(\mb_strtoupper((string) $value, 'UTF-8'), true);
 
             // Latin "O" char replace with zero

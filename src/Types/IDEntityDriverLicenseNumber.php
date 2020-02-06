@@ -41,7 +41,7 @@ class IDEntityDriverLicenseNumber extends AbstractTypedIDEntity implements HasRe
             // Remove all chars except allowed (delimiters are included)
             $value = (string) \preg_replace('~[^' . 'АВЕКМНОРСТУХ' . 'ABEKMHOPCTYX' . '0-9]~u', '', $value);
 
-            // Transliterate latin- chars with kyr- (backward transliteration)
+            // Transliterate latin chars with cyrillic (backward transliteration)
             $value = Transliterator::detransliterateLite($value);
 
             return $value;
