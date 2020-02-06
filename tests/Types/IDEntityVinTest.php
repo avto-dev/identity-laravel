@@ -5,33 +5,101 @@ declare(strict_types = 1);
 namespace AvtoDev\IDEntity\Tests\Types;
 
 use Illuminate\Support\Str;
-use AvtoDev\IDEntity\IDEntity;
 use AvtoDev\IDEntity\Types\IDEntityVin;
+use AvtoDev\IDEntity\IDEntityInterface;
 
 /**
- * @covers \AvtoDev\IDEntity\Types\IDEntityVin<extended>
+ * @covers \AvtoDev\IDEntity\Types\IDEntityVin
  */
 class IDEntityVinTest extends AbstractIDEntityTestCase
 {
     /**
-     * @var IDEntityVin
+     * @var string
      */
-    protected $instance;
+    protected $expected_type = IDEntityInterface::ID_TYPE_VIN;
 
     /**
      * {@inheritdoc}
      */
-    public function testGetType(): void
+    public function testNormalize(): void
     {
-        $this->assertSame(IDEntity::ID_TYPE_VIN, $this->instance->getType());
+        $entity = $this->entityFactory();
+
+        $this->assertSame($valid = 'JF1SJ5LC5DG048667', $entity::normalize(Str::lower($valid)));
+        $this->assertSame($valid, $entity::normalize("  {$valid} "));
+        $this->assertSame($valid, $entity::normalize('JF1SJ5Lс5DG048667'));
+        $this->assertSame($valid, $entity::normalize('JF1SJ5LC5DGО48667'));
+        $this->assertSame($valid, $entity::normalize('JF1SJ5LC5DGO48667'));
+        $this->assertSame($valid, $entity::normalize('JF1SJ5L {}#$%^& C5DG048667 Ъ'));
+    }
+
+    /**
+     * @return void
+     */
+    public function testChecksumValidation(): void
+    {
+        $entity = $this->entityFactory();
+
+        $valid = [
+            'JHMCM56557С404453',
+            '1C4NJDEB5FD340542',
+            'WD2PD744X55764973',
+            'WAUBB28D2XA299286',
+            'JHMCG56612C018010',
+            '1HD1BW517AB032841',
+            '3D7UT2CL4BG628593',
+            '1N4AZ0CP3FC321188',
+            '2HGFB2F65CH319973',
+            'JTJBT20X270137599',
+            '5NPEU46F96H063851',
+            '2T1KR32E43C162992',
+            'JTEBU29J805003909',
+            'X4X5A79400D363203',
+            'WAUZZZ4E35N002551',
+            '4S4WX83C164401449',
+        ];
+
+        foreach ($valid as $value) {
+            $this->assertTrue($entity->setValue($value)->isChecksumValidated());
+        }
+
+        $invalid = [
+            'JMZBK12Z261367366',
+            'SALLSAAF4BA268959',
+            'X9FMXXEEBMCG05797',
+            'WDC2923241A022925',
+            'YV1CM714681472368',
+            'Z94CB41ABDR105897',
+            'XUUNF486J90008440',
+            'Z94CT41DBFR411079',
+            'KMHE341CBFA025224',
+            'XWB3L32EDCA218918',
+            'VF1UDC3K640850971',
+            '!@#$%^&*()}{<>?/[',
+
+            'foo bar',
+            Str::random(32),
+        ];
+
+        foreach ($invalid as $value) {
+            $this->assertFalse($entity->setValue($value)->isChecksumValidated(), $value);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function entityFactory(?string $value = null): IDEntityVin
+    {
+        return new IDEntityVin($value ?? $this->getValidValues()[0]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function testIsValid(): void
+    protected function getValidValues(): array
     {
-        $valid = [
+        return [
             '5UXFA13585LY08847',
             'WBAFW51040C245397',
             'Z94CB41ABDR105897',
@@ -129,103 +197,21 @@ class IDEntityVinTest extends AbstractIDEntityTestCase
             'WF03XXGCD36Y43748',
             'XWF0AHM75B0002747',
         ];
-
-        foreach ($valid as $value) {
-            $this->assertTrue($this->instance->setValue($value)->isValid());
-        }
-
-        $this->assertFalse($this->instance->setValue('А123АА177')->isValid());
-        $this->assertFalse($this->instance->setValue('JMZGG12F6616444962')->isValid());
-        $this->assertFalse($this->instance->setValue('11АА112233')->isValid());
-        $this->assertFalse($this->instance->setValue('FN15-002153')->isValid());
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
-    public function testNormalize(): void
+    protected function getInvalidValues(): array
     {
-        // Из нижнего регистра переведёт в верхний
-        $this->assertSame($valid = $this->getValidValue(), $this->instance::normalize(Str::lower($this->getValidValue())));
+        return [
+            'А123АА177',
+            'JMZGG12F6616444962',
+            '11АА112233',
+            'FN15-002153',
+            '38:49:924785:832907',
 
-        // Пробелы - успешно триммит
-        $this->assertSame($valid, $this->instance::normalize(' ' . $this->getValidValue() . ' '));
-
-        // Кириллицу заменяет на латиницу ("С" - кириллическая)
-        $this->assertSame($valid, $this->instance::normalize('JF1SJ5Lс5DG048667'));
-
-        // Успешно заменяет кириллическую и латинскую "О" на "0"
-        $this->assertSame($valid, $this->instance::normalize('JF1SJ5LC5DGО48667'));
-        $this->assertSame($valid, $this->instance::normalize('JF1SJ5LC5DGO48667'));
-
-        // Некорректные символы - удаляет
-        $this->assertSame($valid, $this->instance::normalize('JF1SJ5L {}#$%^& C5DG048667 Ъ'));
-    }
-
-    /**
-     * @return void
-     */
-    public function testChecksumValidation(): void
-    {
-        $valid = [
-            'JHMCM56557С404453',
-            '1C4NJDEB5FD340542',
-            'WD2PD744X55764973',
-            'WAUBB28D2XA299286',
-            'JHMCG56612C018010',
-            '1HD1BW517AB032841',
-            '3D7UT2CL4BG628593',
-            '1N4AZ0CP3FC321188',
-            '2HGFB2F65CH319973',
-            'JTJBT20X270137599',
-            '5NPEU46F96H063851',
-            '2T1KR32E43C162992',
-            'JTEBU29J805003909',
-            'X4X5A79400D363203',
-            'WAUZZZ4E35N002551',
-            '4S4WX83C164401449',
+            Str::random(32),
         ];
-
-        $invalid = [
-            'JMZBK12Z261367366',
-            'SALLSAAF4BA268959',
-            'X9FMXXEEBMCG05797',
-            'WDC2923241A022925',
-            'YV1CM714681472368',
-            'Z94CB41ABDR105897',
-            'XUUNF486J90008440',
-            'Z94CT41DBFR411079',
-            'KMHE341CBFA025224',
-            'XWB3L32EDCA218918',
-            'VF1UDC3K640850971',
-            '!@#$%^&*()}{<>?/[',
-
-            'foo bar',
-            Str::random(512),
-        ];
-
-        foreach ($valid as $value) {
-            $this->assertTrue($this->instance->setValue($value)->isChecksumValidated());
-        }
-
-        foreach ($invalid as $value) {
-            $this->assertFalse($this->instance->setValue($value)->isChecksumValidated(), $value);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getClassName(): string
-    {
-        return IDEntityVin::class;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getValidValue(): string
-    {
-        return 'JF1SJ5LC5DG048667';
     }
 }

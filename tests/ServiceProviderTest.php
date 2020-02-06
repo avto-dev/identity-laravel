@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace AvtoDev\IDEntity\Tests;
 
 use AvtoDev\IDEntity\ServiceProvider;
+use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
 
 /**
  * @covers \AvtoDev\IDEntity\ServiceProvider
@@ -12,13 +13,19 @@ use AvtoDev\IDEntity\ServiceProvider;
 class ServiceProviderTest extends AbstractTestCase
 {
     /**
-     * Test service provider public methods.
-     *
      * @return void
      */
-    public function testServiceProviderMethods(): void
+    public function testGetConfigRootKeyName(): void
     {
         $this->assertSame('identity', ServiceProvider::getConfigRootKeyName());
+    }
+
+    /**
+     * @return void
+     */
+    public function testGetConfigPath(): void
+    {
+        $this->assertFileExists(ServiceProvider::getConfigPath());
 
         $this->assertSame(
             \realpath(__DIR__ . '/../config/identity.php'),
@@ -27,18 +34,28 @@ class ServiceProviderTest extends AbstractTestCase
     }
 
     /**
-     * Test package configs.
-     *
      * @return void
      */
-    public function testPackageConfig(): void
+    public function testConfigsInitialization(): void
     {
-        $original_config_content = require __DIR__ . '/../config/identity.php';
+        $package_config_src    = \realpath($config_path = ServiceProvider::getConfigPath());
+        $package_config_target = $this->app->configPath(\basename($config_path));
+
+        $this->assertSame(
+            $package_config_target,
+            IlluminateServiceProvider::$publishes[ServiceProvider::class][$package_config_src]
+        );
+
+        $this->assertSame(
+            $package_config_target,
+            IlluminateServiceProvider::$publishGroups['config'][$package_config_src],
+            "Publishing group value {$package_config_target} was not found"
+        );
+
+        $original_config_content = require $config_path;
 
         $this->assertIsArray($original_config_content);
         $this->assertArrayHasKey('extended_types_map', $original_config_content);
         $this->assertEmpty($original_config_content['extended_types_map']);
-
-        $this->assertSame($this->app->make('config')->get('identity'), $original_config_content);
     }
 }

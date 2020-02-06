@@ -104,7 +104,7 @@ abstract class AbstractTypedIDEntity extends IDEntity implements TypedIDEntityIn
      */
     public function toJson($options = 0): string
     {
-        return Json::encode($this->toArray(), $options);
+        return Json::encode((object) $this->toArray(), $options);
     }
 
     /**

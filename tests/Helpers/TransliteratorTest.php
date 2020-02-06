@@ -13,8 +13,6 @@ use AvtoDev\IDEntity\Tests\AbstractTestCase;
 class TransliteratorTest extends AbstractTestCase
 {
     /**
-     * Тест метода транслитерации.
-     *
      * @return void
      */
     public function testTransliterateString(): void
@@ -59,11 +57,9 @@ class TransliteratorTest extends AbstractTestCase
     }
 
     /**
-     * Тест метода обратной транслитерации.
-     *
      * @return void
      */
-    public function testDetransliterateString(): void
+    public function testDeTransliterateString(): void
     {
         $asserts = [
             'privet'    => 'привет',
@@ -83,7 +79,10 @@ class TransliteratorTest extends AbstractTestCase
         );
     }
 
-    public function testLiteLtansliterator(): void
+    /**
+     * @return void
+     */
+    public function testLiteTransliterate(): void
     {
         $this->assertSame(
             'АВЕКМНОРСТУХ авекмнорстух',

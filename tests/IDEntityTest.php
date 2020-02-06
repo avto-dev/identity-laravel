@@ -4,28 +4,37 @@ declare(strict_types = 1);
 
 namespace AvtoDev\IDEntity\Tests;
 
-use Exception;
+use Illuminate\Support\Str;
+use AvtoDev\IDEntity\Types;
 use AvtoDev\IDEntity\IDEntity;
+use AvtoDev\IDEntity\ServiceProvider;
 use AvtoDev\IDEntity\IDEntityInterface;
-use AvtoDev\IDEntity\Types\IDEntityGrz;
-use AvtoDev\IDEntity\Types\IDEntityVin;
-use AvtoDev\IDEntity\Types\IDEntityBody;
-use AvtoDev\IDEntity\Types\IDEntityUnknown;
-use AvtoDev\IDEntity\Tests\Mocks\IDEntityMock;
-use AvtoDev\IDEntity\Tests\Traits\InstancesAccessorsTrait;
-use AvtoDev\IDEntity\Tests\Mocks\Types\IDEntityCantAutodetectMock;
+use AvtoDev\IDEntity\Tests\Mocks\TypedIDEntityMock;
+use Illuminate\Contracts\Config\Repository as ConfigRepository;
 
 /**
- * @covers \AvtoDev\IDEntity\IDEntity<extended>
+ * @covers \AvtoDev\IDEntity\IDEntity
  */
 class IDEntityTest extends AbstractTestCase
 {
-    use InstancesAccessorsTrait;
+    /**
+     * @var ConfigRepository
+     */
+    protected $config;
 
     /**
-     * @var IDEntityMock
+     * @var array<string, class-string>
      */
-    protected $instance;
+    protected $basic_types = [
+        IDEntityInterface::ID_TYPE_VIN                   => Types\IDEntityVin::class,
+        IDEntityInterface::ID_TYPE_GRZ                   => Types\IDEntityGrz::class,
+        IDEntityInterface::ID_TYPE_STS                   => Types\IDEntitySts::class,
+        IDEntityInterface::ID_TYPE_PTS                   => Types\IDEntityPts::class,
+        IDEntityInterface::ID_TYPE_BODY                  => Types\IDEntityBody::class,
+        IDEntityInterface::ID_TYPE_CHASSIS               => Types\IDEntityChassis::class,
+        IDEntityInterface::ID_TYPE_DRIVER_LICENSE_NUMBER => Types\IDEntityDriverLicenseNumber::class,
+        IDEntityInterface::ID_TYPE_CADASTRAL_NUMBER      => Types\IDEntityCadastralNumber::class,
+    ];
 
     /**
      * {@inheritdoc}
@@ -34,379 +43,453 @@ class IDEntityTest extends AbstractTestCase
     {
         parent::setUp();
 
-        $this->instance = new IDEntityMock;
+        $this->config = $this->app->make(ConfigRepository::class);
     }
 
     /**
-     * {@inheritdoc}
-     */
-    protected function tearDown(): void
-    {
-        unset($this->instance);
-
-        parent::tearDown();
-    }
-
-    /**
-     * Тест констант.
-     *
      * @return void
      */
-    public function testConstants(): void
+    public function testImplementedInterfaces(): void
     {
-        $checks = [
-            'AUTODETECT' => IDEntity::ID_TYPE_AUTO,
-            'UNKNOWN'    => IDEntity::ID_TYPE_UNKNOWN,
-            'VIN'        => IDEntity::ID_TYPE_VIN,
-            'GRZ'        => IDEntity::ID_TYPE_GRZ,
-            'STS'        => IDEntity::ID_TYPE_STS,
-            'PTS'        => IDEntity::ID_TYPE_PTS,
-            'BODY'       => IDEntity::ID_TYPE_BODY,
-            'CHASSIS'    => IDEntity::ID_TYPE_CHASSIS,
-            'DLN'        => IDEntity::ID_TYPE_DRIVER_LICENSE_NUMBER,
-            'CADNUM'     => IDEntity::ID_TYPE_CADASTRAL_NUMBER,
-        ];
-
-        foreach ($checks as $what => $with) {
-            $this->assertSame($what, $with);
-        }
+        $this->assertContains(IDEntityInterface::class, \class_implements(IDEntity::class));
     }
 
     /**
-     * Тест реализации необходимых интерфейсов.
-     *
      * @return void
      */
-    public function testImplements(): void
+    public function testConstructorAccess(): void
     {
-        foreach ([IDEntityInterface::class] as $class_name) {
-            $this->assertInstanceOf($class_name, $this->instance);
-        }
+        $reflection_class = (new \ReflectionClass(IDEntity::class));
+
+        $this->assertSame(
+            0,
+            $reflection_class->getMethod('__construct')->getModifiers() & \ReflectionMethod::IS_PUBLIC,
+            'Constructor must have non-public access'
+        );
     }
 
     /**
-     * Тест метода 'getSupportedTypes'.
-     *
      * @return void
      */
     public function testGetSupportedTypes(): void
     {
-        $expects = [
-            IDEntity::ID_TYPE_VIN,
-            IDEntity::ID_TYPE_GRZ,
-            IDEntity::ID_TYPE_STS,
-            IDEntity::ID_TYPE_PTS,
-            IDEntity::ID_TYPE_CHASSIS,
-            IDEntity::ID_TYPE_BODY,
-            IDEntity::ID_TYPE_DRIVER_LICENSE_NUMBER,
-            IDEntity::ID_TYPE_CADASTRAL_NUMBER,
-        ];
+        $this->config->set(ServiceProvider::getConfigRootKeyName() . '.extended_types_map', [
+            $new_type = Str::random() => TypedIDEntityMock::class,
+        ]);
 
-        foreach ($expects as $type) {
-            $this->assertContains($type, IDEntity::getSupportedTypes());
-        }
+        $actual     = IDEntity::getSupportedTypes();
+        $expected   = \array_keys($this->basic_types);
+        $expected[] = $new_type; // Push new type into expected types list
 
-        foreach (['foo', null, 123, new Exception] as $type) {
-            $this->assertNotContains($type, IDEntity::getSupportedTypes());
+        $this->assertSameSize($expected, $actual);
+
+        foreach ($expected as $type) {
+            $this->assertContains($type, $actual);
         }
     }
 
     /**
-     * Тест метода 'typeIsSupported'.
-     *
      * @return void
      */
     public function testTypeIsSupported(): void
     {
-        $expects = [
-            IDEntity::ID_TYPE_VIN,
-            IDEntity::ID_TYPE_GRZ,
-            IDEntity::ID_TYPE_STS,
-            IDEntity::ID_TYPE_PTS,
-            IDEntity::ID_TYPE_CHASSIS,
-            IDEntity::ID_TYPE_BODY,
-            IDEntity::ID_TYPE_DRIVER_LICENSE_NUMBER,
-            IDEntity::ID_TYPE_CADASTRAL_NUMBER,
-        ];
+        $this->config->set(ServiceProvider::getConfigRootKeyName() . '.extended_types_map', [
+            $new_type = Str::random() => TypedIDEntityMock::class,
+        ]);
 
-        foreach ($expects as $type) {
+        foreach (\array_keys($this->basic_types) as $type) {
             $this->assertTrue(IDEntity::typeIsSupported($type));
         }
 
-        foreach (['foo', null, 123, new Exception] as $type) {
-            $this->assertFalse(IDEntity::typeIsSupported($type));
-        }
+        $this->assertTrue(IDEntity::typeIsSupported($new_type));
+
+        $this->assertFalse(IDEntity::typeIsSupported(Str::random()));
+        $this->assertFalse(IDEntity::typeIsSupported(''));
     }
 
     /**
-     * Проверяем, что возможность автоматического определения сущности задается свойством
-     */
-    public function testCanAutodetectMethod(): void
-    {
-        $instance = new IDEntityCantAutodetectMock('');
-        $this->assertFalse($instance->canBeAutoDetected());
-    }
-
-    /**
-     * Тест метода 'make' с передачей конкретного типа.
-     *
      * @return void
      */
-    public function testMakeWithPassedType(): void
+    public function testMakeDefaultType(): void
     {
-        $instance = IDEntity::make('JF1SJ5LC5DG048667', $type = IDEntity::ID_TYPE_VIN);
-        $this->assertSame($type, $instance->getType());
+        $reflection_class = (new \ReflectionClass(IDEntity::class));
 
-        $instance = IDEntity::make('А123АА177', $type = IDEntity::ID_TYPE_GRZ);
-        $this->assertSame($type, $instance->getType());
-
-        $instance = IDEntity::make('11АА112233', $type = IDEntity::ID_TYPE_STS);
-        $this->assertSame($type, $instance->getType());
-
-        $instance = IDEntity::make('11АА112233', $type = IDEntity::ID_TYPE_PTS);
-        $this->assertSame($type, $instance->getType());
-
-        $instance = IDEntity::make('FN15-002153', $type = IDEntity::ID_TYPE_BODY);
-        $this->assertSame($type, $instance->getType());
-
-        $instance = IDEntity::make('FN15-002153', $type = IDEntity::ID_TYPE_CHASSIS);
-        $this->assertSame($type, $instance->getType());
-
-        $instance = IDEntity::make('77 16 235662', $type = IDEntity::ID_TYPE_DRIVER_LICENSE_NUMBER);
-        $this->assertSame($type, $instance->getType());
-
-        $instance = IDEntity::make('33:22:011262:526', $type = IDEntity::ID_TYPE_CADASTRAL_NUMBER);
-        $this->assertSame($type, $instance->getType());
+        $this->assertSame(
+            IDEntityInterface::ID_TYPE_AUTO,
+            $reflection_class->getMethod('make')->getParameters()[1]->getDefaultValue()
+        );
     }
 
     /**
-     * Тест метода 'make' с типом "авто-определение типа".
-     *
      * @return void
      */
-    public function testMakeWithAutoType(): void
+    public function testMakeWithAutoUndetectableValue(): void
     {
-        // Все возможные типы ГРЗ для авто-определения
+        $this->assertInstanceOf(Types\IDEntityUnknown::class, IDEntity::make(Str::random(5)));
+    }
+
+    /**
+     * @return void
+     */
+    public function testMakeWithUnknownTypePassing(): void
+    {
+        // Make sure that value can be auto-detected
+        $this->assertNotInstanceOf(Types\IDEntityUnknown::class, IDEntity::make($value = 'А123АА177'));
+
+        $this->assertInstanceOf(Types\IDEntityUnknown::class, IDEntity::make($value, Str::random()));
+    }
+
+    /**
+     * @return void
+     */
+    public function testMakeWithTypePassing(): void
+    {
+        $this->assertInstanceOf(
+            Types\IDEntityVin::class,
+            IDEntity::make('JF1SJ5LC5DG048667', IDEntityInterface::ID_TYPE_VIN)
+        );
+
+        $this->assertInstanceOf(
+            Types\IDEntityGrz::class,
+            IDEntity::make('А123АА177', IDEntityInterface::ID_TYPE_GRZ)
+        );
+
+        $this->assertInstanceOf(
+            Types\IDEntitySts::class,
+            IDEntity::make('11АА112233', IDEntityInterface::ID_TYPE_STS)
+        );
+
+        $this->assertInstanceOf(
+            Types\IDEntityPts::class,
+            IDEntity::make('11АА112233', IDEntityInterface::ID_TYPE_PTS)
+        );
+
+        $this->assertInstanceOf(
+            Types\IDEntityBody::class,
+            IDEntity::make('FN15-002153', IDEntityInterface::ID_TYPE_BODY)
+        );
+
+        $this->assertInstanceOf(
+            Types\IDEntityChassis::class,
+            IDEntity::make('FN15-002153', IDEntityInterface::ID_TYPE_CHASSIS)
+        );
+
+        $this->assertInstanceOf(
+            Types\IDEntityDriverLicenseNumber::class,
+            IDEntity::make('77 16 235662', IDEntityInterface::ID_TYPE_DRIVER_LICENSE_NUMBER)
+        );
+
+        $this->assertInstanceOf(
+            Types\IDEntityCadastralNumber::class,
+            IDEntity::make('33:22:011262:526', IDEntityInterface::ID_TYPE_CADASTRAL_NUMBER)
+        );
+    }
+
+    /**
+     * @return void
+     */
+    public function testMakeVinAutoDetection(): void
+    {
         $values = [
-            // М000ММ77 или М000ММ777 (тип 1 - Для легковых, грузовых, грузопассажирских ТС и автобусов)
-            'М000ММ77',
-            'М000ММ777',
-
-            // М000ММ (тип 1А - Для легковых ТС должностных лиц)
-            'М000ММ',
-            'О772ТХ',
-
-            // ММ00077 (тип 1Б - Для легковых ТС, исп. для перевозки людей на коммерческой основе, автобусов)
-            // ММ00077 (тип 2 - Для автомобильных прицепов и полуприцепов)
-            'ММ00077',
-            'СХ39646',
-
-            // 0000ММ77 (тип 3 - Для тракторов, самоходных дорожно-строительных машин и иных машин и прицепов)
-            // 0000ММ77 (тип 4 - Для мотоциклов, мотороллеров, мопедов)
-            // 0000ММ77 (тип 5 - Для легковых, грузовых, грузопассажирских автомобилей и автобусов)
-            // 0000ММ77 (тип 7 - Для тракторов, самоходных дорожно-строительных машин и иных машин и прицепов)
-            // 0000ММ77 (тип 8 - Для мотоциклов, мотороллеров, мопедов)
-            '0000ММ77',
-            '6868УК26',
-
-            // ММ000077 (тип 6 - Для автомобильных прицепов и полуприцепов)
-            'ММ000077',
-            'УК868626',
-
-            // М000077 (тип 20 - Для легковых, грузовых, грузопассажирских автомобилей и автобусов)
-            'М000077',
-            'К868626',
-
-            // 000М77 (тип 21 - Для автомобильных прицепов и полуприцепов)
-            '000М77',
-            '866К26',
-
-            // 0000М77 (тип 22 - Для мотоциклов)
-            '0000М77',
-            '6868У26',
-
-            // ММ000М77 или ММ000М777 (тип 15 - Транзит, ламинированный)
-            'АХ368У77',
-            'АХ368У777',
+            '5UXFA13585LY08847',
+            'WBAFW51040C245397',
+            'Z94CB41ABDR105897',
+            'XUUNF486J90008440',
+            'Z94CT41DBFR411079',
+            'X96ERB6X180001283',
+            'KMHDN45D22U348878',
+            'KMHE341CBFA025224',
+            'XWB3L32EDCA218918',
+            'WBASP81010C353098',
+            'VF1UDC3K640850971',
+            'W0LPE6DJ1BG069892',
         ];
 
         foreach ($values as $value) {
-            $instance = IDEntity::make($value);
-            $this->assertSame(
-                IDEntity::ID_TYPE_GRZ,
-                $instance->getType(),
-                \sprintf('Type [%s] not detected for [%s]', IDEntity::ID_TYPE_GRZ, $value)
-            );
-            $this->assertSame($value, $instance->getValue());
-        }
-
-        $instance = IDEntity::make($value = 'JF1SJ5LC5DG048667');
-        $this->assertSame(IDEntity::ID_TYPE_VIN, $instance->getType());
-        $this->assertSame($value, $instance->getValue());
-
-        $this->assertSame($value, $instance->getValue());
-
-        $instance = IDEntity::make($value = '11АА112233');
-        $this->assertSame(IDEntity::ID_TYPE_STS, $instance->getType());
-        $this->assertSame($value, $instance->getValue());
-
-        // Тип "номер ПТС" автоматически отдетектить невозможно, так как правила проверки птс и стс идентичны
-
-        $instance = IDEntity::make($value = 'FN15-002153');
-        $this->assertSame(IDEntity::ID_TYPE_BODY, $instance->getType());
-        $this->assertSame($value, $instance->getValue());
-
-        // Тип "номер ШАССИ" автоматически отдетектить невозможно, так как правила проверки шасси и кузова идентичны
-        // Тип "номер водительского удостоверения" тоже :(
-        // Тип "кадастровый номер" тоже :(
-    }
-
-    /**
-     * Тест метода 'make' с передачей неизвестного типа.
-     *
-     * @return void
-     */
-    public function testMakeWithUnknownType(): void
-    {
-        $instance = IDEntity::make('foo');
-        $this->assertSame(IDEntity::ID_TYPE_UNKNOWN, $instance->getType());
-        $this->assertInstanceOf(IDEntityUnknown::class, $instance);
-
-        $instance = IDEntity::make('foo', 'bar');
-        $this->assertSame(IDEntity::ID_TYPE_UNKNOWN, $instance->getType());
-        $this->assertInstanceOf(IDEntityUnknown::class, $instance);
-
-        $instance = IDEntity::make('foo', IDEntity::ID_TYPE_AUTO);
-        $this->assertSame(IDEntity::ID_TYPE_UNKNOWN, $instance->getType());
-        $this->assertInstanceOf(IDEntityUnknown::class, $instance);
-    }
-
-    /**
-     * Проверяем, что тип не может автоматически определяться.
-     *
-     * @return void
-     */
-    public function testOneTypeCantAutodetect(): void
-    {
-        /* @var IDEntity $mock */
-        $mock = $this->createIDEntityMock([
-            IDEntity::ID_TYPE_VIN            => IDEntityVin::class,
-            IDEntity::ID_TYPE_GRZ            => $except = IDEntityGrz::class,
-            IDEntityCantAutodetectMock::TYPE => IDEntityCantAutodetectMock::class,
-        ]);
-
-        $this->assertInstanceOf($except, $mock::make('А111АА77'));
-
-        /* @var IDEntity $mock */
-        $mock = $this->createIDEntityMock([
-            IDEntity::ID_TYPE_BODY           => IDEntityBody::class,
-            IDEntity::ID_TYPE_VIN            => IDEntityVin::class,
-            IDEntityCantAutodetectMock::TYPE => IDEntityCantAutodetectMock::class,
-            IDEntity::ID_TYPE_GRZ            => $except = IDEntityGrz::class,
-        ]);
-
-        $this->assertInstanceOf($except, $mock::make('А111АА77'));
-
-        /* @var IDEntity $mock */
-        $mock = $this->createIDEntityMock([
-            IDEntityCantAutodetectMock::TYPE => IDEntityCantAutodetectMock::class,
-            IDEntity::ID_TYPE_BODY           => IDEntityBody::class,
-            IDEntity::ID_TYPE_VIN            => IDEntityVin::class,
-            IDEntity::ID_TYPE_GRZ            => $except = IDEntityGrz::class,
-        ]);
-
-        $this->assertInstanceOf($except, $mock::make('А111АА77'));
-    }
-
-    /**
-     * Тест метода 'is'.
-     *
-     * @return void
-     */
-    public function testIsMethod(): void
-    {
-        $this->assertTrue(IDEntity::is($value = 'JF1SJ5LC5DG048667', IDEntity::ID_TYPE_VIN));
-        $this->assertFalse(IDEntity::is($value, IDEntity::ID_TYPE_GRZ));
-        $this->assertFalse(IDEntity::is($value, IDEntity::ID_TYPE_STS));
-
-        $this->assertTrue(IDEntity::is($value = 'А123АА177', IDEntity::ID_TYPE_GRZ));
-        $this->assertFalse(IDEntity::is($value, IDEntity::ID_TYPE_VIN));
-        $this->assertFalse(IDEntity::is($value, IDEntity::ID_TYPE_STS));
-
-        $this->assertTrue(IDEntity::is($value = '11АА112233', IDEntity::ID_TYPE_STS));
-        $this->assertFalse(IDEntity::is($value, IDEntity::ID_TYPE_VIN));
-        $this->assertFalse(IDEntity::is($value, IDEntity::ID_TYPE_GRZ));
-
-        $this->assertTrue(IDEntity::is($value = '11АА332211', IDEntity::ID_TYPE_PTS));
-        $this->assertFalse(IDEntity::is($value, IDEntity::ID_TYPE_VIN));
-        $this->assertFalse(IDEntity::is($value, IDEntity::ID_TYPE_GRZ));
-
-        $this->assertTrue(IDEntity::is($value = 'FN15-002153', IDEntity::ID_TYPE_BODY));
-        $this->assertFalse(IDEntity::is($value, IDEntity::ID_TYPE_VIN));
-        $this->assertFalse(IDEntity::is($value, IDEntity::ID_TYPE_GRZ));
-
-        $this->assertTrue(IDEntity::is($value = 'FN15-102153', IDEntity::ID_TYPE_CHASSIS));
-        $this->assertFalse(IDEntity::is($value, IDEntity::ID_TYPE_VIN));
-        $this->assertFalse(IDEntity::is($value, IDEntity::ID_TYPE_GRZ));
-
-        $this->assertTrue(IDEntity::is($value = '33:22:011262:526', IDEntity::ID_TYPE_CADASTRAL_NUMBER));
-        $this->assertFalse(IDEntity::is($value, IDEntity::ID_TYPE_DRIVER_LICENSE_NUMBER));
-        $this->assertFalse(IDEntity::is($value, IDEntity::ID_TYPE_VIN));
-    }
-
-    /**
-     * Test method that returns extended types map.
-     *
-     * @return void
-     */
-    public function testExtendedTypesMapMethod(): void
-    {
-        $extended_map = $this->callMethod($this->instance, 'getExtendedTypesMap');
-
-        $this->assertInternalType('array', $extended_map);
-
-        $this->app->make('config')->set('identity.extended_types_map', $expects = ['foo' => \stdClass::class]);
-
-        $this->assertSame($expects, $this->callMethod($this->instance, 'getExtendedTypesMap'));
-    }
-
-    /**
-     * Test map extending with package config.
-     *
-     * @return void
-     */
-    public function testExtendsGetTypesMapWithPackageConfig(): void
-    {
-        $original_map = $this->callMethod($this->instance, 'getTypesMap');
-
-        $this->assertNotEmpty($original_map);
-
-        $this->app->make('config')->set('identity.extended_types_map', $expects = ['foo' => $type = \stdClass::class]);
-
-        $map = $this->callMethod($this->instance, 'getTypesMap');
-
-        $this->assertSame($type, $map['foo']);
-
-        foreach ($original_map as $expected_type => $expected_class) {
-            $this->assertSame($map[$expected_type], $expected_class);
+            $this->assertInstanceOf(Types\IDEntityVin::class, IDEntity::make($value));
         }
     }
 
     /**
-     * @param array $types_map
-     *
-     * @return \Mockery\Mock
+     * @return void
      */
-    protected function createIDEntityMock($types_map)
+    public function testMakeGrzAutoDetection(): void
     {
-        $mock = \Mockery::mock(IDEntity::class)->makePartial();
-        $mock->shouldAllowMockingProtectedMethods();
+        $values = [
+            'М000ММ77', 'М000ММ777',
+            'М000ММ', 'О772ТХ',
+            'ММ00077', 'СХ39646',
+            '0000ММ77', '6868УК26',
+            'ММ000077', 'УК868626',
+            'М000077', 'К868626',
+            '000М77', '866К26',
+            '0000М77', '6868У26',
+            'АХ368У77', 'АХ368У777',
+        ];
 
-        $mock
-            ->shouldReceive('getTypesMap')
-            ->andReturn($types_map)
-            ->getMock();
+        foreach ($values as $value) {
+            $this->assertInstanceOf(Types\IDEntityGrz::class, IDEntity::make($value));
+        }
+    }
 
-        return $mock;
+    /**
+     * @return void
+     */
+    public function testMakeStsAutoDetection(): void
+    {
+        $values = [
+            '11АА112233', '78УЕ952328', '16НО224663', '78УС434434', '39НЕ248423',
+            '40 НК 602618', '02 УК 922390', '47 ТА 183843', '77 УР 781043', '61 МЕ 524040',
+        ];
+
+        foreach ($values as $value) {
+            $this->assertInstanceOf(Types\IDEntitySts::class, IDEntity::make($value));
+        }
+    }
+
+    /**
+     * @return void
+     */
+    public function testMakePtsAutoDetection(): void
+    {
+        $this->markTestSkipped(\sprintf(
+            '[%s] cannot be automatically detected because it has same format with [%s]',
+            IDEntityInterface::ID_TYPE_PTS,
+            IDEntityInterface::ID_TYPE_STS
+        ));
+    }
+
+    /**
+     * @return void
+     */
+    public function testMakeBodyAutoDetection(): void
+    {
+        $values = [
+            '0685251',
+            'AT2113041080',
+            'NZE141-9134919',
+            'GD11231271',
+            'GX115-0001807',
+            'LS131701075',
+            'FN15-002153',
+            'S15-017137',
+            'NT30305643',
+            'AT2120020984',
+            'JZX930012010',
+        ];
+
+        foreach ($values as $value) {
+            $this->assertInstanceOf(Types\IDEntityBody::class, IDEntity::make($value));
+        }
+    }
+
+    /**
+     * @return void
+     */
+    public function testMakeChassisAutoDetection(): void
+    {
+        $this->markTestSkipped(\sprintf(
+            '[%s] cannot be automatically detected because it has same format with [%s]',
+            IDEntityInterface::ID_TYPE_CHASSIS,
+            IDEntityInterface::ID_TYPE_BODY
+        ));
+    }
+
+    /**
+     * @return void
+     */
+    public function testMakeDlnAutoDetection(): void
+    {
+        $this->markTestSkipped(\sprintf(
+            '[%s] cannot be automatically detected because it has same format with [%s]',
+            IDEntityInterface::ID_TYPE_DRIVER_LICENSE_NUMBER,
+            IDEntityInterface::ID_TYPE_STS
+        ));
+    }
+
+    /**
+     * @return void
+     */
+    public function testMakeCadastralNumberAutoDetection(): void
+    {
+        $values = [
+            '02:04:000221:2',
+            '09:04:0134001:102',
+            '10:01:0030104:691',
+            '11:05:0105013:390',
+            '13:23:1203002:556',
+            '14:36:102034:2256',
+            '15:09:0020708:133',
+            '16:18:140401:1627',
+            '17:10:0601038:174',
+        ];
+
+        foreach ($values as $value) {
+            $this->assertInstanceOf(Types\IDEntityCadastralNumber::class, IDEntity::make($value));
+        }
+    }
+
+    /**
+     * @return void
+     */
+    public function testMakeTypesExtendingUsingConfig(): void
+    {
+        TypedIDEntityMock::$type = $type = Str::random();
+
+        $this->config->set(ServiceProvider::getConfigRootKeyName() . '.extended_types_map', [
+            $type => TypedIDEntityMock::class,
+        ]);
+
+        $this->assertInstanceOf(TypedIDEntityMock::class, $identity = IDEntity::make(Str::random(), $type));
+        $this->assertSame($type, $identity->getType());
+    }
+
+    /**
+     * @return void
+     */
+    public function testCustomTypeDetection(): void
+    {
+        TypedIDEntityMock::$type       = $type = Str::random();
+        TypedIDEntityMock::$detectable = true;
+        TypedIDEntityMock::$is_valid   = true;
+
+        $this->config->set(ServiceProvider::getConfigRootKeyName() . '.extended_types_map', [
+            $type => TypedIDEntityMock::class,
+        ]);
+
+        $this->assertInstanceOf(TypedIDEntityMock::class, IDEntity::make(Str::random(64)));
+    }
+
+    /**
+     * @return void
+     */
+    public function testCustomTypeDetectionSkipping(): void
+    {
+        TypedIDEntityMock::$type       = $type = Str::random();
+        TypedIDEntityMock::$detectable = false;
+        TypedIDEntityMock::$is_valid   = true;
+
+        $this->config->set(ServiceProvider::getConfigRootKeyName() . '.extended_types_map', [
+            $type => TypedIDEntityMock::class,
+        ]);
+
+        $this->assertInstanceOf(Types\IDEntityUnknown::class, IDEntity::make(Str::random(64)));
+    }
+
+    /**
+     * @return void
+     */
+    public function testIsForVinType(): void
+    {
+        $this->assertTrue(IDEntity::is('JF1SJ5LC5DG048667', $type = IDEntityInterface::ID_TYPE_VIN));
+
+        $wrong = ['А123АА177', '11АА112233', 'FN15-002153', '77 УР 781043', '33:22:011262:526', Str::random()];
+
+        foreach ($wrong as $item) {
+            $this->assertFalse(IDEntity::is($item, $type), "[{$item}] must be not [{$type}] type");
+        }
+    }
+
+    /**
+     * @return void
+     */
+    public function testIsForGrzType(): void
+    {
+        $this->assertTrue(IDEntity::is('А123АА177', $type = IDEntityInterface::ID_TYPE_GRZ));
+
+        $wrong = ['JF1SJ5LC5DG048667', '11АА112233', 'FN15-002153', '77 УР 781043', '33:22:011262:526', Str::random()];
+
+        foreach ($wrong as $item) {
+            $this->assertFalse(IDEntity::is($item, $type), "[{$item}] must be not [{$type}] type");
+        }
+    }
+
+    /**
+     * @return void
+     */
+    public function testIsForCadastralNumberType(): void
+    {
+        $this->assertTrue(IDEntity::is('33:22:011262:526', $type = IDEntityInterface::ID_TYPE_CADASTRAL_NUMBER));
+
+        $wrong = ['А123АА177', '11АА112233', 'FN15-002153', '77 УР 781043', Str::random()];
+
+        foreach ($wrong as $item) {
+            $this->assertFalse(IDEntity::is($item, $type), "[{$item}] must be not [{$type}] type");
+        }
+    }
+
+    /**
+     * @return void
+     */
+    public function testIsForStsType(): void
+    {
+        $this->assertTrue(IDEntity::is('11АА112233', $type = IDEntityInterface::ID_TYPE_STS));
+        $this->assertTrue(IDEntity::is('77 УР 781043', $type));
+
+        $wrong = ['А123АА177', 'JF1SJ5LC5DG048667', 'FN15-002153', '33:22:011262:526', Str::random()];
+
+        foreach ($wrong as $item) {
+            $this->assertFalse(IDEntity::is($item, $type), "[{$item}] must be not [{$type}] type");
+        }
+    }
+
+    /**
+     * @return void
+     */
+    public function testIsForPtsType(): void
+    {
+        $this->assertTrue(IDEntity::is('78УЕ952328', $type = IDEntityInterface::ID_TYPE_PTS));
+        $this->assertTrue(IDEntity::is('16 НО 224663', $type));
+
+        $wrong = ['А123АА177', 'JF1SJ5LC5DG048667', 'FN15-002153', '33:22:011262:526', Str::random()];
+
+        foreach ($wrong as $item) {
+            $this->assertFalse(IDEntity::is($item, $type), "[{$item}] must be not [{$type}] type");
+        }
+    }
+
+    /**
+     * @return void
+     */
+    public function testIsForBodyType(): void
+    {
+        $this->assertTrue(IDEntity::is('NZE141-9134919', $type = IDEntityInterface::ID_TYPE_BODY));
+        $this->assertTrue(IDEntity::is('SGLW301293', $type));
+
+        $wrong = ['JF1SJ5LC5DG048667', '77 УР 781043', Str::random()];
+
+        foreach ($wrong as $item) {
+            $this->assertFalse(IDEntity::is($item, $type), "[{$item}] must be not [{$type}] type");
+        }
+    }
+
+    /**
+     * @return void
+     */
+    public function testIsForChassisType(): void
+    {
+        $this->assertTrue(IDEntity::is('RN1350007371', $type = IDEntityInterface::ID_TYPE_CHASSIS));
+        $this->assertTrue(IDEntity::is('LN130-0128818', $type));
+
+        $wrong = ['JF1SJ5LC5DG048667', Str::random()];
+
+        foreach ($wrong as $item) {
+            $this->assertFalse(IDEntity::is($item, $type), "[{$item}] must be not [{$type}] type");
+        }
+    }
+
+    /**
+     * @return void
+     */
+    public function testIsForDlnType(): void
+    {
+        $this->assertTrue(IDEntity::is('66 02 123456', $type = IDEntityInterface::ID_TYPE_DRIVER_LICENSE_NUMBER));
+        $this->assertTrue(IDEntity::is('66BA 123456', $type));
+
+        $wrong = ['А123АА177', 'JF1SJ5LC5DG048667', 'FN15-002153', '33:22:011262:526', Str::random()];
+
+        foreach ($wrong as $item) {
+            $this->assertFalse(IDEntity::is($item, $type), "[{$item}] must be not [{$type}] type");
+        }
     }
 }

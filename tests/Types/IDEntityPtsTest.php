@@ -7,31 +7,46 @@ namespace AvtoDev\IDEntity\Tests\Types;
 use Illuminate\Support\Str;
 use AvtoDev\IDEntity\IDEntity;
 use AvtoDev\IDEntity\Types\IDEntityPts;
+use AvtoDev\IDEntity\IDEntityInterface;
 
 /**
- * @covers \AvtoDev\IDEntity\Types\IDEntityPts<extended>
+ * @covers \AvtoDev\IDEntity\Types\IDEntityPts
  */
 class IDEntityPtsTest extends AbstractIDEntityTestCase
 {
     /**
-     * @var IDEntityPts
+     * @var string
      */
-    protected $instance;
+    protected $expected_type = IDEntityInterface::ID_TYPE_PTS;
 
     /**
      * {@inheritdoc}
      */
-    public function testGetType(): void
+    public function testNormalize(): void
     {
-        $this->assertSame(IDEntity::ID_TYPE_PTS, $this->instance->getType());
+        $entity = $this->entityFactory();
+
+        $this->assertSame($valid = '36ТС369230', $entity::normalize(Str::lower($valid)));
+        $this->assertSame($valid, $entity::normalize("  {$valid} "));
+        $this->assertSame($valid, $entity::normalize('36tc369230'));
+        $this->assertSame($valid, $entity::normalize('36ТС3 $%@*%^$ 69230 '));
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function entityFactory(?string $value = null): IDEntityPts
+    {
+        return new IDEntityPts($value ?? $this->getValidValues()[0]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function testIsValid(): void
+    protected function getValidValues(): array
     {
-        $valid = [
+        return [
             '78УЕ952328',
             '16 НО 224663',
             '78УС434434',
@@ -51,48 +66,21 @@ class IDEntityPtsTest extends AbstractIDEntityTestCase
             '78 УА 115947',
             '47НМ321533',
         ];
-
-        foreach ($valid as $value) {
-            $this->assertTrue($this->instance->setValue($value)->isValid());
-        }
-
-        $this->assertFalse($this->instance->setValue('TSMEYB21S00610448')->isValid());
-        $this->assertFalse($this->instance->setValue('LN130-0128818')->isValid());
-        $this->assertFalse($this->instance->setValue('A111AA177')->isValid());
-        $this->assertFalse($this->instance->setValue('А123АА77')->isValid());
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
-    public function testNormalize(): void
+    protected function getInvalidValues(): array
     {
-        // Из нижнего регистра переведёт в верхний
-        $this->assertSame($valid = $this->getValidValue(), $this->instance::normalize(Str::lower($this->getValidValue())));
+        return [
+            'TSMEYB21S00610448',
+            'LN130-0128818',
+            '38:49:924785:832907',
+            'A111AA177',
+            'А123АА77',
 
-        // Пробелы - успешно триммит
-        $this->assertSame($valid, $this->instance::normalize(' ' . $this->getValidValue() . ' '));
-
-        // Латиницу заменяет на кириллицу
-        $this->assertSame($valid, $this->instance::normalize('36tc369230'));
-
-        // Некорректные символы - удаляет
-        $this->assertSame($valid, $this->instance::normalize('36ТС3 $%@*%^$ 69230 '));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getClassName(): string
-    {
-        return IDEntityPts::class;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getValidValue(): string
-    {
-        return '36ТС369230';
+            Str::random(32),
+        ];
     }
 }

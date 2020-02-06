@@ -5,591 +5,190 @@ declare(strict_types = 1);
 namespace AvtoDev\IDEntity\Tests\Types;
 
 use Illuminate\Support\Str;
-use AvtoDev\IDEntity\IDEntity;
 use AvtoDev\IDEntity\Types\IDEntityGrz;
+use AvtoDev\IDEntity\IDEntityInterface;
 
 /**
- * @covers \AvtoDev\IDEntity\Types\IDEntityGrz<extended>
+ * @covers \AvtoDev\IDEntity\Types\IDEntityGrz
  */
 class IDEntityGrzTest extends AbstractIDEntityTestCase
 {
     /**
-     * @var IDEntityGrz
+     * @var string
      */
-    protected $instance;
+    protected $expected_type = IDEntityInterface::ID_TYPE_GRZ;
 
     /**
-     * Test class constants.
-     *
      * @return void
      */
     public function testConstants(): void
     {
-        $this->assertSame('X000XX77_OR_X000XX777', $this->instance::FORMAT_PATTERN_1);
-        $this->assertSame('X000XX', $this->instance::FORMAT_PATTERN_2);
-        $this->assertSame('XX00077', $this->instance::FORMAT_PATTERN_3);
-        $this->assertSame('0000XX77', $this->instance::FORMAT_PATTERN_4);
-        $this->assertSame('XX000077', $this->instance::FORMAT_PATTERN_5);
-        $this->assertSame('X000077', $this->instance::FORMAT_PATTERN_6);
-        $this->assertSame('000X77', $this->instance::FORMAT_PATTERN_7);
-        $this->assertSame('0000X77', $this->instance::FORMAT_PATTERN_8);
-        $this->assertSame('XX000X77_OR_XX000X777', $this->instance::FORMAT_PATTERN_9);
+        $this->assertSame('X000XX77_OR_X000XX777', IDEntityGrz::FORMAT_PATTERN_1);
+        $this->assertSame('X000XX', IDEntityGrz::FORMAT_PATTERN_2);
+        $this->assertSame('XX00077', IDEntityGrz::FORMAT_PATTERN_3);
+        $this->assertSame('0000XX77', IDEntityGrz::FORMAT_PATTERN_4);
+        $this->assertSame('XX000077', IDEntityGrz::FORMAT_PATTERN_5);
+        $this->assertSame('X000077', IDEntityGrz::FORMAT_PATTERN_6);
+        $this->assertSame('000X77', IDEntityGrz::FORMAT_PATTERN_7);
+        $this->assertSame('0000X77', IDEntityGrz::FORMAT_PATTERN_8);
+        $this->assertSame('XX000X77_OR_XX000X777', IDEntityGrz::FORMAT_PATTERN_9);
 
-        $this->assertSame('TYPE_1', $this->instance::GOST_TYPE_1);
-        $this->assertSame('TYPE_1A', $this->instance::GOST_TYPE_1A);
-        $this->assertSame('TYPE_1B', $this->instance::GOST_TYPE_1B);
-        $this->assertSame('TYPE_2', $this->instance::GOST_TYPE_2);
-        $this->assertSame('TYPE_3', $this->instance::GOST_TYPE_3);
-        $this->assertSame('TYPE_4', $this->instance::GOST_TYPE_4);
-        $this->assertSame('TYPE_5', $this->instance::GOST_TYPE_5);
-        $this->assertSame('TYPE_6', $this->instance::GOST_TYPE_6);
-        $this->assertSame('TYPE_7', $this->instance::GOST_TYPE_7);
-        $this->assertSame('TYPE_8', $this->instance::GOST_TYPE_8);
-        $this->assertSame('TYPE_15', $this->instance::GOST_TYPE_15);
-        $this->assertSame('TYPE_20', $this->instance::GOST_TYPE_20);
-        $this->assertSame('TYPE_21', $this->instance::GOST_TYPE_21);
-        $this->assertSame('TYPE_22', $this->instance::GOST_TYPE_22);
+        $this->assertSame('TYPE_1', IDEntityGrz::GOST_TYPE_1);
+        $this->assertSame('TYPE_1A', IDEntityGrz::GOST_TYPE_1A);
+        $this->assertSame('TYPE_1B', IDEntityGrz::GOST_TYPE_1B);
+        $this->assertSame('TYPE_2', IDEntityGrz::GOST_TYPE_2);
+        $this->assertSame('TYPE_3', IDEntityGrz::GOST_TYPE_3);
+        $this->assertSame('TYPE_4', IDEntityGrz::GOST_TYPE_4);
+        $this->assertSame('TYPE_5', IDEntityGrz::GOST_TYPE_5);
+        $this->assertSame('TYPE_6', IDEntityGrz::GOST_TYPE_6);
+        $this->assertSame('TYPE_7', IDEntityGrz::GOST_TYPE_7);
+        $this->assertSame('TYPE_8', IDEntityGrz::GOST_TYPE_8);
+        $this->assertSame('TYPE_15', IDEntityGrz::GOST_TYPE_15);
+        $this->assertSame('TYPE_20', IDEntityGrz::GOST_TYPE_20);
+        $this->assertSame('TYPE_21', IDEntityGrz::GOST_TYPE_21);
+        $this->assertSame('TYPE_22', IDEntityGrz::GOST_TYPE_22);
     }
 
     /**
-     * Test method `gostTypeToPattern()`.
-     *
      * @return void
      */
     public function testGostTypeToPattern(): void
     {
-        $this->assertSame($this->instance::FORMAT_PATTERN_1, $this->instance::getFormatPatternByGostType($this->instance::GOST_TYPE_1));
+        $this->assertSame(
+            IDEntityGrz::FORMAT_PATTERN_1,
+            IDEntityGrz::getFormatPatternByGostType(IDEntityGrz::GOST_TYPE_1)
+        );
 
-        $this->assertSame($this->instance::FORMAT_PATTERN_2, $this->instance::getFormatPatternByGostType($this->instance::GOST_TYPE_1A));
+        $this->assertSame(
+            IDEntityGrz::FORMAT_PATTERN_2,
+            IDEntityGrz::getFormatPatternByGostType(IDEntityGrz::GOST_TYPE_1A)
+        );
 
-        $this->assertSame($this->instance::FORMAT_PATTERN_3, $this->instance::getFormatPatternByGostType($this->instance::GOST_TYPE_1B));
-        $this->assertSame($this->instance::FORMAT_PATTERN_3, $this->instance::getFormatPatternByGostType($this->instance::GOST_TYPE_2));
+        $this->assertSame(
+            IDEntityGrz::FORMAT_PATTERN_3,
+            IDEntityGrz::getFormatPatternByGostType(IDEntityGrz::GOST_TYPE_1B)
+        );
+        $this->assertSame(
+            IDEntityGrz::FORMAT_PATTERN_3,
+            IDEntityGrz::getFormatPatternByGostType(IDEntityGrz::GOST_TYPE_2)
+        );
 
-        $this->assertSame($this->instance::FORMAT_PATTERN_4, $this->instance::getFormatPatternByGostType($this->instance::GOST_TYPE_3));
-        $this->assertSame($this->instance::FORMAT_PATTERN_4, $this->instance::getFormatPatternByGostType($this->instance::GOST_TYPE_4));
-        $this->assertSame($this->instance::FORMAT_PATTERN_4, $this->instance::getFormatPatternByGostType($this->instance::GOST_TYPE_5));
-        $this->assertSame($this->instance::FORMAT_PATTERN_4, $this->instance::getFormatPatternByGostType($this->instance::GOST_TYPE_7));
-        $this->assertSame($this->instance::FORMAT_PATTERN_4, $this->instance::getFormatPatternByGostType($this->instance::GOST_TYPE_8));
+        $this->assertSame(
+            IDEntityGrz::FORMAT_PATTERN_4,
+            IDEntityGrz::getFormatPatternByGostType(IDEntityGrz::GOST_TYPE_3)
+        );
+        $this->assertSame(
+            IDEntityGrz::FORMAT_PATTERN_4,
+            IDEntityGrz::getFormatPatternByGostType(IDEntityGrz::GOST_TYPE_4)
+        );
+        $this->assertSame(
+            IDEntityGrz::FORMAT_PATTERN_4,
+            IDEntityGrz::getFormatPatternByGostType(IDEntityGrz::GOST_TYPE_5)
+        );
+        $this->assertSame(
+            IDEntityGrz::FORMAT_PATTERN_4,
+            IDEntityGrz::getFormatPatternByGostType(IDEntityGrz::GOST_TYPE_7)
+        );
+        $this->assertSame(
+            IDEntityGrz::FORMAT_PATTERN_4,
+            IDEntityGrz::getFormatPatternByGostType(IDEntityGrz::GOST_TYPE_8)
+        );
 
-        $this->assertSame($this->instance::FORMAT_PATTERN_5, $this->instance::getFormatPatternByGostType($this->instance::GOST_TYPE_6));
+        $this->assertSame(
+            IDEntityGrz::FORMAT_PATTERN_5,
+            IDEntityGrz::getFormatPatternByGostType(IDEntityGrz::GOST_TYPE_6)
+        );
 
-        $this->assertSame($this->instance::FORMAT_PATTERN_9, $this->instance::getFormatPatternByGostType($this->instance::GOST_TYPE_15));
+        $this->assertSame(
+            IDEntityGrz::FORMAT_PATTERN_9,
+            IDEntityGrz::getFormatPatternByGostType(IDEntityGrz::GOST_TYPE_15)
+        );
 
-        $this->assertSame($this->instance::FORMAT_PATTERN_6, $this->instance::getFormatPatternByGostType($this->instance::GOST_TYPE_20));
+        $this->assertSame(
+            IDEntityGrz::FORMAT_PATTERN_6,
+            IDEntityGrz::getFormatPatternByGostType(IDEntityGrz::GOST_TYPE_20)
+        );
 
-        $this->assertSame($this->instance::FORMAT_PATTERN_7, $this->instance::getFormatPatternByGostType($this->instance::GOST_TYPE_21));
+        $this->assertSame(
+            IDEntityGrz::FORMAT_PATTERN_7,
+            IDEntityGrz::getFormatPatternByGostType(IDEntityGrz::GOST_TYPE_21)
+        );
 
-        $this->assertSame($this->instance::FORMAT_PATTERN_8, $this->instance::getFormatPatternByGostType($this->instance::GOST_TYPE_22));
+        $this->assertSame(
+            IDEntityGrz::FORMAT_PATTERN_8,
+            IDEntityGrz::getFormatPatternByGostType(IDEntityGrz::GOST_TYPE_22)
+        );
 
-        $this->assertNull($this->instance::getFormatPatternByGostType(Str::random()));
+        $this->assertNull(IDEntityGrz::getFormatPatternByGostType(Str::random()));
     }
 
+    /**
+     * @return void
+     */
     public function testPatternToGostTypes(): void
     {
         $this->assertSame(
-            $this->instance::getGostTypesByPattern($this->instance::FORMAT_PATTERN_1),
-            [$this->instance::GOST_TYPE_1]
+            IDEntityGrz::getGostTypesByPattern(IDEntityGrz::FORMAT_PATTERN_1),
+            [IDEntityGrz::GOST_TYPE_1]
         );
 
         $this->assertSame(
-            $this->instance::getGostTypesByPattern($this->instance::FORMAT_PATTERN_2),
-            [$this->instance::GOST_TYPE_1A]
+            IDEntityGrz::getGostTypesByPattern(IDEntityGrz::FORMAT_PATTERN_2),
+            [IDEntityGrz::GOST_TYPE_1A]
         );
 
         $this->assertSame(
-            $this->instance::getGostTypesByPattern($this->instance::FORMAT_PATTERN_3),
-            [$this->instance::GOST_TYPE_1B, $this->instance::GOST_TYPE_2]
+            IDEntityGrz::getGostTypesByPattern(IDEntityGrz::FORMAT_PATTERN_3),
+            [IDEntityGrz::GOST_TYPE_1B, IDEntityGrz::GOST_TYPE_2]
         );
 
         $this->assertSame(
-            $this->instance::getGostTypesByPattern($this->instance::FORMAT_PATTERN_4),
+            IDEntityGrz::getGostTypesByPattern(IDEntityGrz::FORMAT_PATTERN_4),
             [
-                $this->instance::GOST_TYPE_3,
-                $this->instance::GOST_TYPE_4,
-                $this->instance::GOST_TYPE_5,
-                $this->instance::GOST_TYPE_7,
-                $this->instance::GOST_TYPE_8,
+                IDEntityGrz::GOST_TYPE_3,
+                IDEntityGrz::GOST_TYPE_4,
+                IDEntityGrz::GOST_TYPE_5,
+                IDEntityGrz::GOST_TYPE_7,
+                IDEntityGrz::GOST_TYPE_8,
             ]
         );
 
         $this->assertSame(
-            $this->instance::getGostTypesByPattern($this->instance::FORMAT_PATTERN_5),
-            [$this->instance::GOST_TYPE_6]
+            IDEntityGrz::getGostTypesByPattern(IDEntityGrz::FORMAT_PATTERN_5),
+            [IDEntityGrz::GOST_TYPE_6]
         );
 
         $this->assertSame(
-            $this->instance::getGostTypesByPattern($this->instance::FORMAT_PATTERN_9),
-            [$this->instance::GOST_TYPE_15]
+            IDEntityGrz::getGostTypesByPattern(IDEntityGrz::FORMAT_PATTERN_9),
+            [IDEntityGrz::GOST_TYPE_15]
         );
 
         $this->assertSame(
-            $this->instance::getGostTypesByPattern($this->instance::FORMAT_PATTERN_6),
-            [$this->instance::GOST_TYPE_20]
+            IDEntityGrz::getGostTypesByPattern(IDEntityGrz::FORMAT_PATTERN_6),
+            [IDEntityGrz::GOST_TYPE_20]
         );
 
         $this->assertSame(
-            $this->instance::getGostTypesByPattern($this->instance::FORMAT_PATTERN_7),
-            [$this->instance::GOST_TYPE_21]
+            IDEntityGrz::getGostTypesByPattern(IDEntityGrz::FORMAT_PATTERN_7),
+            [IDEntityGrz::GOST_TYPE_21]
         );
 
         $this->assertSame(
-            $this->instance::getGostTypesByPattern($this->instance::FORMAT_PATTERN_8),
-            [$this->instance::GOST_TYPE_22]
+            IDEntityGrz::getGostTypesByPattern(IDEntityGrz::FORMAT_PATTERN_8),
+            [IDEntityGrz::GOST_TYPE_22]
         );
 
-        $this->assertNull($this->instance::getGostTypesByPattern('foo bar'));
-        $this->assertNull($this->instance::getGostTypesByPattern(123));
-        $this->assertNull($this->instance::getGostTypesByPattern(null));
+        $this->assertNull(IDEntityGrz::getGostTypesByPattern('foo bar'));
+        $this->assertNull(IDEntityGrz::getGostTypesByPattern(Str::random()));
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function testGetType(): void
-    {
-        $this->assertSame(IDEntity::ID_TYPE_GRZ, $this->instance->getType());
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function testIsValid(): void
-    {
-        $valid = [
-            // М000ММ77 или М000ММ777 (тип 1 - Для легковых, грузовых, грузопассажирских ТС и автобусов)
-            'М000ММ77',
-            'М000ММ777',
-            'А825МС716',
-            'Р392КК190',
-            'С731НХ197',
-            'Е750МО750',
-            'М396СХ46',
-            'А137НО89',
-            'К898КМ40',
-            'О772ТХ197',
-            'В771ЕК126',
-            'Х894СВ59',
-            'Е373ТА73',
-            'А777АА77',
-            'О704КО190',
-            'У868УК26',
-            'М824РН78',
-            'Т149ОЕ190',
-            'Т293ТА178',
-            'О476ЕЕ750',
-            'В168ТС190',
-            'У460УА77',
-            'Т258СА77',
-            'С475РУ777',
-            'Р295ЕЕ178',
-            'Х918УУ116',
-            'Х116РЕ96',
-            'У888ЕК99',
-            'О292ОМ77',
-            'С989ЕР72',
-            'К324МУ750',
-            'Е228РХ33',
-            'О166РУ174',
-            'Н492ТН197',
-            'К206МХ32',
-            'Р515ЕР19',
-            'Н416ТЕ161',
-            'У477ЕМ178',
-            'Н090РН777',
-            'В399УН777',
-            'Е986НХ199',
-            'М441ЕЕ73',
-            'Р842СН777',
-            'У914ВХ123',
-            'Р181СК161',
-            'У371ВН142',
-            'У752НХ178',
-            'А548ВР750',
-            'Н580ХС38',
-            'Е427ЕВ190',
-            'О386АА40',
-            'С061ОУ777',
-            'Р295КА102',
-            'Р239УЕ777',
-            'О461ОВ750',
-            'К005АВ77',
-            'Е029ХВ70',
-            'У956УС777',
-            'А528КТ37',
-            'Р602ВС86',
-            'Р048ОА750',
-            'Е251ВК82',
-            'Е966РА777',
-            'Н340АХ199',
-            'Т555СН42',
-            'К052ОУ178',
-            'М333МВ161',
-            'А028ЕУ178',
-            'С326ХО199',
-            'С976РТ98',
-            'Н388ЕУ750',
-            'М770РВ161',
-            'М828МР02',
-            'О377ЕТ750',
-            'Е697ХС163',
-            'Т612ХХ47',
-            'В750КО777',
-            'Т085КР123',
-            'У700КХ61',
-            'К988СС82',
-            'Т039КР60',
-            'Е751УХ197',
-            'С572ЕУ777',
-            'Е393МН33',
-            'С552ВХ102',
-            'Н327СМ777',
-            'А284АР777',
-            'У606КЕ33',
-            'у828хк47',
-            'о590тт98',
-
-            // М000ММ (тип 1А - Для легковых ТС должностных лиц)
-            'М000ММ',
-            'О772ТХ',
-            'В771ЕК',
-            'Х894СВ',
-            'Е373ТА',
-            'А777АА',
-            'О704КО',
-            'У868УК',
-            'М824РН',
-            'Т149ОЕ',
-            'Т293ТА',
-            'О476ЕЕ',
-            'В168ТС',
-            'У460УА',
-            'Т258СА',
-            'С475РУ',
-            'Р295ЕЕ',
-            'Х918УУ',
-            'Х116РЕ',
-            'У888ЕК',
-            'О292ОМ',
-            'С989ЕР',
-            'К324МУ',
-            'Е228РХ',
-            'О166РУ',
-            'Н492ТН',
-            'К206МХ',
-            'Р515ЕР',
-            'Н416ТЕ',
-            'У477ЕМ',
-            'Н090РН',
-            'В399УН',
-            'Е986НХ',
-            'М441ЕЕ',
-            'Р842СН',
-            'о292ом',
-            'с989ер',
-
-            // ММ00077 (тип 1Б - Для легковых ТС, исп. для перевозки людей на коммерческой основе, автобусов)
-            // ММ00077 (тип 2 - Для автомобильных прицепов и полуприцепов)
-            'ММ00077',
-            'СХ39646',
-            'НО13789',
-            'КМ89840',
-            'СВ89459',
-            'ТА37373',
-            'АА77777',
-            'УК86826',
-            'РН82478',
-            'УА46077',
-            'СА25877',
-            'РЕ11696',
-            'ЕК88899',
-            'ОМ29277',
-            'ЕР98972',
-            'РХ22833',
-            'МХ20632',
-            'ЕР51519',
-            'ЕЕ44173',
-            'ХС58038',
-            'са25877',
-            'ре11696',
-
-            // 0000ММ77 (тип 3 - Для тракторов, самоходных дорожно-строительных машин и иных машин и прицепов)
-            // 0000ММ77 (тип 4 - Для мотоциклов, мотороллеров, мопедов)
-            // 0000ММ77 (тип 5 - Для легковых, грузовых, грузопассажирских автомобилей и автобусов)
-            // 0000ММ77 (тип 7 - Для тракторов, самоходных дорожно-строительных машин и иных машин и прицепов)
-            // 0000ММ77 (тип 8 - Для мотоциклов, мотороллеров, мопедов)
-            '0000ММ77',
-            '6868УК26',
-            '2824РН78',
-            '6460УА77',
-            '5258СА77',
-            '1116РЕ96',
-            '8888ЕК99',
-            '9292ОМ77',
-            '8989ЕР72',
-            '2228РХ33',
-            '0206МХ32',
-            '1515ЕР19',
-            '4441ЕЕ73',
-            '8580ХС38',
-            '8386АА40',
-            '0005АВ77',
-            '2029ХВ70',
-            '2528КТ37',
-            '0602ВС86',
-            '5251ВК82',
-            '5555СН42',
-            '7976РТ98',
-            '2828МР02',
-            '1612ХХ47',
-            '0700КХ61',
-            '8988СС82',
-            '3039КР60',
-            '9393МН33',
-            '0606КЕ33',
-            '2029хв70',
-            '2528кт37',
-
-            // ММ000077 (тип 6 - Для автомобильных прицепов и полуприцепов)
-            'ММ000077',
-            'УК868626',
-            'МН824278',
-            'УА460677',
-            'ТА258577',
-            'ХЕ116196',
-            'УК888899',
-            'ОМ292977',
-            'СР989872',
-            'ЕХ228233',
-            'КХ206032',
-            'РР515119',
-            'МЕ441473',
-            'НС580838',
-            'ОА386840',
-            'КВ005077',
-            'ЕВ029270',
-            'АТ528237',
-            'РС602086',
-            'ЕК251582',
-            'ТН555542',
-            'СТ976798',
-            'МР828202',
-            'ТХ612147',
-            'УХ700061',
-            'КС988882',
-            'ТР039360',
-            'ЕН393933',
-            'УЕ606033',
-            'кв005077',
-            'ев029270',
-
-            // М000077 (тип 20 - Для легковых, грузовых, грузопассажирских автомобилей и автобусов)
-            'М000077',
-            'К868626',
-            'Н824278',
-            'А460677',
-            'А258577',
-            'Е116196',
-            'К888899',
-            'М292977',
-            'Р989872',
-            'Х228233',
-            'Х206032',
-            'Р515119',
-            'Е441473',
-            'С580838',
-            'А386840',
-            'В005077',
-            'В029270',
-            'Т528237',
-            'С602086',
-            'К251582',
-            'Н555542',
-            'Т976798',
-            'Р828202',
-            'Х612147',
-            'Х700061',
-            'С988882',
-            'Р039360',
-            'Н393933',
-            'Е606033',
-            'в005077',
-            'в029270',
-
-            // 000М77 (тип 21 - Для автомобильных прицепов и полуприцепов)
-            '000М77',
-            '866К26',
-            '822Н78',
-            '466А77',
-            '255А77',
-            '111Е96',
-            '888К99',
-            '299М77',
-            '988Р72',
-            '222Х33',
-            '200Х32',
-            '511Р19',
-            '444Е73',
-            '588С38',
-            '388А40',
-            '000В77',
-            '022В70',
-            '522Т37',
-            '600С86',
-            '255К82',
-            '555Н42',
-            '977Т98',
-            '822Р02',
-            '611Х47',
-            '700Х61',
-            '988С82',
-            '033Р60',
-            '399Н33',
-            '600Е33',
-            '000в77',
-            '022в70',
-            '522т37',
-
-            // 0000М77 (тип 22 - Для мотоциклов)
-            '0000М77',
-            '6868У26',
-            '2824Р78',
-            '6460У77',
-            '5258С77',
-            '1116Р96',
-            '8888Е99',
-            '9292О77',
-            '8989Е72',
-            '2228Р33',
-            '0206М32',
-            '1515Е19',
-            '4441Е73',
-            '8580Х38',
-            '8386А40',
-            '0005А77',
-            '2029Х70',
-            '2528К37',
-            '0602В86',
-            '5251В82',
-            '5555С42',
-            '7976Р98',
-            '2828М02',
-            '1612Х47',
-            '0700К61',
-            '8988С82',
-            '3039К60',
-            '9393М33',
-            '0606К33',
-            '2029х70',
-            '2528к37',
-
-            // ММ000М77 или ММ000М777 (тип 15 - Транзит, ламинированный)
-            'АХ368У69',
-            'АХ368У196',
-            'АА368Х77',
-            'ВА111М777',
-            'УХ111О177',
-            'РО123Т96',
-            'НО123С177',
-            'Но000к777',
-            'рО522Т196',
-            'ЕТ444А73',
-            'АА777А77',
-            'КО710О190',
-            'УК831У26',
-            'МР825Н78',
-            'ТО150Е190',
-            'ТТ293А178',
-            'ЕЕ476О750',
-            'ВС777Т190',
-            'УУ462А77',
-            'ТС258А77',
-            'СР475У777',
-            'РЕ295Е178',
-            'Ху918У116',
-            'ХЕ116Р96',
-            'УЕ888К99',
-            'ОО292М77',
-            'СЕ989Р72',
-            'КУ324М750',
-            'ТК085Р123',
-            'УК220Х61',
-            'КС700С82',
-            'ТК039Р60',
-            'ЕУ751Х197',
-            'СЕ572У777',
-            'ЕМ400Н33',
-            'СВ152Х102',
-            'НС127М777',
-            'АА214Р777',
-            'УК606Е33',
-            'ух401к47',
-            'от590т98',
-            'ус092у98',
-            'ор545е197',
-            'тм444м77',
-            'тк455о750',
-            'рм462а34',
-            'ур544у174',
-            'во577е190',
-            'ов888т31',
-            'ео555а77',
-            'аа118а99',
-            'ет557у777',
-            'ес884в777',
-            'ме965е26',
-            'вх545н199',
-        ];
-
-        foreach ($valid as $value) {
-            $this->assertTrue($this->instance->setValue($value)->isValid(), sprintf('GRZ: "%s"', $value));
-        }
-
-        $invalid = [
-            // Слишком длинные
-            'Р394242КК190',
-            'С73321НХ197',
-            'Е7350МО750',
-            'М396СРХ46',
-            'А137НОО89',
-            'К898КМ4054',
-            'К8948КМ404',
-
-            // Слишком короткие
-            'У752НХ1',
-            'А548ВР7',
-            'Н58ХС38',
-            'Е47ЕВ190',
-            'О386А40',
-            'С06ОУ777',
-            'Р295К102',
-
-            // Содержащие запрещенные символы
-            'Н416ТЯ161',
-            'Ю477ЕМ178',
-            'Н090ЫН777',
-            'Ф399УН777',
-            'Е986НЪ199',
-            'М441ЕЦ73',
-            'Р842ЭН777',
-        ];
-
-        foreach ($invalid as $value) {
-            $this->assertFalse($this->instance->setValue($value)->isValid(), sprintf('GRZ: "%s"', $value));
-        }
-
-        $this->assertFalse($this->instance->setValue('TSMEYB21S00610448')->isValid());
-        $this->assertFalse($this->instance->setValue('LN130-0128818')->isValid());
-    }
-
-    /**
-     * Test pattern format getter.
-     *
      * @return void
      */
     public function testGetFormatPattern(): void
     {
         $asserts = [
-            $this->instance::FORMAT_PATTERN_1 => [
+            IDEntityGrz::FORMAT_PATTERN_1 => [
                 'М000ММ77',
                 'М000ММ777',
                 'А825МС716',
@@ -604,7 +203,7 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
                 'Х894СВ59',
             ],
 
-            $this->instance::FORMAT_PATTERN_2 => [
+            IDEntityGrz::FORMAT_PATTERN_2 => [
                 'М000ММ',
                 'О772ТХ',
                 'В771ЕК',
@@ -615,7 +214,7 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
                 'У868УК',
             ],
 
-            $this->instance::FORMAT_PATTERN_3 => [
+            IDEntityGrz::FORMAT_PATTERN_3 => [
                 'ММ00077',
                 'СХ39646',
                 'НО13789',
@@ -624,7 +223,7 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
                 'ТА37373',
             ],
 
-            $this->instance::FORMAT_PATTERN_4 => [
+            IDEntityGrz::FORMAT_PATTERN_4 => [
                 '0000ММ77',
                 '6868УК26',
                 '2824РН78',
@@ -636,7 +235,7 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
                 '8989ЕР72',
             ],
 
-            $this->instance::FORMAT_PATTERN_5 => [
+            IDEntityGrz::FORMAT_PATTERN_5 => [
                 'ММ000077',
                 'УК868626',
                 'МН824278',
@@ -648,7 +247,7 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
                 'СР989872',
             ],
 
-            $this->instance::FORMAT_PATTERN_6 => [
+            IDEntityGrz::FORMAT_PATTERN_6 => [
                 'М000077',
                 'К868626',
                 'Н824278',
@@ -663,7 +262,7 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
                 'Р515119',
             ],
 
-            $this->instance::FORMAT_PATTERN_7 => [
+            IDEntityGrz::FORMAT_PATTERN_7 => [
                 '000М77',
                 '866К26',
                 '822Н78',
@@ -676,7 +275,7 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
                 '222Х33',
             ],
 
-            $this->instance::FORMAT_PATTERN_8 => [
+            IDEntityGrz::FORMAT_PATTERN_8 => [
                 '0000М77',
                 '6868У26',
                 '2824Р78',
@@ -688,7 +287,7 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
                 '8989Е72',
             ],
 
-            $this->instance::FORMAT_PATTERN_9 => [
+            IDEntityGrz::FORMAT_PATTERN_9 => [
                 'АХ368У69',
                 'АХ368У196',
                 'АА368Х77',
@@ -699,19 +298,19 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
             ],
         ];
 
+        $entity = $this->entityFactory();
+
         foreach ($asserts as $pattern => $cases) {
             foreach ($cases as $case) {
                 $this->assertSame(
                     $pattern,
-                    $this->instance->setValue($case)->getFormatPattern(), sprintf('GRZ "%s" != "%s"', $case, $pattern)
+                    $entity->setValue($case)->getFormatPattern(), sprintf('GRZ "%s" != "%s"', $case, $pattern)
                 );
             }
         }
     }
 
     /**
-     * Тест метода получения кода региона ГРЗ номера.
-     *
      * @return void
      */
     public function testGetRegionCode(): void
@@ -1102,16 +701,16 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
             'foo bar'   => null,
         ];
 
+        $entity = $this->entityFactory();
+
         foreach ($expects as $what => $with) {
             $this->assertSame(
-                $with, $this->instance->setValue($what)->getRegionCode(), sprintf('"%s" !== "%s"', $what, $with)
+                $with, $entity->setValue($what)->getRegionCode(), sprintf('"%s" !== "%s"', $what, $with)
             );
         }
     }
 
     /**
-     * Тест метода, возвращающего данные о регионе ГРЗ номера.
-     *
      * @return void
      */
     public function testGetRegionData(): void
@@ -1137,9 +736,11 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
             '522Т02' => 'RU-BA',
         ];
 
+        $entity = $this->entityFactory();
+
         foreach ($expects as $what => $with) {
             $this->assertSame(
-                $with, $this->instance->setValue($what)->getRegionData()->getIso31662Code(),
+                $with, $entity->setValue($what)->getRegionData()->getIso31662Code(),
                 sprintf('"%s" !== "%s"', $what, $with)
             );
         }
@@ -1151,7 +752,7 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
         ];
 
         foreach ($fails as $fail) {
-            $this->assertNull($this->instance->setValue($fail)->getRegionData());
+            $this->assertNull($entity->setValue($fail)->getRegionData());
         }
     }
 
@@ -1160,17 +761,12 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
      */
     public function testNormalize(): void
     {
-        // Из нижнего регистра переведёт в верхний
-        $this->assertSame($valid = $this->getValidValue(), $this->instance::normalize(Str::lower($this->getValidValue())));
+        $entity = $this->entityFactory();
 
-        // Пробелы - успешно триммит
-        $this->assertSame($valid, $this->instance::normalize(' ' . $this->getValidValue() . ' '));
-
-        // Латиницу заменяет на кириллицу
-        $this->assertSame($valid, $this->instance::normalize('X123YO96'));
-
-        // Некорректные символы - удаляет
-        $this->assertSame($valid, $this->instance::normalize('X123 #$^&&&% YO96 '));
+        $this->assertSame($valid = 'Х123УО96', $entity::normalize(Str::lower($valid)));
+        $this->assertSame($valid, $entity::normalize("  {$valid} "));
+        $this->assertSame($valid, $entity::normalize('X123YO96'));
+        $this->assertSame($valid, $entity::normalize('X123 #$^&&&% YO96 '));
 
         $asserts = [
             'Х123АВ96' => ['Х123АВ96', 'Х123AB96'],
@@ -1183,24 +779,447 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
 
         foreach ($asserts as $with => $what) {
             foreach ($what as $item) {
-                $this->assertSame($with, $this->instance::normalize($item));
+                $this->assertSame($with, $entity::normalize($item));
             }
         }
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
-    protected function getClassName(): string
+    protected function entityFactory(?string $value = null): IDEntityGrz
     {
-        return IDEntityGrz::class;
+        return new IDEntityGrz($value ?? $this->getValidValues()[0]);
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function getValidValue(): string
+    protected function getValidValues(): array
     {
-        return 'Х123УО96';
+        return [
+            // М000ММ77 или М000ММ777 (тип 1 - Для легковых, грузовых, грузопассажирских ТС и автобусов)
+            'М000ММ77',
+            'М000ММ777',
+            'А825МС716',
+            'Р392КК190',
+            'С731НХ197',
+            'Е750МО750',
+            'М396СХ46',
+            'А137НО89',
+            'К898КМ40',
+            'О772ТХ197',
+            'В771ЕК126',
+            'Х894СВ59',
+            'Е373ТА73',
+            'А777АА77',
+            'О704КО190',
+            'У868УК26',
+            'М824РН78',
+            'Т149ОЕ190',
+            'Т293ТА178',
+            'О476ЕЕ750',
+            'В168ТС190',
+            'У460УА77',
+            'Т258СА77',
+            'С475РУ777',
+            'Р295ЕЕ178',
+            'Х918УУ116',
+            'Х116РЕ96',
+            'У888ЕК99',
+            'О292ОМ77',
+            'С989ЕР72',
+            'К324МУ750',
+            'Е228РХ33',
+            'О166РУ174',
+            'Н492ТН197',
+            'К206МХ32',
+            'Р515ЕР19',
+            'Н416ТЕ161',
+            'У477ЕМ178',
+            'Н090РН777',
+            'В399УН777',
+            'Е986НХ199',
+            'М441ЕЕ73',
+            'Р842СН777',
+            'У914ВХ123',
+            'Р181СК161',
+            'У371ВН142',
+            'У752НХ178',
+            'А548ВР750',
+            'Н580ХС38',
+            'Е427ЕВ190',
+            'О386АА40',
+            'С061ОУ777',
+            'Р295КА102',
+            'Р239УЕ777',
+            'О461ОВ750',
+            'К005АВ77',
+            'Е029ХВ70',
+            'У956УС777',
+            'А528КТ37',
+            'Р602ВС86',
+            'Р048ОА750',
+            'Е251ВК82',
+            'Е966РА777',
+            'Н340АХ199',
+            'Т555СН42',
+            'К052ОУ178',
+            'М333МВ161',
+            'А028ЕУ178',
+            'С326ХО199',
+            'С976РТ98',
+            'Н388ЕУ750',
+            'М770РВ161',
+            'М828МР02',
+            'О377ЕТ750',
+            'Е697ХС163',
+            'Т612ХХ47',
+            'В750КО777',
+            'Т085КР123',
+            'У700КХ61',
+            'К988СС82',
+            'Т039КР60',
+            'Е751УХ197',
+            'С572ЕУ777',
+            'Е393МН33',
+            'С552ВХ102',
+            'Н327СМ777',
+            'А284АР777',
+            'У606КЕ33',
+            'у828хк47',
+            'о590тт98',
+
+            // М000ММ (тип 1А - Для легковых ТС должностных лиц)
+            'М000ММ',
+            'О772ТХ',
+            'В771ЕК',
+            'Х894СВ',
+            'Е373ТА',
+            'А777АА',
+            'О704КО',
+            'У868УК',
+            'М824РН',
+            'Т149ОЕ',
+            'Т293ТА',
+            'О476ЕЕ',
+            'В168ТС',
+            'У460УА',
+            'Т258СА',
+            'С475РУ',
+            'Р295ЕЕ',
+            'Х918УУ',
+            'Х116РЕ',
+            'У888ЕК',
+            'О292ОМ',
+            'С989ЕР',
+            'К324МУ',
+            'Е228РХ',
+            'О166РУ',
+            'Н492ТН',
+            'К206МХ',
+            'Р515ЕР',
+            'Н416ТЕ',
+            'У477ЕМ',
+            'Н090РН',
+            'В399УН',
+            'Е986НХ',
+            'М441ЕЕ',
+            'Р842СН',
+            'о292ом',
+            'с989ер',
+
+            // ММ00077 (тип 1Б - Для легковых ТС, исп. для перевозки людей на коммерческой основе, автобусов)
+            // ММ00077 (тип 2 - Для автомобильных прицепов и полуприцепов)
+            'ММ00077',
+            'СХ39646',
+            'НО13789',
+            'КМ89840',
+            'СВ89459',
+            'ТА37373',
+            'АА77777',
+            'УК86826',
+            'РН82478',
+            'УА46077',
+            'СА25877',
+            'РЕ11696',
+            'ЕК88899',
+            'ОМ29277',
+            'ЕР98972',
+            'РХ22833',
+            'МХ20632',
+            'ЕР51519',
+            'ЕЕ44173',
+            'ХС58038',
+            'са25877',
+            'ре11696',
+
+            // 0000ММ77 (тип 3 - Для тракторов, самоходных дорожно-строительных машин и иных машин и прицепов)
+            // 0000ММ77 (тип 4 - Для мотоциклов, мотороллеров, мопедов)
+            // 0000ММ77 (тип 5 - Для легковых, грузовых, грузопассажирских автомобилей и автобусов)
+            // 0000ММ77 (тип 7 - Для тракторов, самоходных дорожно-строительных машин и иных машин и прицепов)
+            // 0000ММ77 (тип 8 - Для мотоциклов, мотороллеров, мопедов)
+            '0000ММ77',
+            '6868УК26',
+            '2824РН78',
+            '6460УА77',
+            '5258СА77',
+            '1116РЕ96',
+            '8888ЕК99',
+            '9292ОМ77',
+            '8989ЕР72',
+            '2228РХ33',
+            '0206МХ32',
+            '1515ЕР19',
+            '4441ЕЕ73',
+            '8580ХС38',
+            '8386АА40',
+            '0005АВ77',
+            '2029ХВ70',
+            '2528КТ37',
+            '0602ВС86',
+            '5251ВК82',
+            '5555СН42',
+            '7976РТ98',
+            '2828МР02',
+            '1612ХХ47',
+            '0700КХ61',
+            '8988СС82',
+            '3039КР60',
+            '9393МН33',
+            '0606КЕ33',
+            '2029хв70',
+            '2528кт37',
+
+            // ММ000077 (тип 6 - Для автомобильных прицепов и полуприцепов)
+            'ММ000077',
+            'УК868626',
+            'МН824278',
+            'УА460677',
+            'ТА258577',
+            'ХЕ116196',
+            'УК888899',
+            'ОМ292977',
+            'СР989872',
+            'ЕХ228233',
+            'КХ206032',
+            'РР515119',
+            'МЕ441473',
+            'НС580838',
+            'ОА386840',
+            'КВ005077',
+            'ЕВ029270',
+            'АТ528237',
+            'РС602086',
+            'ЕК251582',
+            'ТН555542',
+            'СТ976798',
+            'МР828202',
+            'ТХ612147',
+            'УХ700061',
+            'КС988882',
+            'ТР039360',
+            'ЕН393933',
+            'УЕ606033',
+            'кв005077',
+            'ев029270',
+
+            // М000077 (тип 20 - Для легковых, грузовых, грузопассажирских автомобилей и автобусов)
+            'М000077',
+            'К868626',
+            'Н824278',
+            'А460677',
+            'А258577',
+            'Е116196',
+            'К888899',
+            'М292977',
+            'Р989872',
+            'Х228233',
+            'Х206032',
+            'Р515119',
+            'Е441473',
+            'С580838',
+            'А386840',
+            'В005077',
+            'В029270',
+            'Т528237',
+            'С602086',
+            'К251582',
+            'Н555542',
+            'Т976798',
+            'Р828202',
+            'Х612147',
+            'Х700061',
+            'С988882',
+            'Р039360',
+            'Н393933',
+            'Е606033',
+            'в005077',
+            'в029270',
+
+            // 000М77 (тип 21 - Для автомобильных прицепов и полуприцепов)
+            '000М77',
+            '866К26',
+            '822Н78',
+            '466А77',
+            '255А77',
+            '111Е96',
+            '888К99',
+            '299М77',
+            '988Р72',
+            '222Х33',
+            '200Х32',
+            '511Р19',
+            '444Е73',
+            '588С38',
+            '388А40',
+            '000В77',
+            '022В70',
+            '522Т37',
+            '600С86',
+            '255К82',
+            '555Н42',
+            '977Т98',
+            '822Р02',
+            '611Х47',
+            '700Х61',
+            '988С82',
+            '033Р60',
+            '399Н33',
+            '600Е33',
+            '000в77',
+            '022в70',
+            '522т37',
+
+            // 0000М77 (тип 22 - Для мотоциклов)
+            '0000М77',
+            '6868У26',
+            '2824Р78',
+            '6460У77',
+            '5258С77',
+            '1116Р96',
+            '8888Е99',
+            '9292О77',
+            '8989Е72',
+            '2228Р33',
+            '0206М32',
+            '1515Е19',
+            '4441Е73',
+            '8580Х38',
+            '8386А40',
+            '0005А77',
+            '2029Х70',
+            '2528К37',
+            '0602В86',
+            '5251В82',
+            '5555С42',
+            '7976Р98',
+            '2828М02',
+            '1612Х47',
+            '0700К61',
+            '8988С82',
+            '3039К60',
+            '9393М33',
+            '0606К33',
+            '2029х70',
+            '2528к37',
+
+            // ММ000М77 или ММ000М777 (тип 15 - Транзит, ламинированный)
+            'АХ368У69',
+            'АХ368У196',
+            'АА368Х77',
+            'ВА111М777',
+            'УХ111О177',
+            'РО123Т96',
+            'НО123С177',
+            'Но000к777',
+            'рО522Т196',
+            'ЕТ444А73',
+            'АА777А77',
+            'КО710О190',
+            'УК831У26',
+            'МР825Н78',
+            'ТО150Е190',
+            'ТТ293А178',
+            'ЕЕ476О750',
+            'ВС777Т190',
+            'УУ462А77',
+            'ТС258А77',
+            'СР475У777',
+            'РЕ295Е178',
+            'Ху918У116',
+            'ХЕ116Р96',
+            'УЕ888К99',
+            'ОО292М77',
+            'СЕ989Р72',
+            'КУ324М750',
+            'ТК085Р123',
+            'УК220Х61',
+            'КС700С82',
+            'ТК039Р60',
+            'ЕУ751Х197',
+            'СЕ572У777',
+            'ЕМ400Н33',
+            'СВ152Х102',
+            'НС127М777',
+            'АА214Р777',
+            'УК606Е33',
+            'ух401к47',
+            'от590т98',
+            'ус092у98',
+            'ор545е197',
+            'тм444м77',
+            'тк455о750',
+            'рм462а34',
+            'ур544у174',
+            'во577е190',
+            'ов888т31',
+            'ео555а77',
+            'аа118а99',
+            'ет557у777',
+            'ес884в777',
+            'ме965е26',
+            'вх545н199',
+        ];
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function getInvalidValues(): array
+    {
+        return [
+            // Слишком длинные
+            'Р394242КК190',
+            'С73321НХ197',
+            'Е7350МО750',
+            'М396СРХ46',
+            'А137НОО89',
+            'К898КМ4054',
+            'К8948КМ404',
+
+            // Слишком короткие
+            'У752НХ1',
+            'А548ВР7',
+            'Н58ХС38',
+            'Е47ЕВ190',
+            'О386А40',
+            'С06ОУ777',
+            'Р295К102',
+
+            // Содержащие запрещенные символы
+            'Н416ТЯ161',
+            'Ю477ЕМ178',
+            'Н090ЫН777',
+            'Ф399УН777',
+            'Е986НЪ199',
+            'М441ЕЦ73',
+            'Р842ЭН777',
+
+            'TSMEYB21S00610448',
+            'LN130-0128818',
+
+            Str::random(32),
+        ];
     }
 }

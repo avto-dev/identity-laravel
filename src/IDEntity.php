@@ -32,13 +32,13 @@ class IDEntity implements IDEntityInterface
     /**
      * Passed type is supported?
      *
-     * @param string|mixed $type
+     * @param string $type
      *
      * @return bool
      */
-    public static function typeIsSupported($type): bool
+    public static function typeIsSupported(string $type): bool
     {
-        return \is_string($type) && \in_array($type, static::getSupportedTypes(), true);
+        return \in_array($type, static::getSupportedTypes(), true);
     }
 
     /**
@@ -94,12 +94,12 @@ class IDEntity implements IDEntityInterface
         return \array_merge([
             self::ID_TYPE_VIN                   => Types\IDEntityVin::class,
             self::ID_TYPE_GRZ                   => Types\IDEntityGrz::class,
+            self::ID_TYPE_CADASTRAL_NUMBER      => Types\IDEntityCadastralNumber::class,
             self::ID_TYPE_STS                   => Types\IDEntitySts::class,
             self::ID_TYPE_PTS                   => Types\IDEntityPts::class,
             self::ID_TYPE_BODY                  => Types\IDEntityBody::class,
             self::ID_TYPE_CHASSIS               => Types\IDEntityChassis::class,
             self::ID_TYPE_DRIVER_LICENSE_NUMBER => Types\IDEntityDriverLicenseNumber::class,
-            self::ID_TYPE_CADASTRAL_NUMBER      => Types\IDEntityCadastralNumber::class,
         ], static::getExtendedTypesMap());
     }
 

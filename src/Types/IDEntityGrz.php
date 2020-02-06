@@ -130,7 +130,7 @@ class IDEntityGrz extends AbstractTypedIDEntity implements HasRegionDataInterfac
      *
      * @return string[]|null
      */
-    public static function getGostTypesByPattern($pattern): ?array
+    public static function getGostTypesByPattern(string $pattern): ?array
     {
         return self::PATTERNS_AND_TYPES_MAP[$pattern] ?? null;
     }

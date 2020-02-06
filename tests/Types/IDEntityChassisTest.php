@@ -5,33 +5,50 @@ declare(strict_types = 1);
 namespace AvtoDev\IDEntity\Tests\Types;
 
 use Illuminate\Support\Str;
-use AvtoDev\IDEntity\IDEntity;
+use AvtoDev\IDEntity\IDEntityInterface;
 use AvtoDev\IDEntity\Types\IDEntityChassis;
 
 /**
- * @covers \AvtoDev\IDEntity\Types\IDEntityChassis<extended>
+ * @covers \AvtoDev\IDEntity\Types\IDEntityChassis
  */
 class IDEntityChassisTest extends AbstractIDEntityTestCase
 {
     /**
-     * @var IDEntityChassis
+     * @var string
      */
-    protected $instance;
+    protected $expected_type = IDEntityInterface::ID_TYPE_CHASSIS;
 
     /**
      * {@inheritdoc}
      */
-    public function testGetType(): void
+    public function testNormalize(): void
     {
-        $this->assertSame(IDEntity::ID_TYPE_CHASSIS, $this->instance->getType());
+        $entity = $this->entityFactory();
+
+        $this->assertSame($valid = 'LA130-0128818', $entity::normalize(Str::lower($valid)));
+        $this->assertSame($valid, $entity::normalize(" {$valid}  "));
+        $this->assertSame($valid, $entity::normalize('LA130–0128818'));
+        $this->assertSame($valid, $entity::normalize('Lа130-0128818'));
+        $this->assertSame($valid, $entity::normalize('LA130--0128818'));
+        $this->assertSame($valid, $entity::normalize('LA130-0128№;:?№?*№%$@$%@#818'));
+
+        $this->assertSame('LA130 0128818', $entity::normalize(' LA130  0128818'));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function entityFactory(?string $value = null): IDEntityChassis
+    {
+        return new IDEntityChassis($value ?? $this->getValidValues()[0]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function testIsValid(): void
+    protected function getValidValues(): array
     {
-        $valid = [
+        return [
             'RN1350007371',
             'LH800023313',
             'TA01W863799',
@@ -40,54 +57,17 @@ class IDEntityChassisTest extends AbstractIDEntityTestCase
             'UZJ100-0140027',
             'K971009415',
         ];
-
-        foreach ($valid as $value) {
-            $this->assertTrue($this->instance->setValue($value)->isValid());
-        }
-
-        $this->assertFalse($this->instance->setValue('TSMEYB21S00610448')->isValid());
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
-    public function testNormalize(): void
+    protected function getInvalidValues(): array
     {
-        // Из нижнего регистра переведёт в верхний
-        $this->assertSame($valid = $this->getValidValue(), $this->instance::normalize(Str::lower($this->getValidValue())));
-
-        // Пробелы - успешно триммит
-        $this->assertSame($valid, $this->instance::normalize(' ' . $this->getValidValue() . ' '));
-
-        // Не корректный, длинный тире
-        $this->assertSame($valid, $this->instance::normalize('LA130–0128818'));
-
-        // С кириллицей
-        $this->assertSame($valid, $this->instance::normalize('Lа130-0128818'));
-
-        // С двумя тире (должны преобразоваться в одиночное тире)
-        $this->assertSame($valid, $this->instance::normalize('LA130--0128818'));
-
-        // Некорректные символы - удаляет
-        $this->assertSame($valid, $this->instance::normalize('LA130-0128№;:?№?*№%$@$%@#818'));
-
-        // С двумя пробелами (должны преобразоваться в одиночное тире)
-        $this->assertSame('LA130 0128818', $this->instance::normalize(' LA130  0128818'));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getClassName(): string
-    {
-        return IDEntityChassis::class;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getValidValue(): string
-    {
-        return 'LA130-0128818';
+        return [
+            'TSMEYB21S00610448',
+            '38:49:924785:832907',
+            Str::random(32),
+        ];
     }
 }

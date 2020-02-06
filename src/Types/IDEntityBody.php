@@ -37,7 +37,7 @@ class IDEntityBody extends AbstractTypedIDEntity
             // Replace multiple whitespaces with one
             $value = (string) \preg_replace('~\s+~u', ' ', \trim((string) $value));
 
-            // Normalize dash char
+            // Normalize dash chars
             $value = Normalizer::normalizeDashChar($value);
 
             // Replace multiple dashes with one

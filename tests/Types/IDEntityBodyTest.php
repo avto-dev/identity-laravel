@@ -5,34 +5,56 @@ declare(strict_types = 1);
 namespace AvtoDev\IDEntity\Tests\Types;
 
 use Illuminate\Support\Str;
-use AvtoDev\IDEntity\IDEntity;
+use AvtoDev\IDEntity\IDEntityInterface;
 use AvtoDev\IDEntity\Types\IDEntityBody;
 
 /**
- * @covers \AvtoDev\IDEntity\Types\IDEntityBody<extended>
+ * @covers \AvtoDev\IDEntity\Types\IDEntityBody
  */
 class IDEntityBodyTest extends AbstractIDEntityTestCase
 {
     /**
-     * @var IDEntityBody
+     * @var string
      */
-    protected $instance;
+    protected $expected_type = IDEntityInterface::ID_TYPE_BODY;
 
     /**
      * {@inheritdoc}
      */
-    public function testGetType(): void
+    public function testNormalize(): void
     {
-        $this->assertSame(IDEntity::ID_TYPE_BODY, $this->instance->getType());
+        $entity = $this->entityFactory();
+
+        $this->assertSame($valid = 'JS3SE-102734', $entity::normalize(Str::lower($valid)));
+        $this->assertSame($valid, $entity::normalize(" {$valid}  "));
+        $this->assertSame($valid, $entity::normalize('JS3SE–102734'));
+        $this->assertSame($valid, $entity::normalize('JS3Sе–102734'));
+        $this->assertSame($valid, $entity::normalize('JS3SE--102734'));
+        $this->assertSame($valid, $entity::normalize('JS3SE -102734'));
+        $this->assertSame($valid, $entity::normalize('JS3SE- 102734'));
+        $this->assertSame($valid, $entity::normalize('JS3SE - 102734'));
+        $this->assertSame($valid, $entity::normalize('JS3SE -  102734'));
+        $this->assertSame($valid, $entity::normalize('JS3SE  -  102734'));
+        $this->assertSame($valid, $entity::normalize('JS3#^&@^^SE–102":";%?734'));
+
+        $this->assertSame('JS3SE 102734', $entity::normalize(' JS3SE  102734'));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function entityFactory(?string $value = null): IDEntityBody
+    {
+        return new IDEntityBody($value ?? $this->getValidValues()[0]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function testIsValid(): void
+    protected function getValidValues(): array
     {
-        $valid = [
-            // С пробелами - считаются валидными
+        return [
+            // Whitespaces allowed
             'NZE141 9134919',
             'GX115 0001807',
             'FN15 002153',
@@ -104,61 +126,17 @@ class IDEntityBodyTest extends AbstractIDEntityTestCase
             'HP11724818',
             'CF51100187',
         ];
-
-        foreach ($valid as $value) {
-            $this->assertTrue($this->instance->setValue($value)->isValid());
-        }
-
-        $this->assertFalse($this->instance->setValue('TSMEYB21S00610448')->isValid());
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
-    public function testNormalize(): void
+    protected function getInvalidValues(): array
     {
-        // Из нижнего регистра переведёт в верхний
-        $this->assertSame($valid = $this->getValidValue(), $this->instance::normalize(Str::lower($this->getValidValue())));
-
-        // Пробелы - успешно триммит
-        $this->assertSame($valid, $this->instance::normalize(' ' . $this->getValidValue() . ' '));
-
-        // Не корректный, длинный тире
-        $this->assertSame($valid, $this->instance::normalize('JS3SE–102734'));
-
-        // С кириллицей
-        $this->assertSame($valid, $this->instance::normalize('JS3Sе–102734'));
-
-        // С двумя тире (должны преобразоваться в одиночное тире)
-        $this->assertSame($valid, $this->instance::normalize('JS3SE--102734'));
-
-        // Встречающиеся идущие подряд тире и пробел - заменяются на одиночный тире
-        $this->assertSame($valid, $this->instance::normalize('JS3SE -102734'));
-        $this->assertSame($valid, $this->instance::normalize('JS3SE- 102734'));
-        $this->assertSame($valid, $this->instance::normalize('JS3SE - 102734'));
-        $this->assertSame($valid, $this->instance::normalize('JS3SE -  102734'));
-        $this->assertSame($valid, $this->instance::normalize('JS3SE  -  102734'));
-
-        // Некорректные символы - удаляет
-        $this->assertSame($valid, $this->instance::normalize('JS3#^&@^^SE–102":";%?734'));
-
-        // Дублирующиеся пробелы заменяются на одиночные, но замена их на тире НЕ происходит
-        $this->assertSame('JS3SE 102734', $this->instance::normalize(' JS3SE  102734'));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getClassName(): string
-    {
-        return IDEntityBody::class;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getValidValue(): string
-    {
-        return 'JS3SE-102734';
+        return [
+            'TSMEYB21S00610448',
+            '38:49:924785:832907',
+            Str::random(32),
+        ];
     }
 }

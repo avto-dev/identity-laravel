@@ -6,6 +6,7 @@ namespace AvtoDev\IDEntity\Tests;
 
 use Illuminate\Foundation\Application;
 use Illuminate\Contracts\Console\Kernel;
+use AvtoDev\IDEntity\Tests\Mocks\TypedIDEntityMock;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
 abstract class AbstractTestCase extends BaseTestCase
@@ -13,23 +14,27 @@ abstract class AbstractTestCase extends BaseTestCase
     /**
      * Creates the application.
      *
-     * @param string[] $service_providers
-     *
      * @return Application
      */
-    public function createApplication($service_providers = [
-        \AvtoDev\IDEntity\ServiceProvider::class,
-        \AvtoDev\StaticReferences\ServiceProvider::class,
-    ])
+    public function createApplication()
     {
         $app = require __DIR__ . '/../vendor/laravel/laravel/bootstrap/app.php';
 
         $app->make(Kernel::class)->bootstrap();
 
-        foreach ((array) $service_providers as $service_provider) {
-            $app->register($service_provider);
-        }
+        $app->register(\AvtoDev\StaticReferences\ServiceProvider::class);
+        $app->register(\AvtoDev\IDEntity\ServiceProvider::class);
 
         return $app;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function tearDown(): void
+    {
+        TypedIDEntityMock::reset();
+
+        parent::tearDown();
     }
 }

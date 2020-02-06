@@ -4,56 +4,75 @@ declare(strict_types = 1);
 
 namespace AvtoDev\IDEntity\Tests\Types;
 
-use AvtoDev\IDEntity\IDEntity;
+use Illuminate\Support\Str;
+use AvtoDev\IDEntity\IDEntityInterface;
 use AvtoDev\IDEntity\Types\IDEntityUnknown;
 
 /**
- * @covers \AvtoDev\IDEntity\Types\IDEntityUnknown<extended>
+ * @covers \AvtoDev\IDEntity\Types\IDEntityUnknown
  */
 class IDEntityUnknownTest extends AbstractIDEntityTestCase
 {
     /**
-     * @var IDEntityUnknown
+     * @var string
      */
-    protected $instance;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function testGetType(): void
-    {
-        $this->assertSame(IDEntity::ID_TYPE_UNKNOWN, $this->instance->getType());
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function testIsValid(): void
-    {
-        $this->assertFalse($this->instance->isValid());
-    }
+    protected $expected_type = IDEntityInterface::ID_TYPE_UNKNOWN;
 
     /**
      * {@inheritdoc}
      */
     public function testNormalize(): void
     {
-        $this->assertSame($value = ' foo bar ', $this->instance::normalize($value));
+        $entity = $this->entityFactory();
+
+        $this->assertSame($value = ' foo bar ', $entity::normalize($value));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function testIsValid(): void
+    {
+        $entity = $this->entityFactory();
+
+        foreach ($this->getValidValues() as $value) {
+            $this->assertFalse($entity->setValue($value)->isValid());
+        }
+
+        foreach ($this->getInvalidValues() as $value) {
+            $this->assertFalse($entity->setValue($value)->isValid());
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function entityFactory(?string $value = null): IDEntityUnknown
+    {
+        return new IDEntityUnknown($value ?? $this->getValidValues()[0]);
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function getClassName(): string
+    protected function getValidValues(): array
     {
-        return IDEntityUnknown::class;
+        return [
+            Str::random(),
+        ];
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
-    protected function getValidValue(): string
+    protected function getInvalidValues(): array
     {
-        return 'foo bar';
+        return [
+            Str::random(),
+            Str::random(32),
+            '',
+            'foo',
+            'foo bar',
+        ];
     }
 }
