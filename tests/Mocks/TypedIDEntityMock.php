@@ -29,36 +29,7 @@ class TypedIDEntityMock implements TypedIDEntityInterface
     public static $is_valid;
 
     /**
-     * Reset own static properties state.
-     *
-     * @return void
-     */
-    public static function reset(): void
-    {
-        static::$value = null;
-        static::$type = null;
-        static::$detectable = null;
-        static::$is_valid = null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function setValue(string $value, bool $make_normalization = true)
-    {
-        static::$value = $value;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getValue(): ?string
-    {
-        return static::$value;
-    }
-
-    /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function __toString(): string
     {
@@ -66,7 +37,36 @@ class TypedIDEntityMock implements TypedIDEntityInterface
     }
 
     /**
-     * {@inheritDoc}
+     * Reset own static properties state.
+     *
+     * @return void
+     */
+    public static function reset(): void
+    {
+        static::$value      = null;
+        static::$type       = null;
+        static::$detectable = null;
+        static::$is_valid   = null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setValue(string $value, bool $make_normalization = true)
+    {
+        static::$value = $value;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getValue(): ?string
+    {
+        return static::$value;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function canBeAutoDetected(): bool
     {
@@ -74,7 +74,7 @@ class TypedIDEntityMock implements TypedIDEntityInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @throws BadMethodCallException
      */
@@ -84,7 +84,7 @@ class TypedIDEntityMock implements TypedIDEntityInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getType(): string
     {
@@ -92,7 +92,7 @@ class TypedIDEntityMock implements TypedIDEntityInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function isValid(): bool
     {
@@ -100,7 +100,7 @@ class TypedIDEntityMock implements TypedIDEntityInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public static function normalize($value): ?string
     {
@@ -110,7 +110,7 @@ class TypedIDEntityMock implements TypedIDEntityInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function toArray(): array
     {
@@ -121,7 +121,7 @@ class TypedIDEntityMock implements TypedIDEntityInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function toJson($options = 0): string
     {

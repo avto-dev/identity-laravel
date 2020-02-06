@@ -36,7 +36,7 @@ class IDEntityChassisTest extends AbstractIDEntityTestCase
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function entityFactory(?string $value = null): IDEntityChassis
     {
@@ -60,7 +60,7 @@ class IDEntityChassisTest extends AbstractIDEntityTestCase
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function getInvalidValues(): array
     {

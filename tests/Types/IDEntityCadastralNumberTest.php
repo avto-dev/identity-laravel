@@ -4,9 +4,7 @@ declare(strict_types = 1);
 
 namespace AvtoDev\IDEntity\Tests\Types;
 
-use stdClass;
 use Illuminate\Support\Str;
-use AvtoDev\IDEntity\IDEntity;
 use AvtoDev\IDEntity\IDEntityInterface;
 use AvtoDev\IDEntity\Types\IDEntityCadastralNumber;
 use AvtoDev\StaticReferences\References\Entities\CadastralDistrict;
@@ -125,7 +123,7 @@ class IDEntityCadastralNumberTest extends AbstractIDEntityTestCase
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function entityFactory(?string $value = null): IDEntityCadastralNumber
     {
@@ -175,7 +173,7 @@ class IDEntityCadastralNumberTest extends AbstractIDEntityTestCase
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function getInvalidValues(): array
     {

@@ -6,6 +6,9 @@ namespace AvtoDev\IDEntity\Tests;
 
 use AvtoDev\IDEntity\IDEntityInterface;
 
+/**
+ * @coversNothing
+ */
 class IDEntityInterfaceTest extends AbstractTestCase
 {
     /**

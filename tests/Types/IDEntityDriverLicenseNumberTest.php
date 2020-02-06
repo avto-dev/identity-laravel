@@ -73,7 +73,7 @@ class IDEntityDriverLicenseNumberTest extends AbstractIDEntityTestCase
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function entityFactory(?string $value = null): IDEntityDriverLicenseNumber
     {
@@ -112,7 +112,7 @@ class IDEntityDriverLicenseNumberTest extends AbstractIDEntityTestCase
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function getInvalidValues(): array
     {

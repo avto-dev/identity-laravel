@@ -29,7 +29,7 @@ class IDEntityUnknownTest extends AbstractIDEntityTestCase
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function testIsValid(): void
     {
@@ -45,7 +45,7 @@ class IDEntityUnknownTest extends AbstractIDEntityTestCase
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function entityFactory(?string $value = null): IDEntityUnknown
     {
@@ -63,7 +63,7 @@ class IDEntityUnknownTest extends AbstractIDEntityTestCase
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function getInvalidValues(): array
     {

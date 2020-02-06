@@ -5,9 +5,8 @@ declare(strict_types = 1);
 namespace AvtoDev\IDEntity\Tests\Types;
 
 use Illuminate\Support\Str;
-use AvtoDev\IDEntity\IDEntity;
-use AvtoDev\IDEntity\Types\IDEntityPts;
 use AvtoDev\IDEntity\IDEntityInterface;
+use AvtoDev\IDEntity\Types\IDEntityPts;
 
 /**
  * @covers \AvtoDev\IDEntity\Types\IDEntityPts
@@ -32,9 +31,8 @@ class IDEntityPtsTest extends AbstractIDEntityTestCase
         $this->assertSame($valid, $entity::normalize('36ТС3 $%@*%^$ 69230 '));
     }
 
-
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function entityFactory(?string $value = null): IDEntityPts
     {
@@ -69,7 +67,7 @@ class IDEntityPtsTest extends AbstractIDEntityTestCase
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function getInvalidValues(): array
     {

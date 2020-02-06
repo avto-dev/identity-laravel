@@ -5,8 +5,8 @@ declare(strict_types = 1);
 namespace AvtoDev\IDEntity\Tests\Types;
 
 use Illuminate\Support\Str;
-use AvtoDev\IDEntity\Types\IDEntityVin;
 use AvtoDev\IDEntity\IDEntityInterface;
+use AvtoDev\IDEntity\Types\IDEntityVin;
 
 /**
  * @covers \AvtoDev\IDEntity\Types\IDEntityVin
@@ -87,7 +87,7 @@ class IDEntityVinTest extends AbstractIDEntityTestCase
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function entityFactory(?string $value = null): IDEntityVin
     {
@@ -200,7 +200,7 @@ class IDEntityVinTest extends AbstractIDEntityTestCase
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function getInvalidValues(): array
     {

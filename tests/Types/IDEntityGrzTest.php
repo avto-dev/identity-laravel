@@ -5,8 +5,8 @@ declare(strict_types = 1);
 namespace AvtoDev\IDEntity\Tests\Types;
 
 use Illuminate\Support\Str;
-use AvtoDev\IDEntity\Types\IDEntityGrz;
 use AvtoDev\IDEntity\IDEntityInterface;
+use AvtoDev\IDEntity\Types\IDEntityGrz;
 
 /**
  * @covers \AvtoDev\IDEntity\Types\IDEntityGrz
@@ -785,7 +785,7 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function entityFactory(?string $value = null): IDEntityGrz
     {
@@ -1184,7 +1184,7 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function getInvalidValues(): array
     {

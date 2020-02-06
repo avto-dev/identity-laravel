@@ -4,8 +4,8 @@ declare(strict_types = 1);
 
 namespace AvtoDev\IDEntity\Tests;
 
-use Illuminate\Support\Str;
 use AvtoDev\IDEntity\Types;
+use Illuminate\Support\Str;
 use AvtoDev\IDEntity\IDEntity;
 use AvtoDev\IDEntity\ServiceProvider;
 use AvtoDev\IDEntity\IDEntityInterface;

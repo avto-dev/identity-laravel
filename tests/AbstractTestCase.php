@@ -12,6 +12,16 @@ use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 abstract class AbstractTestCase extends BaseTestCase
 {
     /**
+     * {@inheritdoc}
+     */
+    protected function tearDown(): void
+    {
+        TypedIDEntityMock::reset();
+
+        parent::tearDown();
+    }
+
+    /**
      * Creates the application.
      *
      * @return Application
@@ -26,15 +36,5 @@ abstract class AbstractTestCase extends BaseTestCase
         $app->register(\AvtoDev\IDEntity\ServiceProvider::class);
 
         return $app;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected function tearDown(): void
-    {
-        TypedIDEntityMock::reset();
-
-        parent::tearDown();
     }
 }
