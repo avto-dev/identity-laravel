@@ -52,7 +52,7 @@ class IDEntityGrz extends AbstractTypedIDEntity implements HasRegionDataInterfac
      * Allowed chars.
      */
     protected const
-        CYRILLIC_CHARS = 'АВЕКМНОРСТУХ',
+        CYRILLIC_CHARS   = 'АВЕКМНОРСТУХ',
         CYRILLIC_ANALOGS = 'ABEKMHOPCTYX'; // Order is important!
 
     /**
@@ -152,7 +152,7 @@ class IDEntityGrz extends AbstractTypedIDEntity implements HasRegionDataInterfac
     {
         if (\is_string($this->value)) {
             static $cyrillic = self::CYRILLIC_CHARS;
-            $value      = (string) $this->value;
+            $value           = (string) $this->value;
 
             switch (true) {
                 // X000XX77_OR_X000XX777
