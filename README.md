@@ -84,7 +84,7 @@ use AvtoDev\IDEntity\Types\IDEntityVin;
 $vin = new IDEntityVin(' jf1SJ5LC5DG048 667');
 $vin->getValue(); // 'JF1SJ5LC5DG048667'
 
-IDEntity::make('  a123аY777', IDEntity::ID_TYPE_GRZ)->getValue(); // 'А123АУ177'
+IDEntity::make('  a123аY777', IDEntity::ID_TYPE_GRZ)->getValue(); // 'А123АУ777'
 ```
 
 Value masking:
