@@ -106,7 +106,7 @@ class IDEntityCadastralNumber extends AbstractTypedIDEntity implements HasCadast
      */
     public function isValid(): bool
     {
-        if (\is_string($this->value)) {
+        if (\is_string($this->value) && $this->value !== '') {
             /** @var CadastralNumberValidatorExtension $validator */
             $validator = static::getContainer()->make(CadastralNumberValidatorExtension::class);
 

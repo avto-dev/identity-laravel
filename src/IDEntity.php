@@ -12,7 +12,7 @@ use Illuminate\Contracts\Config\Repository as ConfigRepository;
 class IDEntity implements IDEntityInterface
 {
     /**
-     * Disable outside constructor calling.
+     * Outside constructor calling disabled for this class.
      */
     protected function __construct()
     {
