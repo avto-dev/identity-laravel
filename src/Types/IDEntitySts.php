@@ -57,7 +57,7 @@ class IDEntitySts extends AbstractTypedIDEntity
             /** @var StsCodeValidatorExtension $validator */
             $validator = static::getContainer()->make(StsCodeValidatorExtension::class);
 
-            return \is_string($this->value) && $validator->passes('', $this->value);
+            return $validator->passes('', $this->value);
         }
 
         return false;

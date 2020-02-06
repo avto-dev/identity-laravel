@@ -64,7 +64,7 @@ class IDEntityChassis extends AbstractTypedIDEntity
             /** @var ChassisCodeValidatorExtension $validator */
             $validator = static::getContainer()->make(ChassisCodeValidatorExtension::class);
 
-            return \is_string($this->value) && $validator->passes('', $this->value);
+            return $validator->passes('', $this->value);
         }
 
         return false;

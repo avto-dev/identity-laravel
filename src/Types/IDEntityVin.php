@@ -101,7 +101,7 @@ class IDEntityVin extends AbstractTypedIDEntity
             /** @var VinCodeValidatorExtension $validator */
             $validator = static::getContainer()->make(VinCodeValidatorExtension::class);
 
-            return \is_string($this->value) && $validator->passes('', $this->value);
+            return $validator->passes('', $this->value);
         }
 
         return false;
