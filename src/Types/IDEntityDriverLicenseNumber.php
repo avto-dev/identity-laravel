@@ -4,15 +4,23 @@ declare(strict_types = 1);
 
 namespace AvtoDev\IDEntity\Types;
 
-use Exception;
-use Illuminate\Support\Str;
 use AvtoDev\IDEntity\Helpers\Transliterator;
-use AvtoDev\StaticReferences\References\AutoRegions\AutoRegions;
-use AvtoDev\StaticReferences\References\AutoRegions\AutoRegionEntry;
+use AvtoDev\StaticReferences\References\SubjectCodes;
+use AvtoDev\StaticReferences\References\Entities\SubjectCodesInfo;
 use AvtoDev\ExtendedLaravelValidator\Extensions\DriverLicenseNumberValidatorExtension;
 
 class IDEntityDriverLicenseNumber extends AbstractTypedIDEntity implements HasRegionDataInterface
 {
+    /**
+     * {@inheritdoc}
+     *
+     * @return static
+     */
+    final public static function make(string $value, ?string $type = null): self
+    {
+        return new static($value);
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -22,60 +30,67 @@ class IDEntityDriverLicenseNumber extends AbstractTypedIDEntity implements HasRe
     }
 
     /**
-     * Возвращает код региона из номера водительского удостоверения.
+     * {@inheritdoc}
+     */
+    public static function normalize($value): ?string
+    {
+        try {
+            // Uppercase + trim
+            $value = \mb_strtoupper(\trim((string) $value), 'UTF-8');
+
+            // Remove all chars except allowed (delimiters are included)
+            $value = (string) \preg_replace('~[^' . 'АВЕКМНОРСТУХ' . 'ABEKMHOPCTYX' . '0-9]~u', '', $value);
+
+            // Transliterate latin chars with cyrillic (backward transliteration)
+            $value = Transliterator::detransliterateLite($value);
+
+            return $value;
+        } catch (\Throwable $e) {
+            return null;
+        }
+    }
+
+    /**
+     * Get region code from value.
      *
-     * Первые четыре цифры номера — это серия документа. Две первые из них совпадают с номером региона, где ВУ было
-     * выдано.
+     * First 4 digits in value is serial number. First two is region code where driver license was issued.
      *
      * @return int|null
      */
     public function getRegionCode(): ?int
     {
-        \preg_match('~^(?<region_digits>[\d]{2}).+$~', (string) $this->getValue(), $matches);
+        if (\is_string($this->value)) {
+            \preg_match('~^(?<region_digits>[\d]{2}).+$~', $this->value, $matches);
 
-        if (isset($matches['region_digits']) && \is_numeric($region_digits = (string) $matches['region_digits'])) {
-            return (int) $region_digits;
+            $region_digits = $matches['region_digits'] ?? null;
+
+            if (\is_numeric($region_digits)) {
+                return (int) $region_digits;
+            }
         }
 
         return null;
     }
 
     /**
-     * Возвращает данные региона из номера водительского удостоверения.
+     * Get information about region where driver license was issued.
      *
-     * @return AutoRegionEntry|null
+     * @see \AvtoDev\StaticReferences\ServiceProvider Must be loaded
+     *
+     * @return SubjectCodesInfo|null
      */
-    public function getRegionData(): ?AutoRegionEntry
+    public function getRegionData(): ?SubjectCodesInfo
     {
-        static $regions = null;
+        $region_code = $this->getRegionCode();
 
-        if (! $regions instanceof AutoRegions) {
-            $regions = new AutoRegions;
+        if (\is_int($region_code)) {
+            /** @var SubjectCodes $subjects */
+            $subjects = static::getContainer()->make(SubjectCodes::class);
+
+            return $subjects->getBySubjectCode($region_code);
         }
 
-        return $regions->getByRegionCode($this->getRegionCode());
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function normalize($value): ?string
-    {
-        try {
-            // Переводим в верхний регистр + trim
-            $value = Str::upper(\trim((string) $value));
-
-            // Удаляем все символы, кроме разрешенных (ВКЛЮЧАЯ разделители)
-            $value = (string) \preg_replace('~[^' . 'АВЕКМНОРСТУХ' . 'ABEKMHOPCTYX' . '0-9]~u', '', $value);
-
-            // Производим замену латинских аналогов на кириллические (обратная транслитерация). Не прогоняю по всем
-            // возможными символам, так как регулярка что выше всё кроме них как раз и удаляет
-            $value = Transliterator::detransliterateLite($value);
-
-            return $value;
-        } catch (Exception $e) {
-            return null;
-        }
+        return null;
     }
 
     /**
@@ -83,11 +98,13 @@ class IDEntityDriverLicenseNumber extends AbstractTypedIDEntity implements HasRe
      */
     public function isValid(): bool
     {
-        /** @var DriverLicenseNumberValidatorExtension $validator */
-        $validator = static::getContainer()->make(DriverLicenseNumberValidatorExtension::class);
+        if (\is_string($this->value) && $this->value !== '') {
+            /** @var DriverLicenseNumberValidatorExtension $validator */
+            $validator = static::getContainer()->make(DriverLicenseNumberValidatorExtension::class);
 
-        return \is_string($this->value)
-               && $validator->passes('', $this->value)
-               && $this->getRegionData() instanceof AutoRegionEntry;
+            return $validator->passes('', $this->value) && $this->getRegionData() instanceof SubjectCodesInfo;
+        }
+
+        return false;
     }
 }

@@ -4,31 +4,30 @@ declare(strict_types = 1);
 
 namespace AvtoDev\IDEntity\Types;
 
+use function mb_strlen;
+use function mb_substr;
 use AvtoDev\IDEntity\IDEntity;
+use Tarampampam\Wrappers\Json;
 
 abstract class AbstractTypedIDEntity extends IDEntity implements TypedIDEntityInterface
 {
     /**
-     * Значение идентификатора.
-     *
      * @var string|null
      */
     protected $value;
 
     /**
-     * Может ли тип быть автоматически определяемым.
-     *
      * @var bool
      */
     protected $can_be_auto_detected = true;
 
     /**
-     * Create a new AbstractTypedIDEntity instance.
+     * Create a new typed IDEntity instance.
      *
      * @param string $value
      * @param bool   $make_normalization
      */
-    public function __construct(string $value, bool $make_normalization = true)
+    final public function __construct(string $value, bool $make_normalization = true)
     {
         parent::__construct();
 
@@ -46,7 +45,7 @@ abstract class AbstractTypedIDEntity extends IDEntity implements TypedIDEntityIn
     /**
      * {@inheritdoc}
      *
-     * Метод-заглушка для родительского метода-факторки.
+     * @codeCoverageIgnore
      */
     public static function make(string $value, ?string $type = null)
     {
@@ -55,12 +54,8 @@ abstract class AbstractTypedIDEntity extends IDEntity implements TypedIDEntityIn
 
     /**
      * {@inheritdoc}
-     *
-     * @param mixed $type Тип ИГНОРИРУЕТСЯ
-     *
-     * Метод-заглушка для родительского метода
      */
-    public static function is(string $value, $type = null): bool
+    public static function is(string $value, ?string $type = null): bool
     {
         return static::make($value)->isValid();
     }
@@ -90,13 +85,11 @@ abstract class AbstractTypedIDEntity extends IDEntity implements TypedIDEntityIn
      */
     public function getMaskedValue(int $start_offset = 3, int $end_offset = 3, string $mask_char = '*'): ?string
     {
-        return $this->value === null
-            ? null
-            : $this->hideString($this->value, $start_offset, $end_offset, $mask_char);
+        return $this->hideString((string) $this->value, $start_offset, $end_offset, $mask_char);
     }
 
     /**
-     * {@inheritdoc}
+     * @return array{value:?string, type:string}
      */
     public function toArray(): array
     {
@@ -111,7 +104,7 @@ abstract class AbstractTypedIDEntity extends IDEntity implements TypedIDEntityIn
      */
     public function toJson($options = 0): string
     {
-        return (string) \json_encode($this->toArray(), $options);
+        return Json::encode($this->toArray(), $options);
     }
 
     /**
@@ -123,12 +116,12 @@ abstract class AbstractTypedIDEntity extends IDEntity implements TypedIDEntityIn
     }
 
     /**
-     * Скрытие строки под звездами.
+     * Hide part of string using 'mask char'.
      *
-     * @param string $string       Входящая строка
-     * @param int    $start_offset Сдвиг с начала
-     * @param int    $end_offset   Сдвиг с конца
-     * @param string $mask_char    Замещающий символ
+     * @param string $string
+     * @param int    $start_offset
+     * @param int    $end_offset
+     * @param string $mask_char
      *
      * @return string
      */
@@ -137,26 +130,26 @@ abstract class AbstractTypedIDEntity extends IDEntity implements TypedIDEntityIn
                                   int $end_offset = 3,
                                   string $mask_char = '*'): string
     {
-        if (\mb_strlen($mask_char) > 1) {
-            $mask_char = (string) \mb_substr($mask_char, 0, 1);
+        if (mb_strlen($mask_char) > 1) {
+            $mask_char = (string) mb_substr($mask_char, 0, 1);
         }
 
-        $number_length = \mb_strlen($string);
+        $number_length = mb_strlen($string);
 
         if ($number_length <= $start_offset + $end_offset) {
             return $string;
         }
 
-        $hidden_str    = \mb_substr($string, $start_offset, $number_length - ($start_offset + $end_offset));
+        $hidden_str    = mb_substr($string, $start_offset, $number_length - ($start_offset + $end_offset));
         $stars         = '';
-        $hidden_length = \mb_strlen($hidden_str);
+        $hidden_length = mb_strlen($hidden_str);
 
         for ($i = 0; $i < $hidden_length; $i++) {
             $stars .= $mask_char;
         }
 
-        return \mb_substr($string, 0, $start_offset)
+        return mb_substr($string, 0, $start_offset)
                . $stars
-               . \mb_substr($string, $number_length - $end_offset, $end_offset);
+               . mb_substr($string, $number_length - $end_offset, $end_offset);
     }
 }

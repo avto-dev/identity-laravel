@@ -8,14 +8,14 @@ use Illuminate\Contracts\Support\Arrayable;
 interface TypedIDEntityInterface extends Arrayable, Jsonable
 {
     /**
-     * Возвращает строковое представление объекта при попытке преобразовать в строку последнего.
+     * Get ID entity as a string (value only).
      *
      * @return string
      */
     public function __toString(): string;
 
     /**
-     * Устанавливает значение идентификатора.
+     * Set ID entity value.
      *
      * @param string $value
      * @param bool   $make_normalization
@@ -25,46 +25,46 @@ interface TypedIDEntityInterface extends Arrayable, Jsonable
     public function setValue(string $value, bool $make_normalization = true);
 
     /**
-     * Возвращает значение идентификатора.
+     * Get ID entity value.
      *
      * @return string|null
      */
     public function getValue(): ?string;
 
     /**
-     * Возвращает значение идентификатора, но скрытое за маской.
+     * Get masked value.
      *
-     * @param int    $start_offset Сдвиг с начала
-     * @param int    $end_offset   Сдвиг с конца
-     * @param string $mask_char    Замещающий символ
+     * @param int    $start_offset
+     * @param int    $end_offset
+     * @param string $mask_char
      *
      * @return string|null
      */
     public function getMaskedValue(int $start_offset = 3, int $end_offset = 3, string $mask_char = '*'): ?string;
 
     /**
-     * Возвращает тип идентификатора.
+     * Get ID entity type.
      *
      * @return string
      */
     public function getType(): string;
 
     /**
-     * Производит проверку установленного значения с помощью callback-функций из стека callback-функций.
+     * Current value is valid?
      *
      * @return bool
      */
     public function isValid(): bool;
 
     /**
-     * Производит проверку на возможность идентификатора быть автоматически определяемым.
+     * Current ID entity can be auto-detected (if type is set `AUTODETECT`).
      *
      * @return bool
      */
     public function canBeAutoDetected(): bool;
 
     /**
-     * Производит нормализацию входного значения согласно типу.
+     * Make ID entity value normalization.
      *
      * @param string $value
      *

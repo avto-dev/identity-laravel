@@ -4,8 +4,9 @@ declare(strict_types = 1);
 
 namespace AvtoDev\IDEntity\Tests\Types;
 
-use stdClass;
+use Illuminate\Support\Str;
 use AvtoDev\IDEntity\IDEntity;
+use AvtoDev\IDEntity\IDEntityInterface;
 use AvtoDev\IDEntity\Tests\AbstractTestCase;
 use AvtoDev\IDEntity\Types\AbstractTypedIDEntity;
 use AvtoDev\IDEntity\Types\TypedIDEntityInterface;
@@ -13,205 +14,189 @@ use AvtoDev\IDEntity\Types\TypedIDEntityInterface;
 abstract class AbstractIDEntityTestCase extends AbstractTestCase
 {
     /**
-     * @var AbstractTypedIDEntity
+     * @var string|null
      */
-    protected $instance;
+    protected $expected_type;
 
     /**
-     * {@inheritdoc}
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $class_name = $this->getClassName();
-
-        $this->instance = new $class_name($this->getValidValue());
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function tearDown(): void
-    {
-        unset($this->instance);
-
-        parent::tearDown();
-    }
-
-    /**
-     * Тест конструктора.
-     *
      * @return void
      */
-    public function testConstructor(): void
+    public function testImplementation(): void
     {
-        $class_name = $this->getClassName();
+        $entity = $this->entityFactory();
 
-        /** @var AbstractTypedIDEntity $instance */
-        $instance = new $class_name($value = $this->getValidValue());
-        $this->assertEquals($instance->getValue(), $value);
-    }
-
-    /**
-     * Тест наследования и реализуемых интерфейсов.
-     *
-     * @return void
-     */
-    public function testInstances(): void
-    {
-        foreach ([IDEntity::class, TypedIDEntityInterface::class] as $class_name) {
-            $this->assertInstanceOf($class_name, $this->instance);
+        foreach ([IDEntity::class, IDEntityInterface::class, TypedIDEntityInterface::class] as $expects) {
+            $this->assertInstanceOf($expects, $entity);
         }
     }
 
     /**
-     * Тест метода конвертации объекта в строку.
-     *
      * @return void
      */
     public function testToString(): void
     {
-        $this->assertEquals($this->instance->getValue(), (string) $this->instance);
+        $this->assertSame(($entity = $this->entityFactory())->getValue(), (string) $entity);
     }
 
     /**
-     * Тест метода 'getMaskedValue'.
-     *
      * @return void
      */
     public function testGetMaskedValue(): void
     {
-        $this->instance->setValue('foo_blablabla_bar', false);
-        $this->assertEquals('foo***********bar', $this->instance->getMaskedValue());
+        $entity = $this->entityFactory();
 
-        $this->instance->setValue('foo_bla_bar', false);
-        $this->assertEquals('foo^^^^^bar', $this->instance->getMaskedValue(3, 3, '^foo'));
+        $entity->setValue('foo_blablabla_bar', false);
+        $this->assertSame('foo***********bar', $entity->getMaskedValue());
 
-        $this->instance->setValue('foo_blablabla_bar', false);
-        $this->assertEquals('fo+++++++++++_bar', $this->instance->getMaskedValue(2, 4, '+'));
+        $entity->setValue('foo_bla_bar', false);
+        $this->assertSame('foo^^^^^bar', $entity->getMaskedValue(3, 3, '^foo'));
 
-        $this->instance->setValue('foo_blablabla_bar', false);
-        $this->assertEquals('foo_blablabla_bar', $this->instance->getMaskedValue(20, 20));
+        $entity->setValue('foo_blablabla_bar', false);
+        $this->assertSame('fo+++++++++++_bar', $entity->getMaskedValue(2, 4, '+'));
 
-        $this->instance->setValue('foo_blablabla_bar', false);
-        $this->assertEquals('*****************', $this->instance->getMaskedValue(0, 0));
+        $entity->setValue('foo_blablabla_bar', false);
+        $this->assertSame('foo_blablabla_bar', $entity->getMaskedValue(20, 20));
+
+        $entity->setValue('foo_blablabla_bar', false);
+        $this->assertSame('*****************', $entity->getMaskedValue(0, 0));
     }
 
     /**
-     * Тест метода 'make'.
-     *
      * @return void
      */
     public function testMakeMethod(): void
     {
-        $this->assertEquals($this->instance, $this->instance::make($this->instance->getValue()));
+        $this->assertSame(
+            \serialize($entity = $this->entityFactory()),
+            \serialize($entity::make($entity->getValue()))
+        );
     }
 
     /**
-     * Тест метода 'is'.
-     *
      * @return void
      */
     public function testIsMethod(): void
     {
-        $this->assertEquals($this->instance->isValid(), $this->instance::is($this->instance->getValue()));
+        foreach ($this->getValidValues() as $valid_value) {
+            $entity = $this->entityFactory($valid_value);
 
-        // Второй аргумент для 'is' игнорируется
-        $this->assertEquals($this->instance->isValid(), $this->instance::is($this->instance->getValue(), [123, null]));
-        $this->assertEquals($this->instance->isValid(), $this->instance::is($this->instance->getValue(), ['foo']));
-        $this->assertEquals($this->instance->isValid(), $this->instance::is($this->instance->getValue(), [IDEntity::ID_TYPE_VIN]));
+            $this->assertSame($entity->isValid(), $entity::is($entity->getValue()));
+        }
+
+        $this->assertFalse($this->entityFactory()::is(Str::random(64)));
     }
 
     /**
-     * Тест метода 'getValue'.
-     *
      * @return void
      */
-    public function testGetAndSetValue(): void
+    public function testGetAndSetValueWithoutNormalization(): void
     {
-        $this->assertInstanceOf(
-            $this->getClassName(),
-            $this->instance->setValue($value = 'foo bar', false)
-        );
+        $entity = $this->entityFactory();
 
-        $this->assertEquals($this->instance->getValue(), $value);
+        $this->assertInstanceOf(\get_class($entity), $entity->setValue($value = 'foo bar', false));
+        $this->assertSame($entity->getValue(), $value);
     }
 
     /**
-     * Тест метода 'getType'.
-     *
      * @return void
      */
-    abstract public function testGetType();
-
-    /**
-     * Тест методов преобразования объекта в массив и json.
-     *
-     * @return void
-     */
-    public function testToArrayAndToJson(): void
+    public function testGetType(): void
     {
-        $this->assertEquals($array = [
-            'value' => $this->instance->getValue(),
-            'type'  => $this->instance->getType(),
-        ], $this->instance->toArray());
+        if (! \is_string($this->expected_type)) {
+            $this->markTestIncomplete(\sprintf('Test in %s does not have declared expected entity type', __CLASS__));
+        }
 
-        $this->assertEquals(json_encode($array), $this->instance->toJson());
+        $this->assertSame($this->expected_type, $this->entityFactory()->getType());
     }
 
     /**
-     * Тест метода собственной валидации.
-     *
      * @return void
      */
-    abstract public function testIsValid();
-
-    /**
-     * Тест метода нормализации значения.
-     *
-     * @return void
-     */
-    abstract public function testNormalize();
-
-    /**
-     * Тест работы метода нормализации с некорректными данными на входе.
-     *
-     * @return null
-     */
-    public function testNormalizeWithInvalidInputData(): void
+    public function testToArray(): void
     {
-        $invalid_values = [
-            new stdClass,
-            [],
-            function () {
-            },
-        ];
+        $entity = $this->entityFactory();
 
-        foreach ($invalid_values as $value) {
-            $this->assertNull($this->instance::normalize($value));
+        $this->assertSame([
+            'value' => $entity->getValue(),
+            'type'  => $entity->getType(),
+        ], $entity->toArray());
+    }
+
+    /**
+     * @return void
+     */
+    public function testToJson(): void
+    {
+        $entity = $this->entityFactory();
+
+        $this->assertSame(\json_encode([
+            'value' => $entity->getValue(),
+            'type'  => $entity->getType(),
+        ]), $entity->toJson());
+    }
+
+    /**
+     * @return void
+     */
+    public function testIsValid(): void
+    {
+        $entity = $this->entityFactory();
+
+        foreach ($this->getValidValues() as $value) {
+            $this->assertTrue($entity->setValue($value)->isValid(), "Value [{$value}] must be valid");
+        }
+
+        foreach ($this->getInvalidValues() as $value) {
+            $this->assertFalse($entity->setValue($value)->isValid(), "Value [{$value}] must be invalid");
         }
     }
 
     /**
-     * Проверяем, что по умолчанию идентификатор доступен для автоматического определения.
+     * @return void
      */
-    public function testCanAutodetect(): void
+    abstract public function testNormalize(): void;
+
+    /**
+     * @return void
+     */
+    public function testNormalizeWithInvalidInputData(): void
     {
-        $this->assertTrue($this->instance->canBeAutoDetected());
+        $invalid_values = [
+            new \stdClass,
+            [],
+            static function (): void {
+            },
+        ];
+
+        foreach ($invalid_values as $value) {
+            $this->assertNull($this->entityFactory()::normalize($value));
+        }
     }
 
     /**
-     * Возвращает имя тестируемого класса типизированной сущности.
-     *
-     * @return string
+     * @return void
      */
-    abstract protected function getClassName(): string;
+    public function testCanAutodetect(): void
+    {
+        $this->assertTrue($this->entityFactory()->canBeAutoDetected());
+    }
 
     /**
-     * Возвращает валидное значение сущности.
+     * Tested entity factory.
      *
-     * @return string
+     * @param string|null $value
+     *
+     * @return AbstractTypedIDEntity
      */
-    abstract protected function getValidValue(): string;
+    abstract protected function entityFactory(?string $value = null);
+
+    /**
+     * @return string[]
+     */
+    abstract protected function getValidValues(): array;
+
+    /**
+     * @return string[]
+     */
+    abstract protected function getInvalidValues(): array;
 }

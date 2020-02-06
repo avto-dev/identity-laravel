@@ -4,10 +4,10 @@ declare(strict_types = 1);
 
 namespace AvtoDev\IDEntity\Tests\Types;
 
-use AvtoDev\IDEntity\IDEntity;
-use AvtoDev\IDEntity\Helpers\CadastralNumberInfo;
+use Illuminate\Support\Str;
+use AvtoDev\IDEntity\IDEntityInterface;
 use AvtoDev\IDEntity\Types\IDEntityCadastralNumber;
-use AvtoDev\StaticReferences\References\CadastralDistricts\CadastralRegionEntry;
+use AvtoDev\StaticReferences\References\Entities\CadastralDistrict;
 
 /**
  * @covers \AvtoDev\IDEntity\Types\IDEntityCadastralNumber<extended>
@@ -15,24 +15,128 @@ use AvtoDev\StaticReferences\References\CadastralDistricts\CadastralRegionEntry;
 class IDEntityCadastralNumberTest extends AbstractIDEntityTestCase
 {
     /**
-     * @var IDEntityCadastralNumber
+     * @var string
      */
-    protected $instance;
+    protected $expected_type = IDEntityInterface::ID_TYPE_CADASTRAL_NUMBER;
 
     /**
-     * {@inheritdoc}
+     * @return void
      */
-    public function testGetType()
+    public function testGetDistrictCode(): void
     {
-        $this->assertEquals(IDEntity::ID_TYPE_CADASTRAL_NUMBER, $this->instance->getType());
+        $entity = $this->entityFactory();
+
+        foreach (\range(0, 99) as $code) {
+            $this->assertSame($code, $entity->setValue("{$code}:41:0:1")->getDistrictCode());
+        }
+
+        $this->assertNull($entity->setValue('')->getDistrictCode());
+        $this->assertNull($entity->setValue('41:0:1')->getDistrictCode());
+        $this->assertNull($entity->setValue(Str::random())->getDistrictCode());
+    }
+
+    /**
+     * @return void
+     */
+    public function testGetAreaCode(): void
+    {
+        $entity = $this->entityFactory();
+
+        foreach (\range(0, 99) as $code) {
+            $this->assertSame($code, $entity->setValue("66:{$code}:0:1")->getAreaCode());
+        }
+
+        $this->assertNull($entity->setValue('')->getAreaCode());
+        $this->assertNull($entity->setValue('41:0:1')->getAreaCode());
+        $this->assertNull($entity->setValue(Str::random())->getAreaCode());
+    }
+
+    /**
+     * @return void
+     */
+    public function testGetSectionCode(): void
+    {
+        $entity = $this->entityFactory();
+
+        foreach (\range(0, 99) as $code) {
+            $this->assertSame($code, $entity->setValue("66:41:{$code}:1")->getSectionCode());
+        }
+
+        $this->assertNull($entity->setValue('')->getSectionCode());
+        $this->assertNull($entity->setValue('41:0:1')->getSectionCode());
+        $this->assertNull($entity->setValue(Str::random())->getSectionCode());
+    }
+
+    /**
+     * @return void
+     */
+    public function testGetParcelCode(): void
+    {
+        $entity = $this->entityFactory();
+
+        foreach (\range(0, 99) as $code) {
+            $this->assertSame($code, $entity->setValue("66:41:0003321:{$code}")->getParcelCode());
+        }
+
+        $this->assertNull($entity->setValue('')->getParcelCode());
+        $this->assertNull($entity->setValue('41:0:1')->getParcelCode());
+        $this->assertNull($entity->setValue(Str::random())->getParcelCode());
     }
 
     /**
      * {@inheritdoc}
      */
-    public function testIsValid()
+    public function testNormalize(): void
     {
-        $valid = [
+        $entity = $this->entityFactory();
+
+        $this->assertSame($valid = '66:41:0010501:3', $entity::normalize(" {$valid}  "));
+        $this->assertSame($valid, $entity::normalize('66:41:10501:3'));
+        $this->assertSame($valid, $entity::normalize('Start6Шесть6:4One1:01ZeRO0501:ThrEE3'));
+        $this->assertSame($valid, $entity::normalize(':: D66:41:0010501:3'));
+        $this->assertSame('04:05:0000006:7', $entity::normalize('4:5:6:7'));
+    }
+
+    /**
+     * @return void
+     */
+    public function testGetRegionData(): void
+    {
+        $entity = $this->entityFactory();
+
+        $this->assertInstanceOf(CadastralDistrict::class, $entity->getDistrictData());
+
+        $entity->setValue('');
+        $this->assertNull($entity->getDistrictData());
+    }
+
+    /**
+     * @return void
+     */
+    public function testGetValueWhenInvalidValueIsSet(): void
+    {
+        $entity = $this->entityFactory();
+
+        foreach (['52', '52:', '52:0', '52:0:', '52:0:1'] as $value) {
+            $this->assertNull($entity->setValue($value)->getValue());
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function entityFactory(?string $value = null): IDEntityCadastralNumber
+    {
+        return new IDEntityCadastralNumber($value ?? $this->getValidValues()[0]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getValidValues(): array
+    {
+        return [
+            '02:04:000221:2',
             '09:04:0134001:102',
             '10:01:0030104:691',
             '11:05:0105013:390',
@@ -61,13 +165,22 @@ class IDEntityCadastralNumberTest extends AbstractIDEntityTestCase
             '37:29:010121:75',
             '38:06:100801:26333',
             '39:15:131926:797',
+            '39:05:131926:7',
+
+            // Last part more than 1
+            '66:41:0:1',
         ];
+    }
 
-        foreach ($valid as $value) {
-            $this->assertTrue($this->instance->setValue($value)->isValid(), $value);
-        }
-
-        $invalid = [
+    /**
+     * {@inheritdoc}
+     */
+    protected function getInvalidValues(): array
+    {
+        return [
+            '0:0:0:0',
+            '66:0:0:0',
+            '66:41:0:0',
             '359:924:190:795',
             '5:01:4286525/047215',
             '0:22:4357409:744560',
@@ -97,7 +210,7 @@ class IDEntityCadastralNumberTest extends AbstractIDEntityTestCase
             '66=41=0000000=38949',
             '66*41*0000000*38949',
 
-            // C несуществующим регионом
+            // Unknown region codes
             '92:77:031622:8428',
             '93:27:427934:1',
             '94:81:1535682:971',
@@ -107,7 +220,7 @@ class IDEntityCadastralNumberTest extends AbstractIDEntityTestCase
             '98:12:234567:1',
             '99:72:874527:985',
 
-            // C реальным регионом и несуществующим районом
+            // Valid region code but invalid area code
             '18:50:031622:8428',
             '84:27:427934:1',
             '85:81:1535682:971',
@@ -118,84 +231,9 @@ class IDEntityCadastralNumberTest extends AbstractIDEntityTestCase
             '50:75:7345257:8',
             '77:84:996770:5193',
             '38:49:924785:832907',
+
+            '',
+            Str::random(32),
         ];
-
-        foreach ($invalid as $value) {
-            $this->assertFalse($this->instance->setValue($value)->isValid(), $value);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function testNormalize()
-    {
-        $valid = $this->getValidValue();
-
-        // Пробелы с двум сторон
-        $this->assertEquals($valid, $this->instance::normalize(' ' . $valid . ' '));
-
-        // Запрещенные символы
-        $this->assertEquals($valid, $this->instance::normalize('6+6:/4$1:;0(1%^0)&5*-0!0@1#:=?3'));
-
-        // С буквами
-        $this->assertEquals($valid, $this->instance::normalize('Start6Шесть6:4One1:01ZeRO05001:ThrEE3'));
-        //Первый символ не цифра
-        $this->assertFalse($this->instance->setValue(':D61:41:123456:102360')->isValid());
-        // Засовываем всякую шляпу
-        foreach ([
-                     function () {
-                     },
-                     new static,
-                     new \stdClass,
-                     ['foo' => 'bar'],
-                 ] as $item) {
-            $this->assertNull($this->instance::normalize($item));
-        }
-    }
-
-    /**
-     * Test of method getNumberInfo.
-     */
-    public function testGetNumberInfo(): void
-    {
-        $this->assertInstanceOf(CadastralNumberInfo::class, $this->instance->getNumberInfo());
-        $this->assertSame('66', $this->instance->getNumberInfo()->getRegionCode());
-        $this->assertSame('41', $this->instance->getNumberInfo()->getDistrictCode());
-        $this->assertSame('0105001', $this->instance->getNumberInfo()->getQuarterCode());
-        $this->assertSame('3', $this->instance->getNumberInfo()->getAreaCode());
-
-        $this->instance->setValue('52:25');
-        $this->assertSame(
-            ['region' => '52', 'district' => '25', 'quarter' => '', 'area' => ''],
-            $this->instance->getNumberInfo()->getFragments()
-        );
-    }
-
-    /**
-     * Test of method getRegionData.
-     */
-    public function testGetRegionData(): void
-    {
-        $this->assertInstanceOf(CadastralRegionEntry::class, $this->instance->getRegionData());
-
-        $this->instance->setValue('');
-        $this->assertNull($this->instance->getRegionData());
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getClassName(): string
-    {
-        return IDEntityCadastralNumber::class;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getValidValue(): string
-    {
-        return '66:41:0105001:3';
     }
 }

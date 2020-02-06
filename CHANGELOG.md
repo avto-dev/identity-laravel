@@ -4,11 +4,52 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog][keepachangelog] and this project adheres to [Semantic Versioning][semver].
 
+## v5.0.0
+
+### Changed
+
+- Maximal `illuminate/*` packages version now is `~6.0`
+- Minimal `illuminate/*` packages version now is `^5.5`
+- Minimal version of `avto-dev/extended-laravel-validator` package now `^3.2`
+- Minimal version of `avto-dev/static-references-laravel` package now `^4.0`
+- Typed IDEntities validation depends on `avto-dev/static-references-laravel` package service-provider loading
+- `styleci.io` rules
+- Config file location `./src/config/identity.php` &rarr; `./config/identity.php`
+- Method signatures in `AvtoDev\IDEntity\IDEntity` class:
+  - `::typeIsSupported($type): bool` &rarr; `::typeIsSupported(string $type): bool`
+  - `::is(string $value, $type): bool` &rarr; `::is(string $value, string $type): bool`
+- Method signatures in `AvtoDev\IDEntity\IDEntityInterface` interface:
+  - `::is(string $value, $type): bool` &rarr; `::is(string $value, string $type): bool`
+- Constructor in `AvtoDev\IDEntity\Types\AbstractTypedIDEntity` finalized
+- Method signatures in `AvtoDev\IDEntity\HasCadastralNumberInterface` interface:
+  - `->getRegionData(): ?\AvtoDev\StaticReferences\References\CadastralDistricts\CadastralRegionEntry` &rarr; `->getDistrictData(): ?\AvtoDev\StaticReferences\References\Entities\CadastralDistrict`
+- Method signatures in `AvtoDev\IDEntity\HasRegionDataInterface` interface:
+  - `->getRegionData(): ?\AvtoDev\StaticReferences\References\AutoRegions\AutoRegionEntry` &rarr; `->getRegionData(): ?\AvtoDev\StaticReferences\References\Entities\SubjectCodesInfo`
+- Typed IDEntity classes now contains finalized static method `::make(string $value, ?string $type = null): self`
+- Validation logic in `AvtoDev\IDEntity\Types\IDEntityCadastralNumber` now more strict
+- Dev-dependencies `phpstan/phpstan` and `phpunit/phpunit` updated
+- Unit-tests re-wrote
+
+### Added
+
+- GitHub Actions for a tests running
+- PHP 7.4 support
+- `tarampampam/wrappers-php` dependency
+- Class `AvtoDev\IDEntity\Types\IDEntityCadastralNumber` now contains new methods:
+  - `->getDistrictCode(): ?int`
+  - `->getAreaCode(): ?int`
+  - `->getSectionCode(): ?int`
+  - `->getParcelCode(): ?int`
+
+### Removed
+
+- Dev-dependency `mockery/mockery`
+
 ## v4.1.0
 
 ### Added
 
-- `IDEntityCadastralNumber` for cadastral number 
+- `IDEntityCadastralNumber` for cadastral number
 
 ## v4.0.0
 
@@ -118,13 +159,13 @@ The format is based on [Keep a Changelog][keepachangelog] and this project adher
 
 - Supports for `GRZ` "taxi" format
 
-## v2.1
+## v2.1.0
 
 ### Added
 
 - Supports for "Driver License Number" (`DLN`)
 
-## v2.0
+## v2.0.0
 
 ### Changed
 

@@ -2,14 +2,14 @@
 
 namespace AvtoDev\IDEntity\Types;
 
-use AvtoDev\StaticReferences\References\CadastralDistricts\CadastralRegionEntry;
+use AvtoDev\StaticReferences\References\Entities\CadastralDistrict;
 
 interface HasCadastralNumberInterface
 {
     /**
-     * Return cadastral data by region & district codes.
+     * Get cadastral data by district & area codes.
      *
-     * @return CadastralRegionEntry|null
+     * @return CadastralDistrict|null
      */
-    public function getRegionData(): ?CadastralRegionEntry;
+    public function getDistrictData(): ?CadastralDistrict;
 }

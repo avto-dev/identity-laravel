@@ -4,10 +4,18 @@ declare(strict_types = 1);
 
 namespace AvtoDev\IDEntity\Types;
 
-use Exception;
-
 class IDEntityUnknown extends AbstractTypedIDEntity
 {
+    /**
+     * {@inheritdoc}
+     *
+     * @return static
+     */
+    final public static function make(string $value, ?string $type = null): self
+    {
+        return new static($value);
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -23,7 +31,7 @@ class IDEntityUnknown extends AbstractTypedIDEntity
     {
         try {
             return (string) $value;
-        } catch (Exception $e) {
+        } catch (\Throwable $e) {
             return null;
         }
     }

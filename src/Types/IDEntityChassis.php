@@ -4,14 +4,22 @@ declare(strict_types = 1);
 
 namespace AvtoDev\IDEntity\Types;
 
-use Exception;
-use Illuminate\Support\Str;
 use AvtoDev\IDEntity\Helpers\Normalizer;
 use AvtoDev\IDEntity\Helpers\Transliterator;
 use AvtoDev\ExtendedLaravelValidator\Extensions\ChassisCodeValidatorExtension;
 
 class IDEntityChassis extends AbstractTypedIDEntity
 {
+    /**
+     * {@inheritdoc}
+     *
+     * @return static
+     */
+    final public static function make(string $value, ?string $type = null): self
+    {
+        return new static($value);
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -26,23 +34,23 @@ class IDEntityChassis extends AbstractTypedIDEntity
     public static function normalize($value): ?string
     {
         try {
-            // Заменяем множественные пробелы - одиночными
-            $value = (string) \preg_replace('~\s+~u', ' ', trim((string) $value));
+            // Replace multiple whitespaces with one
+            $value = (string) \preg_replace('~\s+~u', ' ', \trim((string) $value));
 
-            // Нормализуем символы дефиса
+            // Normalize dash chars
             $value = Normalizer::normalizeDashChar($value);
 
-            // Производим замену кириллических символов на латинские аналоги
-            $value = Transliterator::transliterateString(Str::upper($value), true);
+            // Transliterate cyrillic chars with latin
+            $value = Transliterator::transliterateString(\mb_strtoupper($value, 'UTF-8'), true);
 
-            // Удаляем все символы, кроме разрешенных
+            // Remove all chars except allowed
             $value = (string) \preg_replace('~[^A-Z0-9\- ]~u', '', $value);
 
-            // Заменяем множественные дефисы - одиночными
-            $value = (string) \preg_replace('~\-+~', '-', $value);
+            // Replace multiple dashes with one
+            $value = (string) \preg_replace('~-+~', '-', $value);
 
             return $value;
-        } catch (Exception $e) {
+        } catch (\Throwable $e) {
             return null;
         }
     }
@@ -52,9 +60,13 @@ class IDEntityChassis extends AbstractTypedIDEntity
      */
     public function isValid(): bool
     {
-        /** @var ChassisCodeValidatorExtension $validator */
-        $validator = static::getContainer()->make(ChassisCodeValidatorExtension::class);
+        if (\is_string($this->value) && $this->value !== '') {
+            /** @var ChassisCodeValidatorExtension $validator */
+            $validator = static::getContainer()->make(ChassisCodeValidatorExtension::class);
 
-        return \is_string($this->value) && $validator->passes('', $this->value);
+            return $validator->passes('', $this->value);
+        }
+
+        return false;
     }
 }

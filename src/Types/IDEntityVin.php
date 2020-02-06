@@ -4,13 +4,21 @@ declare(strict_types = 1);
 
 namespace AvtoDev\IDEntity\Types;
 
-use Exception;
-use Illuminate\Support\Str;
 use AvtoDev\IDEntity\Helpers\Transliterator;
 use AvtoDev\ExtendedLaravelValidator\Extensions\VinCodeValidatorExtension;
 
 class IDEntityVin extends AbstractTypedIDEntity
 {
+    /**
+     * {@inheritdoc}
+     *
+     * @return static
+     */
+    final public static function make(string $value, ?string $type = null): self
+    {
+        return new static($value);
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -25,17 +33,17 @@ class IDEntityVin extends AbstractTypedIDEntity
     public static function normalize($value): ?string
     {
         try {
-            // Производим замену кириллических символов на латинские аналоги.
-            $value = Transliterator::transliterateString(Str::upper($value), true);
+            // Transliterate cyrillic chars with latin
+            $value = Transliterator::transliterateString(\mb_strtoupper((string) $value, 'UTF-8'), true);
 
-            // Латинская "O" заменяется на ноль
+            // Latin "O" char replace with zero
             $value = \str_replace('O', '0', $value);
 
-            // Удаляем все символы, кроме разрешенных
+            // Remove all chars except allowed
             $value = \preg_replace('~[^ABCDEFGHJKLMNPRSTUVWXYZ0-9]~u', '', $value);
 
             return $value;
-        } catch (Exception $e) {
+        } catch (\Throwable $e) {
             return null;
         }
     }
@@ -57,7 +65,11 @@ class IDEntityVin extends AbstractTypedIDEntity
             'x' => 7, 'y' => 8, 'z' => 9,
         ];
 
-        $characters = (array) \str_split(Str::lower((string) $this->value));
+        if (! \is_string($this->value) || $this->value === '') {
+            return false;
+        }
+
+        $characters = (array) \str_split(\mb_strtolower($this->value, 'UTF-8'));
         $length     = \count($characters);
         $sum        = 0;
 
@@ -85,9 +97,13 @@ class IDEntityVin extends AbstractTypedIDEntity
      */
     public function isValid(): bool
     {
-        /** @var VinCodeValidatorExtension $validator */
-        $validator = static::getContainer()->make(VinCodeValidatorExtension::class);
+        if (\is_string($this->value) && $this->value !== '') {
+            /** @var VinCodeValidatorExtension $validator */
+            $validator = static::getContainer()->make(VinCodeValidatorExtension::class);
 
-        return \is_string($this->value) && $validator->passes('', $this->value);
+            return $validator->passes('', $this->value);
+        }
+
+        return false;
     }
 }

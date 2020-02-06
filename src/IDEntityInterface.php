@@ -7,77 +7,22 @@ use AvtoDev\IDEntity\Types\TypedIDEntityInterface;
 interface IDEntityInterface
 {
     /**
-     * Обозначает необходимость в автоматическом определении типа.
-     *
-     * @var string
+     * Allowed ID entity types.
      */
-    public const ID_TYPE_AUTO = 'AUTODETECT';
+    public const
+        ID_TYPE_AUTO                  = 'AUTODETECT', // Internal type, means "automatic type detection is required"
+        ID_TYPE_UNKNOWN               = 'UNKNOWN',    // Unknown type
+        ID_TYPE_VIN                   = 'VIN',        // Vehicle identification number
+        ID_TYPE_GRZ                   = 'GRZ',        // Vehicle registration sign number (as usual - russian)
+        ID_TYPE_STS                   = 'STS',        // Number of vehicle registration certificate
+        ID_TYPE_PTS                   = 'PTS',        // Vehicle passport number
+        ID_TYPE_CHASSIS               = 'CHASSIS',    // Vehicle chassis number
+        ID_TYPE_BODY                  = 'BODY',       // Vehicle body number
+        ID_TYPE_DRIVER_LICENSE_NUMBER = 'DLN',        // Driver license number
+        ID_TYPE_CADASTRAL_NUMBER      = 'CADNUM';     // Cadastral number (unique property number)
 
     /**
-     * Неизвестный тип идентификатора.
-     *
-     * @var string
-     */
-    public const ID_TYPE_UNKNOWN = 'UNKNOWN';
-
-    /**
-     * Тип - VIN-код.
-     *
-     * @var string
-     */
-    public const ID_TYPE_VIN = 'VIN';
-
-    /**
-     * Тип - регистрационный (ГРЗ) знак.
-     *
-     * @var string
-     */
-    public const ID_TYPE_GRZ = 'GRZ';
-
-    /**
-     * Тип - код СТС (Номер свидетельства о регистрации ТС).
-     *
-     * @var string
-     */
-    public const ID_TYPE_STS = 'STS';
-
-    /**
-     * Тип - код ПТС (паспорт транспортного средства).
-     *
-     * @var string
-     */
-    public const ID_TYPE_PTS = 'PTS';
-
-    /**
-     * Тип - номер шасси (встречается редко, но всё же встречается).
-     *
-     * @var string
-     */
-    public const ID_TYPE_CHASSIS = 'CHASSIS';
-
-    /**
-     * Тип - номер кузова.
-     *
-     * @var string
-     */
-    public const ID_TYPE_BODY = 'BODY';
-
-    /**
-     * Тип - номер водительского удостоверения (driver license number).
-     *
-     * @var string
-     */
-    public const ID_TYPE_DRIVER_LICENSE_NUMBER = 'DLN';
-
-    /**
-     * Тип - кадастровый номер (уникальный номер объекта недвижимости).
-     *
-     * @var string
-     */
-    const ID_TYPE_CADASTRAL_NUMBER = 'CADNUM';
-
-    /**
-     * Фабричный метод, замена конструктору.
+     * Create a new ID entity instance.
      *
      * @param string $value
      * @param string $type
@@ -87,12 +32,12 @@ interface IDEntityInterface
     public static function make(string $value, ?string $type);
 
     /**
-     * Проверяет, является ли переданное значение в $value типом $type (значения типов можно передать массивом).
+     * Check for passed value has passed type?
      *
-     * @param string          $value
-     * @param string[]|string $type
+     * @param string $value
+     * @param string $type
      *
      * @return bool
      */
-    public static function is(string $value, $type): bool;
+    public static function is(string $value, string $type): bool;
 }

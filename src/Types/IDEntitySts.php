@@ -4,13 +4,21 @@ declare(strict_types = 1);
 
 namespace AvtoDev\IDEntity\Types;
 
-use Exception;
-use Illuminate\Support\Str;
 use AvtoDev\IDEntity\Helpers\Transliterator;
 use AvtoDev\ExtendedLaravelValidator\Extensions\StsCodeValidatorExtension;
 
 class IDEntitySts extends AbstractTypedIDEntity
 {
+    /**
+     * {@inheritdoc}
+     *
+     * @return static
+     */
+    final public static function make(string $value, ?string $type = null): self
+    {
+        return new static($value);
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -25,17 +33,17 @@ class IDEntitySts extends AbstractTypedIDEntity
     public static function normalize($value): ?string
     {
         try {
-            // Переводим в верхний регистр + trim
-            $value = Str::upper(\trim((string) $value));
+            // Uppercase + trim
+            $value = \mb_strtoupper(\trim((string) $value), 'UTF-8');
 
-            // Удаляем все символы, кроме разрешенных
+            // Remove all chars except allowed
             $value = (string) \preg_replace('~[^' . 'АБВГДЕЖЗИКЛМНОПРСТУФХЦЧШЩЫЭЮЯ' . 'A-Z' . '0-9]~u', '', $value);
 
-            // Производим замену латинских аналогов на кириллические (обратная транслитерация)
+            // Replace latin chars with cyrillic analogs (backward transliteration)
             $value = Transliterator::detransliterateString($value, true);
 
             return $value;
-        } catch (Exception $e) {
+        } catch (\Throwable $e) {
             return null;
         }
     }
@@ -45,9 +53,13 @@ class IDEntitySts extends AbstractTypedIDEntity
      */
     public function isValid(): bool
     {
-        /** @var StsCodeValidatorExtension $validator */
-        $validator = static::getContainer()->make(StsCodeValidatorExtension::class);
+        if (\is_string($this->value) && $this->value !== '') {
+            /** @var StsCodeValidatorExtension $validator */
+            $validator = static::getContainer()->make(StsCodeValidatorExtension::class);
 
-        return \is_string($this->value) && $validator->passes('', $this->value);
+            return $validator->passes('', $this->value);
+        }
+
+        return false;
     }
 }
