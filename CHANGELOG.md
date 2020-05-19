@@ -9,6 +9,12 @@ The format is based on [Keep a Changelog][keepachangelog] and this project adher
 ### Changed
 
 - Maximal `illuminate/*` packages version now is `7.*`
+- Method `Transliterator::transliterateString()` uses `Stringy\Stringy::toAscii()` instead `Illuminate\Support\Str::ascii()` for backward compatibility with previous versions
+- Classes `Transliterator` and `Normalizer` marked as internal
+
+### Added
+
+- Package `danielstjules/stringy` for strings transliteration
 
 ## v5.0.0
 
