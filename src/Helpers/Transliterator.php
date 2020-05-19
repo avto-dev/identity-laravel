@@ -4,8 +4,11 @@ declare(strict_types = 1);
 
 namespace AvtoDev\IDEntity\Helpers;
 
-use Illuminate\Support\Str;
+use Stringy\Stringy;
 
+/**
+ * @internal
+ */
 class Transliterator
 {
     /**
@@ -111,7 +114,7 @@ class Transliterator
             );
         }
 
-        return Str::ascii($string);
+        return (string) Stringy::create($string)->toAscii('en');
     }
 
     /**
