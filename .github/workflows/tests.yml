@@ -22,10 +22,11 @@ jobs: # Docs: <https://git.io/JvxXE>
         laravel: [default]
         coverage: [yes]
         php: ['7.2', '7.3', '7.4']
+        include:
           - php: '7.3'
             setup: basic
             coverage: no
-            laravel: '^7.0'
+            laravel: '^6.0'
     steps:
       - name: Check out code
         uses: actions/checkout@v2
