@@ -134,6 +134,10 @@ class IDEntityCadastralNumber extends AbstractTypedIDEntity implements HasCadast
         if (\is_string($this->value) && $this->value !== '') {
             $parts = \mb_split(':', $this->value, 4);
 
+            if (! \is_array($parts)) {
+                return null;
+            }
+
             return \count($parts) === 4 && isset($parts[$part_number]) && \is_numeric($parts[$part_number])
                 ? (int) $parts[$part_number]
                 : null;
