@@ -3,7 +3,6 @@
 namespace AvtoDev\IDEntity\Tests\Mocks;
 
 use BadMethodCallException;
-use Tarampampam\Wrappers\Json;
 use AvtoDev\IDEntity\Types\TypedIDEntityInterface;
 
 class TypedIDEntityMock implements TypedIDEntityInterface
@@ -125,6 +124,6 @@ class TypedIDEntityMock implements TypedIDEntityInterface
      */
     public function toJson($options = 0): string
     {
-        return Json::encode($this->toArray(), $options);
+        return \json_encode($this->toArray(), $options);
     }
 }

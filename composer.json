@@ -16,17 +16,16 @@
     "require": {
         "php": "^7.2 || ^8.0",
         "ext-mbstring": "*",
+        "ext-json": "*",
         "avto-dev/extended-laravel-validator": "^3.2",
         "avto-dev/static-references-laravel": "^4.0",
         "illuminate/support": "~6.0 || ~7.0 || ~8.0",
         "illuminate/config": "~6.0 || ~7.0 || ~8.0",
         "illuminate/contracts": "~6.0 || ~7.0 || ~8.0",
         "illuminate/container": "~6.0 || ~7.0 || ~8.0",
-        "tarampampam/wrappers-php": "^1.3 || ~2.0",
         "danielstjules/stringy": "~3.1.0"
     },
     "require-dev": {
-        "ext-json": "*",
         "laravel/laravel": "~6.0 || ~7.0 || ~8.0",
         "phpstan/phpstan": "~0.12.34",
         "phpunit/phpunit": "^8.5.4 || ^9.3"
