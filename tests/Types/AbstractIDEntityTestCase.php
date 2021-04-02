@@ -138,6 +138,19 @@ abstract class AbstractIDEntityTestCase extends AbstractTestCase
     /**
      * @return void
      */
+    public function testToJsonWithExceptions(): void
+    {
+        $entity = $this->entityFactory();
+        $this->expectException(\TypeError::class);
+        $entity->toJson([]);
+
+        $this->expectException(\TypeError::class);
+        $entity->toJson("string");
+    }
+
+    /**
+     * @return void
+     */
     public function testIsValid(): void
     {
         $entity = $this->entityFactory();
