@@ -7,7 +7,6 @@ namespace AvtoDev\IDEntity\Types;
 use function mb_strlen;
 use function mb_substr;
 use AvtoDev\IDEntity\IDEntity;
-use Tarampampam\Wrappers\Json;
 
 abstract class AbstractTypedIDEntity extends IDEntity implements TypedIDEntityInterface
 {
@@ -104,7 +103,7 @@ abstract class AbstractTypedIDEntity extends IDEntity implements TypedIDEntityIn
      */
     public function toJson($options = 0): string
     {
-        return Json::encode($this->toArray(), $options);
+        return (string) \json_encode($this->toArray(), $options);
     }
 
     /**
