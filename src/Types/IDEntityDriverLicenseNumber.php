@@ -53,7 +53,7 @@ class IDEntityDriverLicenseNumber extends AbstractTypedIDEntity implements HasRe
     /**
      * Get region code from value.
      *
-     * First 4 digits in value is serial number. First two is region code where driver license was issued.
+     * First two digits is region code where driver license was issued (it is true only for licenses that issued before 2020 year).
      *
      * @return int|null
      */
@@ -102,7 +102,7 @@ class IDEntityDriverLicenseNumber extends AbstractTypedIDEntity implements HasRe
             /** @var DriverLicenseNumberValidatorExtension $validator */
             $validator = static::getContainer()->make(DriverLicenseNumberValidatorExtension::class);
 
-            return $validator->passes('', $this->value) && $this->getRegionData() instanceof SubjectCodesInfo;
+            return $validator->passes('', $this->value);
         }
 
         return false;

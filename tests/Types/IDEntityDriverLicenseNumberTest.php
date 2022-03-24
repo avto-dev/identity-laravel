@@ -108,6 +108,8 @@ class IDEntityDriverLicenseNumberTest extends AbstractIDEntityTestCase
             '66 OP 123456',
             '66 CT 123456',
             '66 YX 123456',
+            '9814292010',
+            '98 CT 123456',
         ];
     }
 
@@ -123,7 +125,6 @@ class IDEntityDriverLicenseNumberTest extends AbstractIDEntityTestCase
             '66 12 BA3456',
             '66 12 12BA56',
             'BA 12 123456',
-            '9814292010',
             '74 14210',
             '74/14210',
             '74\\14210',
