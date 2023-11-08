@@ -30,6 +30,7 @@ class IDEntityUnknown extends AbstractTypedIDEntity
     public static function normalize($value): ?string
     {
         try {
+            /** @throws \Throwable */
             return (string) $value;
         } catch (\Throwable $e) {
             return null;

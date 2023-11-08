@@ -14,21 +14,21 @@
         }
     ],
     "require": {
-        "php": "^7.3 || ^8.0",
+        "php": "^8.0.2",
         "ext-mbstring": "*",
         "ext-json": "*",
-        "avto-dev/extended-laravel-validator": "^3.2",
-        "avto-dev/static-references-laravel": "^4.0",
-        "illuminate/support": "~6.0 || ~7.0 || ~8.0 || ~9.0",
-        "illuminate/config": "~6.0 || ~7.0 || ~8.0 || ~9.0",
-        "illuminate/contracts": "~6.0 || ~7.0 || ~8.0 || ~9.0",
-        "illuminate/container": "~6.0 || ~7.0 || ~8.0 || ~9.0",
+        "avto-dev/extended-laravel-validator": "^3.7",
+        "avto-dev/static-references-laravel": "^4.5",
+        "illuminate/support": "~9.0 || ~10.0",
+        "illuminate/config": "~9.0 || ~10.0",
+        "illuminate/contracts": "~9.0 || ~10.0",
+        "illuminate/container": "~9.0 || ~10.0",
         "danielstjules/stringy": "~3.1.0"
     },
     "require-dev": {
-        "laravel/laravel": "~6.0 || ~7.0 || ~8.0 || ~9.0",
-        "phpstan/phpstan": "~0.12.34",
-        "phpunit/phpunit": "^9.3"
+        "laravel/laravel": "~9.0 || ~10.0",
+        "phpstan/phpstan": "~1.10",
+        "phpunit/phpunit": "^9.6 || ^10.4"
     },
     "autoload": {
         "psr-4": {

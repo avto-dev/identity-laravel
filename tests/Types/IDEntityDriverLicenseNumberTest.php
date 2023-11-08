@@ -9,7 +9,7 @@ use AvtoDev\IDEntity\IDEntityInterface;
 use AvtoDev\IDEntity\Types\IDEntityDriverLicenseNumber;
 
 /**
- * @covers \AvtoDev\IDEntity\Types\IDEntityDriverLicenseNumber<extended>
+ * @covers \AvtoDev\IDEntity\Types\IDEntityDriverLicenseNumber
  */
 class IDEntityDriverLicenseNumberTest extends AbstractIDEntityTestCase
 {

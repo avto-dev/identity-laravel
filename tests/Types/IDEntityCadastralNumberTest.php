@@ -10,7 +10,7 @@ use AvtoDev\IDEntity\Types\IDEntityCadastralNumber;
 use AvtoDev\StaticReferences\References\Entities\CadastralDistrict;
 
 /**
- * @covers \AvtoDev\IDEntity\Types\IDEntityCadastralNumber<extended>
+ * @covers \AvtoDev\IDEntity\Types\IDEntityCadastralNumber
  */
 class IDEntityCadastralNumberTest extends AbstractIDEntityTestCase
 {

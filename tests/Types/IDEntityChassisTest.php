@@ -9,7 +9,7 @@ use AvtoDev\IDEntity\IDEntityInterface;
 use AvtoDev\IDEntity\Types\IDEntityChassis;
 
 /**
- * @covers \AvtoDev\IDEntity\Types\IDEntityChassis<extended>
+ * @covers \AvtoDev\IDEntity\Types\IDEntityChassis
  */
 class IDEntityChassisTest extends AbstractIDEntityTestCase
 {
