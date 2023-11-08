@@ -16,8 +16,8 @@ The format is based on [Keep a Changelog][keepachangelog] and this project adher
 - Minimal require PHP version now is `8.0.2`
 - Composer version up to `2.6.5`
 - Package `phpstan/phpstan` up to `^1.10`
-- Package `avto-dev/extended-laravel-validator` up to `^3.7`
 - Package `avto-dev/static-references-laravel` up to `^4.5`
+- Package `avto-dev/extended-laravel-validator` up to `^3.7`
 
 ## v5.6.0
 
