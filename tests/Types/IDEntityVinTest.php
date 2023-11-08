@@ -9,7 +9,7 @@ use AvtoDev\IDEntity\IDEntityInterface;
 use AvtoDev\IDEntity\Types\IDEntityVin;
 
 /**
- * @covers \AvtoDev\IDEntity\Types\IDEntityVin<extended>
+ * @covers \AvtoDev\IDEntity\Types\IDEntityVin
  */
 class IDEntityVinTest extends AbstractIDEntityTestCase
 {

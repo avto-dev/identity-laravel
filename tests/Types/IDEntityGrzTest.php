@@ -9,7 +9,7 @@ use AvtoDev\IDEntity\IDEntityInterface;
 use AvtoDev\IDEntity\Types\IDEntityGrz;
 
 /**
- * @covers \AvtoDev\IDEntity\Types\IDEntityGrz<extended>
+ * @covers \AvtoDev\IDEntity\Types\IDEntityGrz
  */
 class IDEntityGrzTest extends AbstractIDEntityTestCase
 {
