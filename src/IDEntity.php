@@ -87,7 +87,7 @@ class IDEntity implements IDEntityInterface
      *
      * Note: Order is important for automatic detection.
      *
-     * @return array<string, class-string>
+     * @return array<string, class-string<TypedIDEntityInterface>>
      */
     protected static function getTypesMap(): array
     {
@@ -106,13 +106,14 @@ class IDEntity implements IDEntityInterface
     /**
      * Get an extended types map, declared in configuration file.
      *
-     * @return array<string, class-string>
+     * @return array<string, class-string<TypedIDEntityInterface>>
      */
     protected static function getExtendedTypesMap(): array
     {
         /** @var ConfigRepository $config */
         $config = static::getContainer()->make(ConfigRepository::class);
 
+        /** @var array<string, class-string<TypedIDEntityInterface>> */
         return (array) $config->get(ServiceProvider::getConfigRootKeyName() . '.extended_types_map', []);
     }
 
@@ -121,7 +122,7 @@ class IDEntity implements IDEntityInterface
      *
      * @param string|null $type
      *
-     * @return class-string|null
+     * @return class-string<TypedIDEntityInterface>|null
      */
     protected static function getEntityClassByType(?string $type): ?string
     {
