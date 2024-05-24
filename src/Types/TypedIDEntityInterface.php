@@ -5,6 +5,9 @@ namespace AvtoDev\IDEntity\Types;
 use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Contracts\Support\Arrayable;
 
+/**
+ * @extends Arrayable<string, mixed>
+ */
 interface TypedIDEntityInterface extends Arrayable, Jsonable
 {
     /**
