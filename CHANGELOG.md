@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog][keepachangelog] and this project adheres to [Semantic Versioning][semver].
 
+## Unreleased
+
+### Changed
+
+- Package `avto-dev/extended-laravel-validator` up to `^4.0`
+
 ## v5.8.0
 
 ### Added
