@@ -63,7 +63,7 @@ class IDEntityBodyTest extends AbstractIDEntityTestCase
             'GRX130 6026674',
             'JZX90 6562365',
 
-            '0685251',
+            '06852511',
             'AT2113041080',
             'NZE141-9134919',
             'GD11231271',
@@ -134,6 +134,7 @@ class IDEntityBodyTest extends AbstractIDEntityTestCase
     protected function getInvalidValues(): array
     {
         return [
+            '0685251',
             'TSMEYB21S00610448',
             '38:49:924785:832907',
             '',

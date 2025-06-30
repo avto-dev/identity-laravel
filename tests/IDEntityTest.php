@@ -265,7 +265,7 @@ class IDEntityTest extends AbstractTestCase
     public function testMakeBodyAutoDetection(): void
     {
         $values = [
-            '0685251',
+            '06852512',
             'AT2113041080',
             'NZE141-9134919',
             'GD11231271',
