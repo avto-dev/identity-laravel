@@ -4,6 +4,21 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog][keepachangelog] and this project adheres to [Semantic Versioning][semver].
 
+## Unreleased
+
+### Added
+
+- Laravel `12.x` support
+- Using `docker` with `compose` plugin instead of `docker-compose` for test environment
+
+### Changed
+
+- Package `avto-dev/extended-laravel-validator` up to `^5.0`
+
+## Fixed
+
+- Тests for `IDEntityBody`
+
 ## v5.9.0
 
 ### Changed
