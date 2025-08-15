@@ -4,30 +4,12 @@ declare(strict_types = 1);
 
 namespace AvtoDev\IDEntity\Types;
 
-use AvtoDev\IDEntity\Helpers\Transliterator;
 use AvtoDev\ExtendedLaravelValidator\Extensions\VinCodeValidatorExtension;
 
 class IDEntityVin extends AbstractTypedIDEntity
 {
-    private const REPLACEMENTS = [
-        'Q' => '0',
-        'O' => '0',
-        'I' => '1',
-        'З' => '3',
-        'Д' => 'D',
-        'О' => '0',
-        'А' => 'A',
-        'В' => 'B',
-        'Е' => 'E',
-        'К' => 'K',
-        'М' => 'M',
-        'Н' => 'H',
-        'Р' => 'P',
-        'С' => 'C',
-        'Т' => 'T',
-        'У' => 'Y',
-        'Х' => 'X',
-    ];
+    protected const REPLACE_FROM = ['Q', 'O', 'I', 'З', 'Д', 'О', 'А', 'В', 'Е', 'К', 'М', 'Н', 'Р', 'С', 'Т', 'У', 'Х'];
+    protected const REPLACE_TO   = ['0', '0', '1', '3', 'D', '0', 'A', 'B', 'E', 'K', 'M', 'H', 'P', 'C', 'T', 'Y', 'X'];
 
     /**
      * {@inheritdoc}
@@ -53,15 +35,12 @@ class IDEntityVin extends AbstractTypedIDEntity
     public static function normalize($value): ?string
     {
         try {
-            if (! \is_string($value)) {
+            if (!\is_string($value)) {
                 return null;
             }
 
             $value = mb_strtoupper($value, 'UTF-8');
-
-            foreach (self::REPLACEMENTS as $from => $to) {
-                $value = str_replace($from, $to, $value);
-            }
+            $value = str_replace(self::REPLACE_FROM, self::REPLACE_TO, $value);
 
             return preg_replace('/[^\p{L}\p{N}]/u', '', $value);
         } catch (\Throwable $e) {
