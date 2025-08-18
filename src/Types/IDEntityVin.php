@@ -39,10 +39,10 @@ class IDEntityVin extends AbstractTypedIDEntity
                 return null;
             }
 
-            $value = mb_strtoupper($value, 'UTF-8');
-            $value = str_replace(self::REPLACE_FROM, self::REPLACE_TO, $value);
+            $value = \mb_strtoupper($value, 'UTF-8');
+            $value = \str_replace(self::REPLACE_FROM, self::REPLACE_TO, $value);
 
-            return preg_replace('/[^\p{L}\p{N}]/u', '', $value);
+            return \preg_replace('/[^\p{L}\p{N}]/u', '', $value);
         } catch (\Throwable $e) {
             return null;
         }
