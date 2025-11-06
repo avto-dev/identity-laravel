@@ -16,7 +16,7 @@ class Transliterator
      *
      * @var string[]
      */
-    protected static $cyr_chars = [
+    protected static array $cyr_chars = [
         'А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ё', 'Ж', 'З', 'И', 'Й', 'К', 'Л', 'М', 'Н', 'О', 'П', 'Р',
         'С', 'Т', 'У', 'Ф', 'Х', 'Ц', 'Ч', 'Ш', 'Щ', 'Ъ', 'Ы', 'Ь', 'Э', 'Ю', 'Я', 'Х',
 
@@ -29,7 +29,7 @@ class Transliterator
      *
      * @var string[]
      */
-    protected static $latin_analogs = [
+    protected static array $latin_analogs = [
         'A', 'B', 'V', 'G', 'D', 'E', 'E', 'Zh', 'Z', 'I', 'I', 'K', 'L', 'M', 'N', 'O', 'P', 'R',
         'S', 'T', 'U', 'F', 'X', 'Ts', 'Ch', 'Sh', 'Shch', '', 'Y', '', 'E', 'Yu', 'Ya', 'H',
 
@@ -43,7 +43,7 @@ class Transliterator
      *
      * @var string[]
      */
-    protected static $latin_safe_analogs = [
+    protected static array $latin_safe_analogs = [
         'A', 'B', 'B', 'G', 'D', 'E', 'E', 'J', 'Z', 'I', 'I', 'K', 'L', 'M', 'H', 'O', 'P', 'P',
         'C', 'T', 'Y', 'F', 'X', 'C', 'C', 'W', 'W', '', '', '', 'E', 'U', 'Y', 'X',
 
@@ -56,7 +56,7 @@ class Transliterator
      *
      * @var string[]
      */
-    protected static $lite_cyr_map = [
+    protected static array $lite_cyr_map = [
         'А', 'В', 'Е', 'К', 'М', 'Н', 'О', 'Р', 'С', 'Т', 'У', 'Х',
         'а', 'в', 'е', 'к', 'м', 'н', 'о', 'р', 'с', 'т', 'у', 'х',
     ];
@@ -66,17 +66,18 @@ class Transliterator
      *
      * @var string[]
      */
-    protected static $lite_latin_map = [
+    protected static array $lite_latin_map = [
         'A', 'B', 'E', 'K', 'M', 'H', 'O', 'P', 'C', 'T', 'Y', 'X',
         'a', 'b', 'e', 'k', 'm', 'h', 'o', 'p', 'c', 't', 'y', 'x',
     ];
 
     /**
      * Производит транслитерацию только тех кириллических символов, что имеют латинские аналоги.
-     *
      * @param string $string
      *
      * @return string
+     * @deprecated Эта функция будет удалена в следующих релизах.
+     *
      */
     public static function transliterateLite(string $string): string
     {
@@ -96,13 +97,14 @@ class Transliterator
     }
 
     /**
-     * Транслитирирует строку.
+     * Транслитерирует строку.
      *
      * @param string $string
-     * @param bool   $safe_mode "Безопасный" режим траслитерации, при котором **один** кириллический символ будет
-     *                          гарантировано транслитирирован в **один** латинский
+     * @param bool   $safe_mode "Безопасный" режим транслитерации, при котором **один** кириллический символ будет
+     *                          гарантировано Транслитерирован в **один** латинский
      *
      * @return string
+     * @deprecated Эта функция будет удалена в следующих релизах.
      */
     public static function transliterateString(string $string, bool $safe_mode = false): string
     {
@@ -121,7 +123,7 @@ class Transliterator
      * Производит де-транслитерацию строки.
      *
      * @param string $string
-     * @param bool   $after_safe_mode Указывает, что входящая строка была "безопасно" транслитирирована
+     * @param bool   $after_safe_mode Указывает, что входящая строка была "безопасно" Транслитерирована
      *
      * @return string
      */

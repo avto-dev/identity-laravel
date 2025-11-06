@@ -1,15 +1,45 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace AvtoDev\IDEntity\Types;
 
-use AvtoDev\IDEntity\Helpers\Normalizer;
-use AvtoDev\IDEntity\Helpers\Transliterator;
+use AvtoDev\IDEntity\Helpers\Strings;
 use AvtoDev\ExtendedLaravelValidator\Extensions\BodyCodeValidatorExtension;
 
 class IDEntityBody extends AbstractTypedIDEntity
 {
+    protected const REPLACEMENTS_LAT_CYR = [
+        'A' => 'А',
+        'B' => 'В',
+        'E' => 'Е',
+        'K' => 'К',
+        'M' => 'М',
+        'H' => 'Н',
+        'O' => 'О',
+        'P' => 'Р',
+        'C' => 'С',
+        'T' => 'Т',
+        'X' => 'Х',
+        'Y' => 'У',
+    ];
+
+    protected const REPLACEMENTS_CYR_LAT = [
+        'А' => 'A',
+        'В' => 'B',
+        'Е' => 'E',
+        'К' => 'K',
+        'М' => 'M',
+        'Н' => 'H',
+        'О' => 'O',
+        'Р' => 'P',
+        'С' => 'C',
+        'Т' => 'T',
+        'У' => 'Y',
+        'Х' => 'X',
+    ];
+
+
     /**
      * {@inheritdoc}
      *
@@ -34,26 +64,18 @@ class IDEntityBody extends AbstractTypedIDEntity
     public static function normalize($value): ?string
     {
         try {
-            // Replace multiple whitespaces with one
-            $value = (string) \preg_replace('~\s+~u', ' ', \trim((string) $value));
+            if (!\is_string($value)) {
+                throw new \LogicException('Value must be a string.');
+            }
 
-            // Normalize dash chars
-            $value = Normalizer::normalizeDashChar($value);
+            $value = Strings::onlyAlfaNumeric($value);
 
-            // Replace multiple dashes with one
-            $value = (string) \preg_replace('~-+~', '-', $value);
+            $value = \mb_strtoupper($value, 'UTF-8');
 
-            // Replace white spaces around dash with one dash
-            $value = (string) \preg_replace('~\s*-\s*~', '-', $value);
+            $replacements = Strings::isCyrillicValue($value) ? static::REPLACEMENTS_LAT_CYR : static::REPLACEMENTS_CYR_LAT;
 
-            // Transliterate cyrillic chars with latin
-            $value = Transliterator::transliterateString(\mb_strtoupper($value, 'UTF-8'), true);
-
-            // Remove all chars except allowed
-            $value = (string) \preg_replace('~[^A-Z0-9\- ]~u', '', $value);
-
-            return $value;
-        } catch (\Throwable $e) {
+            return Strings::replaceByMap($value, $replacements);
+        } catch (\Throwable) {
             return null;
         }
     }

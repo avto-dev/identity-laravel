@@ -1,14 +1,34 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace AvtoDev\IDEntity\Types;
 
-use AvtoDev\IDEntity\Helpers\Transliterator;
+use AvtoDev\IDEntity\Helpers\Strings;
 use AvtoDev\ExtendedLaravelValidator\Extensions\VinCodeValidatorExtension;
 
 class IDEntityVin extends AbstractTypedIDEntity
 {
+    private const REPLACEMENTS = [
+        'Q' => '0',
+        'O' => '0', // replace O latin with 0 (zero)
+        'I' => '1',
+        'З' => '3', // replace З cyrillic (Ze) with 3 (three)
+        'Д' => 'D',
+        'О' => '0', // replace O cyrillic with 0 (zero)
+        'А' => 'A',
+        'В' => 'B',
+        'Е' => 'E',
+        'К' => 'K',
+        'М' => 'M',
+        'Н' => 'H',
+        'Р' => 'P',
+        'С' => 'C',
+        'Т' => 'T',
+        'У' => 'Y',
+        'Х' => 'X',
+    ];
+
     /**
      * {@inheritdoc}
      *
@@ -33,17 +53,16 @@ class IDEntityVin extends AbstractTypedIDEntity
     public static function normalize($value): ?string
     {
         try {
-            // Transliterate cyrillic chars with latin
-            $value = Transliterator::transliterateString(\mb_strtoupper((string) $value, 'UTF-8'), true);
+            if (!\is_string($value)) {
+                throw new \LogicException('Value must be a string.');
+            }
 
-            // Latin "O" char replace with zero
-            $value = \str_replace('O', '0', $value);
+            $value = Strings::onlyAlfaNumeric($value);
 
-            // Remove all chars except allowed
-            $value = \preg_replace('~[^ABCDEFGHJKLMNPRSTUVWXYZ0-9]~u', '', $value);
+            $value = \mb_strtoupper($value, 'UTF-8');
 
-            return $value;
-        } catch (\Throwable $e) {
+            return Strings::replaceByMap($value, self::REPLACEMENTS);
+        } catch (\Throwable) {
             return null;
         }
     }
@@ -52,7 +71,7 @@ class IDEntityVin extends AbstractTypedIDEntity
      * Validate VIN code checksum.
      *
      * @see https://en.wikipedia.org/wiki/Vehicle_identification_number
-     *
+     * @deprecated Эта функция будет удалена в следующих релизах.
      * @return bool
      */
     public function isChecksumValidated(): bool
@@ -65,13 +84,13 @@ class IDEntityVin extends AbstractTypedIDEntity
             'x' => 7, 'y' => 8, 'z' => 9,
         ];
 
-        if (! \is_string($this->value) || $this->value === '') {
+        if (!\is_string($this->value) || $this->value === '') {
             return false;
         }
 
-        $characters = (array) \str_split(\mb_strtolower($this->value, 'UTF-8'));
-        $length     = \count($characters);
-        $sum        = 0;
+        $characters = (array)\str_split(\mb_strtolower($this->value, 'UTF-8'));
+        $length = \count($characters);
+        $sum = 0;
 
         if ($length !== 17) {
             return false;
