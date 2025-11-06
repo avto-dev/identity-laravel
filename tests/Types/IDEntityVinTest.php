@@ -192,9 +192,9 @@ class IDEntityVinTest extends AbstractIDEntityTestCase
             '11АА112233',
             'FN15-002153',
             '38:49:924785:832907',
-
             '',
             Str::random(32),
+            
         ];
     }
 }

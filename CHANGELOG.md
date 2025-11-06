@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog][keepachangelog] and this project adher
 
 ### Changed
 
-- `IDEntityVin` normalization rules
+- `IDEntityVin`, `IDEntityBody`, `IDEntityChassis` normalization rules
 
 ## v5.10.0
 

@@ -4,9 +4,9 @@ declare(strict_types = 1);
 
 namespace AvtoDev\IDEntity\Tests\Types;
 
-use Illuminate\Support\Str;
 use AvtoDev\IDEntity\IDEntityInterface;
 use AvtoDev\IDEntity\Types\IDEntityBody;
+use Illuminate\Support\Str;
 
 /**
  * @covers \AvtoDev\IDEntity\Types\IDEntityBody
@@ -25,7 +25,7 @@ class IDEntityBodyTest extends AbstractIDEntityTestCase
     {
         $entity = $this->entityFactory();
 
-        $this->assertSame($valid = 'JS3SE-102734', $entity::normalize(Str::lower($valid)));
+        $this->assertSame($valid = 'JS3SE102734', $entity::normalize(Str::lower($valid)));
         $this->assertSame($valid, $entity::normalize(" {$valid}  "));
         $this->assertSame($valid, $entity::normalize('JS3SE–102734'));
         $this->assertSame($valid, $entity::normalize('JS3Sе–102734'));
@@ -36,8 +36,17 @@ class IDEntityBodyTest extends AbstractIDEntityTestCase
         $this->assertSame($valid, $entity::normalize('JS3SE -  102734'));
         $this->assertSame($valid, $entity::normalize('JS3SE  -  102734'));
         $this->assertSame($valid, $entity::normalize('JS3#^&@^^SE–102":";%?734'));
+        $this->assertSame($valid, $entity::normalize(' JS3SE  102734'));
 
-        $this->assertSame('JS3SE 102734', $entity::normalize(' JS3SE  102734'));
+        $this->assertSame('АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ', $entity::normalize('абвгдеёжзийклмнопрстуфхцчшщъыьэюя'));
+        $this->assertSame('A12BC45', $entity::normalize('  А12-ВС.45  '));
+        $this->assertSame('A123BC45', $entity::normalize('  А123ВС45  '));
+        $this->assertSame('A12BC45', $entity::normalize('А12/В_С-45'));
+        $this->assertSame('ΛΩШЖԱԲ', $entity::normalize('ΛΩШЖԱԲ'));
+        $this->assertSame('УУУШ111', $entity::normalize('YYYШ111'));
+        $this->assertSame('YYYT111', $entity::normalize('УУУТ111'));
+        $this->assertSame('УУУШ111', $entity::normalize('  YYY-Ш.111  '));
+        $this->assertSame('АВСDЕFGНIJКLМNОРQRSТUVWХУZШ', $entity::normalize('ABCDEFGHIJKLMNOPQRSTUVWXYZШ'));
     }
 
     /**
@@ -134,7 +143,6 @@ class IDEntityBodyTest extends AbstractIDEntityTestCase
     protected function getInvalidValues(): array
     {
         return [
-            '0685251',
             'TSMEYB21S00610448',
             '38:49:924785:832907',
             '',

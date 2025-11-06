@@ -456,7 +456,7 @@ class IDEntityTest extends AbstractTestCase
         $this->assertTrue(IDEntity::is('NZE141-9134919', $type = IDEntityInterface::ID_TYPE_BODY));
         $this->assertTrue(IDEntity::is('SGLW301293', $type));
 
-        $wrong = ['JF1SJ5LC5DG048667', '77 УР 781043', Str::random()];
+        $wrong = ['JF1SJ5LC5DG048667', '77УР78', Str::random(16)];
 
         foreach ($wrong as $item) {
             $this->assertFalse(IDEntity::is($item, $type), "[{$item}] must be not [{$type}] type");

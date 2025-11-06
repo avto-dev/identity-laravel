@@ -4,12 +4,15 @@ declare(strict_types = 1);
 
 namespace AvtoDev\IDEntity\Types;
 
-use AvtoDev\IDEntity\Helpers\Normalizer;
-use AvtoDev\IDEntity\Helpers\Transliterator;
 use AvtoDev\ExtendedLaravelValidator\Extensions\ChassisCodeValidatorExtension;
+use Illuminate\Support\Str;
 
 class IDEntityChassis extends AbstractTypedIDEntity
 {
+    protected const REPLACE_LATIN    = ['A', 'B', 'E', 'K', 'M', 'H', 'O', 'P', 'C', 'T', 'X', 'Y'];
+    protected const REPLACE_CYRILLIC = ['А', 'В', 'Е', 'К', 'М', 'Н', 'О', 'Р', 'С', 'Т', 'Х', 'У'];
+    protected const CYRILLIC_SPECIFIC = ['Б', 'Г', 'Д', 'Ё', 'Ж', 'З', 'И', 'Й', 'Л', 'П', 'Ф', 'Ц', 'Ч', 'Ш', 'Щ', 'Ъ', 'Ы', 'Ь', 'Э', 'Ю', 'Я'];
+
     /**
      * {@inheritdoc}
      *
@@ -34,22 +37,15 @@ class IDEntityChassis extends AbstractTypedIDEntity
     public static function normalize($value): ?string
     {
         try {
-            // Replace multiple whitespaces with one
-            $value = (string) \preg_replace('~\s+~u', ' ', \trim((string) $value));
+            $value = (string) \preg_replace('/[^\p{L}\p{N}]/u', '', $value);
 
-            // Normalize dash chars
-            $value = Normalizer::normalizeDashChar($value);
+            $value = \mb_strtoupper($value, 'UTF-8');
 
-            // Transliterate cyrillic chars with latin
-            $value = Transliterator::transliterateString(\mb_strtoupper($value, 'UTF-8'), true);
+            if (Str::contains($value, self::CYRILLIC_SPECIFIC)) {
+                return \str_replace(self::REPLACE_LATIN, self::REPLACE_CYRILLIC, $value);
+            }
 
-            // Remove all chars except allowed
-            $value = (string) \preg_replace('~[^A-Z0-9\- ]~u', '', $value);
-
-            // Replace multiple dashes with one
-            $value = (string) \preg_replace('~-+~', '-', $value);
-
-            return $value;
+            return \str_replace(self::REPLACE_CYRILLIC, self::REPLACE_LATIN, $value);
         } catch (\Throwable $e) {
             return null;
         }
