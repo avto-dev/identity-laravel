@@ -4,8 +4,6 @@ declare(strict_types = 1);
 
 namespace AvtoDev\IDEntity\Types;
 
-use AvtoDev\IDEntity\Helpers\Normalizer;
-use AvtoDev\IDEntity\Helpers\Transliterator;
 use AvtoDev\ExtendedLaravelValidator\Extensions\BodyCodeValidatorExtension;
 use Illuminate\Support\Str;
 
