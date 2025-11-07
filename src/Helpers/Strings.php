@@ -7,7 +7,7 @@ class Strings
 {
     // Символы, которые являются признаком кириллического алфавита.
     protected const CYR_SPECIFIC_CHARS = [
-        'Ё', 'Б', 'Г', 'Д', 'Ж', 'З', 'И', 'Й', 'Л', 'П', 'Ф', 'Ц', 'Ч', 'Ш', 'Щ', 'Ъ', 'Ы', 'Ь', 'Э', 'Ю', 'Я',
+        'Б', 'Г', 'Д', 'Ж', 'Ё', 'З', 'И', 'Й', 'Л', 'П', 'Ф', 'Ц', 'Ч', 'Ш', 'Щ', 'Ъ', 'Ы', 'Ь', 'Э', 'Ю', 'Я',
     ];
 
     /**
@@ -37,8 +37,10 @@ class Strings
      * @param string $value
      * @return bool
      */
-    public static function isCyrillicValue(string $value): bool
+    public static function hasSpecificCyrillicChars(string $value): bool
     {
+        $value = mb_strtoupper($value, 'UTF-8');
+
         foreach (self::CYR_SPECIFIC_CHARS as $char) {
             if (\str_contains($value, $char)) {
                 return true;

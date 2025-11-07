@@ -86,4 +86,31 @@ class StringsTest extends AbstractTestCase
 
         Strings::replaceByMap('foo', ['something' => new \stdClass()]);
     }
+
+    /**
+     * @return void
+     */
+    public function testHasSpecificCyrillicChars(): void
+    {
+        $specific = [
+            'Ё', 'Б', 'Г', 'Д', 'Ж', 'З', 'И', 'Й', 'Л', 'П', 'Ф', 'Ц', 'Ч', 'Ш', 'Щ', 'Ъ', 'Ы', 'Ь', 'Э', 'Ю', 'Я',
+        ];
+
+        foreach ($specific as $char) {
+            $this->assertTrue(Strings::hasSpecificCyrillicChars($char));
+            $this->assertTrue(Strings::hasSpecificCyrillicChars(\mb_strtolower($char, 'UTF-8')));
+        }
+
+        $other = [
+            'А', 'В', 'Е', 'К', 'М', 'Н', 'О', 'Р', 'С', 'Т', 'У', 'Х', // Остальная кириллица
+            'J', 'Q', 'L', 'R', // Латиница
+            '1', '213', '4433', '55', // цифры
+            '"""', '////', '&&', '&&', //
+        ];
+
+        foreach ($other as $char) {
+            $this->assertFalse(Strings::hasSpecificCyrillicChars($char));
+            $this->assertFalse(Strings::hasSpecificCyrillicChars(\mb_strtolower($char, 'UTF-8')));
+        }
+    }
 }

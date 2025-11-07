@@ -9,7 +9,7 @@ The format is based on [Keep a Changelog][keepachangelog] and this project adher
 ### Changed
 
 - Normalization of `VIN`, `BODY`, `CHASSIS`
-- Not used method marked as deprecated
+- Not used code marked as deprecated
 
 ## v5.10.0
 

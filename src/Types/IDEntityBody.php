@@ -72,7 +72,7 @@ class IDEntityBody extends AbstractTypedIDEntity
 
             $value = \mb_strtoupper($value, 'UTF-8');
 
-            $replacements = Strings::isCyrillicValue($value) ? static::REPLACEMENTS_LAT_CYR : static::REPLACEMENTS_CYR_LAT;
+            $replacements = Strings::hasSpecificCyrillicChars($value) ? static::REPLACEMENTS_LAT_CYR : static::REPLACEMENTS_CYR_LAT;
 
             return Strings::replaceByMap($value, $replacements);
         } catch (\Throwable) {
