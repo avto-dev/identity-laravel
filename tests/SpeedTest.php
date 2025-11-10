@@ -6,6 +6,8 @@ namespace AvtoDev\IDEntity\Tests;
 use AvtoDev\IDEntity\Types\IDEntityBody;
 
 /**
+ * Класс для измерения скорости выполнения кода.
+ *
  * @coversNothing
  */
 class SpeedTest extends AbstractTestCase
@@ -22,7 +24,6 @@ class SpeedTest extends AbstractTestCase
     public function testSpeed(): void
     {
         $filename = '';
-        //$filename = __DIR__ . '/../tmp/400k-body.txt';
         $is_valid = $not_valid = 0;
 
         if ($filename === '') {

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace AvtoDev\IDEntity\Types;
 
@@ -57,7 +57,7 @@ class IDEntityVin extends AbstractTypedIDEntity
                 throw new \LogicException('Value must be a string.');
             }
 
-            $value = Strings::onlyAlfaNumeric($value);
+            $value = Strings::removeNonAlphanumericChars($value);
 
             $value = \mb_strtoupper($value, 'UTF-8');
 

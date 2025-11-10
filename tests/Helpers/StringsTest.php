@@ -14,7 +14,7 @@ class StringsTest extends AbstractTestCase
     /**
      * @return void
      */
-    public function testOnlyAlfaNumeric(): void
+    public function testRemoveNonAlphanumericChars(): void
     {
         $cases = [
             '' => '',
@@ -24,6 +24,7 @@ class StringsTest extends AbstractTestCase
             ' bar ' => 'bar',
             'foo`!-~%^&&*()_+-*/-bar' => 'foobar',
             'fo1ob-ar' => 'fo1obar',
+            'FO1OB-AR' => 'FO1OBAR',
             $rus = 'абвгдеёжзийклмнопрстуфхцчшщъыьэюяАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ' => $rus,
             $eng = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' => $eng,
             $other = 'ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜabcdefghijklmnopqrstuvwxyzäöüß' => $other,
@@ -31,7 +32,9 @@ class StringsTest extends AbstractTestCase
         ];
 
         foreach ($cases as $from => $to) {
-            $this->assertSame($to, Strings::onlyAlfaNumeric($from));
+            $this->assertSame($to, Strings::removeNonAlphanumericChars($from),
+                'Case "' . $from . '" failed'
+            );
         }
     }
 
@@ -97,8 +100,14 @@ class StringsTest extends AbstractTestCase
         ];
 
         foreach ($specific as $char) {
-            $this->assertTrue(Strings::hasSpecificCyrillicChars($char));
-            $this->assertTrue(Strings::hasSpecificCyrillicChars(\mb_strtolower($char, 'UTF-8')));
+            $this->assertTrue(
+                Strings::hasSpecificCyrillicChars($char),
+                'Case "' . $char . '" failed'
+            );
+            $this->assertFalse(
+                Strings::hasSpecificCyrillicChars(\mb_strtolower($char, 'UTF-8')),
+                'Case upper "' . $char . '" failed'
+            );
         }
 
         $other = [
@@ -109,8 +118,14 @@ class StringsTest extends AbstractTestCase
         ];
 
         foreach ($other as $char) {
-            $this->assertFalse(Strings::hasSpecificCyrillicChars($char));
-            $this->assertFalse(Strings::hasSpecificCyrillicChars(\mb_strtolower($char, 'UTF-8')));
+            $this->assertFalse(
+                Strings::hasSpecificCyrillicChars($char),
+                'Case "' . $char . '" failed'
+            );
+            $this->assertFalse(
+                Strings::hasSpecificCyrillicChars(\mb_strtolower($char, 'UTF-8')),
+                'Case "' . $char . '" failed'
+            );
         }
     }
 }
