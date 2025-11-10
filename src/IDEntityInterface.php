@@ -25,7 +25,7 @@ interface IDEntityInterface
      * Create a new ID entity instance.
      *
      * @param string $value
-     * @param ?string $type
+     * @param string|null $type
      *
      * @return TypedIDEntityInterface
      */
