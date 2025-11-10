@@ -26,7 +26,7 @@ class IDEntityBodyTest extends AbstractIDEntityTestCase
         $entity = $this->entityFactory();
 
         $this->assertSame($valid = 'JS3SE102734', $entity::normalize(Str::lower($valid)));
-        $this->assertSame($valid, $entity::normalize(" {$valid}  "));
+        $this->assertSame($valid, $entity::normalize(" $valid  "));
         $this->assertSame($valid, $entity::normalize('JS3SE–102734'));
         $this->assertSame($valid, $entity::normalize('JS3Sе–102734'));
         $this->assertSame($valid, $entity::normalize('JS3SE--102734'));

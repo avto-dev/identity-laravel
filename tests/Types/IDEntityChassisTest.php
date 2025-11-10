@@ -26,7 +26,7 @@ class IDEntityChassisTest extends AbstractIDEntityTestCase
         $entity = $this->entityFactory();
 
         $this->assertSame($valid = 'LA1300128818', $entity::normalize(Str::lower($valid)));
-        $this->assertSame($valid, $entity::normalize(" {$valid}  "));
+        $this->assertSame($valid, $entity::normalize(" $valid  "));
         $this->assertSame($valid, $entity::normalize('LA130–0128818'));
         $this->assertSame($valid, $entity::normalize('Lа130-0128818'));
         $this->assertSame($valid, $entity::normalize('LA130--0128818'));
