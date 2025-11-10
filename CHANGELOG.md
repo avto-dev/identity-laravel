@@ -22,7 +22,7 @@ The format is based on [Keep a Changelog][keepachangelog] and this project adher
 
 - Package `avto-dev/extended-laravel-validator` up to `^5.0`
 
-## Fixed
+### Fixed
 
 - Тests for `IDEntityBody`
 
