@@ -48,7 +48,7 @@ abstract class AbstractTypedIDEntity extends IDEntity implements TypedIDEntityIn
      */
     public static function make(string $value, ?string $type = null)
     {
-        return new static($value);
+        return new static($value, true);
     }
 
     /**
