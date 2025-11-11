@@ -13,7 +13,7 @@ class IDEntityUnknown extends AbstractTypedIDEntity
      */
     final public static function make(string $value, ?string $type = null): self
     {
-        return new static($value);
+        return new static($value, true);
     }
 
     /**

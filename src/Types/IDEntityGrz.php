@@ -102,7 +102,7 @@ class IDEntityGrz extends AbstractTypedIDEntity implements HasRegionDataInterfac
      */
     final public static function make(string $value, ?string $type = null): self
     {
-        return new static($value);
+        return new static($value, true);
     }
 
     /**
