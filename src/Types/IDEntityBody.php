@@ -24,22 +24,6 @@ class IDEntityBody extends AbstractTypedIDEntity
         'Y' => 'У',
     ];
 
-    protected const REPLACEMENTS_CYR_LAT = [
-        'А' => 'A',
-        'В' => 'B',
-        'Е' => 'E',
-        'К' => 'K',
-        'М' => 'M',
-        'Н' => 'H',
-        'О' => 'O',
-        'Р' => 'P',
-        'С' => 'C',
-        'Т' => 'T',
-        'У' => 'Y',
-        'Х' => 'X',
-    ];
-
-
     /**
      * {@inheritdoc}
      *
@@ -63,21 +47,19 @@ class IDEntityBody extends AbstractTypedIDEntity
      */
     public static function normalize($value): ?string
     {
-        try {
-            if (!\is_string($value)) {
-                throw new \LogicException('Value must be a string.');
-            }
-
-            $value = Strings::removeNonAlphanumericChars($value);
-
-            $value = \mb_strtoupper($value, 'UTF-8');
-
-            $replacements = Strings::hasSpecificCyrillicChars($value) ? static::REPLACEMENTS_LAT_CYR : static::REPLACEMENTS_CYR_LAT;
-
-            return Strings::replaceByMap($value, $replacements);
-        } catch (\Throwable) {
+        if (!\is_string($value)) {
             return null;
         }
+
+        $value = Strings::removeNonAlphanumericChars($value);
+
+        $value = \mb_strtoupper($value, 'UTF-8');
+
+        $replacements = Strings::hasSpecificCyrillicChars($value)
+            ? static::REPLACEMENTS_LAT_CYR
+            : \array_flip(static::REPLACEMENTS_LAT_CYR);
+
+        return Strings::replaceByMap($value, $replacements);
     }
 
     /**

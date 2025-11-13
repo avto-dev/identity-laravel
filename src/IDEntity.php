@@ -54,7 +54,6 @@ class IDEntity implements IDEntityInterface
 
         if ($type === self::ID_TYPE_AUTO) {
             foreach (static::getTypesMap() as $class_name) {
-                /** @var TypedIDEntityInterface $instance */
                 $instance = new $class_name($value, true);
 
                 if ($instance->canBeAutoDetected() && $instance->isValid()) {

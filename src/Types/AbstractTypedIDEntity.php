@@ -13,12 +13,12 @@ abstract class AbstractTypedIDEntity extends IDEntity implements TypedIDEntityIn
     /**
      * @var string|null
      */
-    protected $value;
+    protected ?string $value;
 
     /**
      * @var bool
      */
-    protected $can_be_auto_detected = true;
+    protected bool $can_be_auto_detected = true;
 
     /**
      * Create a new typed IDEntity instance.
@@ -62,7 +62,7 @@ abstract class AbstractTypedIDEntity extends IDEntity implements TypedIDEntityIn
     /**
      * {@inheritdoc}
      */
-    public function setValue(string $value, bool $make_normalization = true)
+    public function setValue(string $value, bool $make_normalization = true):self
     {
         $this->value = $make_normalization === true
             ? static::normalize($value)
@@ -88,7 +88,7 @@ abstract class AbstractTypedIDEntity extends IDEntity implements TypedIDEntityIn
     }
 
     /**
-     * @return array{value:?string, type:string}
+     * @return array{value:string|null, type:string}
      */
     public function toArray(): array
     {
@@ -129,26 +129,26 @@ abstract class AbstractTypedIDEntity extends IDEntity implements TypedIDEntityIn
                                   int $end_offset = 3,
                                   string $mask_char = '*'): string
     {
-        if (mb_strlen($mask_char) > 1) {
-            $mask_char = (string) mb_substr($mask_char, 0, 1);
+        if (\mb_strlen($mask_char) > 1) {
+            $mask_char = \mb_substr($mask_char, 0, 1);
         }
 
-        $number_length = mb_strlen($string);
+        $number_length = \mb_strlen($string);
 
         if ($number_length <= $start_offset + $end_offset) {
             return $string;
         }
 
-        $hidden_str    = mb_substr($string, $start_offset, $number_length - ($start_offset + $end_offset));
+        $hidden_str    = \mb_substr($string, $start_offset, $number_length - ($start_offset + $end_offset));
         $stars         = '';
-        $hidden_length = mb_strlen($hidden_str);
+        $hidden_length = \mb_strlen($hidden_str);
 
         for ($i = 0; $i < $hidden_length; $i++) {
             $stars .= $mask_char;
         }
 
-        return mb_substr($string, 0, $start_offset)
+        return \mb_substr($string, 0, $start_offset)
                . $stars
-               . mb_substr($string, $number_length - $end_offset, $end_offset);
+               . \mb_substr($string, $number_length - $end_offset, $end_offset);
     }
 }

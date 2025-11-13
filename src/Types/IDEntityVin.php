@@ -52,19 +52,15 @@ class IDEntityVin extends AbstractTypedIDEntity
      */
     public static function normalize($value): ?string
     {
-        try {
-            if (!\is_string($value)) {
-                throw new \LogicException('Value must be a string.');
-            }
-
-            $value = Strings::removeNonAlphanumericChars($value);
-
-            $value = \mb_strtoupper($value, 'UTF-8');
-
-            return Strings::replaceByMap($value, self::REPLACEMENTS);
-        } catch (\Throwable) {
-            return null;
+        if (!\is_string($value)) {
+           return null;
         }
+
+        $value = Strings::removeNonAlphanumericChars($value);
+
+        $value = \mb_strtoupper($value, 'UTF-8');
+
+        return Strings::replaceByMap($value, self::REPLACEMENTS);
     }
 
     /**
