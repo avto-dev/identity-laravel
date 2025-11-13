@@ -143,7 +143,7 @@ class IDEntityBodyTest extends AbstractIDEntityTestCase
     protected function getInvalidValues(): array
     {
         return [
-            '0685251',
+            '068525',
             'TSMEYB21S00610448',
             '38:49:924785:832907',
             '',
