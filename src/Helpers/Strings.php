@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace AvtoDev\IDEntity\Helpers;
 
+/**
+ * @internal
+ */
 class Strings
 {
     /**
