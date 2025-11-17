@@ -93,20 +93,20 @@ class StringsTest extends AbstractTestCase
     /**
      * @return void
      */
-    public function testHasSpecificCyrillicChars(): void
+    public function testHasSpecificCyrillicUpperLetters(): void
     {
         $specific = [
             'Ё', 'Б', 'Г', 'Д', 'Ж', 'З', 'И', 'Й', 'Л', 'П', 'Ф', 'Ц', 'Ч', 'Ш', 'Щ', 'Ъ', 'Ы', 'Ь', 'Э', 'Ю', 'Я',
         ];
 
-        foreach ($specific as $char) {
+        foreach ($specific as $letter) {
             $this->assertTrue(
-                Strings::hasSpecificCyrillicChars($char),
-                'Case "' . $char . '" failed'
+                Strings::hasSpecificCyrillicUpperLetters($letter),
+                'Case "' . $letter . '" failed'
             );
             $this->assertFalse(
-                Strings::hasSpecificCyrillicChars(\mb_strtolower($char, 'UTF-8')),
-                'Case upper "' . $char . '" failed'
+                Strings::hasSpecificCyrillicUpperLetters(\mb_strtolower($letter, 'UTF-8')),
+                'Case upper "' . $letter . '" failed'
             );
         }
 
@@ -117,14 +117,14 @@ class StringsTest extends AbstractTestCase
             '"""', '////', '&&', '&&', //
         ];
 
-        foreach ($other as $char) {
+        foreach ($other as $letter) {
             $this->assertFalse(
-                Strings::hasSpecificCyrillicChars($char),
-                'Case "' . $char . '" failed'
+                Strings::hasSpecificCyrillicUpperLetters($letter),
+                'Case "' . $letter . '" failed'
             );
             $this->assertFalse(
-                Strings::hasSpecificCyrillicChars(\mb_strtolower($char, 'UTF-8')),
-                'Case "' . $char . '" failed'
+                Strings::hasSpecificCyrillicUpperLetters(\mb_strtolower($letter, 'UTF-8')),
+                'Case "' . $letter . '" failed'
             );
         }
     }

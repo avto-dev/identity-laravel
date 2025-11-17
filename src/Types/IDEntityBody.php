@@ -55,7 +55,7 @@ class IDEntityBody extends AbstractTypedIDEntity
 
         $value = \mb_strtoupper($value, 'UTF-8');
 
-        $replacements = Strings::hasSpecificCyrillicChars($value)
+        $replacements = Strings::hasSpecificCyrillicUpperLetters($value)
             ? static::REPLACEMENTS_LAT_CYR
             : \array_flip(static::REPLACEMENTS_LAT_CYR);
 

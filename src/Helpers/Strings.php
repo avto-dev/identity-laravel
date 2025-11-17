@@ -11,7 +11,7 @@ class Strings
     /**
      * Символы, которые являются признаком кириллического Алфавита.
      */
-    protected const CYR_SPECIFIC_CHARS = [
+    protected const SPECIFIC_CYR_LETTERS = [
         'Б', 'Г', 'Д', 'Ж', 'Ё', 'З', 'И', 'Й', 'Л', 'П', 'Ф', 'Ц', 'Ч', 'Ш', 'Щ', 'Ъ', 'Ы', 'Ь', 'Э', 'Ю', 'Я',
     ];
 
@@ -39,13 +39,13 @@ class Strings
     }
 
     /**
-     * @param string $upper_value Строка в верхнем регистре.
+     * @param string $value
      * @return bool
      */
-    public static function hasSpecificCyrillicChars(string $upper_value): bool
+    public static function hasSpecificCyrillicUpperLetters(string $value): bool
     {
-        foreach (self::CYR_SPECIFIC_CHARS as $char) {
-            if (\str_contains($upper_value, $char)) {
+        foreach (self::SPECIFIC_CYR_LETTERS as $char) {
+            if (\str_contains($value, $char)) {
                 return true;
             }
         }
