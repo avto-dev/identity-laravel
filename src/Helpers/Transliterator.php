@@ -4,138 +4,36 @@ declare(strict_types = 1);
 
 namespace AvtoDev\IDEntity\Helpers;
 
-use Stringy\Stringy;
-
 /**
  * @internal
  */
 class Transliterator
 {
-    /**
-     * Cyrillic symbols set.
-     *
-     * @var string[]
-     */
-    protected static array $cyr_chars = [
-        'А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ё', 'Ж', 'З', 'И', 'Й', 'К', 'Л', 'М', 'Н', 'О', 'П', 'Р',
-        'С', 'Т', 'У', 'Ф', 'Х', 'Ц', 'Ч', 'Ш', 'Щ', 'Ъ', 'Ы', 'Ь', 'Э', 'Ю', 'Я', 'Х',
-
-        'а', 'б', 'в', 'г', 'д', 'е', 'ё', 'ж', 'з', 'и', 'й', 'к', 'л', 'м', 'н', 'о', 'п', 'р',
-        'с', 'т', 'у', 'ф', 'х', 'ц', 'ч', 'ш', 'щ', 'ъ', 'ы', 'ь', 'э', 'ю', 'я', 'х',
+    protected const LATIN_TO_CYRILLIC_TRANSLITERATE_MAP = [
+        'A' => 'А', 'a' => 'а',
+        'B' => 'В', 'b' => 'в',
+        'E' => 'Е', 'e' => 'е',
+        'K' => 'К', 'k' => 'к',
+        'M' => 'М', 'm' => 'м',
+        'H' => 'Н', 'h' => 'н',
+        'O' => 'О', 'o' => 'о',
+        'P' => 'Р', 'p' => 'р',
+        'C' => 'С', 'c' => 'с',
+        'T' => 'Т', 't' => 'т',
+        'Y' => 'У', 'y' => 'у',
+        'X' => 'Х', 'x' => 'х',
     ];
 
-    /**
-     * Latin symbols set for backward transliteration.
-     *
-     * @var string[]
-     */
-    protected static array $latin_analogs = [
-        'A', 'B', 'V', 'G', 'D', 'E', 'E', 'Zh', 'Z', 'I', 'I', 'K', 'L', 'M', 'N', 'O', 'P', 'R',
-        'S', 'T', 'U', 'F', 'X', 'Ts', 'Ch', 'Sh', 'Shch', '', 'Y', '', 'E', 'Yu', 'Ya', 'H',
-
-        'a', 'b', 'v', 'g', 'd', 'e', 'e', 'zh', 'z', 'i', 'i', 'k', 'l', 'm', 'n', 'o', 'p', 'r',
-        's', 't', 'u', 'f', 'x', 'ts', 'ch', 'sh', 'shch', '', 'y', '', 'e', 'yu', 'ya', 'h',
-    ];
 
     /**
-     * Latin symbols set for "safe" backward transliteration (without cases when one symbol transliterated as 2 or
-     * more characters).
-     *
-     * @var string[]
-     */
-    protected static array $latin_safe_analogs = [
-        'A', 'B', 'B', 'G', 'D', 'E', 'E', 'J', 'Z', 'I', 'I', 'K', 'L', 'M', 'H', 'O', 'P', 'P',
-        'C', 'T', 'Y', 'F', 'X', 'C', 'C', 'W', 'W', '', '', '', 'E', 'U', 'Y', 'X',
-
-        'a', 'b', 'b', 'g', 'd', 'e', 'e', 'j', 'z', 'i', 'i', 'k', 'l', 'm', 'h', 'o', 'p', 'p',
-        'c', 't', 'y', 'f', 'x', 'c', 'c', 'w', 'w', '', '', '', 'e', 'u', 'y', 'x',
-    ];
-
-    /**
-     * Cyrillic <-> latin replaces analogs map.
-     *
-     * @var string[]
-     */
-    protected static array $lite_cyr_map = [
-        'А', 'В', 'Е', 'К', 'М', 'Н', 'О', 'Р', 'С', 'Т', 'У', 'Х',
-        'а', 'в', 'е', 'к', 'м', 'н', 'о', 'р', 'с', 'т', 'у', 'х',
-    ];
-
-    /**
-     * Backward latin <-> cyrillic replaces analogs map.
-     *
-     * @var string[]
-     */
-    protected static array $lite_latin_map = [
-        'A', 'B', 'E', 'K', 'M', 'H', 'O', 'P', 'C', 'T', 'Y', 'X',
-        'a', 'b', 'e', 'k', 'm', 'h', 'o', 'p', 'c', 't', 'y', 'x',
-    ];
-
-    /**
-     * Производит транслитерацию только тех кириллических символов, что имеют латинские аналоги.
-     *
-     * @param string $string
-     *
-     * @return string
-     * @deprecated Эта функция будет удалена в следующих релизах.
-     *
-     */
-    public static function transliterateLite(string $string): string
-    {
-        return \str_replace(static::$lite_cyr_map, static::$lite_latin_map, $string);
-    }
-
-    /**
-     * Производит обратную транслитерацию (из латинских символов - в кириллические аналоги).
+     * Производит транслитерацию латинских символов в кириллические аналоги.
      *
      * @param string $string
      *
      * @return string
      */
-    public static function detransliterateLite(string $string): string
+    public static function detransliterateString(string $string): string
     {
-        return \str_replace(static::$lite_latin_map, static::$lite_cyr_map, $string);
-    }
-
-    /**
-     * Транслитерирует строку.
-     *
-     * @param string $string
-     * @param bool   $safe_mode "Безопасный" режим транслитерации, при котором **один** кириллический символ будет
-     *                          гарантировано транслитерирован в **один** латинский
-     *
-     * @return string
-     * @deprecated Эта функция будет удалена в следующих релизах.
-     */
-    public static function transliterateString(string $string, bool $safe_mode = false): string
-    {
-        if ($safe_mode === true) {
-            $string = \str_replace(
-                static::$cyr_chars,
-                static::$latin_safe_analogs,
-                $string
-            );
-        }
-
-        return (string) Stringy::create($string)->toAscii('en');
-    }
-
-    /**
-     * Производит де-транслитерацию строки.
-     *
-     * @param string $string
-     * @param bool   $after_safe_mode Указывает, что входящая строка была "безопасно" транслитерирована
-     *
-     * @return string
-     */
-    public static function detransliterateString(string $string, bool $after_safe_mode = false): string
-    {
-        return \str_replace(
-            $after_safe_mode === true
-                ? static::$latin_safe_analogs
-                : static::$latin_analogs,
-            static::$cyr_chars,
-            $string
-        );
+        return \strtr($string, self::LATIN_TO_CYRILLIC_TRANSLITERATE_MAP);
     }
 }
