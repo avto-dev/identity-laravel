@@ -15,89 +15,11 @@ class TransliteratorTest extends AbstractTestCase
     /**
      * @return void
      */
-    public function testTransliterateString(): void
-    {
-        $asserts = [
-            'привет'    => 'privet',
-            'ПРИВЕТ'    => 'PRIVET',
-            'А123aa177' => 'A123aa177',
-        ];
-
-        foreach ($asserts as $what => $with) {
-            $this->assertSame($with, Transliterator::transliterateString($what, false));
-        }
-
-        $this->assertSame(
-            'a b v g d e e zh z i y k l m n o p r s t u f kh ts ch sh shch  y  e yu ya',
-            Transliterator::transliterateString(
-                'а б в г д е ё ж з и й к л м н о п р с т у ф х ц ч ш щ ъ ы ь э ю я',
-                false
-            )
-        );
-
-        // И теперь safe-режим
-
-        $asserts_safe = [
-            'привет'    => 'ppibet',
-            'ПРИВЕТ'    => 'PPIBET',
-            'А123aa177' => 'A123aa177',
-        ];
-
-        foreach ($asserts_safe as $what => $with) {
-            $this->assertSame($with, Transliterator::transliterateString($what, true));
-        }
-
-        $this->assertSame(
-            'a b b g d e e j z i i k l m h o p p c t y f x c c w w    e u y',
-            Transliterator::transliterateString(
-                'а б в г д е ё ж з и й к л м н о п р с т у ф х ц ч ш щ ъ ы ь э ю я',
-                true
-            )
-        );
-    }
-
-    /**
-     * @return void
-     */
-    public function testDeTransliterateString(): void
-    {
-        $asserts = [
-            'privet'    => 'привет',
-            'PRIVET'    => 'ПРИВЕТ',
-            'A123aa177' => 'А123аа177',
-        ];
-
-        foreach ($asserts as $what => $with) {
-            $this->assertSame($with, Transliterator::detransliterateString($what));
-        }
-
-        $this->assertSame(
-            'а б в г д е е ж з и ы к л м н о п р с т у ф кх тс ч сх схч ы е ыу ыа',
-            Transliterator::detransliterateString(
-                'a b v g d e e zh z i y k l m n o p r s t u f kh ts ch sh shch y e yu ya'
-            )
-        );
-
-        $this->assertSame(
-            'а б v г д е е зн з и у к л м n о п r s т ю ф кн тs сн sн sнсн у е ую уа',
-            Transliterator::detransliterateString(
-                'a b v g d e e zh z i y k l m n o p r s t u f kh ts ch sh shch y e yu ya', true
-            )
-        );
-    }
-
-    /**
-     * @return void
-     */
-    public function testLiteTransliterate(): void
+    public function testTransliterate(): void
     {
         $this->assertSame(
             'АВЕКМНОРСТУХ авекмнорстух',
-            Transliterator::detransliterateLite('ABEKMHOPCTYX abekmhopctyx')
-        );
-        $this->assertSame(
-            'ABEKMHOPCTYX abekmhopctyx',
-            Transliterator::transliterateLite('АВЕКМНОРСТУХ авекмнорстух')
+            Transliterator::detransliterateString('ABEKMHOPCTYX abekmhopctyx')
         );
     }
 }

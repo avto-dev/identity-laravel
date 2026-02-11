@@ -32,6 +32,7 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
         $this->assertSame('000X77', IDEntityGrz::FORMAT_PATTERN_7);
         $this->assertSame('0000X77', IDEntityGrz::FORMAT_PATTERN_8);
         $this->assertSame('XX000X77_OR_XX000X777', IDEntityGrz::FORMAT_PATTERN_9);
+        $this->assertSame('000XX77', IDEntityGrz::FORMAT_PATTERN_10);
 
         $this->assertSame('TYPE_1', IDEntityGrz::GOST_TYPE_1);
         $this->assertSame('TYPE_1A', IDEntityGrz::GOST_TYPE_1A);
@@ -47,6 +48,7 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
         $this->assertSame('TYPE_20', IDEntityGrz::GOST_TYPE_20);
         $this->assertSame('TYPE_21', IDEntityGrz::GOST_TYPE_21);
         $this->assertSame('TYPE_22', IDEntityGrz::GOST_TYPE_22);
+        $this->assertSame('TYPE_25', IDEntityGrz::GOST_TYPE_25);
     }
 
     /**
@@ -119,6 +121,11 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
             IDEntityGrz::getFormatPatternByGostType(IDEntityGrz::GOST_TYPE_22)
         );
 
+        $this->assertSame(
+            IDEntityGrz::FORMAT_PATTERN_10,
+            IDEntityGrz::getFormatPatternByGostType(IDEntityGrz::GOST_TYPE_25)
+        );
+
         $this->assertNull(IDEntityGrz::getFormatPatternByGostType(Str::random()));
     }
 
@@ -176,6 +183,11 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
         $this->assertSame(
             IDEntityGrz::getGostTypesByPattern(IDEntityGrz::FORMAT_PATTERN_8),
             [IDEntityGrz::GOST_TYPE_22]
+        );
+
+        $this->assertSame(
+            IDEntityGrz::getGostTypesByPattern(IDEntityGrz::FORMAT_PATTERN_10),
+            [IDEntityGrz::GOST_TYPE_25]
         );
 
         $this->assertNull(IDEntityGrz::getGostTypesByPattern('foo bar'));
@@ -295,6 +307,18 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
                 'УХ111О177',
                 'РО123Т96',
                 'НО123С177',
+            ],
+
+            IDEntityGrz::FORMAT_PATTERN_10 => [
+                '000ЕМ77',
+                '686ОУ26',
+                '282ЕР78',
+                '646РУ77',
+                '525CС77',
+                '111УР96',
+                '888РЕ99',
+                '929УО77',
+                '898МЕ72',
             ],
         ];
 
@@ -697,6 +721,17 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
             '9393ММ777' => null,
             '0606КК197' => null,
 
+            // 000XX77 (тип 25 - Для классических (ретро) мотоциклов)
+            '000ЕМ77'   => 77,
+            '686ОУ26'   => 26,
+            '282ЕР78'   => 78,
+            '646РУ77'   => 77,
+            '525CС77'   => 77,
+            '111УР96'   => 96,
+            '888РЕ99'   => 99,
+            '929УО77'   => 77,
+            '898МЕ72'   => 72,
+
             '123А098АА' => null,
             'foo bar'   => null,
         ];
@@ -769,12 +804,21 @@ class IDEntityGrzTest extends AbstractIDEntityTestCase
         $this->assertSame($valid, $entity::normalize('X123 #$^&&&% YO96 '));
 
         $asserts = [
-            'Х123АВ96' => ['Х123АВ96', 'Х123AB96'],
-            'Х123ЕК96' => ['Х123ЕК96', 'Х123EK96'],
-            'Х123МН96' => ['Х123МН96', 'Х123MH96'],
-            'Х123ОР96' => ['Х123ОР96', 'Х123OP96'],
-            'Х123СТ96' => ['Х123СТ96', 'Х123CT96'],
-            'Х123УХ96' => ['Х123УХ96', 'Х123YX96'],
+            'Х123АВ96'  => ['Х123АВ96', 'Х123AB96'],
+            'Х123ЕК96'  => ['Х123ЕК96', 'Х123EK96'],
+            'Х123МН96'  => ['Х123МН96', 'Х123MH96'],
+            'Х123ОР96'  => ['Х123ОР96', 'Х123OP96'],
+            'Х123СТ96'  => ['Х123СТ96', 'Х123CT96'],
+            'Х123УХ96'  => ['Х123УХ96', 'Х123YX96'],
+            'А123АА77'  => [
+                '  a-123.a_a 77  ', // Базовая стандартная коррекция - весь комплекс
+                'а123аа77',         // Приведение к верхнему регистру
+                'А/123-АА.77',      // Удаление разделителей
+                'А 123 АА 77',      // Удаление пробелов
+            ],
+            'Λ123ΩΩ77'  => ['Λ123ΩΩ77'], // Буквы из других алфавитов не удаляются
+            'А123ВЕ77'  => ['A123BE77'], // Замена латинских A,B,E на кириллицу А,В,Е
+            '789Д12377' => ['789Д12377'], // Буква Д не заменяется
         ];
 
         foreach ($asserts as $with => $what) {
