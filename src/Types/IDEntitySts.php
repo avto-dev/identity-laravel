@@ -37,7 +37,7 @@ class IDEntitySts extends AbstractTypedIDEntity
             $value = \mb_strtoupper(\trim((string) $value), 'UTF-8');
 
             // Remove all chars except allowed
-            $value = (string) \preg_replace('~[^' . 'АБВГДЕЖЗИКЛМНОПРСТУФХЦЧШЩЫЭЮЯ' . 'A-Z' . '0-9]~u', '', $value);
+            $value = (string) \preg_replace('~[^\p{L}0-9]|[ЁЙЪЬ]~u', '', $value);
 
             // Replace latin chars with cyrillic analogs (backward transliteration)
             $value = Transliterator::detransliterateString($value, true);
