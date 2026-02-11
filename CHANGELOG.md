@@ -8,8 +8,9 @@ The format is based on [Keep a Changelog][keepachangelog] and this project adher
 
 ### Changed
 
-- Normalization of `VIN`, `BODY` and `CHASSIS`
+- Normalization of `VIN`, `BODY`, `CHASSIS`, `GRZ`, `STS` and `PTS`
 - Not used code marked as deprecated
+- Refactor string transliteration logic
 
 ## v5.10.0
 

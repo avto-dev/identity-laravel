@@ -18,15 +18,16 @@ class IDEntityGrz extends AbstractTypedIDEntity implements HasRegionDataInterfac
      * Format patterns.
      */
     public const
-        FORMAT_PATTERN_1 = 'X000XX77_OR_X000XX777',
-        FORMAT_PATTERN_2 = 'X000XX',
-        FORMAT_PATTERN_3 = 'XX00077',
-        FORMAT_PATTERN_4 = '0000XX77',
-        FORMAT_PATTERN_5 = 'XX000077',
-        FORMAT_PATTERN_6 = 'X000077',
-        FORMAT_PATTERN_7 = '000X77',
-        FORMAT_PATTERN_8 = '0000X77',
-        FORMAT_PATTERN_9 = 'XX000X77_OR_XX000X777';
+        FORMAT_PATTERN_1  = 'X000XX77_OR_X000XX777',
+        FORMAT_PATTERN_2  = 'X000XX',
+        FORMAT_PATTERN_3  = 'XX00077',
+        FORMAT_PATTERN_4  = '0000XX77',
+        FORMAT_PATTERN_5  = 'XX000077',
+        FORMAT_PATTERN_6  = 'X000077',
+        FORMAT_PATTERN_7  = '000X77',
+        FORMAT_PATTERN_8  = '0000X77',
+        FORMAT_PATTERN_9  = 'XX000X77_OR_XX000X777',
+        FORMAT_PATTERN_10 = '000XX77';
 
     /**
      * Types, declared in "ГОСТ Р 50577-93" (not all).
@@ -46,14 +47,13 @@ class IDEntityGrz extends AbstractTypedIDEntity implements HasRegionDataInterfac
            // прицепов и полуприцепов (Транзит, ламинированный)
         GOST_TYPE_20 = 'TYPE_20', // тип 20 - Для легковых, грузовых, грузопассажирских автомобилей и автобусов
         GOST_TYPE_21 = 'TYPE_21', // тип 21 - Для автомобильных прицепов и полуприцепов
-        GOST_TYPE_22 = 'TYPE_22'; // тип 22 - Для мотоциклов
+        GOST_TYPE_22 = 'TYPE_22', // тип 22 - Для мотоциклов
+        GOST_TYPE_25 = 'TYPE_25'; // тип 25 - Для классических (ретро) мотоциклов
 
     /**
      * Allowed chars.
      */
-    protected const
-        CYRILLIC_CHARS   = 'АВЕКМНОРСТУХ',
-        CYRILLIC_ANALOGS = 'ABEKMHOPCTYX'; // Order is important!
+    protected const CYRILLIC_CHARS = 'АВЕКМНОРСТУХ';
 
     /**
      * Pattern and types map.
@@ -93,6 +93,9 @@ class IDEntityGrz extends AbstractTypedIDEntity implements HasRegionDataInterfac
         self::FORMAT_PATTERN_9 => [ // XX000X77_OR_XX000X777
             self::GOST_TYPE_15,
         ],
+        self::FORMAT_PATTERN_10 => [ // 000XX77
+            self::GOST_TYPE_25,
+        ]
     ];
 
     /**
@@ -190,6 +193,10 @@ class IDEntityGrz extends AbstractTypedIDEntity implements HasRegionDataInterfac
                 // XX000X77_OR_XX000X777
                 case \preg_match("~^[{$cyrillic}]{2}\d{3}[{$cyrillic}]\d{2,3}$~iu", $value) === 1:
                     return self::FORMAT_PATTERN_9;
+
+                // 000XX77
+                case \preg_match("~^\d{3}[{$cyrillic}]{2}\d{2}$~iu", $value) === 1:
+                    return self::FORMAT_PATTERN_10;
             }
         }
 
@@ -206,10 +213,10 @@ class IDEntityGrz extends AbstractTypedIDEntity implements HasRegionDataInterfac
             $value = \mb_strtoupper(\trim((string) $value), 'UTF-8');
 
             // Remove all chars except allowed
-            $value = (string) \preg_replace('~[^' . self::CYRILLIC_CHARS . self::CYRILLIC_ANALOGS . '0-9]~u', '', $value);
+            $value = (string) \preg_replace('~[^\p{L}0-9]~u', '', $value);
 
             // Transliterate latin chars with cyrillic (backward transliteration)
-            $value = Transliterator::detransliterateLite($value);
+            $value = Transliterator::detransliterateString($value);
 
             return $value;
         } catch (\Throwable $e) {
@@ -244,6 +251,7 @@ class IDEntityGrz extends AbstractTypedIDEntity implements HasRegionDataInterfac
                 case self::FORMAT_PATTERN_6: // X000077
                 case self::FORMAT_PATTERN_7: // 000X77
                 case self::FORMAT_PATTERN_8: // 0000X77
+                case self::FORMAT_PATTERN_10: // 000XX77
                     \preg_match('~(?<region_code>\d{2})$~D', (string) $this->value, $matches);
                     break;
             }
