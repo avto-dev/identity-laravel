@@ -12,6 +12,10 @@ The format is based on [Keep a Changelog][keepachangelog] and this project adher
 - Not used code marked as deprecated
 - Refactor string transliteration logic
 
+### Removed
+
+- Dependency of package `danielstjules/stringy`
+
 ## v5.10.0
 
 ### Added
