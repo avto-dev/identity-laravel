@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog][keepachangelog] and this project adher
 
 ## UNRELEASED
 
+### Added
+
+- `EPTS` id entity
+
 ### Changed
 
 - Normalization of `VIN`, `BODY`, `CHASSIS`, `GRZ`, `STS` and `PTS`

@@ -19,7 +19,8 @@ interface IDEntityInterface
         ID_TYPE_CHASSIS               = 'CHASSIS',    // Vehicle chassis number
         ID_TYPE_BODY                  = 'BODY',       // Vehicle body number
         ID_TYPE_DRIVER_LICENSE_NUMBER = 'DLN',        // Driver license number
-        ID_TYPE_CADASTRAL_NUMBER      = 'CADNUM';     // Cadastral number (unique property number)
+        ID_TYPE_CADASTRAL_NUMBER      = 'CADNUM',     // Cadastral number (unique property number)
+        ID_TYPE_EPTS                  = 'EPTS';       // The number of the electronic passport of the vehicle
 
     /**
      * Create a new ID entity instance.
