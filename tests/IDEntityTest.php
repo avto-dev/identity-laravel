@@ -9,12 +9,11 @@ use Illuminate\Support\Str;
 use AvtoDev\IDEntity\IDEntity;
 use AvtoDev\IDEntity\ServiceProvider;
 use AvtoDev\IDEntity\IDEntityInterface;
+use PHPUnit\Framework\Attributes\CoversClass;
 use AvtoDev\IDEntity\Tests\Mocks\TypedIDEntityMock;
 use Illuminate\Contracts\Config\Repository as ConfigRepository;
 
-/**
- * @covers \AvtoDev\IDEntity\IDEntity
- */
+#[CoversClass(IDEntity::class)]
 class IDEntityTest extends AbstractTestCase
 {
     /**
@@ -34,6 +33,7 @@ class IDEntityTest extends AbstractTestCase
         IDEntityInterface::ID_TYPE_CHASSIS               => Types\IDEntityChassis::class,
         IDEntityInterface::ID_TYPE_DRIVER_LICENSE_NUMBER => Types\IDEntityDriverLicenseNumber::class,
         IDEntityInterface::ID_TYPE_CADASTRAL_NUMBER      => Types\IDEntityCadastralNumber::class,
+        IDEntityInterface::ID_TYPE_EPTS                  => Types\IDEntityEpts::class,
     ];
 
     /**
@@ -182,6 +182,11 @@ class IDEntityTest extends AbstractTestCase
         $this->assertInstanceOf(
             Types\IDEntityCadastralNumber::class,
             IDEntity::make('33:22:011262:526', IDEntityInterface::ID_TYPE_CADASTRAL_NUMBER)
+        );
+
+        $this->assertInstanceOf(
+            Types\IDEntityEpts::class,
+            IDEntity::make('123456789012345', IDEntityInterface::ID_TYPE_EPTS)
         );
     }
 

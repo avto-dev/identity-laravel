@@ -5,10 +5,9 @@ declare(strict_types = 1);
 namespace AvtoDev\IDEntity\Tests;
 
 use AvtoDev\IDEntity\IDEntityInterface;
+use PHPUnit\Framework\Attributes\CoversNothing;
 
-/**
- * @coversNothing
- */
+#[CoversNothing]
 class IDEntityInterfaceTest extends AbstractTestCase
 {
     /**

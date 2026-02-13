@@ -6,11 +6,10 @@ namespace AvtoDev\IDEntity\Tests\Types;
 
 use Illuminate\Support\Str;
 use AvtoDev\IDEntity\IDEntityInterface;
+use PHPUnit\Framework\Attributes\CoversClass;
 use AvtoDev\IDEntity\Types\IDEntityDriverLicenseNumber;
 
-/**
- * @covers \AvtoDev\IDEntity\Types\IDEntityDriverLicenseNumber
- */
+#[CoversClass(IDEntityDriverLicenseNumber::class)]
 class IDEntityDriverLicenseNumberTest extends AbstractIDEntityTestCase
 {
     /**

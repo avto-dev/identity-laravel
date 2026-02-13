@@ -6,10 +6,9 @@ namespace AvtoDev\IDEntity\Tests\Helpers;
 
 use AvtoDev\IDEntity\Helpers\Normalizer;
 use AvtoDev\IDEntity\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \AvtoDev\IDEntity\Helpers\Normalizer
- */
+#[CoversClass(Normalizer::class)]
 class NormalizerTest extends AbstractTestCase
 {
     /**

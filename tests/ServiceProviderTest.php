@@ -5,11 +5,10 @@ declare(strict_types = 1);
 namespace AvtoDev\IDEntity\Tests;
 
 use AvtoDev\IDEntity\ServiceProvider;
+use PHPUnit\Framework\Attributes\CoversClass;
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
 
-/**
- * @covers \AvtoDev\IDEntity\ServiceProvider
- */
+#[CoversClass(ServiceProvider::class)]
 class ServiceProviderTest extends AbstractTestCase
 {
     /**

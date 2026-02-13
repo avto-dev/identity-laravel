@@ -6,10 +6,9 @@ namespace AvtoDev\IDEntity\Tests\Helpers;
 
 use AvtoDev\IDEntity\Helpers\Transliterator;
 use AvtoDev\IDEntity\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \AvtoDev\IDEntity\Helpers\Transliterator
- */
+#[CoversClass(Transliterator::class)]
 class TransliteratorTest extends AbstractTestCase
 {
     /**

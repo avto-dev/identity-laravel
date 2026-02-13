@@ -22,13 +22,12 @@
         "illuminate/support": "~10.0 || ~11.0 || ~12.0",
         "illuminate/config": "~10.0 || ~11.0 || ~12.0",
         "illuminate/contracts": "~10.0 || ~11.0 || ~12.0",
-        "illuminate/container": "~10.0 || ~11.0 || ~12.0",
-        "danielstjules/stringy": "~3.1.0"
+        "illuminate/container": "~10.0 || ~11.0 || ~12.0"
     },
     "require-dev": {
         "laravel/laravel": "~10.0 || ~11.0 || ~12.0",
-        "phpstan/phpstan": "^1.10.66",
-        "phpunit/phpunit": "^10.5"
+        "phpstan/phpstan": "1.12.32",
+        "phpunit/phpunit": "^10.5.62 || ^11.5.50"
     },
     "autoload": {
         "psr-4": {
