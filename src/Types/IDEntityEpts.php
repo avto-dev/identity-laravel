@@ -32,7 +32,7 @@ class IDEntityEpts extends AbstractTypedIDEntity
     public static function normalize($value): ?string
     {
         try {
-            $value = \mb_trim((string) $value);
+            $value = \trim((string) $value);
 
             // Remove all chars except digital
             return (string) \preg_replace('/[^0-9]/', '', $value);

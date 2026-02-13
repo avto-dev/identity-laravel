@@ -9,7 +9,7 @@ use AvtoDev\IDEntity\IDEntityInterface;
 use AvtoDev\IDEntity\Types\IDEntityEpts;
 
 /**
- * @covers IDEntityEpts
+ * @covers \AvtoDev\IDEntity\Types\IDEntityEpts
  */
 class IDEntityEptsTest extends AbstractIDEntityTestCase
 {
