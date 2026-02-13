@@ -9,12 +9,11 @@ use Illuminate\Support\Str;
 use AvtoDev\IDEntity\IDEntity;
 use AvtoDev\IDEntity\ServiceProvider;
 use AvtoDev\IDEntity\IDEntityInterface;
+use PHPUnit\Framework\Attributes\CoversClass;
 use AvtoDev\IDEntity\Tests\Mocks\TypedIDEntityMock;
 use Illuminate\Contracts\Config\Repository as ConfigRepository;
 
-/**
- * @covers \AvtoDev\IDEntity\IDEntity
- */
+#[CoversClass(IDEntity::class)]
 class IDEntityTest extends AbstractTestCase
 {
     /**

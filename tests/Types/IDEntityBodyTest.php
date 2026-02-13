@@ -7,10 +7,9 @@ namespace AvtoDev\IDEntity\Tests\Types;
 use Illuminate\Support\Str;
 use AvtoDev\IDEntity\IDEntityInterface;
 use AvtoDev\IDEntity\Types\IDEntityBody;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \AvtoDev\IDEntity\Types\IDEntityBody
- */
+#[CoversClass(IDEntityBody::class)]
 class IDEntityBodyTest extends AbstractIDEntityTestCase
 {
     /**

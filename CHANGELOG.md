@@ -15,6 +15,7 @@ The format is based on [Keep a Changelog][keepachangelog] and this project adher
 - Normalization of `VIN`, `BODY`, `CHASSIS`, `GRZ`, `STS` and `PTS`
 - Not used code marked as deprecated
 - Refactor string transliteration logic
+- Update dev dependencies
 
 ### Removed
 
