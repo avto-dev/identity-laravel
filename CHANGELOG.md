@@ -15,6 +15,7 @@ The format is based on [Keep a Changelog][keepachangelog] and this project adher
 - Normalization of `VIN`, `BODY`, `CHASSIS`, `GRZ`, `STS` and `PTS`
 - Not used code marked as deprecated
 - Refactor string transliteration logic
+- Package `avto-dev/extended-laravel-validator` up to `^6.0`
 - Update dev dependencies
 
 ### Removed
