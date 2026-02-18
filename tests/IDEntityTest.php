@@ -9,23 +9,22 @@ use Illuminate\Support\Str;
 use AvtoDev\IDEntity\IDEntity;
 use AvtoDev\IDEntity\ServiceProvider;
 use AvtoDev\IDEntity\IDEntityInterface;
+use PHPUnit\Framework\Attributes\CoversClass;
 use AvtoDev\IDEntity\Tests\Mocks\TypedIDEntityMock;
 use Illuminate\Contracts\Config\Repository as ConfigRepository;
 
-/**
- * @covers \AvtoDev\IDEntity\IDEntity
- */
+#[CoversClass(IDEntity::class)]
 class IDEntityTest extends AbstractTestCase
 {
     /**
-     * @var ConfigRepository
+     * @var ?ConfigRepository
      */
-    protected $config;
+    protected ?ConfigRepository $config;
 
     /**
      * @var array<string, class-string>
      */
-    protected $basic_types = [
+    protected array $basic_types = [
         IDEntityInterface::ID_TYPE_VIN                   => Types\IDEntityVin::class,
         IDEntityInterface::ID_TYPE_GRZ                   => Types\IDEntityGrz::class,
         IDEntityInterface::ID_TYPE_STS                   => Types\IDEntitySts::class,
@@ -34,6 +33,7 @@ class IDEntityTest extends AbstractTestCase
         IDEntityInterface::ID_TYPE_CHASSIS               => Types\IDEntityChassis::class,
         IDEntityInterface::ID_TYPE_DRIVER_LICENSE_NUMBER => Types\IDEntityDriverLicenseNumber::class,
         IDEntityInterface::ID_TYPE_CADASTRAL_NUMBER      => Types\IDEntityCadastralNumber::class,
+        IDEntityInterface::ID_TYPE_EPTS                  => Types\IDEntityEpts::class,
     ];
 
     /**
@@ -183,6 +183,11 @@ class IDEntityTest extends AbstractTestCase
             Types\IDEntityCadastralNumber::class,
             IDEntity::make('33:22:011262:526', IDEntityInterface::ID_TYPE_CADASTRAL_NUMBER)
         );
+
+        $this->assertInstanceOf(
+            Types\IDEntityEpts::class,
+            IDEntity::make('123456789012345', IDEntityInterface::ID_TYPE_EPTS)
+        );
     }
 
     /**
@@ -250,18 +255,6 @@ class IDEntityTest extends AbstractTestCase
     /**
      * @return void
      */
-    public function testMakePtsAutoDetection(): void
-    {
-        $this->markTestSkipped(\sprintf(
-            '[%s] cannot be automatically detected because it has same format with [%s]',
-            IDEntityInterface::ID_TYPE_PTS,
-            IDEntityInterface::ID_TYPE_STS
-        ));
-    }
-
-    /**
-     * @return void
-     */
     public function testMakeBodyAutoDetection(): void
     {
         $values = [
@@ -281,30 +274,6 @@ class IDEntityTest extends AbstractTestCase
         foreach ($values as $value) {
             $this->assertInstanceOf(Types\IDEntityBody::class, IDEntity::make($value));
         }
-    }
-
-    /**
-     * @return void
-     */
-    public function testMakeChassisAutoDetection(): void
-    {
-        $this->markTestSkipped(\sprintf(
-            '[%s] cannot be automatically detected because it has same format with [%s]',
-            IDEntityInterface::ID_TYPE_CHASSIS,
-            IDEntityInterface::ID_TYPE_BODY
-        ));
-    }
-
-    /**
-     * @return void
-     */
-    public function testMakeDlnAutoDetection(): void
-    {
-        $this->markTestSkipped(\sprintf(
-            '[%s] cannot be automatically detected because it has same format with [%s]',
-            IDEntityInterface::ID_TYPE_DRIVER_LICENSE_NUMBER,
-            IDEntityInterface::ID_TYPE_STS
-        ));
     }
 
     /**
@@ -455,8 +424,9 @@ class IDEntityTest extends AbstractTestCase
     {
         $this->assertTrue(IDEntity::is('NZE141-9134919', $type = IDEntityInterface::ID_TYPE_BODY));
         $this->assertTrue(IDEntity::is('SGLW301293', $type));
+        $this->assertTrue(IDEntity::is('77 УР 781043', $type));
 
-        $wrong = ['JF1SJ5LC5DG048667', '77 УР 781043', Str::random()];
+        $wrong = ['JF1SJ5LC5DG048667', Str::random()];
 
         foreach ($wrong as $item) {
             $this->assertFalse(IDEntity::is($item, $type), "[{$item}] must be not [{$type}] type");

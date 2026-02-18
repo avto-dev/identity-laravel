@@ -7,10 +7,9 @@ namespace AvtoDev\IDEntity\Tests\Types;
 use Illuminate\Support\Str;
 use AvtoDev\IDEntity\IDEntityInterface;
 use AvtoDev\IDEntity\Types\IDEntitySts;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \AvtoDev\IDEntity\Types\IDEntitySts
- */
+#[CoversClass(IDEntitySts::class)]
 class IDEntityStsTest extends AbstractIDEntityTestCase
 {
     /**
@@ -29,6 +28,14 @@ class IDEntityStsTest extends AbstractIDEntityTestCase
         $this->assertSame($valid, $entity::normalize("  {$valid} "));
         $this->assertSame($valid, $entity::normalize('61me524040'));
         $this->assertSame($valid, $entity::normalize('61МЕ ;?*:;% 524040 '));
+
+        $this->assertSame('12АВ345678', $entity::normalize('  12-a.b_345-6 78  ')); // Базовая стандартная коррекция - весь комплекс
+        $this->assertSame('12АБ345678', $entity::normalize('12аб345678'));          // Приведение к верхнему регистру
+        $this->assertSame('12АБ345678', $entity::normalize('12/А_Б-345.678'));      // Удаление разделителей
+        $this->assertSame('12ΛΩ345678', $entity::normalize('12ΛΩ345678'));          // Буквы из других алфавитов не удаляются
+        $this->assertSame('12АВ345678', $entity::normalize('12AB345678'));          // Замена A,B на А,В
+        $this->assertSame('12МН345678', $entity::normalize('12MH345678'));          // Замена M,H на М,Н
+        $this->assertSame('12ДА345678', $entity::normalize('12ДА345678'));          // Буква Д не заменяется
     }
 
     /**

@@ -25,7 +25,7 @@ interface TypedIDEntityInterface extends Arrayable, Jsonable
      *
      * @return self|static
      */
-    public function setValue(string $value, bool $make_normalization = true);
+    public function setValue(string $value, bool $make_normalization = true): self;
 
     /**
      * Get ID entity value.

@@ -7,10 +7,9 @@ namespace AvtoDev\IDEntity\Tests\Types;
 use Illuminate\Support\Str;
 use AvtoDev\IDEntity\IDEntityInterface;
 use AvtoDev\IDEntity\Types\IDEntityVin;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \AvtoDev\IDEntity\Types\IDEntityVin
- */
+#[CoversClass(IDEntityVin::class)]
 class IDEntityVinTest extends AbstractIDEntityTestCase
 {
     /**
@@ -25,65 +24,8 @@ class IDEntityVinTest extends AbstractIDEntityTestCase
     {
         $entity = $this->entityFactory();
 
-        $this->assertSame($valid = 'JF1SJ5LC5DG048667', $entity::normalize(Str::lower($valid)));
-        $this->assertSame($valid, $entity::normalize("  {$valid} "));
-        $this->assertSame($valid, $entity::normalize('JF1SJ5Lс5DG048667'));
-        $this->assertSame($valid, $entity::normalize('JF1SJ5LC5DGО48667'));
-        $this->assertSame($valid, $entity::normalize('JF1SJ5LC5DGO48667'));
-        $this->assertSame($valid, $entity::normalize('JF1SJ5L {}#$%^& C5DG048667 Ъ'));
-    }
-
-    /**
-     * @return void
-     */
-    public function testChecksumValidation(): void
-    {
-        $entity = $this->entityFactory();
-
-        $valid = [
-            'JHMCM56557С404453',
-            '1C4NJDEB5FD340542',
-            'WD2PD744X55764973',
-            'WAUBB28D2XA299286',
-            'JHMCG56612C018010',
-            '1HD1BW517AB032841',
-            '3D7UT2CL4BG628593',
-            '1N4AZ0CP3FC321188',
-            '2HGFB2F65CH319973',
-            'JTJBT20X270137599',
-            '5NPEU46F96H063851',
-            '2T1KR32E43C162992',
-            'JTEBU29J805003909',
-            'X4X5A79400D363203',
-            'WAUZZZ4E35N002551',
-            '4S4WX83C164401449',
-        ];
-
-        foreach ($valid as $value) {
-            $this->assertTrue($entity->setValue($value)->isChecksumValidated());
-        }
-
-        $invalid = [
-            'JMZBK12Z261367366',
-            'SALLSAAF4BA268959',
-            'X9FMXXEEBMCG05797',
-            'WDC2923241A022925',
-            'YV1CM714681472368',
-            'Z94CB41ABDR105897',
-            'XUUNF486J90008440',
-            'Z94CT41DBFR411079',
-            'KMHE341CBFA025224',
-            'XWB3L32EDCA218918',
-            'VF1UDC3K640850971',
-            '!@#$%^&*()}{<>?/[',
-
-            'foo bar',
-            '',
-            Str::random(32),
-        ];
-
-        foreach ($invalid as $value) {
-            $this->assertFalse($entity->setValue($value)->isChecksumValidated(), $value);
+        foreach ($this->getNormalizationCases() as [$src, $out]) {
+            $this->assertSame($out, $entity::normalize($src));
         }
     }
 
@@ -93,6 +35,35 @@ class IDEntityVinTest extends AbstractIDEntityTestCase
     protected function entityFactory(?string $value = null): IDEntityVin
     {
         return new IDEntityVin($value ?? $this->getValidValues()[0]);
+    }
+
+    /**
+     * Получить тестовые случаи для нормализации VIN кодов
+     *
+     * @return array<array<string>>
+     */
+    public static function getNormalizationCases(): array
+    {
+        return [
+            // Базовая нормализация - весь комплекс
+            ['  Xw8ЗдZQiO.LG02-8617  ', 'XW83DZ010LG028617'],
+            // Базовая нормализация - тримминг
+            ['  XW8ZZZ61ZLG028617  ', 'XW8ZZZ61ZLG028617'],
+            // Базовая нормализация - удаление разделителей
+            ['XW8/Z_ZZ-61ZLG-028617', 'XW8ZZZ61ZLG028617'],
+            // Базовая нормализация - приведение к верхнему регистру
+            ['abcdefghijklmnopqrstuvwxyzабвгдеёжзийклмнопрстуфхцчшщъыьэюя', 'ABCDEFGH1JKLMN0P0RSTUVWXYZAБBГDEЁЖ3ИЙKЛMH0ПPCTYФXЦЧШЩЪЫЬЭЮЯ'],
+            // Замена русских букв АВЕКМНРСТУХ по написанию, и замены З, Д, О на 3, D, 0
+            ['АВЕКМНРСТУХЗДО', 'ABEKMHPCTYX3D0'],
+            // Остальные русские буквы не заменяются
+            ['БГЁЖИЙЛПФЦЧШЩЪЫЬЭЮЯ', 'БГЁЖИЙЛПФЦЧШЩЪЫЬЭЮЯ'],
+            // Замена Q на 0
+            ['AQ000000000000001', 'A0000000000000001'],
+            // Замена O на 0
+            ['AO000000000000001', 'A0000000000000001'],
+            // Замена I на 1
+            ['AI000000000000001', 'A1000000000000001'],
+        ];
     }
 
     /**
@@ -197,6 +168,7 @@ class IDEntityVinTest extends AbstractIDEntityTestCase
             'SALWA2EF8EA381025',
             'WF03XXGCD36Y43748',
             'XWF0AHM75B0002747',
+            'A0000000000000001',
         ];
     }
 
@@ -211,7 +183,6 @@ class IDEntityVinTest extends AbstractIDEntityTestCase
             '11АА112233',
             'FN15-002153',
             '38:49:924785:832907',
-
             '',
             Str::random(32),
         ];

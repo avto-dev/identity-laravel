@@ -54,7 +54,6 @@ class IDEntity implements IDEntityInterface
 
         if ($type === self::ID_TYPE_AUTO) {
             foreach (static::getTypesMap() as $class_name) {
-                /** @var TypedIDEntityInterface $instance */
                 $instance = new $class_name($value, true);
 
                 if ($instance->canBeAutoDetected() && $instance->isValid()) {
@@ -100,6 +99,7 @@ class IDEntity implements IDEntityInterface
             self::ID_TYPE_BODY                  => Types\IDEntityBody::class,
             self::ID_TYPE_CHASSIS               => Types\IDEntityChassis::class,
             self::ID_TYPE_DRIVER_LICENSE_NUMBER => Types\IDEntityDriverLicenseNumber::class,
+            self::ID_TYPE_EPTS                  => Types\IDEntityEpts::class,
         ], static::getExtendedTypesMap());
     }
 

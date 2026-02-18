@@ -4,6 +4,24 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog][keepachangelog] and this project adheres to [Semantic Versioning][semver].
 
+## UNRELEASED
+
+### Added
+
+- `EPTS` id entity
+
+### Changed
+
+- Normalization of `VIN`, `BODY`, `CHASSIS`, `GRZ`, `STS` and `PTS`
+- Not used code marked as deprecated
+- Refactor string transliteration logic
+- Package `avto-dev/extended-laravel-validator` up to `^6.0`
+- Update dev dependencies
+
+### Removed
+
+- Dependency of package `danielstjules/stringy`
+
 ## v5.10.0
 
 ### Added
@@ -15,7 +33,7 @@ The format is based on [Keep a Changelog][keepachangelog] and this project adher
 
 - Package `avto-dev/extended-laravel-validator` up to `^5.0`
 
-## Fixed
+### Fixed
 
 - Тests for `IDEntityBody`
 

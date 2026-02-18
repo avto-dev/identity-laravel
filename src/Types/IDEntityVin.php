@@ -4,11 +4,31 @@ declare(strict_types = 1);
 
 namespace AvtoDev\IDEntity\Types;
 
-use AvtoDev\IDEntity\Helpers\Transliterator;
+use AvtoDev\IDEntity\Helpers\Strings;
 use AvtoDev\ExtendedLaravelValidator\Extensions\VinCodeValidatorExtension;
 
 class IDEntityVin extends AbstractTypedIDEntity
 {
+    private const REPLACEMENTS = [
+        'Q' => '0',
+        'O' => '0', // replace O latin with 0 (zero)
+        'I' => '1',
+        'З' => '3', // replace З cyrillic (Ze) with 3 (three)
+        'Д' => 'D',
+        'О' => '0', // replace O cyrillic with 0 (zero)
+        'А' => 'A',
+        'В' => 'B',
+        'Е' => 'E',
+        'К' => 'K',
+        'М' => 'M',
+        'Н' => 'H',
+        'Р' => 'P',
+        'С' => 'C',
+        'Т' => 'T',
+        'У' => 'Y',
+        'Х' => 'X',
+    ];
+
     /**
      * {@inheritdoc}
      *
@@ -16,7 +36,7 @@ class IDEntityVin extends AbstractTypedIDEntity
      */
     final public static function make(string $value, ?string $type = null): self
     {
-        return new static($value);
+        return new static($value, true);
     }
 
     /**
@@ -32,27 +52,22 @@ class IDEntityVin extends AbstractTypedIDEntity
      */
     public static function normalize($value): ?string
     {
-        try {
-            // Transliterate cyrillic chars with latin
-            $value = Transliterator::transliterateString(\mb_strtoupper((string) $value, 'UTF-8'), true);
-
-            // Latin "O" char replace with zero
-            $value = \str_replace('O', '0', $value);
-
-            // Remove all chars except allowed
-            $value = \preg_replace('~[^ABCDEFGHJKLMNPRSTUVWXYZ0-9]~u', '', $value);
-
-            return $value;
-        } catch (\Throwable $e) {
-            return null;
+        if (!\is_string($value)) {
+           return null;
         }
+
+        $value = Strings::removeNonAlphanumericChars($value);
+
+        $value = \mb_strtoupper($value, 'UTF-8');
+
+        return Strings::replaceByMap($value, self::REPLACEMENTS);
     }
 
     /**
      * Validate VIN code checksum.
      *
      * @see https://en.wikipedia.org/wiki/Vehicle_identification_number
-     *
+     * @deprecated Эта функция будет удалена в следующих релизах.
      * @return bool
      */
     public function isChecksumValidated(): bool

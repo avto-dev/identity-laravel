@@ -10,22 +10,22 @@ class TypedIDEntityMock implements TypedIDEntityInterface
     /**
      * @var string|null
      */
-    public static $value;
+    public static ?string $value;
 
     /**
      * @var string|null
      */
-    public static $type;
+    public static ?string $type;
 
     /**
      * @var bool|null
      */
-    public static $detectable;
+    public static ?bool $detectable;
 
     /**
      * @var bool|null
      */
-    public static $is_valid;
+    public static ?bool $is_valid;
 
     /**
      * {@inheritdoc}
@@ -51,9 +51,11 @@ class TypedIDEntityMock implements TypedIDEntityInterface
     /**
      * {@inheritdoc}
      */
-    public function setValue(string $value, bool $make_normalization = true)
+    public function setValue(string $value, bool $make_normalization = true):self
     {
         static::$value = $value;
+
+        return $this;
     }
 
     /**

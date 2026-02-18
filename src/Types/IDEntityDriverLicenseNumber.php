@@ -18,7 +18,7 @@ class IDEntityDriverLicenseNumber extends AbstractTypedIDEntity implements HasRe
      */
     final public static function make(string $value, ?string $type = null): self
     {
-        return new static($value);
+        return new static($value, true);
     }
 
     /**
@@ -42,7 +42,7 @@ class IDEntityDriverLicenseNumber extends AbstractTypedIDEntity implements HasRe
             $value = (string) \preg_replace('~[^' . 'АВЕКМНОРСТУХ' . 'ABEKMHOPCTYX' . '0-9]~u', '', $value);
 
             // Transliterate latin chars with cyrillic (backward transliteration)
-            $value = Transliterator::detransliterateLite($value);
+            $value = Transliterator::detransliterateString($value);
 
             return $value;
         } catch (\Throwable $e) {

@@ -4,12 +4,26 @@ declare(strict_types = 1);
 
 namespace AvtoDev\IDEntity\Types;
 
-use AvtoDev\IDEntity\Helpers\Normalizer;
-use AvtoDev\IDEntity\Helpers\Transliterator;
+use AvtoDev\IDEntity\Helpers\Strings;
 use AvtoDev\ExtendedLaravelValidator\Extensions\BodyCodeValidatorExtension;
 
 class IDEntityBody extends AbstractTypedIDEntity
 {
+    protected const REPLACEMENTS_LAT_CYR = [
+        'A' => 'А',
+        'B' => 'В',
+        'E' => 'Е',
+        'K' => 'К',
+        'M' => 'М',
+        'H' => 'Н',
+        'O' => 'О',
+        'P' => 'Р',
+        'C' => 'С',
+        'T' => 'Т',
+        'X' => 'Х',
+        'Y' => 'У',
+    ];
+
     /**
      * {@inheritdoc}
      *
@@ -17,7 +31,7 @@ class IDEntityBody extends AbstractTypedIDEntity
      */
     final public static function make(string $value, ?string $type = null): self
     {
-        return new static($value);
+        return new static($value, true);
     }
 
     /**
@@ -33,29 +47,19 @@ class IDEntityBody extends AbstractTypedIDEntity
      */
     public static function normalize($value): ?string
     {
-        try {
-            // Replace multiple whitespaces with one
-            $value = (string) \preg_replace('~\s+~u', ' ', \trim((string) $value));
-
-            // Normalize dash chars
-            $value = Normalizer::normalizeDashChar($value);
-
-            // Replace multiple dashes with one
-            $value = (string) \preg_replace('~-+~', '-', $value);
-
-            // Replace white spaces around dash with one dash
-            $value = (string) \preg_replace('~\s*-\s*~', '-', $value);
-
-            // Transliterate cyrillic chars with latin
-            $value = Transliterator::transliterateString(\mb_strtoupper($value, 'UTF-8'), true);
-
-            // Remove all chars except allowed
-            $value = (string) \preg_replace('~[^A-Z0-9\- ]~u', '', $value);
-
-            return $value;
-        } catch (\Throwable $e) {
+        if (!\is_string($value)) {
             return null;
         }
+
+        $value = Strings::removeNonAlphanumericChars($value);
+
+        $value = \mb_strtoupper($value, 'UTF-8');
+
+        $replacements = Strings::hasSpecificCyrillicUpperLetters($value)
+            ? static::REPLACEMENTS_LAT_CYR
+            : \array_flip(static::REPLACEMENTS_LAT_CYR);
+
+        return Strings::replaceByMap($value, $replacements);
     }
 
     /**

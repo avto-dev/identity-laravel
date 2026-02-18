@@ -6,12 +6,11 @@ namespace AvtoDev\IDEntity\Tests\Types;
 
 use Illuminate\Support\Str;
 use AvtoDev\IDEntity\IDEntityInterface;
+use PHPUnit\Framework\Attributes\CoversClass;
 use AvtoDev\IDEntity\Types\IDEntityCadastralNumber;
 use AvtoDev\StaticReferences\References\Entities\CadastralDistrict;
 
-/**
- * @covers \AvtoDev\IDEntity\Types\IDEntityCadastralNumber
- */
+#[CoversClass(IDEntityCadastralNumber::class)]
 class IDEntityCadastralNumberTest extends AbstractIDEntityTestCase
 {
     /**

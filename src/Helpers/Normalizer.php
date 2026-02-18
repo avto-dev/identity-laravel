@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace AvtoDev\IDEntity\Helpers;
 
 /**
+ * @deprecated Этот класс будет удален в следующих релизах.
  * @internal
  */
 class Normalizer

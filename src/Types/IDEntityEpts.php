@@ -4,10 +4,9 @@ declare(strict_types = 1);
 
 namespace AvtoDev\IDEntity\Types;
 
-use AvtoDev\IDEntity\Helpers\Transliterator;
-use AvtoDev\ExtendedLaravelValidator\Extensions\PtsCodeValidatorExtension;
+use AvtoDev\ExtendedLaravelValidator\Extensions\EptsCodeValidatorExtension;
 
-class IDEntityPts extends AbstractTypedIDEntity
+class IDEntityEpts extends AbstractTypedIDEntity
 {
     /**
      * {@inheritdoc}
@@ -24,7 +23,7 @@ class IDEntityPts extends AbstractTypedIDEntity
      */
     public function getType(): string
     {
-        return static::ID_TYPE_PTS;
+        return static::ID_TYPE_EPTS;
     }
 
     /**
@@ -33,16 +32,10 @@ class IDEntityPts extends AbstractTypedIDEntity
     public static function normalize($value): ?string
     {
         try {
-            // Uppercase + trim
-            $value = \mb_strtoupper(\trim((string) $value), 'UTF-8');
+            $value = \trim((string) $value);
 
-            // Remove all chars except allowed
-            $value = (string) \preg_replace('~[^\p{L}0-9]|[ЁЙЪЬ]~u', '', $value);
-
-            // Replace latin chars with cyrillic analogs (backward transliteration)
-            $value = Transliterator::detransliterateString($value);
-
-            return $value;
+            // Remove all chars except digital
+            return (string) \preg_replace('/[^0-9]/', '', $value);
         } catch (\Throwable $e) {
             return null;
         }
@@ -54,8 +47,8 @@ class IDEntityPts extends AbstractTypedIDEntity
     public function isValid(): bool
     {
         if (\is_string($this->value) && $this->value !== '') {
-            /** @var PtsCodeValidatorExtension $validator */
-            $validator = static::getContainer()->make(PtsCodeValidatorExtension::class);
+            /** @var EptsCodeValidatorExtension $validator */
+            $validator = static::getContainer()->make(EptsCodeValidatorExtension::class);
 
             return $validator->passes('', $this->value);
         }
