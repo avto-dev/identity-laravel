@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog][keepachangelog] and this project adheres to [Semantic Versioning][semver].
 
+## v6.0.1
+
+### Fixed
+
+- Backport framework compatibility fixes from v5.11.0
+
 ## v6.0.0
 
 ### Added
@@ -21,6 +27,19 @@ The format is based on [Keep a Changelog][keepachangelog] and this project adher
 ### Removed
 
 - Dependency of package `danielstjules/stringy`
+
+## v5.11.0
+
+### Added
+
+- Laravel `13.x` support
+
+### Changed
+
+- Minimal Laravel version now is `^11.0`
+- Version of `composer` in docker container updated up to `2.10.2`
+- Version of `php` in docker container updated up to `8.5`
+- Update dev dependencies
 
 ## v5.10.0
 
